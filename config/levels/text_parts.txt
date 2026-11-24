@@ -29,7 +29,7 @@ src/levels/shared/L01_00305D30.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L01_003068B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_0030D0D8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -fno-sched-interblock @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_0030D258.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
-src/levels/shared/L01_0030E630.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_0030E630.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_003104B8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
 src/levels/shared/L01_00310538.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_003107A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as
@@ -527,6 +527,8 @@ src/levels/shared/L01_004944E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00494540.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00494DC8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00494F98.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_00495A98.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_004962F0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004968C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00496B00.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00496B60.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -607,7 +609,7 @@ src/levels/shared/L01_004AB2C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004AB3E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004AC1C0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_004ACDB0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
-src/levels/shared/L01_004ACF48.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_004ACF48.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004AD7A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2
 src/levels/shared/L01_004B0EE0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004B1160.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -632,6 +634,8 @@ src/levels/shared/L01_004BEA70.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L01_004BEC88.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004C0ED0.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004C0F28.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L01_004C1028.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_004C13B0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004C1460.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_004C17E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_004C1D38.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
@@ -727,6 +731,8 @@ src/levels/shared/L01_00510F08.c	-O2 -G8 -fopt-stack -mno-check-zero-division @p
 src/levels/shared/L01_00511038.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00512D38.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_00512DF8.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_00513FD8.c	-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+src/levels/shared/L01_00514378.c	-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 src/levels/shared/L01_005147E8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00514850.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L01_00514B18.c	-O2 -G8 -fopt-stack -mno-check-zero-division

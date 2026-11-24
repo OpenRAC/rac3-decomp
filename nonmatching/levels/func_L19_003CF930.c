@@ -1,4 +1,13 @@
-/* func_L19_003CF930: 4 diff in L19_003CDD90.c (-mvu0-use-vf0-vf2 @ps2as): only the order of the two strength-reduced loop pointers (&d->e[i] and &d->e[i].pos). */
+/* func_L19_003CF930: 4 diff in L19_003CDD90.c (-mvu0-use-vf0-vf2 @ps2as): only the order of the two strength-reduced loop pointers (&d->e[i] and &d->e[i].pos).
+
+ * Round 25 W7 (b39, ~45 compiles; base 626eebd0d): reproduced with the file's own line; -dL shows why the order is what it is.
+ * loop.c finds the givs in body order (52/54/56 the q load, 100/102 the func_L01_0040C948 argument &e[i], 199/201/203 the
+ * r load), keeps them in reverse, combines the two pos givs (56 into 203: equal total benefit 31, the sort is stable so the
+ * later-discovered 203 is the main) and reduces 203 first, so the pos pointer is initialised before &e[i] (retail: the
+ * other way round, which needs 56 to be the combine main or the e giv discovered after the r load). Locals for either
+ * pointer kill the strength reduction (106-109 diff); `r = q` and dropping the call argument are diagnostics only (114 /
+ * 108). Flags: -fno-sched-interblock 4, -fno-regmove 4, -fno-gcse 33, -fno-strength-reduce 63.
+ */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_3CF930;
 typedef struct { u8 pad[0x10]; V4_3CF930 pos; u8 pad2[0x90]; } E_3CF930;
 typedef struct { u8 pad[4]; s32 x4; s32 x8; u8 pad2[0x34]; E_3CF930 e[4]; u8 pad3[0x300 - 0x40 - 4 * 0xB0]; u8 x300[4]; } D_3CF930;

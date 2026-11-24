@@ -1,3 +1,8 @@
+/* b39-w10 (2026-11-24): 7 raw differences (was 184) with --mode S --as ps2as: a dead third test at the end of chain 2,
+ * `else if (o[0x20] == 0 && A && B) { return; } else { return; }` (three conjuncts, the state compare first, compared
+ * with 0, both arms identical). It leaves the zero_extend of the second `== 2` test with two uses at combine time, so its
+ * `andi` survives, and jump2 deletes the test afterwards (sonnet-b29-nm3's mechanism). Left: only the registers of the
+ * first extension and the raw copy (ours $v1/$a0, retail $a0/$a1) and the slot/join andi that read them. */
 /* PAL near miss (2026-11-21): func_L03_003C6888's draft ported to this sibling (names, constants and the 0x12xx sound id from nonmatching/functional/func_L03_003C77A0.c). 214 differences (tools/check.py, level 03, the file's flags); 184 with -mvu0-use-vf0-vf2 @ps2as. Blocker: the masked o[0x20] compares (see nonmatching/README.md). */
 /* FAM-3 (Promises, 2026-11-23, upstream bbf261a1): func_0039EC28 declared s32, its real return type (src/frontbin/39EC28.c), fixes the D_001A7E18 halfword read's $v0/$v1 swap: still 214 differences (tools/check.py, level 03, the file's flags), 215 at level 09, and 184 with @ps2as (--as ps2as), but 9 aligned rows instead of 14 there. Only the join andi on o[0x20] is left (nonmatching/README.md). */
 #include "common.h"
@@ -157,6 +162,10 @@ void func_L03_003C77A0(u8 *o) {
                         func_003C2880(o);
                     }
                 }
+            } else if (o[0x20] == 0 && o[0x42] == 3 && o[0x43] < 5) {
+                return;
+            } else {
+                return;
             }
         } else if (o[0x20] == 0) {
             o[0x20] = 1;

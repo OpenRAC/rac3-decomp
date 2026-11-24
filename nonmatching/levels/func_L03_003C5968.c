@@ -1,3 +1,15 @@
+/* b39-w10 (2026-11-24): 7 raw differences (was 184) with --mode S --as ps2as: a dead third test at the end of chain 2,
+ * `else if (self[0x20] == 0 && A && B) { return; } else { return; }` (three conjuncts, the state compare first, compared
+ * with 0, both arms identical). It leaves the zero_extend of the second `== 2` test with two uses at combine time, so its
+ * `andi` survives, and jump2 deletes the test afterwards (sonnet-b29-nm3's mechanism). Left: only the registers of the
+ * first extension and the raw copy (ours $v1/$a0, retail $a0/$a1) and the slot/join andi that read them. */
+/* Correcting the return type of func_0039EC28 fixes the halfword read
+ * register allocation. With --mode S --as ps2as, check.py still reports
+ * 184/185 raw differences (03/05), but the aligned count with branch
+ * displacements ignored is 11/21, down from 16/26 for the previous draft.
+ * The state-2 join still loses its andi. Locals of six widths/signs,
+ * alternate masks, signed byte accesses and equivalent compares did not help.
+ */
 /* PAL port of the NTSC-U draft (Claude wave K, func_L03_003C3B00; the two versions' code differs): 22 aligned rows with the file's flags (-mvu0-use-vf0-vf2 @ps2as), the earlier NTSC-U-named draft was 285 words off on NTSC-U and about 160 rows on PAL after a name mapping.
  * What the port needed: callee names through config/us/map.tsv; PAL's 50 Hz values (25.0f for the fade, 417 for the 500-frame wait, the four rotation-smoothing constants pi/75, pi/225, pi/450 and pi/100, 0.02792527f); PAL-only `func_003C2880(self)` after the case-2 `func_L01_004AA7E8(self, 1)` (the early `D_00142796` return jumps to that shared tail); data at PAL addresses (D_001DEDB0_sda, D_L03_001DF2DC, D_L03_001DF6B8, D_L03_001E9228) with .extern size hints for the scalars retail reaches through `lui $at`/$gp; the hero base read as `D_001A4BE0 + off` through two pointers (one before the 3-pass loop, one after: retail rematerialises it from the shared `lui` in $s4 and reuses $s0 as the loop counter; a single pointer held across the loop was the 127-row cascade); t0/t1 as `u128_t tt[2]` (stack layout).
  * Round 14 (Sonnet b24-u1): 20 aligned rows (check.py's raw count is 184: everything after the first extra `andi` is shifted). The t quads written the other way round (`tt[0] = ...; tt[1] = tt[0];`) give retail's store order, z loads and add/sub order.
@@ -37,7 +49,7 @@ extern void func_L01_003EB5E0(s32, s32);
 extern void func_L03_003C5E10(void *, s32);
 extern void func_L01_00451F60(s32, s32, s32);
 extern void func_0039EF28(void);
-extern void func_0039EC28(s32, s32);
+extern s32 func_0039EC28(s32, s32);
 extern void func_L01_0041A5B0(s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void func_003C2880(void *);
@@ -141,6 +153,10 @@ void func_L03_003C5968(u8 *self) {
                     func_003C2880(self);
                 }
             }
+        } else if (self[0x20] == 0 && self[0x42] == 3 && self[0x43] < 5) {
+            return;
+        } else {
+            return;
         }
     } else {
         if (self[0x20] == 0) {

@@ -1,4 +1,4 @@
-/* func_L01_004593B8: 40 diff with the file's flags (L01_00457F00.c, @ps2as); was 53: `b = 0;` assigned before `a = 0;`
+/* func_L01_004593B8: 38 diff with the file's flags (L01_00457F00.c, @ps2as) (round 26 W7: 13 aligned instead of 15, see (C) below); was 53: `b = 0;` assigned before `a = 0;`
    gives retail's a = $s0 / b = $s1 (the a/b swap was 13 of the 53 diffs). Instructions and control flow are retail's
    (plain scalar D_L01_001E001C: lui/lw, then $gp in a delay slot). Still different (round 17, B28):
    (A) the count copies: ours n in $t0, n+1 in $a0, -1 in $t1; retail n $t1, n+1 $t0, -1 $a0 (regalloc.py: -1 has
@@ -11,13 +11,24 @@
    sub.s, reorg then moves it into the slot), retail keeps it before the sub.s and leaves a `nop` in the slot.
    No effect: counts as locals (79-111), a/b as ternaries (68), index locals (40-49), `*n += 1`, a/b test order
    (84-89), the return spellings (40), statement order of the first 7 statements (greedy, 40), `none = -1` local (40).
-   The pointer local for &p (assigned first) gives retail's $s2 = $sp. */
+   The pointer local for &p (assigned first) gives retail's $s2 = $sp.
+   Round 26 (W7): (C) is half fixed: the helper takes the other candidate as a parameter, `pick(a, b, ...)` / `pick(b, a, ...)`,
+   and ends `return found == 0 ? x : other;`. gcc 2.95 forms the conditional move at expand with a register arm: preset = the
+   value of the true arm (`other`), cond reversed (found == 0 gives `move $v0,x; movn $v0,other,found`, retail's orientation);
+   a literal 0 arm always gives `move $v0,$zero; movz $v0,x,found` (toys: every spelling of `found ? 0 : x`, `if (found) r = 0`,
+   a local `z = 0`, a literal-0 argument). What is still different is the arm: retail has `$zero` (cse folds the pseudo to
+   const 0 there), ours keeps `$s1` / `$s0` (the `b == 0` / `a == 0` knowledge of the branch is gone after the loop's exit label, a new
+   cse extended basic block). An explicit `if (n > 0) { for ... }` guard gives retail's `blez $t0` at the entry (13 -> 5 aligned
+   differences) but keeps the loop's own `slt $v0,$s1,$t0; beqz` test after it (82 raw: the shifts) and adds a second guard at the other
+   site, where retail has only `slt v0,s0,a3`. Tried without effect: loop shapes (do-while, while, pointer walk, count-down, unsigned n),
+   `res` variables, found-flag spellings, a/b test shapes (nested, `!b`, else-if), float-block spellings (da = da + ..., temporaries,
+   `!(<= 3.0f)`, an else arm) for (D), --all-modes, --as newas. */
 typedef int Q_004593B8 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_004593B8;
 extern u8 *D_L01_001E001C;
 extern f32 func_L01_0040E518(void *, void *);
 
-static __inline__ u8 *pick_004593B8(u8 *x, u8 **list, s32 n) {
+static __inline__ u8 *pick_004593B8(u8 *x, u8 *other, u8 **list, s32 n) {
     s32 i;
     s32 found = 0;
     for (i = 0; i < n; i++) {
@@ -25,10 +36,7 @@ static __inline__ u8 *pick_004593B8(u8 *x, u8 **list, s32 n) {
             found = 1;
         }
     }
-    if (found) {
-        return 0;
-    }
-    return x;
+    return found == 0 ? x : other;
 }
 
 u8 *func_L01_004593B8(s32 a0, u8 *obj, u8 **list, s32 *n, V_004593B8 *pos) {
@@ -56,10 +64,10 @@ u8 *func_L01_004593B8(s32 a0, u8 *obj, u8 **list, s32 *n, V_004593B8 *pos) {
         b = D_L01_001E001C + (*(s32 *)(v + 4) << 8);
     }
     if (a != 0 && b == 0) {
-        return pick_004593B8(a, list, *n);
+        return pick_004593B8(a, b, list, *n);
     }
     if (b != 0 && a == 0) {
-        return pick_004593B8(b, list, *n);
+        return pick_004593B8(b, a, list, *n);
     }
     db = 0.0f;
     db += func_L01_0040E518(b + 0x10, pp);
