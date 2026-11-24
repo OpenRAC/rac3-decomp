@@ -67,6 +67,16 @@
  *    of two blocks (230, 0x170), the vsub's result into x (9), and vu0.h helpers for all three (233, 0x170);
  *  - the second o load as a compiler TImode load (y = *(vu0_q *)(o + 0x10)), alone or with the first: the load
  *    gets the memory unit but is still ready at t = 8 with the store, which is issued first.
+ * 2026-11-24 (Promises, CLOSEOUT C1 #3019): study aid only, comment-only. NOT a candidate: a cross-sequence
+ * multi-instruction j-form block (an lqc2 for the next vsub paired with the previous sequence's sqc2) is a barrier
+ * under r3-10 / r3-68. In the first VU0 block, the two statements `lqc2 y, o + 0x10` and `sqc2 x, a` written as one:
+ *
+ *     __asm__("lqc2 %0, %2\n\tsqc2 %3, %1" : "=&j"(y), "=m"(a) : "m"(*(vu0_v4 *)(o + 0x10)), "j"(x));
+ *
+ * Measured (FACT #49494, xps13-arch): with this block, check.py gives MATCH at all 18 placements (04, 24, 26,
+ * 39-53), with and without --no-context, and MATCH with --version us. Split into two statements it gives 2
+ * differences in both orders (sqc2 first and lqc2 first). The seeded control (0x60804020 -> 0x60804021) gives 1.
+ * The C below keeps the plain per-instruction form, at 2 differences.
  */
 #include "common.h"
 #include "vu0.h"
