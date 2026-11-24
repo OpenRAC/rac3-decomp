@@ -245,7 +245,84 @@ void func_L01_0038D138(void) {
 }
 /* localdecomp:end func_L01_0038D138 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038D180);
+/* localdecomp:start func_L01_0038D180 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 v[4]; u32 color[4]; f32 uv[4][2];
+    u8 pad70[0x18]; unsigned long tag;
+} Draw_0038D180;
+typedef struct {
+    Draw_0038D180 draw;
+    vu0_v4 basis[3]; vu0_v4 pos; vu0_v4 delta; vu0_v4 matrix[3];
+} Work_0038D180;
+typedef int u128_0038D180 __attribute__((mode(TI)));
+extern vu0_v4 D_L01_001E2A40;
+extern vu0_v4 D_001A4EC0;
+extern vu0_v4 D_L01_001D7C50[];
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_0038CF68_0038D180(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_0038CE20_0038D180(void *, void *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003A9440(s32, unsigned long);
+extern void func_003D2DA0(void *, s32, s32);
+extern void func_00389478(void *, f32 *, f32 *);
+
+void func_L01_0038D180(void *position, s32 texture, f32 size, f32 offset, f32 angle, f32 stretch) {
+    Work_0038D180 w;
+    s32 i;
+    func_003D93B0(&w.draw, texture, 1, 0x80);
+    w.draw.tag = 0x800000004A;
+    w.draw.color[3] = 0x80808080;
+    w.draw.color[2] = 0x80808080;
+    w.draw.color[1] = 0x80808080;
+    w.draw.color[0] = 0x80808080;
+    *(u128_0038D180 *)&w.pos = *(u128_0038D180 *)position;
+    w.draw.uv[0][0] = 0; w.draw.uv[0][1] = 0;
+    w.draw.uv[1][0] = 0; w.draw.uv[1][1] = 1;
+    w.draw.uv[2][0] = 1; w.draw.uv[2][1] = 0;
+    w.draw.uv[3][0] = 1; w.draw.uv[3][1] = 1;
+    vec_sub_ab(&w.basis[0], &D_L01_001E2A40, &w.pos);
+    func_0038CF68_0038D180(&w.basis[0], &w.basis[0], 1.0f);
+    func_0038CE90(&w.basis[1], &w.basis[0], &D_001A4EC0);
+    func_0038CF68_0038D180(&w.basis[1], &w.basis[1], 1.0f);
+    func_0038CE90(&w.basis[2], &w.basis[1], &w.basis[0]);
+    if (angle != 0.0f) {
+        *(u128_0038D180 *)&w.delta = 0;
+        w.delta.x = angle;
+        func_0038D308(w.matrix, &w.delta);
+        func_0038D5F0(w.basis, w.basis, w.matrix);
+    }
+    func_0038CE20_0038D180(&w.delta, w.basis, offset);
+    vec_add_ab(&w.pos, &w.pos, &w.delta);
+    for (i = 0; i < 4; i++) {
+        func_0038CE20_0038D180(&w.draw.v[i], &D_L01_001D7C50[i], size);
+        func_0038D028(&w.draw.v[i], &w.draw.v[i], w.basis);
+    }
+    func_003A9440(0x47, 0x31001);
+    func_003D2DA0(&w.draw, 0, 0);
+    {
+        s32 k;
+        s32 j;
+        *(u128_0038D180 *)&w.matrix[0] = *(u128_0038D180 *)&w.draw.v[0];
+        for (k = 1; k < 4; k++) vec_add_ba(&w.matrix[0], &w.matrix[0], &w.draw.v[k]);
+        func_0038CE20_0038D180(&w.matrix[0], &w.matrix[0], 0.25f);
+        for (j = 0; j < 4; j++) {
+            vec_sub_ab(&w.matrix[1], &w.draw.v[j], &w.matrix[0]);
+            func_0038CE20_0038D180(&w.matrix[1], &w.matrix[1], stretch);
+            vec_add_ab(&w.matrix[1], &w.matrix[0], &w.matrix[1]);
+            func_00389478(&w.matrix[1], &w.draw.uv[j][0], &w.draw.uv[j][1]);
+        }
+    }
+    func_003D93B0(&w.draw, -1, 1, 0x80);
+    w.draw.tag = 0x2000000054;
+    func_003A9440(0x47, 0x53001);
+    func_003D2DA0(&w.draw, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L01_0038D180 */
 
 /* localdecomp:start func_L01_0038D498 */
 
@@ -367,7 +444,92 @@ void func_L01_0038E4D0(u8 *moby) {
 }
 /* localdecomp:end func_L01_0038E4D0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038E720);
+/* localdecomp:start func_L01_0038E720 */
+typedef struct {
+    s128 vertices[4];
+    s32 colors[4];
+    f32 uv[4][2];
+    unsigned long zero, texture, alpha, test;
+} Packet_0038E720;
+extern s32 D_L01_001DDFC0, D_L01_001DDFB0, D_L01_001DDFAC;
+extern s32 D_L01_001DDFB4, D_L01_001DDFB8, D_L01_001DDFBC, D_L01_001DDFC4;
+extern f32 D_L01_001DDF30;
+__asm__(".extern D_L01_001DDFC0, 4");
+__asm__(".extern D_L01_001DDFB0, 4");
+__asm__(".extern D_L01_001DDFAC, 4");
+__asm__(".extern D_L01_001DDFB4, 4");
+__asm__(".extern D_L01_001DDFB8, 4");
+__asm__(".extern D_L01_001DDFBC, 4");
+__asm__(".extern D_L01_001DDFC4, 4");
+__asm__(".extern D_L01_001DDF30, 4");
+extern s16 D_L01_002B42E0[][8];
+extern s128 D_L01_002B3DE0[];
+extern f32 D_L01_002B46E0[][2];
+extern f32 D_L01_002B46E4[][2];
+typedef struct { u8 pad[0x25C0]; u8 *camera; } Scene_0038E720;
+extern Scene_0038E720 D_001A4BE0_0038E720;
+__asm__(".extern D_001A4BE0_0038E720, 16");
+static __inline__ s128 *camera_0038E720(Scene_0038E720 *base) {
+    return (s128 *)(base->camera + 0xC0);
+}
+void func_L01_0038E720(u8 *moby) {
+    extern unsigned long func_00389598(s32);
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_0038D000(s128 *, s128 *, s128 *);
+    extern void func_003D2DA0(void *, s32, s32);
+    Packet_0038E720 packet;
+    s128 matrix[3];
+    s128 offset;
+    f32 *u, *v;
+    u8 *p = *(u8 **)(moby + 0x68);
+    s32 i, j, uv;
+    packet.texture = func_00389598(D_L01_001DDFC0);
+    packet.test = (unsigned long)D_L01_001DDFAC |
+        ((unsigned long)D_L01_001DDFB0 << 2) |
+        ((unsigned long)D_L01_001DDFB4 << 4) |
+        ((unsigned long)D_L01_001DDFB8 << 6) |
+        ((unsigned long)D_L01_001DDFBC << 32);
+    packet.alpha = 0xFF9000000260UL;
+    qzero(&matrix[0]);
+    qzero(&matrix[1]);
+    qzero(&matrix[2]);
+    packet.zero = 0;
+    ((f32 *)&matrix[0])[0] = *(f32 *)(p + 0x34);
+    ((f32 *)&matrix[1])[1] = *(f32 *)(p + 0x34);
+    ((f32 *)&matrix[2])[2] = *(f32 *)(p + 0x34) * 0.125f;
+    packet.colors[3] = D_L01_001DDFC4 + (*(s32 *)(p + 0x30) << 24);
+    packet.colors[2] = packet.colors[3];
+    packet.colors[1] = packet.colors[3];
+    packet.colors[0] = packet.colors[3];
+    func_003C5180(p + 0x10, &offset, 1);
+    func_0038CE20(&offset, &offset, 0.25f);
+    u = &packet.uv[0][0];
+    v = &packet.uv[0][1];
+    for (i = 0; i < 64; i++) {
+        f32 *vp = v, *up = u;
+        s16 *entry = D_L01_002B42E0[i];
+        s128 *vertex = packet.vertices;
+        j = 3;
+        do {
+            uv = entry[1];
+            func_0038CE20(vertex, &D_L01_002B3DE0[entry[0]], D_L01_001DDF30);
+            j--;
+            entry += 2;
+            *up = D_L01_002B46E0[uv][0];
+            *vp = D_L01_002B46E4[uv][0];
+            up += 2;
+            func_0038D000(vertex, vertex, matrix);
+            vp += 2;
+            func_0038D000(vertex, vertex, camera_0038E720(&D_001A4BE0_0038E720));
+            vec_add_ab(vertex, vertex, p + 0x10);
+            vec_add_ab(vertex, vertex, &offset);
+            vertex++;
+        } while (j >= 0);
+        func_003D2DA0(&packet, 0, 0);
+    }
+}
+/* localdecomp:end func_L01_0038E720 */
 
 /* localdecomp:start func_L01_0038E968 */
 

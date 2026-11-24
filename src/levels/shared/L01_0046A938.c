@@ -2057,7 +2057,100 @@ T_0046E078 *func_L01_0046E078(u8 *o, u128_t *pos, f32 *v, s32 *src, s32 flag) {
 }
 /* localdecomp:end func_L01_0046E078 */
 
-INCLUDE_ASM("asm/levels", func_L01_0046E1B8);
+/* localdecomp:start func_L01_0046E1B8 */
+typedef struct {
+    s32 w0;
+    s32 w4;
+    s16 h8;
+    s16 hA;
+    s32 wC;
+} Cfg_0046E1B8;
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 b20;
+} Target_0046E1B8;
+
+typedef struct {
+    f32 f0;
+    f32 f4;
+    f32 f8;
+    Target_0046E1B8 *target;
+    f32 vx, vy, vz;
+    Cfg_0046E1B8 *cfg;
+} Sub_0046E1B8;
+
+typedef struct {
+    u8 pad0[4];
+    s32 w4;
+    u8 b8;
+    u8 pad9;
+    s16 hA;
+    f32 fC;
+    vu0_v4 pos;
+    Sub_0046E1B8 sub;
+} Obj_0046E1B8;
+
+extern s32 D_L01_001D6694_0046E1B8;
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_003CD250(Obj *);
+extern s32 func_L01_00447470_0046E1B8(s32, s32, f32);
+extern s32 func_0038CB00(s16 *);
+
+void func_L01_0046E1B8(Obj_0046E1B8 *obj) {
+    Sub_0046E1B8 *sub = &obj->sub;
+    Cfg_0046E1B8 *cfg;
+    vu0_v4 v0;
+    vu0_v4 v10;
+    vu0_v4 v20;
+    vu0_q qa, qb, qr;
+
+    if (sub != 0) {
+        cfg = sub->cfg;
+        obj->fC = (f32)((cfg->h8 * (cfg->wC - obj->hA)) / cfg->wC + cfg->hA) * 1000.0f;
+        v0.x = sub->f0;
+        v0.y = sub->f4;
+        v0.z = sub->f8;
+        func_0038CE20(&v0, &v0, 0.976f);
+        sub->f0 = v0.x;
+        sub->f4 = v0.y;
+        sub->f8 = v0.z;
+        if (D_L01_001D6694_0046E1B8 == 0 && sub->target != 0) {
+            if (sub->target->b20 == 0xFE) {
+                goto kill;
+            }
+            if (sub->target->b20 != 0xFD) {
+                v10.x = sub->vx;
+                v10.y = sub->vy;
+                v10.z = sub->vz;
+                vec_add_ba(&v10, &v10, &v0);
+                sub->vx = v10.x;
+                sub->vy = v10.y;
+                sub->vz = v10.z;
+                func_0038D000(&v20, &v10, (u8 *)sub->target + 0xC0);
+                __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(v20));
+                __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(sub->target->pos));
+            } else {
+kill:
+                func_003CD250((Obj *)obj);
+                return;
+            }
+        } else {
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(obj->pos));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(v0));
+        }
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+        __asm__("sqc2 %1, %0" : "=m"(obj->pos) : "j"(qr));
+        obj->b8++;
+        obj->w4 = func_L01_00447470_0046E1B8(cfg->w4, cfg->w0, (f32)obj->hA / (f32)cfg->wC);
+        if (func_0038CB00(&obj->hA) != 0) {
+            func_003CD250((Obj *)obj);
+        }
+    }
+}
+/* localdecomp:end func_L01_0046E1B8 */
 
 LINKER_REMNANT("asm/levels", func_L01_0046E378);
 

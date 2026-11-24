@@ -10,7 +10,13 @@ void func_L01_00422FE0(void) {
 }
 /* localdecomp:end func_L01_00422FE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00423000);
+/* localdecomp:start func_L01_00423000 */
+extern void func_L01_003FEA00_00423000();
+
+void func_L01_00423000(void) {
+    func_L01_003FEA00_00423000();
+}
+/* localdecomp:end func_L01_00423000 */
 
 /* localdecomp:start func_L01_00423020 */
 extern void func_L01_003FEA68_00423020();
