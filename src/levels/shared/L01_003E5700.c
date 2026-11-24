@@ -191,7 +191,7 @@ extern void func_L01_003E4F20(Cam_003E5828 *, vu0_v4 *);
 extern f32 func_0038CE68_003E5828(void *, void *);
 extern void func_0038CE20_003E5828(void *, void *, f32);
 extern f32 func_0038CF00_003E5828(void *, void *);
-extern f32 func_L01_003F3520(f32 *, f32, f32, f32, f32, f32);
+extern f32 func_00382BC8(f32 *, f32, f32, f32, f32, f32);
 extern s32 func_L01_0040E020(void *);
 extern void func_0038CDF8_003E5828(f32 *, f32 *, f32 *, f32);
 extern void func_L01_003E5700(u8 *, s32);
@@ -246,12 +246,12 @@ void func_L01_003E5828(Cam_003E5828 *cam) {
     }
     vec_sub_ba(&b, target, &a);
     *(f32 *)(look + 0x110) = func_0038CF00_003E5828(&a, vel);
-    a.x = func_L01_003F3520((f32 *)(follow + 0x100), a.x, *(f32 *)(look + 0x10), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
-    a.y = func_L01_003F3520((f32 *)(follow + 0x104), a.y, *(f32 *)(look + 0x14), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
-    a.z = func_L01_003F3520((f32 *)(follow + 0x108), a.z, *(f32 *)(look + 0x18), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
-    b.x = func_L01_003F3520((f32 *)(follow + 0xF0), b.x, *(f32 *)(look + 0x0), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
-    b.y = func_L01_003F3520((f32 *)(follow + 0xF4), b.y, *(f32 *)(look + 0x4), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
-    b.z = func_L01_003F3520((f32 *)(follow + 0xF8), b.z, *(f32 *)(look + 0x8), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
+    a.x = func_00382BC8((f32 *)(follow + 0x100), a.x, *(f32 *)(look + 0x10), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
+    a.y = func_00382BC8((f32 *)(follow + 0x104), a.y, *(f32 *)(look + 0x14), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
+    a.z = func_00382BC8((f32 *)(follow + 0x108), a.z, *(f32 *)(look + 0x18), *(f32 *)(look + 0x104), *(f32 *)(look + 0x108), zero);
+    b.x = func_00382BC8((f32 *)(follow + 0xF0), b.x, *(f32 *)(look + 0x0), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
+    b.y = func_00382BC8((f32 *)(follow + 0xF4), b.y, *(f32 *)(look + 0x4), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
+    b.z = func_00382BC8((f32 *)(follow + 0xF8), b.z, *(f32 *)(look + 0x8), *(f32 *)(look + 0xFC), *(f32 *)(look + 0x100), zero);
     vec_add_ba(look, look, vel);
     vec_add_ab(target, &b, &a);
     func_0038CE20_003E5828(&off, entry + 0x80, *(f32 *)(look + 0xD0));
@@ -1386,8 +1386,8 @@ extern void func_0038D890_003EA190(void *, void *, void *, f32);
 extern void func_0038CF68_003EA190(void *, void *, f32);
 extern f32 func_0038D0C8_003EA190(f32);
 extern void func_L01_003E9F40(u8 *, f32 *, f32 *);
-extern f32 func_L01_003F3520_003EA190(f32, f32 *, f32, f32, f32, f32);
-extern f32 func_L01_003F35B0(f32 *, f32, f32, f32, f32, f32);
+extern f32 func_00382BC8_003EA190(f32, f32 *, f32, f32, f32, f32);
+extern f32 func_00382C58(f32 *, f32, f32, f32, f32, f32);
 extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
 
 void func_L01_003EA190(u8 *a)
@@ -1433,7 +1433,7 @@ void func_L01_003EA190(u8 *a)
     len1 = func_0038CEA8_003EA190(c180);
     len2 = func_0038CEA8_003EA190(cam + 0x190);
     func_L01_003E9F40(a, &fa, &fb);
-    len2 = func_L01_003F3520_003EA190(len2, (f32 *)(cam + 0x1A8), len1, fa, fb, 0.0f);
+    len2 = func_00382BC8_003EA190(len2, (f32 *)(cam + 0x1A8), len1, fa, fb, 0.0f);
     dot1 = func_0038CE68_003EA190(c180, (ent + 0x20));
     if (fabs_asm(len1) < 0.0001f) {
         ang1 = 0.0f;
@@ -1459,7 +1459,7 @@ void func_L01_003EA190(u8 *a)
         ang2 = func_0038D0C8_003EA190(t);
     }
     zero = 0.0f;
-    ang2 = func_L01_003F35B0((f32 *)(c180 + 0x24), ang2, ang1, 0.015f, 0.2f, zero);
+    ang2 = func_00382C58((f32 *)(c180 + 0x24), ang2, ang1, 0.015f, 0.2f, zero);
     func_0038CE20_003EA190(&v0, (ent + 0x20), dot1);
     vec_sub_ba(&v10, c180, &v0);
     func_0038CE20_003EA190(&v20, (ent + 0x20), dot2);
@@ -1471,7 +1471,7 @@ void func_L01_003EA190(u8 *a)
     } else {
         ang3 = 1.5707964f - func_0038D0C8_003EA190(dd / ll);
     }
-    r2 = func_L01_003F35B0((f32 *)(c180 + 0x20), 0.0f, ang3, 0.015f, 0.2f, 0.0f);
+    r2 = func_00382C58((f32 *)(c180 + 0x20), 0.0f, ang3, 0.015f, 0.2f, 0.0f);
     func_0038CE90_003EA190(&v40, &v30, (ent + 0x20));
     side = func_0038CE68_003EA190(&v40, &v10);
     sgn = -1.0f;

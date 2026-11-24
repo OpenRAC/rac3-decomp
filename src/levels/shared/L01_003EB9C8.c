@@ -1628,7 +1628,7 @@ extern u8 D_001A30B0_003EF2D0[];
 extern s32 func_L01_004AAE90(s32, s32, void *, s32);
 __asm__(".extern D_L01_001DF730, 4");
 __asm__(".extern D_001D5324, 4");
-extern f32 D_L01_001DF730 __attribute__((section(".sdata")));   
+extern f32 D_L01_001DF730 __attribute__((section(".sdata")));
 extern f32 D_001D5324;
 typedef struct {
     u8 pad0[0x148];
