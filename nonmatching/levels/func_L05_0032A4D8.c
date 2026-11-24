@@ -28,6 +28,16 @@
  * (397: three saved float registers). `k` for the call and the formula reproduces 390 ($f22, frame 0xC0).
  * Retail reads $f20 nowhere between the call and its 1.0 load, so a 20.0 variable that lives past the call
  * always overlaps the 1.0 and takes a third saved register.
+ * CLOSEOUT attempt 1 of 2 (task 3057, 2026-11-24, upstream 5eb0ce11; same recipe): no change. 408 differences
+ * (tools/check.py, level 05; 407 at levels 16 and 19), the same with --no-context; compared one row off from row 30,
+ * 2 rows differ at level 05 (both in the prologue) and 8 at levels 16 and 19 (the same 2, plus 6 $gp loads that
+ * check.py shows at offset 0 there for the D_L05_ names). Tried: `k = 20.0f` for the call plus a test that is
+ * always false right after it (`k < 0.0f || s->f164 < 0.0f`, and `s->f164 < 0.0f || k <= 0.0f`), to keep k live
+ * across the call so that it takes a saved register while the test folds away later: both compile to exactly
+ * the draft's bytes (cse folds the test first, so k still dies at the call). `k` for the call and the formula
+ * reproduces 390: the prologue is then retail's except that k is in $f22 (f in $f21, the 1.0 in $f20) and the
+ * frame is 0xC0. Retail's 20.0 must cross the call and die before the 1.0 is set, with no read in between that
+ * survives to the output; no plain C form for that was found.
  * The $gp floats are level data (gp+0x4..0x18 in level 05, gp+0x24.. in level 16, gp+0x54.. in level 19), so
  * they are D_L05_ names with `.extern X, 4` hints (the build derives them per level).
  * The three path-segment cases are vec_sub_ba() each (gcc cross-jumps their vsub/sqc2 tail as retail has it).
