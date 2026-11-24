@@ -2,6 +2,7 @@
  * and PAL's 50 Hz timer `(D_L05_001DEAE0 * 5 + 2) / 6`, and the VU0 sums written with include/vu0.h's helpers.
  * tools/check.py at levels 05, 06, 11, 17 and 21 with its file's line (L05_003BD448.c, which has -fno-sched-interblock):
  * 111 differences (CLOSEOUT attempt 1 of 2, task #3045, 2026-11-24; 113 before). NTSC-U (--version us): 173 (175 before).
+ * CLOSEOUT attempt 2 of 2 (task #3053, 2026-11-24, upstream 3e4df279): still 111 at all five levels; DONE.
  * The only remaining difference is the colour's set (below).
  * The table D_L05_002A64C0 (`Row_3BD448`) is the file's own declaration, from func_L05_003BD448's block, so this
  * draft compiles in its file's context only (check.py without --no-context). Every other global and callee is
@@ -26,6 +27,10 @@
  * top (111); `u64 w = c; u32 col = w;` (111); `s32 c; s64 col = c;` (111); `u32 col = (u64)c;` and `u64 col = 0x1010FF;`
  * (347, folded); the spawner's colour parameter declared u64 (125, `por` moves); RGBA bitfields in a union with a u32
  * (362, loop hoists the masks); a plain `u32 col` (347: cse deletes the set and puts the constant in both argument moves).
+ * Colour forms tried in task #3053, all 347 (the constant again in both argument moves, as the plain u32): `u32 col`
+ * declared at function top and set once before the loop (gcse propagates it into the loop); the u32 in a nested
+ * block opened after `size` that holds both calls; `register u32 col`. No SImode form found that cse/gcse leave as
+ * one pseudo.
  * Fixed in task #2895: D_L05_001DEAE0 declared with its `.extern` size ($gp load); the spawner func_L01_0046FB40
  * declared as the rest of src/ declares it, `(..., f32, f32, f32, s32)`, which puts `move $t3, $zero` in the `jal`
  * delay slots as retail has it; the damage record as a local struct written +0x18, +0x19, type, which gives retail's
