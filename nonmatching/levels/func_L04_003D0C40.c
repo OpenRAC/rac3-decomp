@@ -1,5 +1,6 @@
 /* Level 4 (Marcadia), file L04_003D0968.c (its line: -O2 -G8 -fopt-stack -mno-check-zero-division
- * -mvu0-use-vf0-vf2 @ps2as). tools/check.py at level 04: 89 differences (2026-11-21, task #2809).
+ * -mvu0-use-vf0-vf2 @ps2as). 24 differences (tools/check.py --no-context, with the file's typedefs) at
+ * levels 04 and 18 and on NTSC-U (2026-11-24, task #3039); the history follows.
  * - The prototype is the file's own (`M_003D0968 *, V_003D0968 *`, from func_L04_003D0968's block), cast to
  *   byte pointers inside; the earlier `(u8 *, u8 *)` draft no longer compiled in the file's context.
  * - 264 -> 89: the second search compares against `*(s32 *)(v + 0x90) + 1` read in place instead of an
@@ -51,7 +52,27 @@
  * plus a plain `if` (47), a `switch` with `case -1` / `default` (47), `vv->w90` / `mm->vars->w90` for one of the tests
  * (32 / 211), the `+0x94 = 0` store moved into each arm (60). Also open: the two copies of m[0x21] for the loop tests
  * (retail `move $t0, $v1` and `move $a3, $v1`; here `$a3` then `move $t0, $a3`, from gcse), unchanged by
- * `(s32)`, `(u8)0xFF`, `< 0xFF` (38), `D >= m[0x21]` or a `for` form. Stopped per AGENTS.md. */
+ * `(s32)`, `(u8)0xFF`, `< 0xFF` (38), `D >= m[0x21]` or a `for` form.
+ * CLOSEOUT attempt 1 of 2 (task #3039, 2026-11-24, upstream 3e4df279): 32 -> 24 differences at levels 04 and 18.
+ * - Mechanism of the +0x90 reload (gcc dumps, -dj -ds -dG): cse follows the first test's `bne` into arm 2 only when
+ *   the code just before arm 2's label ends in a BARRIER; a NOTE_INSN_LOOP_END there stops it (cse.c's backward scan).
+ *   With loop 1 as a `while`, arm 1 ends in the if's `b join` after the loop's LOOP_END, so cse follows.
+ * - Loop 1 is now written as `goto test1; for (;;) { body; test1: if (cond) continue; goto join; }`: its exit
+ *   `goto join` is inside the loop, so arm 2's label follows LOOP_END, cse does not follow, and arm 2's head is
+ *   retail's `lw $v0, 0x90; move $tN, $v0; slti` with loop 2's `addiu $a0, $tN, 1` (gcse PRE's copy).
+ * - Still open: (1) loop 1's tail is `bnel p != head -> join; b top` where retail has `beql p == head -> body; b join`
+ *   (jump.c inverts the test around the `goto join` before it threads the jumps; writing the test as
+ *   `if (!(cond)) goto join;` gives the same code); (2) $t1/$t2 are swapped between the lui copy of D_L04_0021C9A0
+ *   and the +0x90 copy; (3) the m[0x21] copies: gcse PRE inserts them in expression-index order (the zero_extend
+ *   load, index 3, before the QImode load, index 18), so the QImode copy is `move $t0, $a3` after it; retail has the
+ *   QImode copy first, both from the lbu.
+ * - Tried without gain: arm 2 as `s32 n = +0x90` (230, cse equates it), n through `vv->w90`, `*(u32 *)` or a
+ *   function-level n (230 each), a pointer `s32 *pw = v + 0x90` (261), `((s32 *)v)[0x24]` (32), a `switch` with n
+ *   (230), loop 1 as `for (;;)` with the tests at the top, with n (261: arm 2 reloads, but loop 1 is not rotated),
+ *   `&& p94 == 0` on the first test (32), a `u8 k = m[0x21]` for the list heads (34 on this form, 44 on the old one),
+ *   `D_L04_0021C9A0[m[0x21]]` for the heads (28).
+ * Flag for review: the `goto` into the `for (;;)` (plain C, a real loop whose back edge is the `continue`).
+ * Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */
@@ -107,16 +128,22 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
     *(u8 **)(v + 0x94) = 0;
     if (*(s32 *)(v + 0x90) == -1) {
         p = *(D_L04_0021C9A0 + m[0x21]);
-        while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
-               ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
+        goto test1;
+        for (;;) {
             e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
             if (e == 0) {
-                break;
+                goto join;
             }
             if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == 1) {
                 goto found13;
             }
             p++;
+        test1:
+            if (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
+                ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
+                continue;
+            }
+            goto join;
         }
     } else if (*(s32 *)(v + 0x90) >= -1) {
         p = *(D_L04_0021C9A0 + m[0x21]);
