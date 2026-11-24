@@ -25,6 +25,12 @@
  * calls, as in func_L05_00362F30, where the other wordings tried are listed. Left: the same three problems as
  * func_L05_00362F30 (the vf1/vf2 roles of c and b, the order of the stores at the top, the loop's registers
  * and the store order before it). */
+/* CLOSEOUT attempt 2 of 2 (2026-11-24, rac3-w1, upstream 3e4df279): 24 differences (tools/check.py --no-context) at
+ * levels 05 and 10 with -mvu0-use-vf0-vf2 on L05_003629B8.c's line (was 36). DONE. The same three changes as
+ * func_L05_00362F30 (see its notes): the shared minuend variables (vf roles, 8 words), the argument through a
+ * temporary (4 words), the separate down-counter (no change here: &s is already $s0, since it lives across the
+ * second func_003D2DA0 call). Left: the copy loop's registers and the order of the setup before it, as in
+ * func_L05_00362F30. */
 #include "common.h"
 
 /* localdecomp:start func_L05_00363110 */
@@ -67,6 +73,7 @@ void func_L05_00363110(u8 *a0, u128_361BA8 *a1) {
     vu0_v4 g;
     u8 *p;
     s32 i;
+    s32 n;
     u128_361BA8 tu;
     vu0_q M;
     vu0_q T;
@@ -101,7 +108,7 @@ void func_L05_00363110(u8 *a0, u128_361BA8 *a1) {
     s.c[3] = D_L05_001DDA78;
     s.c[2] = D_L05_001DDA78;
     s.c[1] = D_L05_001DDA78;
-    for (i = 0; i < 4; i++) {
+    for (i = 0, n = 3; n >= 0; i++, n--) {
         s.p[i].a = D_L05_001DDA80[i * 2];
         s.p[i].b = D_L05_001DDA84[i * 2];
     }

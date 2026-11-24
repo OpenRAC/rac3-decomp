@@ -43,6 +43,22 @@
  * "0") gives the same 37 bytes. Left: the vf1/vf2 roles of c and b (8 words), the order of the three stores at
  * the top (sqc2 f and g before the argument's sq: 4 words), the loop's registers and the order of the stores
  * before it (25 words). */
+/* CLOSEOUT attempt 2 of 2 (2026-11-24, rac3-w1, upstream 3e4df279): 24 differences (tools/check.py --no-context) at
+ * levels 05 and 10 with -mvu0-use-vf0-vf2 on L05_003629B8.c's line (was 37). DONE.
+ * (1) The vf1/vf2 roles (8 words): c and b take their minuend from one shared vu0_q variable M (j-form, one asm
+ * statement per instruction). A pseudo that dies in two places is not allocated by local-alloc, so global-alloc
+ * gives M the register the locals leave, vf2, as retail has it; a takes its minuend from a second shared variable T.
+ * Of the 512 combinations of shared/own variables at the three sites, six give 29; M alone at c and b gives 43
+ * (M gets no hard register and is spilled).
+ * (2) The top (4 words): the argument is loaded into a temporary before the two vec_copy calls and stored after
+ * them (retail's lq, sqc2, sqc2, sq). The 24 orders of the four statements on the new VU form: best 29.
+ * (3) A separate down-counter n (`for (i = 0, n = 3; n >= 0; i++, n--)`) overlaps the DA74 value's life, so &s
+ * goes to $t0 as in retail (1 word). Its init placed at any of 7 positions before the loop: the same bytes.
+ * Left (24 words, all before and in the copy loop): the loop's registers (retail: counter $v1, pointers $v0/$a0/
+ * $a1/$a3; here $a3, $v1/$a1/$a0/$v0). Global-alloc follows copy preferences from the registers local-alloc gives
+ * the two lui temporaries of D_L05_001DDA80/84 ($a0/$v0 here, $a1/$a3 in retail). Tried without change of the
+ * register words: the 120 store orders x 2 body orders x 3 DA74 forms (global, local, nested-block local: 720),
+ * nested-block pointers for the two sources, a nested-block loop counter. */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
@@ -85,6 +101,7 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     vu0_v4 g;
     u8 *p;
     s32 i;
+    s32 n;
     u128_361BA8 tu;
     vu0_q M;
     vu0_q T;
@@ -119,7 +136,7 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     s.c[3] = D_L05_001DDA74;
     s.c[2] = D_L05_001DDA74;
     s.c[1] = D_L05_001DDA74;
-    for (i = 0; i < 4; i++) {
+    for (i = 0, n = 3; n >= 0; i++, n--) {
         s.p[i].a = D_L05_001DDA80[i * 2];
         s.p[i].b = D_L05_001DDA84[i * 2];
     }
