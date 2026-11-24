@@ -1,3 +1,18 @@
+/* 2026-11-24 (task 3037, CLOSEOUT attempt 1 of 2, rac3-w1), upstream 242c17bd: still 32 differences (tools/check.py)
+ * at levels 04, 16, 18, 22 and 29 and with --no-context, with the recipe below (file line plus
+ * `@ps2as -mvu0-use-vf0-vf2`, divs_nops row `func_L04_00313DD0 0 2`, both in the working tree only). The count did not
+ * improve. Change: case 3's 0x1A0 block takes D_001A4C78 in a local `a` and sets `h = a - 0x98`; the reload is now
+ * retail's `lwc1 $f12, 0x1a0($s3)` after `addiu $s3, $s0, -0x98` (it was 0x108($s0)). That block still differs only
+ * in order: 2.0f is loaded into $f20 before the func_0038DAB8 call (retail: just before the func_L01_00448690 call),
+ * `lui $s0` comes before the 0x1A0 store (retail: after), and the reload sits before the jal with `move $a1, $zero` in
+ * the delay slot (retail: the reload in the delay slot). The other groups are unchanged (clamp registers 6, vec
+ * copy/sub order 6, case 1 3, beql and move order 3).
+ * Same bytes as this draft (so the stop rule applies): the reload in a local `r` first; `h` assigned in its own
+ * statement; `a` and `h` assigned inside the call's arguments; func_003C3D30's argument as `a - 0x18`.
+ * Worse: the first argument as `h + 0x98` with h = D_001A4C78 - 0x98 (254), or with h = D_001A4BE0 (248: CSE then
+ * forwards the stored 0x1A0 value and drops the reload); the ternary's angle put in `t` before the func_0038DAB8
+ * call (255).
+ */
 /* 2026-11-23 (task 3008, PASS-P7, rac3-w2), upstream c162f99b: plain C now. The F32/S32/U32/U16/S16/U8/PTR
  * `#define` accessors are written out as casts (`*(f32 *)(p + 0x40)`, `(*(u8 **)(p + 0x68))`) and the four GNU
  * statement expressions as block-scoped pointer locals; that rewrite alone compiles to the same code (236, unchanged at
@@ -404,8 +419,9 @@ void func_L04_00313DD0(u8 *m) {
         *(f32 *)(hero + 0x1A0) = func_0038DAB8(D_001D5469 ? -1.5707964f : 1.5707964f, ang2);
         }
         {
-        u8 *h;
-        func_L01_00448690(D_001A4C78, 0, *(f32 *)((h = D_001A4C78 - 0x98) + 0x1A0), 0.12566371f);
+        u8 *a = D_001A4C78;
+        u8 *h = a - 0x98;
+        func_L01_00448690(a, 0, *(f32 *)(h + 0x1A0), 0.12566371f);
         *(f32 *)(pv + 0x64) = *(f32 *)(pv + 0x64) + 0.00392f;
         *(f32 *)(h + 0x88) = *(f32 *)(h + 0x88) - (*(f32 *)(pv + 0x64) - 2.0f);
         z = func_003C3D30(D_001A4C78 - 0x18, 0, 0, 0.5f);
