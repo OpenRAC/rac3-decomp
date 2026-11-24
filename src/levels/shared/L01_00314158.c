@@ -1567,7 +1567,74 @@ void func_L01_0031B3A0(void)
 }
 /* localdecomp:end func_L01_0031B3A0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031B4F8);
+/* localdecomp:start func_L01_0031B4F8 */
+/* localdecomp:start func_L01_0031B4F8 */
+#include "vu0.h"
+typedef struct { u8 c[8]; } Colors_0031B4F8;
+extern u8 D_L01_001DC820[];
+extern void func_L01_004511C0(void *, void *, s32);
+extern void func_L01_0040E3C0(void *, void *, f32);
+extern f32 func_L01_004439C0(f32, f32);
+extern f32 func_L01_00443A78(void);
+extern void func_L01_00443E10(void *, f32, f32, f32);
+extern s32 func_L01_00443978(s32, s32);
+extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+extern int func_13D3E0(void);
+typedef struct { u8 pad[20]; f32 *owner; u8 pad2[8]; } Acid_0031B4F8;
+extern E_31ABE0 D_L01_00274580[];
+
+void func_L01_0031B4F8(void) {
+    s32 i;
+    for (i = 0; i < 30; i++) {
+        if (D_L01_00274580[i].id != 0) {
+            Acid_0031B4F8 *e = (Acid_0031B4F8 *)&D_L01_00274580[i];
+            vu0_v4 pos;
+            vu0_v4 p;
+            vu0_v4 vel;
+            s32 j;
+            f32 *o;
+            func_L01_004511C0((u8 *)e->owner + 0x10, &pos, 1);
+            func_L01_0040E3C0(&pos, &pos, e->owner[3] * 0.00097649999f * 0.8f);
+            o = e->owner;
+            pos.x += o[0] * 0.00097649999f;
+            pos.y += o[1] * 0.00097649999f;
+            pos.z += o[2] * 0.00097649999f;
+            for (j = 0; j < 3; j++) {
+                f32 s, a, b;
+                s32 n;
+                u8 *r;
+                Colors_0031B4F8 cols;
+                qzero(&vel);
+                vel.z = func_L01_004439C0(0.0200000014f, 0.030000001f);
+                s = e->owner[3] * 0.00097649999f * func_L01_004439C0(0.5f, 0.75f);
+                a = func_L01_00443A78();
+                b = func_L01_00443A78();
+                func_L01_00443E10(&p, s, a, b);
+                o = e->owner;
+                p.x += o[0] * 0.00097649999f;
+                p.y += o[1] * 0.00097649999f;
+                p.z += o[2] * 0.00097649999f;
+                n = func_L01_00443978(1, 5);
+                r = func_L01_004669B0(&p, 0.0f, 1.0f, 1.01f, func_L01_004439C0(0.25f, 1.0f) * 210000.0f, n, &vel, 0x802040, 1);
+                cols = *(Colors_0031B4F8 *)D_L01_001DC820;
+                if (r != 0) {
+                    u8 *q = r + 0x20;
+                    s32 k = func_13D3E0() % 2;
+                    u8 c = cols.c[k * 4];
+                    *(s16 *)(r + 0xA) = 0x1D;
+                    r[3] = c;
+                    r[9] = 0x44;
+                    *(f32 *)(q + 0x1C) = 4.0f;
+                    *(s32 *)(q + 4) = 3;
+                    q[0xA] = func_L01_00443978(0x40, 0x80);
+                    q[0xB] = r[0xA];
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_0031B4F8 */
+/* localdecomp:end func_L01_0031B4F8 */
 
 /* localdecomp:start func_L01_0031B810 */
 #include "vu0.h"

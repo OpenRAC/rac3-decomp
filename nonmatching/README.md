@@ -600,11 +600,9 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00474078` | levels | Codex wave 6 near miss | near miss: 11 words differ with the file's flags |
 | `func_L01_004741B8` | levels | Codex wave 8 near miss | near miss: 71 words differ with the file's flags |
 | `func_L01_00474680` | levels | Codex wave 6 near miss | near miss: 5 words differ with the file's flags |
-| `func_L01_00474F38` | levels | Codex wave 6 near miss | near miss: 6 words differ with the file's flags |
 | `func_L01_00475128` | levels | Codex wave 6 near miss | matches in its own scratch (49/49, with `fe_func_00443948` and the `divs_nops` row) but its callers in L01_004729D8.c declare incompatible prototypes, so it stays a near miss until those are reconciled |
 | `func_L01_00475C60` | levels | Codex wave 6 near miss | near miss: 48 words differ with the file's flags |
 | `func_L01_00476498` | levels | Codex wave 8 near miss | near miss: 114 words differ with the file's flags |
-| `func_L01_00476750` | levels | Codex wave 6 near miss | near miss: 9 words differ with the file's flags |
 | `func_L01_00476920` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_00476B98` | levels | Codex wave 8 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_00476F10` | levels | Codex wave 6 near miss | near miss: 33 words differ with the file's flags |

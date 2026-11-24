@@ -37,4 +37,58 @@ s32 func_L39_00514BE0(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 *arg
 }
 /* localdecomp:end func_L39_00514BE0 */
 
-INCLUDE_ASM("asm/levels", func_L39_00514CF8);
+/* localdecomp:start func_L39_00514CF8 */
+typedef struct { s32 cap; s32 n; unsigned long *d; } S_00514CF8;
+extern s32 func_L39_00512A40(s32, void *);
+extern void func_L39_005128F8(void *);
+extern s32 func_L39_004F7538(void *, void *, s32);
+
+s32 func_L39_00514CF8(s32 n, S_00514CF8 *s) {
+    S_00514CF8 tmp;
+    s32 old;
+    s32 len;
+    s32 err;
+    s32 bytes;
+    s32 b2;
+    unsigned long *p;
+    unsigned long *q;
+
+    if (n <= 0) {
+        return 0;
+    }
+    old = s->n;
+    len = old + n;
+    if (s->cap < len) {
+        bytes = n * 8;
+        while (func_L39_005128E8((s32 *)&tmp), (err = func_L39_00510EF0(s, &tmp)) == 0 && (err = func_L39_00512A40(len + 1, s)) == 0) {
+            func_L39_004F74E8(s->d, 0, bytes);
+            func_L39_004F7510((u8 *)s->d + bytes, tmp.d, old * 8);
+            p = &s->d[len - 1];
+            if (*p == 0 && len > 1) {
+                q = p;
+                do {
+                    q--;
+                    len--;
+                } while (*q == 0 && len > 1);
+            }
+            s->n = len;
+            break;
+        }
+        func_L39_005128F8(&tmp);
+        return err;
+    }
+    b2 = n * 8;
+    func_L39_004F7538((u8 *)s->d + b2, s->d, old * 8);
+    func_L39_004F74E8(s->d, 0, b2);
+    p = &s->d[len - 1];
+    if (*p == 0 && len > 1) {
+        q = p;
+        do {
+            q--;
+            len--;
+        } while (*q == 0 && len > 1);
+    }
+    s->n = len;
+    return 0;
+}
+/* localdecomp:end func_L39_00514CF8 */

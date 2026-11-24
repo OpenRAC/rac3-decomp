@@ -446,7 +446,114 @@ void func_L01_004FF780(void) {
 }
 /* localdecomp:end func_L01_004FF780 */
 
-INCLUDE_ASM("asm/levels", func_L01_004FFA10);
+/* localdecomp:start func_L01_004FFA10 */
+typedef struct {
+    s32 x0;
+    f32 f4;
+    s32 x8;
+    u8 pad0C[0x1C - 0xC];
+    s32 x1C;
+    f32 f20;
+} Pv_4FFA10;
+typedef struct {
+    u8 p0[16];
+    s128 pos;
+    u8 p20[17];
+    u8 b49;
+    u8 p50[2];
+    u16 h52;
+    u8 p54[50];
+    Pv_4FFA10 *pv;
+} M_4FFA10;
+typedef struct {
+    u8 p0[0x80];
+    s128 v128;
+    u8 p90[8];
+    f32 f152;
+    u8 p9C[0x212 - 0x9C];
+    s16 h530;
+    u8 p214[0x5EC - 0x214];
+    f32 f1516;
+    u8 p5F0[0xA24 - 0x5F0];
+    M_4FFA10 *target;
+    s32 found;
+    u8 pA2C[0xA38 - 0xA2C];
+    s32 xA38;
+    u8 pA3C[4];
+    f32 fA40;
+    f32 fA44;
+    u8 pA48[0x25CC - 0xA48];
+    s32 mode;
+} G_4FFA10;
+
+extern Veldin1A4BE0 D_001A4BE0;
+extern H_4FBE48 D_001A4C60;
+extern M_4FFA10 *D_L01_001F0368[];
+extern f32 func_L01_004E9470(f32 a, f32 b, f32 c, f32 d, Moby_4FB8C8 *m, s32 *out);
+extern float func_0038CF00(void *, void *);
+extern float func_0038CF38(void *, void *);
+extern s32 func_00382380(void *v, s32 a, s32 b);
+extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+
+s32 func_L01_004FFA10(void) {
+    M_4FFA10 *m;
+    Pv_4FFA10 *pv;
+    float bestDist, d, a, c, e, lim, score;
+    s32 out;
+    s128 v[2];
+    M_4FFA10 *best;
+    s32 i;
+
+    if ((*(G_4FFA10 *)&D_001A4BE0).mode == 13) return (*(G_4FFA10 *)&D_001A4BE0).found;
+    (*(G_4FFA10 *)&D_001A4BE0).found = 0;
+    if ((*(G_4FFA10 *)&D_001A4BE0).h530 != 0) return 0;
+    bestDist = 100000000.0f;
+    best = 0;
+    for (i = 0; i < 32; i++) {
+        m = D_L01_001F0368[i];
+        if (m == 0) break;
+        if (m->h52 & 1) continue;
+        if (!(m->h52 & 0x1000)) continue;
+        pv = m->pv;
+        if (pv->x0 != 0) continue;
+        d = func_0038CF00(&D_001A4C60, &m->pos);
+        if (pv->f20 != 0.0f && pv->f20 < d) continue;
+        if (30.0f < d) continue;
+        c = 0.52359879f;
+        e = -1.0f;
+        if (D_001A4C60.f9540 == 1 || D_001A4C60.f9540 == 29) {
+            c = e = 0.08726646f;
+        }
+        a = (*(G_4FFA10 *)&D_001A4BE0).f152;
+        if ((*(G_4FFA10 *)&D_001A4BE0).mode == 15) a = (*(G_4FFA10 *)&D_001A4BE0).f1516;
+        lim = 30.0f;
+        if (pv->f20 != 0.0f) lim = pv->f20;
+        score = func_L01_004E9470(a, lim, c, e, (Moby_4FB8C8 *)m, &out);
+        if (out != 0) continue;
+        if (func_0038CF38(&(*(G_4FFA10 *)&D_001A4BE0).v128, &m->pos) < 4.0f) continue;
+        if (m->b49 == 0) score += 10.0f;
+        if (pv->x1C >= 0 && func_00382380(&(*(G_4FFA10 *)&D_001A4BE0).v128, pv->x1C, 0)) continue;
+        if (score < bestDist) {
+            bestDist = score;
+            best = m;
+        }
+    }
+    if (best) {
+        Pv_4FFA10 *bp;
+
+        v[0] = (*(G_4FFA10 *)&D_001A4BE0).v128;
+        (*(G_4FFA10 *)&D_001A4BE0).target = best;
+        ((float *)&v[0])[2] += 0.5f;
+        v[1] = best->pos;
+        bp = best->pv;
+        (*(G_4FFA10 *)&D_001A4BE0).xA38 = bp->x8;
+        (*(G_4FFA10 *)&D_001A4BE0).fA40 = bp->f4;
+        (*(G_4FFA10 *)&D_001A4BE0).fA44 = bestDist;
+        if (func_003D3CB0(&v[0], &v[1], 2, 0, 0) == 0) (*(G_4FFA10 *)&D_001A4BE0).found = 1;
+    }
+    return (*(G_4FFA10 *)&D_001A4BE0).found;
+}
+/* localdecomp:end func_L01_004FFA10 */
 
 /* localdecomp:start func_L01_004FFD00 */
 extern f32 func_L01_004E9470(f32 a, f32 b, f32 c, f32 d, Moby_4FB8C8 *m, s32 *out);

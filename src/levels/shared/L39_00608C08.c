@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* localdecomp:start func_L39_00608C08 */
 extern u32 D_L39_0024CC18[2];
@@ -61,4 +62,63 @@ void func_L39_00608C08(void *a0, int a1, int a2, int a3, int t0)
 }
 /* localdecomp:end func_L39_00608C08 */
 
-INCLUDE_ASM("asm/levels", func_L39_00608DB0);
+/* localdecomp:start func_L39_00608DB0 */
+extern s32 D_L39_002413A0;
+__asm__(".extern D_L39_002413A0, 16");
+extern volatile s32 D_L39_0024CC24;
+__asm__(".extern D_L39_0024CC24, 16");
+extern volatile s32 D_L39_0024CC28;
+__asm__(".extern D_L39_0024CC28, 16");
+extern volatile s32 D_L39_0024CC2C;
+__asm__(".extern D_L39_0024CC2C, 16");
+extern volatile s32 D_L39_0024CC30;
+__asm__(".extern D_L39_0024CC30, 16");
+extern volatile s32 D_L39_0024CC34;
+__asm__(".extern D_L39_0024CC34, 16");
+extern volatile s32 D_L39_0024CC38;
+__asm__(".extern D_L39_0024CC38, 16");
+extern s32 D_L39_0024CBE0;
+extern u32 *func_0013AB50(s32);
+extern void func_0013AE38(u32 *, s32 *);
+extern s32 func_001331A0(int, int);
+typedef struct { s32 state; u8 pad4[0x3C]; u8 buf0[0x13F00]; u8 buf1[0x13F00]; } Sw_00608DB0;
+extern Sw_00608DB0 *func_003B2D40(s32);
+
+s32 func_L39_00608DB0(void)
+{
+    u32 *t = func_0013AB50(2);
+    Sw_00608DB0 *s;
+    s32 v;
+
+    D_L39_0024CC34 = D_L39_002413A0 ? D_L39_0024CC34 ^ 1 : (*(volatile unsigned long *)0x12001000 >> 13) & 1;
+    if (D_L39_0024CC28 != 0) {
+        D_L39_0024CC2C++;
+        D_L39_0024CC38 = func_001331A0(1, 0);
+        if (D_L39_0024CC38 == 0) {
+            s = func_003B2D40(D_L39_0024CBE0);
+            if (s == 0) {
+                CpuSync();
+                CpuEnableInt();
+                return 0;
+            }
+            if (D_L39_0024CC34 == 0 && s->state == 2) {
+                func_001331A0(0, 0);
+                func_003A1028((D_L39_0024CC18[0] & 0x0FFFFFFF) | 0x20000000, 0);
+                func_0013AE38(t, (s32 *)s->buf0);
+                s->state = 1;
+                D_L39_0024CC24++;
+            } else if (D_L39_0024CC34 == 1 && s->state == 1) {
+                func_001331A0(0, 0);
+                func_003A1028((D_L39_0024CC18[1] & 0x0FFFFFFF) | 0x20000000, 0);
+                func_0013AE38(t, (s32 *)s->buf1);
+                s->state = 0;
+                D_L39_0024CC24++;
+                D_L39_0024CC30 = 1;
+            }
+        }
+    }
+    CpuSync();
+    CpuEnableInt();
+    return 0;
+}
+/* localdecomp:end func_L39_00608DB0 */

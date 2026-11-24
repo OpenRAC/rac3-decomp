@@ -107,4 +107,136 @@ s32 func_L40_0053E000(f32 radius, s32 a0, u8 *a1, u8 a2) {
 
 INCLUDE_ASM("asm/levels", func_L40_0053E1A8);
 
-INCLUDE_ASM("asm/levels", func_L40_0053E760);
+/* localdecomp:start func_L40_0053E760 */
+typedef int Q_0053E760 __attribute__((mode(TI)));
+typedef union Buf_0053E760 { u8 b[8]; u32 w[2]; f32 f[2]; } Buf_0053E760;
+typedef struct { u8 pad0[0x10]; Q_0053E760 q10; u8 b20; u8 pad21[0x1F]; s32 w40; } R_0053E760;
+typedef struct Obj_0053E760 Obj_0053E760;
+typedef struct { u8 pad0[0x10]; R_0053E760 *(*get)(Obj_0053E760 *); } VT_0053E760;
+struct Obj_0053E760 {
+    u8 pad0[0x14];
+    VT_0053E760 *vt;
+};
+extern u8 D_L40_003BFE20[];
+extern u8 *func_L40_0053F248(s32);
+extern u8 *func_L40_004EDEA8(s32);
+extern Obj_0053E760 *func_L40_004EF0D0(s32);
+
+static __inline__ u32 DecU_0053E760(u8 *q) {
+    Buf_0053E760 buf;
+    u32 a;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    buf.w[0] = a;
+    buf.w[1] ^= a;
+    return buf.w[1];
+}
+
+static __inline__ f32 DecF_0053E760(u8 *q) {
+    Buf_0053E760 buf;
+    u32 a;
+    s32 n;
+    s32 k;
+    s32 m;
+    s32 i;
+    u8 *d;
+
+    if (*q == 0) {
+        return 0.0f;
+    }
+    n = *q;
+    k = ((u32)q - n) & 7;
+    m = n + 1;
+    d = buf.b;
+    for (i = 0; i < 40; i += 5) {
+        *d++ = D_L40_003BFE20[m + ((k + i) & 7) * 255];
+    }
+    a = buf.w[0] ^ (u32)q;
+    buf.w[0] = a;
+    buf.w[1] ^= a;
+    return buf.f[1];
+}
+
+static __inline__ s32 GtF_0053E760(u8 *q, f32 v) {
+    return DecF_0053E760(q) > v;
+}
+
+static __inline__ R_0053E760 *Get_0053E760(s32 a0) {
+    Obj_0053E760 *o = func_L40_004EF0D0(a0);
+    if (o != 0) {
+        return o->vt->get(o);
+    }
+    return 0;
+}
+
+void *func_L40_0053E760(s32 a0, Q_0053E760 *out, s32 a2, s32 a3) {
+    u8 *p;
+    u8 *g;
+    u8 *h;
+    R_0053E760 *w;
+
+    p = func_L40_0053F248(a0);
+    if (p == 0) {
+        g = func_L40_004EDEA8(a0);
+        if (g != 0 && (DecU_0053E760(g + 0x19E4) ^ 0x39) != 0 && (DecU_0053E760(g + 0x19E6) ^ 0x14) != 0
+            && (u8)GtF_0053E760(g + 0x2476, 0.0f) && *(u8 **)(g + 0x2558) != 0
+            && (w = *(R_0053E760 **)(*(u8 **)(g + 0x2558) + 4)) != 0 && w->w40 != a2) {
+            h = *(u8 **)(g + 0x2528);
+            if (h != 0 && *(R_0053E760 **)(h + 0x2D0) != 0) {
+                if (*(f32 *)(h + 0x308) <= 0.0f) {
+                    return 0;
+                }
+                *out = (*(R_0053E760 **)(h + 0x2D0))->q10;
+                return *(void **)(*(u8 **)(g + 0x2528) + 0x2D0);
+            }
+            *out = (*(R_0053E760 **)(g + 0x2524))->q10;
+            return *(void **)(g + 0x2524);
+        }
+        {
+            R_0053E760 *r = Get_0053E760(a0);
+            if (r != 0) {
+                *out = r->q10;
+                return r;
+            }
+        }
+        if (a3 != 0 && g == 0) {
+            R_0053E760 *r = Get_0053E760(a0);
+            if (r != 0 && (u32)(r->b20 - 2) < 4) {
+                *out = r->q10;
+                return r;
+            }
+        }
+        return 0;
+    }
+    if (p[0x31] != 0 && *(s32 *)(p + 0x18) != a2 && *(s32 *)(*(u8 **)(p + 0x1C) + 0x98) != 0) {
+        *out = (*(R_0053E760 **)(p + 0x1C))->q10;
+        if (*(s16 *)(*(u8 **)(p + 0x1C) + 0xAA) == 0x109D) {
+            ((f32 *)out)[2] += 0.35f;
+        }
+        return *(void **)(p + 0x1C);
+    }
+    if (a3 != 0 && p == 0) {
+        R_0053E760 *r = Get_0053E760(a0);
+        if (r != 0) {
+            *out = r->q10;
+            return r;
+        }
+    }
+    return 0;
+}
+/* localdecomp:end func_L40_0053E760 */

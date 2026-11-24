@@ -645,7 +645,92 @@ void func_L01_00474DE0(u8 *particle) {
 }
 /* localdecomp:end func_L01_00474DE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00474F38);
+/* localdecomp:start func_L01_00474F38 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 velocity;
+    s16 timer, duration;
+    u8 phase, first, second, third;
+    f32 scale;
+} State_00474F38;
+
+
+__asm__(".extern D_L01_001D7FA0, 4");
+extern s32 D_L01_001D7FA0;
+__asm__(".extern D_L01_001D7FA4, 4");
+extern s32 D_L01_001D7FA4;
+__asm__(".extern D_L01_001D7F94, 4");
+extern s32 D_L01_001D7F94;
+__asm__(".extern D_L01_001D7F90, 4");
+extern s32 D_L01_001D7F90;
+__asm__(".extern D_L01_001D7F98, 4");
+extern s32 D_L01_001D7F98;
+__asm__(".extern D_L01_001D7F9C, 4");
+extern f32 D_L01_001D7F9C;
+typedef struct {
+    s32 type, color;
+    u8 spin, pad9[3];
+    f32 scale;
+    vu0_v4 pos;
+    State_00474F38 state;
+} Particle_00474F38;
+void func_L01_00474F38(Particle_00474F38 *p) {
+    extern s32 func_0038CB00(void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_L01_00448070(s32, s32, f32);
+    extern f32 func_003C4088(f32, f32, f32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern void func_003CD250(u8 *);
+    State_00474F38 *s = &p->state;
+    vu0_v4 step;
+    f32 ratio;
+
+    if (func_0038CB00(&s->timer)) {
+        s32 phase = (s32)++s->phase + 1;
+        s32 duration;
+        if (phase == 0) duration = s->first;
+        else if (phase == 1) duration = s->second;
+        else duration = s->third;
+        s->timer = duration;
+        s->duration = duration;
+    }
+    if (s->phase == 0) {
+        s32 spin;
+        s32 result;
+        vec_add_ba(&p->pos, &p->pos, &s->velocity);
+        spin = p->spin;
+        if (!(((s32)p >> 8) & 1)) result = spin - D_L01_001D7FA0;
+        else result = spin + D_L01_001D7FA0;
+        p->spin = result;
+    } else if (s->phase == 1) {
+        s32 n;
+        s32 spin;
+        ratio = (f32)s->timer;
+        ratio /= (f32)s->duration;
+        func_0038CE20(&step, s, ratio);
+        n = func_L01_00448070(D_L01_001D7FA4, D_L01_001D7FA0, ratio);
+        vec_add_ba(&p->pos, &p->pos, &step);
+        spin = p->spin + n;
+        if (!(((s32)p >> 8) & 1)) spin = p->spin - n;
+        p->spin = spin;
+        p->scale = func_003C4088(s->scale, D_L01_001D7F9C, ratio);
+        p->color = func_0038DBD8(D_L01_001D7F94, D_L01_001D7F90, ratio);
+    } else if (s->phase == 2) {
+        s32 n;
+        s32 spin;
+        ratio = (f32)s->timer;
+        ratio /= (f32)s->duration;
+        n = func_L01_00448070(0, D_L01_001D7FA4, ratio);
+        spin = p->spin + n;
+        if (!(((s32)p >> 8) & 1)) spin = p->spin - n;
+        p->spin = spin;
+        p->scale = func_003C4088(s->scale * 0.5f, s->scale, ratio);
+        p->color = func_0038DBD8(D_L01_001D7F98, D_L01_001D7F94, ratio);
+    } else {
+        func_003CD250((u8 *)p);
+    }
+}
+/* localdecomp:end func_L01_00474F38 */
 
 /* localdecomp:start func_L01_00475128 */
 typedef int Quad_00475128 __attribute__((mode(TI)));
@@ -1161,7 +1246,46 @@ void func_L01_004766E0(Vec4 *a0, Vec4 *a1, f32 r) {
 }
 /* localdecomp:end func_L01_004766E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00476750);
+/* localdecomp:start func_L01_00476750 */
+#include "vu0.h"
+f32 func_L01_00476750(Vec4 *out, Vec4 *point, Vec4 *a, Vec4 *b) {
+    extern void func_0038CFB8(Vec4 *, Vec4 *, f32);
+    extern f32 func_0038CE68(Vec4 *, Vec4 *);
+    extern void func_0038CF38(Vec4 *, Vec4 *);
+    Vec4 delta, normal, start;
+    Vec4 *n = &normal;
+    f32 d, t;
+    s32 i;
+    vec_sub_ba(&delta, a, b);
+    start.q = a->q;
+    normal.f[1] = delta.f[0];
+    normal.f[2] = 0;
+    normal.f[0] = -delta.f[1];
+    start.f[2] = 0;
+    func_0038CFB8(n, n, 1.0f);
+    d = -func_0038CE68(n, &start);
+    t = d + (normal.f[0] * point->f[0] + normal.f[1] * point->f[1]);
+    out->f[0] = point->f[0] - t * normal.f[0];
+    out->f[1] = point->f[1] - t * normal.f[1];
+    out->f[2] = 0;
+    {
+    f32 *ap, *op, *bp;
+    i=0; bp=b->f; op=out->f; ap=a->f;
+    do {
+        if (*ap+0.001f < *op && *bp+0.001f < *op) break;
+        if (*op < *ap-0.001f && *op < *bp-0.001f) break;
+        i++; bp++; op++; ap++;
+    } while(i<2);
+    }
+    if(i<2) {
+        f32 dist = ((f32 (*)(Vec4 *, Vec4 *))func_0038CF38)(out,a);
+        if(dist < ((f32 (*)(Vec4 *, Vec4 *))func_0038CF38)(out,b)) out->q=a->q;
+        else out->q=b->q;
+        out->f[2]=0;
+    }
+    return ((f32 (*)(Vec4 *, Vec4 *))func_0038CF38)(point,out);
+}
+/* localdecomp:end func_L01_00476750 */
 
 INCLUDE_ASM("asm/levels", func_L01_00476920);
 

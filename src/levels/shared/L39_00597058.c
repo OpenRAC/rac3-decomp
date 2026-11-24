@@ -1,8 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L39_00597058);
-
-/* localdecomp:start func_L39_00597230 */
 typedef int Q_00597230 __attribute__((mode(TI)));
 typedef struct { unsigned long v : 9; unsigned long r : 55; } FB_00597230;
 typedef struct {
@@ -46,6 +43,58 @@ typedef struct {
     s16 h160, h162, h164, h166, h168, h16A, h16C, h16E;
     s32 w170;
 } E_00597230;
+
+extern E_00597230 *D_L39_00240408;
+extern s32 D_L39_002413A0;
+extern unsigned long D_L39_00228F20[];
+extern u8 D_001A58BD[];
+
+/* localdecomp:start func_L39_00597058 */
+void func_L39_00597058(s32 a0, s32 a1) {
+    unsigned long *b = D_L39_00228F20;
+    s32 n;
+    s32 t;
+    s32 i;
+    b[0] = (0xC22DUL << 46) | 1;
+    b[1] = 0xEEE;
+    b[2] = 0x30000;
+    b[3] = 0x47;
+    b[4] = (0x8000UL << 17) | 0x261;
+    b[5] = 0x14;
+    b[6] = ((long)D_L39_00240408->h156 << 5) | ((long)(((u16)D_L39_00240408->h150 >> 6) & 0x3F) << 14) | ((long)D_L39_00240408->h154 << 20) | (0xEA80UL << 20);
+    b[7] = 6;
+    b[8] = (0x8800UL << 47) | 0x8010;
+    b[9] = 0x5353;
+    if (a0 == 0) {
+        a1 = D_001A58BD[0] != 0;
+    }
+    if (a1) {
+        t = D_L39_00240408->h15A;
+    } else {
+        t = D_L39_00240408->h15A * 0x73 / 0xA0;
+    }
+    n = 10;
+    for (i = 0; i < 16; i++) {
+        if (D_L39_002413A0 != 0) {
+            s32 xa = i * 0x280 + 0x6BF8;
+            s32 xb = (i + 1) * 0x280 + 0x6BF8;
+            b[n++] = i * D_L39_00240408->h150;
+            b[n++] = xa | ((long)(0x7FF8 - (t << 3)) << 16);
+            b[n++] = ((i + 1) * D_L39_00240408->h150) | 0x1A000000;
+            b[n++] = xb | ((long)((t << 3) + 0x7FF8) << 16);
+        } else {
+            s32 xa = i * 0x200 + 0x6FF8;
+            s32 xb = (i + 1) * 0x200 + 0x6FF8;
+            b[n++] = i * D_L39_00240408->h150;
+            b[n++] = xa | ((long)(0x7FF8 - (t << 3)) << 16);
+            b[n++] = ((i + 1) * D_L39_00240408->h150) | 0x1A000000;
+            b[n++] = xb | ((long)((t << 3) + 0x7FF8) << 16);
+        }
+    }
+}
+/* localdecomp:end func_L39_00597058 */
+
+/* localdecomp:start func_L39_00597230 */
 
 extern E_00597230 D_L39_00228580[];
 extern E_00597230 *D_L39_00240408;
