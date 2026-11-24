@@ -46,7 +46,8 @@ extern void func_0038D000(void *, void *, void *);
 extern void func_0038CE20(f32 *, f32 *, f32);
 extern s32 func_0038DBD8(s32, s32, f32);
 extern void func_0038CC88(void *, void *, s32);
-extern s32 func_00389598(s32);
+/* GetEffectTex: the whole 64-bit TEX0 (TH, TCC and CBP sit above bit 31). */
+extern long func_00389598(s32);
 extern void func_003D3A24(s32, void *, void *, void *, s32);
 extern f32 func_0038CF00(void *, void *);
 extern void func_00389478(void *, void *, void *);
