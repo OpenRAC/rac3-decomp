@@ -8,7 +8,9 @@
    gives retail's order and retail's $t1/$t2 bases. The 15 words that still differ are the same
    as in the frontbin twin (the .f8/.f4 load order before the [12] store, and f240/f248 after [2]
    instead of before). When it matches: drop LINKER_REMNANT(func_003882C8), its delay slot
-   (inventory.tsv gives the function 980 bytes, that word included). */
+   (inventory.tsv gives the function 980 bytes, that word included).
+   CLOSEOUT attempt 1 of 2 (2026-11-24): no improvement, still 15 (NTSC-U 14); the frontbin
+   draft records what was tried. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;

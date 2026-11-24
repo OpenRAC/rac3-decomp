@@ -24,7 +24,22 @@
 
    When it matches: its delay slot (0x387EE8, `addiu $sp, $sp, 0xB0`) is marked
    LINKER_REMNANT(func_00387EE8), but config/inventory.tsv gives the function 980 bytes, that word
-   included: drop the remnant line. */
+   included: drop the remnant line.
+
+   CLOSEOUT attempt 1 of 2 (2026-11-24): no improvement, still 15. Both orders are decided in
+   gcc's first scheduling pass by insn order (luid), not by priority: in block 5 of sched1 the
+   .f4 load (insn 282) and the .f8 load (insn 310) tie (priority 12, two dependents each) and
+   the .f4 load is expanded first; in sched2 they tie again (priority 20, 18 dependents each).
+   Expanding any .f8 reader before the [2] statement does put the .f8 load first, but it also
+   moves that store forward and swaps $t5/$t6 ([6] statement first: 24; [6] and [8]: 25; the
+   D_001422F0 or D_00142360 statement first: 125 to 147). Writing f240, f248 before [2] gives
+   retail's store order but swaps $t5/$t6 between the [2]/[4] value and the f244 value (20);
+   a greedy move search from that order (676 single moves per round) leads back to the order
+   below (15). The .f8 value in a local, at any position: 68 (long) or 79 (s32); the .f8 field
+   read into a local: 79 or 82. The [2]/[4] value as ((long)w >> 6) << 16, or without the cast
+   on .f4: 15 (the same code); with + for |: 16; operands swapped: 64. Retail also issues the
+   $v0 move (insn 390) before the 0x4BD4 load (insn 358), against sched2's priorities here (19
+   against 21), so its dependences there differ, not only a tie. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
