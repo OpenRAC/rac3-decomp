@@ -1,6 +1,6 @@
 /* Level 4 (Marcadia), file L04_003D0968.c (its line: -O2 -G8 -fopt-stack -mno-check-zero-division
- * -mvu0-use-vf0-vf2 @ps2as). 24 differences (tools/check.py --no-context, with the file's typedefs) at
- * levels 04 and 18 and on NTSC-U (2026-11-24, task #3039); the history follows.
+ * -mvu0-use-vf0-vf2 @ps2as). 20 differences (tools/check.py --no-context, with the file's typedefs) at
+ * levels 04 and 18 and on NTSC-U (2026-11-24, task #3048); the history follows.
  * - The prototype is the file's own (`M_003D0968 *, V_003D0968 *`, from func_L04_003D0968's block), cast to
  *   byte pointers inside; the earlier `(u8 *, u8 *)` draft no longer compiled in the file's context.
  * - 264 -> 89: the second search compares against `*(s32 *)(v + 0x90) + 1` read in place instead of an
@@ -71,7 +71,28 @@
  *   (230), loop 1 as `for (;;)` with the tests at the top, with n (261: arm 2 reloads, but loop 1 is not rotated),
  *   `&& p94 == 0` on the first test (32), a `u8 k = m[0x21]` for the list heads (34 on this form, 44 on the old one),
  *   `D_L04_0021C9A0[m[0x21]]` for the heads (28).
- * Flag for review: the `goto` into the `for (;;)` (plain C, a real loop whose back edge is the `continue`).
+ * CLOSEOUT attempt 2 of 2 (task #3048, 2026-11-24, upstream 3e4df279): 24 -> 20 differences at levels 04 and 18 and on
+ * NTSC-U. Result: still a near miss; DONE (r3-64 budget spent).
+ * - Loop 1's tail polarity is fixed: the back edge is an explicit `if (cond) goto top1; goto join;` with `top1:` at the
+ *   head of the `for (;;)` body (the goto-into-a-loop form of upstream's func_L39_0068BAD8). The conditional jump now
+ *   goes straight back to the body, so jump.c has no jump around a jump to invert: `beql p == head -> body; b join`,
+ *   as retail. LOOP_END still precedes arm 2's label, so arm 2 keeps retail's +0x90 reload.
+ * - Still open: (2) $t1/$t2 swapped between the lui copy of D_L04_0021C9A0 (gcse reaching reg 302) and the +0x90 copy
+ *   (reaching reg 303). The .lreg dump gives 302 10 refs over 376 insns and 303 3 refs over 37 insns, so global.c's
+ *   priority (floor_log2(refs) * refs / live length) is 0.0798 against 0.0811: 303 is allocated first and takes $t1.
+ *   Retail's assignment needs 302 first. (3) The m[0x21] copies, as before: gcse inserts them in expression-index
+ *   order (zero_extend index 3, D's high part 4, the QImode load 18), so the QImode copy reads the zero_extend copy
+ *   (`move $t0, $a3`); retail copies both from the lbu, QImode first. The QImode load is the u8 compare with 0xFF in
+ *   the loop test (shortened to QImode), which comes after the setup's zero_extend in insn order. In arm 1 the
+ *   scheduler also moves the lui copy up, so arm 1's setup differs in more rows than arm 2's.
+ * - Tried without gain (counts at level 04): the precedent's own `goto test; do { body; test:; } while (cond);` (50),
+ *   `if (!(cond)) goto join;` inside a `while (1)` (24), a block-scoped `u8 k = m[0x21]` for the list heads in arm 1,
+ *   arms 1 and 2, or all three (20 each, the same bytes: MIPS promotes the u8 local, so it is a zero_extend load too),
+ *   `D_L04_0021C9A0[m[0x21]]` for arm 1's head or all three (24), `*(D + m[0x21])` in the loop tests (20), loops 2
+ *   and/or 3 in the same explicit goto form (62 / 193 / 231), and 236 of the 720 declaration orders of the six pointer
+ *   locals (all 20; the search was stopped there).
+ * Flag for review: the `goto` into the `for (;;)` and the `goto top1` back edge (plain C; precedent: upstream's matched
+ * func_L39_0068BAD8, src/levels/39_multiplayer_menu/L39_0068BAD8.c, `goto test; do { ... test:; } while (...)`).
  * Stopped per AGENTS.md. */
 #include "common.h"
 
@@ -130,6 +151,7 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
         p = *(D_L04_0021C9A0 + m[0x21]);
         goto test1;
         for (;;) {
+        top1:
             e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
             if (e == 0) {
                 goto join;
@@ -141,7 +163,7 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
         test1:
             if (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
                 ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
-                continue;
+                goto top1;
             }
             goto join;
         }
