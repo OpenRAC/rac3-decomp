@@ -28,6 +28,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L05_00363110 */
+/* PROVISIONAL, VU0 j-constraint form. */
 #include "vu0.h"
 typedef struct { f32 a; f32 b; } P_00363110;
 typedef struct {
@@ -66,14 +67,28 @@ void func_L05_00363110(u8 *a0, u128_361BA8 *a1) {
     vu0_v4 g;
     u8 *p;
     s32 i;
+    u128_361BA8 tu;
+    vu0_q M;
+    vu0_q T;
+    vu0_q cs;
 
-    arg = *(vu0_v4 *)a1;
+    tu = *a1;
     vec_copy(&f, &D_L05_001E2680);
     vec_copy(&g, &D_L05_001E2680);
+    *(u128_361BA8 *)&arg = tu;
     p = *(u8 **)(a0 + 0x68);
-    vec_sub_ba(&c, p, p + 0x10);
-    vec_sub_ba(&a, p, &f);
-    vec_sub_ba(&b, p + 0x10, &g);
+    __asm__("lqc2 %0, %1" : "=j"(cs) : "m"(*(vu0_v4 *)(p + 0x10)));
+    __asm__("lqc2 %0, %1" : "=j"(M) : "m"(*(vu0_v4 *)p));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(M) : "j"(M), "j"(cs));
+    __asm__("sqc2 %1, %0" : "=m"(c) : "j"(M));
+    __asm__("lqc2 %0, %1" : "=j"(M) : "m"(f));
+    __asm__("lqc2 %0, %1" : "=j"(T) : "m"(*(vu0_v4 *)p));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(T) : "j"(T), "j"(M));
+    __asm__("sqc2 %1, %0" : "=m"(a) : "j"(T));
+    __asm__("lqc2 %0, %1" : "=j"(T) : "m"(g));
+    __asm__("lqc2 %0, %1" : "=j"(M) : "m"(*(vu0_v4 *)(p + 0x10)));
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(M) : "j"(M), "j"(T));
+    __asm__("sqc2 %1, %0" : "=m"(b) : "j"(M));
     func_0038CE90(&a, &a, &c);
     func_0038CF68(&a, &a, D_L05_001DDA68);
     func_0038CE90(&b, &b, &c);
