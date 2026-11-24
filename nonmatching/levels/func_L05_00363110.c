@@ -20,6 +20,11 @@
  * line; spot checks give byte-identical listings, so the helper's lqc2 order does not reach the code here.
  * Retail's c and b have the first-loaded operand in $vf1 and the result in $vf2 (vsub.xyz $vf2, $vf2, $vf1); a
  * already matches. The swap did not move the count, so #47975 and #47941 were not tried (the task's bound). */
+/* CLOSEOUT attempt 1 of 2 (2026-11-24, rac3-w2, upstream 3e4df279): 36 differences (tools/check.py --no-context) at
+ * levels 05 and 10 with -mvu0-use-vf0-vf2 on L05_003629B8.c's line (was 38): the load of p after the two vec_copy
+ * calls, as in func_L05_00362F30, where the other wordings tried are listed. Left: the same three problems as
+ * func_L05_00362F30 (the vf1/vf2 roles of c and b, the order of the stores at the top, the loop's registers
+ * and the store order before it). */
 #include "common.h"
 
 /* localdecomp:start func_L05_00363110 */
@@ -63,9 +68,9 @@ void func_L05_00363110(u8 *a0, u128_361BA8 *a1) {
     s32 i;
 
     arg = *(vu0_v4 *)a1;
-    p = *(u8 **)(a0 + 0x68);
     vec_copy(&f, &D_L05_001E2680);
     vec_copy(&g, &D_L05_001E2680);
+    p = *(u8 **)(a0 + 0x68);
     vec_sub_ba(&c, p, p + 0x10);
     vec_sub_ba(&a, p, &f);
     vec_sub_ba(&b, p + 0x10, &g);

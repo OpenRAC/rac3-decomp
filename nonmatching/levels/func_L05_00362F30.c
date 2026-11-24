@@ -31,6 +31,18 @@
  * line; spot checks give byte-identical listings, so the helper's lqc2 order does not reach the code here.
  * Retail's c and b have the first-loaded operand in $vf1 and the result in $vf2 (vsub.xyz $vf2, $vf2, $vf1); a
  * already matches. The swap did not move the count, so #47975 and #47941 were not tried (the task's bound). */
+/* CLOSEOUT attempt 1 of 2 (2026-11-24, rac3-w2, upstream 3e4df279): 37 differences (tools/check.py --no-context) at
+ * levels 05 and 10 with -mvu0-use-vf0-vf2 on L05_003629B8.c's line (was 39). The load of p now follows the two
+ * vec_copy calls: the `move $a0, $s0` after c's vsub is now in retail's place. All 24 orders of the first four
+ * statements: best 37 (arg, f, g, p; or arg, g, f, p). All 720 orders of the units after the calls (the
+ * func_00389598 call, s.k, s.m, the four s.c stores, s.z, the loop) and all 120 orders of the five stores: none
+ * below 37. The loop as a do-while, or with two source pointers stepped by 2: 37; a `q = &s.p[i]` pointer 75; a
+ * counter stepping by 2 78; both columns through D_L05_001DDA80 75. The vf roles: the -da dumps show cc1's
+ * local-alloc giving vf1 to the vsub's minuend (sched1 always puts the p + 0x10 load first, whichever helper
+ * order is used); retail gives it vf2 in c and b. A j-form vsub with the minuend tied to the result ("+j" or
+ * "0") gives the same 37 bytes. Left: the vf1/vf2 roles of c and b (8 words), the order of the three stores at
+ * the top (sqc2 f and g before the argument's sq: 4 words), the loop's registers and the order of the stores
+ * before it (25 words). */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
@@ -74,9 +86,9 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     s32 i;
 
     arg = *(vu0_v4 *)a1;
-    p = *(u8 **)(a0 + 0x68);
     vec_copy(&f, &D_L05_001E2680);
     vec_copy(&g, &D_L05_001E2680);
+    p = *(u8 **)(a0 + 0x68);
     vec_sub_ba(&c, p, p + 0x10);
     vec_sub_ba(&a, p, &f);
     vec_sub_ba(&b, p + 0x10, &g);
