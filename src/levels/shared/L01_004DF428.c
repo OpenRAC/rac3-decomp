@@ -1293,7 +1293,220 @@ void func_L01_004E1F00(s32 camera)
 }
 /* localdecomp:end func_L01_004E1F00 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E20E8);
+/* localdecomp:start func_L01_004E20E8 */
+#include "vu0.h"
+extern s32 D_L01_001D673C;
+extern s32 D_L01_001D6694;
+extern u8 D_00142CAB[];
+typedef struct { u8 pad0[0x50]; u8 *object; u8 pad54[0x2A0-0x54]; s16 counter; } State_004E20E8;
+extern State_004E20E8 D_L01_001E2A40;
+typedef struct {
+    u8 p0[0x80];
+    vu0_v4 f80;
+    vu0_v4 f90;
+    u8 pA0[0x70];
+    vu0_v4 f110;
+    u8 p120[0x58];
+    f32 f178;
+    u8 p17C[0x18C];
+    f32 f308;
+    u8 p30C[0x2C];
+    f32 f338;
+    f32 f33C;
+    u8 p340[0x1C0];
+    vu0_v4 f500;
+    u8 p510[0x518];
+    s32 fA28;
+    u8 pA2C[0x32];
+    s16 fA5E;
+    u8 pA60[0x64];
+    s32 fAC4;
+    u8 pAC8[0x760];
+    s32 f1228;
+    u8 p122C[0x24A];
+    u8 f1476;
+    u8 f1477;
+    u8 f1478;
+    u8 p1479[0x4];
+    u8 f147D;
+    u8 f147E;
+    u8 p147F[0xF51];
+    s16 f23D0;
+    s16 f23D2;
+    u8 p23D4[0x1EC];
+    s32 f25C0;
+    s32 f25C4;
+    u8 p25C8[0x1C];
+    u8 f25E4;
+    u8 f25E5;
+    u8 p25E6[0x1];
+    u8 f25E7;
+    u8 f25E8;
+    u8 p25E9[0x7];
+    u8 f25F0;
+    u8 p25F1[0x21B];
+    s32 f280C;
+} H_4E20E8;
+void func_L01_004E20E8(void) {
+    extern void func_0038CE20(void *,void *,f32);
+    extern f32 func_0038CF38(void *,void *);
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_0038DBA0(f32,f32);
+    extern int func_003D3CB0(char *,char *,int,int,int);
+    extern void func_L01_00430118(void *);
+    extern void func_L01_004436F4(s32);
+    extern s32 func_L01_004606E8(s32,s32,s32,s32);
+    extern void func_L01_004E04A0(void);
+    extern void func_L01_004E0618(void);
+    extern void func_L01_004E0920(void);
+    extern void func_L01_004E1218(void);
+    extern void func_L01_004E13A0(void);
+    extern void func_L01_004E1638(void);
+    extern void func_L01_004E1F00(s32);
+    extern void func_L01_004E20E8(void);
+    extern s32 func_L01_004E26A0(void);
+    extern void func_L01_004E2C48(void);
+    extern void func_L01_004E2ED0(void);
+    extern void func_L01_004E3148(void);
+    extern void func_L01_004E45C8(void);
+    extern void func_L01_004E48C8(void);
+    extern void func_L01_004E52E0();
+    extern void func_L01_004E64C0(void);
+    extern void func_L01_004E67F8(void);
+    extern void func_L01_004E6D10_004E20E8(void);
+    extern void func_L01_004E6D18(void);
+    extern void func_L01_004E7338(void);
+    extern void func_L01_004E7CB8(void);
+    extern void func_L01_004E8318(void *,void *,void *);
+    extern void func_L01_004E8EE0(void);
+    extern void func_L01_004E90C8(void);
+    extern void func_L01_004E9450_004E20E8(void);
+    extern void func_L01_004EAEE8(void);
+    extern void func_L01_004ED328(void);
+    extern void func_L01_004EE4E0(void);
+    extern void func_L01_004F2A08(void);
+    extern void func_L01_004F5010(void);
+    extern void func_L01_004FF780(void);
+    extern void func_L01_004FFA10(void);
+    extern void func_L01_004FFD00(void);
+    extern s32 func_L01_004FFF58(void);
+    extern void func_L01_00507AF8(void);
+    extern void func_L01_0050FF00(void);
+    extern void func_L01_005108C0(s32);
+    extern void func_L01_00510AD0(void);
+    extern void func_L01_005129A8(s32);
+    extern void func_L01_00512E68(void);
+    extern void func_L01_005138F8(void);
+    extern s32 func_L01_00513EF0(void);
+    vu0_v4 point,top,bottom;
+    s32 allow;
+    s32 eligible;
+    (*(H_4E20E8 *)&D_001A4BE0).f23D2=0;
+    (*(H_4E20E8 *)&D_001A4BE0).f23D0=0;
+    if ((*(H_4E20E8 *)&D_001A4BE0).f25E4) {
+        func_L01_004E13A0();
+        func_L01_004E1F00(0);
+        if ((*(H_4E20E8 *)&D_001A4BE0).f25E4==5) func_L01_004E1638();
+        return;
+    }
+    allow=0;
+    func_L01_0050FF00();
+    func_L01_004EE4E0();
+    func_L01_004E7CB8();
+    func_L01_004E8318(&(*(H_4E20E8 *)&D_001A4BE0).f80,&(*(H_4E20E8 *)&D_001A4BE0).f90,&(*(H_4E20E8 *)&D_001A4BE0).f500);
+    func_L01_004E8EE0();
+    func_L01_004E90C8();
+    if ((*(H_4E20E8 *)&D_001A4BE0).f338==0.0f || (*(H_4E20E8 *)&D_001A4BE0).f308-(*(H_4E20E8 *)&D_001A4BE0).f338>2.0f || (*(H_4E20E8 *)&D_001A4BE0).f147D || (*(H_4E20E8 *)&D_001A4BE0).f1476 || (*(H_4E20E8 *)&D_001A4BE0).f147E || (*(H_4E20E8 *)&D_001A4BE0).f1477 || (*(H_4E20E8 *)&D_001A4BE0).f1478) allow=1;
+    if (func_L01_004606E8(0x20,0x11,0,0)) {
+        if ((*(H_4E20E8 *)&D_001A4BE0).f33C>0.7f && (*(H_4E20E8 *)&D_001A4BE0).f178>0.10000000894069672f) {
+            func_0038CE20(&point,&(*(H_4E20E8 *)&D_001A4BE0).f110,20.0f);
+            point.z=0.0f;
+            {
+                vu0_q a, b;
+                __asm__("lqc2 %0, %1" : "=j"(a) : "m"((*(H_4E20E8 *)&D_001A4BE0).f80));
+                __asm__("lqc2 %0, %1" : "=j"(b) : "m"(point));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(b) : "j"(b), "j"(a));
+                __asm__("sqc2 %1, %0" : "=m"(point) : "j"(b));
+            }
+            *(vu0_q *)&top=*(vu0_q *)&point;
+            *(vu0_q *)&bottom=*(vu0_q *)&point;
+            top.z+=1.0f;
+            bottom.z-=1.5f;
+            if (!func_003D3CB0((char *)&top,(char *)&bottom,2,0,0)) allow=1;
+        }
+    }
+    if (D_L01_001D673C) allow=0;
+    if (func_L01_004606E8(0x20,4,0,0)) {
+        if ((*(H_4E20E8 *)&D_001A4BE0).f1228==11) goto update;
+        eligible=D_001D545C==5;
+        if (D_001D545C==17) {
+            *(vu0_q *)&point=0;
+            point.x=424.5f;
+            point.y=455.70001220703125f;
+            point.z=120.2699966430664f;
+            if (func_0038CF38(&(*(H_4E20E8 *)&D_001A4BE0).f80,&point)<11.5f) {
+                f32 angle=func_0038D160(point.x-(*(H_4E20E8 *)&D_001A4BE0).f80.x,point.y-(*(H_4E20E8 *)&D_001A4BE0).f80.y);
+                if (func_0038DBA0((*(H_4E20E8 *)&D_001A4BE0).f90.z,angle)<30.0f) eligible=1;
+            }
+        }
+        if (eligible) {
+            func_L01_004FFF58();
+            if ((*(H_4E20E8 *)&D_001A4BE0).fAC4) allow=1;
+        }
+    }
+    if ((*(H_4E20E8 *)&D_001A4BE0).f1228==11 || allow) {
+update:
+        func_L01_004FF780();
+        func_L01_004FFA10();
+        func_L01_004FFD00();
+        func_L01_004FFF58();
+        if (((*(H_4E20E8 *)&D_001A4BE0).fA28 || (*(H_4E20E8 *)&D_001A4BE0).fA5E || (*(H_4E20E8 *)&D_001A4BE0).fAC4) && allow && (*(H_4E20E8 *)&D_001A4BE0).f25E8==0 && (*(H_4E20E8 *)&D_001A4BE0).f25F0==0 && D_00142CAB[0]) (*(H_4E20E8 *)&D_001A4BE0).f25E7=1;
+    }
+    func_L01_00507AF8();
+    if (D_L01_001D6694==2 || D_L01_001D6694==6) {
+        if ((*(H_4E20E8 *)&D_001A4BE0).f25E5) func_L01_005108C0(0);
+        else func_L01_00510AD0();
+        func_L01_004E1F00(0);
+        return;
+    }
+    func_L01_005129A8((*(H_4E20E8 *)&D_001A4BE0).f25C0);
+    func_L01_004E9450_004E20E8();
+    if ((*(H_4E20E8 *)&D_001A4BE0).f25E4) {
+        func_L01_004E1F00(0);
+        return;
+    }
+    func_L01_004F5010();
+    func_L01_004E7338();
+    func_L01_004E64C0();
+    func_L01_004E67F8();
+    func_L01_004E6D18();
+    func_L01_004E6D10_004E20E8();
+    func_L01_004E0618();
+    func_L01_004E0920();
+    func_L01_004F2A08();
+    func_L01_004E04A0();
+    func_L01_004E45C8();
+    func_L01_004E52E0(0);
+    func_L01_004ED328();
+    func_L01_004EAEE8();
+    if ((*(H_4E20E8 *)&D_001A4BE0).f25E5 || func_L01_00513EF0()==2) {
+        if (func_L01_00513EF0()==2 && (D_L01_001E2A40.counter || (D_L01_001E2A40.object && *(s16 *)(D_L01_001E2A40.object+0x86)==0))) func_L01_00510AD0();
+        else func_L01_005108C0(0);
+    } else func_L01_00510AD0();
+    func_L01_004E3148();
+    func_L01_004E2ED0();
+    func_L01_004E1638();
+    func_L01_005138F8();
+    func_L01_004E1218();
+    func_L01_00512E68();
+    if ((*(H_4E20E8 *)&D_001A4BE0).f25C4!=0x31 || func_L01_004E26A0()) func_L01_00430118(&(*(H_4E20E8 *)&D_001A4BE0).f80);
+    func_L01_004436F4((*(H_4E20E8 *)&D_001A4BE0).f25C0);
+    func_L01_004E2C48();
+    func_L01_004E48C8();
+    if (func_L01_00513EF0() && (*(H_4E20E8 *)&D_001A4BE0).f280C!=4 && (*(H_4E20E8 *)&D_001A4BE0).f280C!=0x51) (*(H_4E20E8 *)&D_001A4BE0).f280C=0x20;
+    func_L01_004E1F00(0);
+}
+/* localdecomp:end func_L01_004E20E8 */
 
 /* localdecomp:start func_L01_004E26A0 */
 extern s32 D_001D545C;
