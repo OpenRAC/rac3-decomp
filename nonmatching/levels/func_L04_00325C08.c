@@ -1,6 +1,7 @@
 /* func_L04_00325C08: Promises (task 2790, 2026-11-21; retried in tasks 2907, 2026-11-22, and 3013,
  * 2026-11-23; closeout attempt 1 of 2 in task 3055 and attempt 2 of 2 in task 3060, 2026-11-24), from
- * upstream's nonmatching/functional/func_L04_00325C08.c. CLOSEOUT attempt 2 of 2: 21 -> 3; DONE.
+ * upstream's nonmatching/functional/func_L04_00325C08.c. CLOSEOUT attempt 2 of 2: 21 -> 3. CLOSEOUT extra attempt (final), task 3065
+ * (2026-11-24): 3 -> 3; DONE.
  * Near miss: 3 differences (tools/check.py --no-context), level 04, with
  * -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as on L04_00325C08.c (the file has
  * neither the VU0 flag nor @ps2as yet; it has no other function). The file's own line does not compile it
@@ -48,6 +49,24 @@
  * that keeps it live without extra code. Also tried: the ten argument orders upstream declares for this
  * callee, with tbl (3 for four of them, 6-8 for the rest), and the assignment at 108 statement positions
  * (3 at best).
+ *
+ * Task 3065, CLOSEOUT extra attempt (final): 3 -> 3; DONE. Measured on upstream 5eb0ce11 with the flag line
+ * above: 3 at levels 04, 18 and 35. The -fsched-verbose-5 trace of sched1 for the call block ranks the
+ * ready insns by priority (all 18 here), then register weight, then luid. The weights: [$sp+8]=r580,
+ * [$sp+0x18]=r581, $a1=tbl and $a2=r681 weigh -1 (each source dies there), [$sp]=0, [$sp+0x10]=0 and
+ * $a0=m weigh 0 (setting a hard register adds nothing). Each group comes out in luid order, and the
+ * pre-sched order is [$sp]=0 (1771) before $a1=tbl (1785). So the store loses only on weight; if the
+ * $a1 move weighed 0, luid would put the store first, as in retail. Tried (counts at level 04):
+ * - tbl declared in a nested block that spans its assignment and the call: 3 (same rows);
+ * - `k = 0;` before the call and k passed as the 0 that goes to [$sp] (the loop then `for (; k < ...)`):
+ *   3 (same rows; the constant is propagated, so the store still stores $zero);
+ * - tbl reused as the last loop's particle pointer (q10): 874; tbl reused for the player pointer after
+ *   the call: 865. Either way tbl gets a register and the one-insn la is lost.
+ * "Give the store an extra dependent" cannot help: the dependents count is compared only after weight.
+ *
+ * STUDY AID ONLY (r3-10, r3-61; never a candidate): the test store `D_L04_0021FD88[0] = tbl;` placed
+ * before the last loop keeps tbl live past the call and gives retail's order in this block, at the cost
+ * of 174 other differences. It is an extra store retail does not have, a barrier.
  */
 #include "common.h"
 #include "vu0.h"
