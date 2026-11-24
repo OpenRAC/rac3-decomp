@@ -19,7 +19,14 @@
  * inline j-form case-6 arms with every mix of TImode (`*(vu0_q *)`) and BLKmode (`*(vu0_v4 *)`) operands for s+0x220, a0+0x10
  * and &L.v90, each with either load first (16 forms); the loop condition written table-first, `&T[idx * 0x30]`, with the
  * constant grouped, or through a block-scoped base `(b = D_L05_001DF7CC, *(s16 *)(b + ...))` in either order; and `e`
- * written product-first or as `&T[...]`. */
+ * written product-first or as `&T[...]`.
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, task 3031, upstream 626eebd0): still 18 at levels 05, 11 and 17. The case-6 load order
+ * is a sched1 tie: both lqc2 have priority 5, and the s+0x220 load has one dependent more, an anti-dependence on the sqc2 to
+ * L.v90, because `s` is loaded from memory and may alias the frame; `a0 + 0x10` (based on the incoming argument) has none.
+ * So the s+0x220 load goes first with vec_sub_ab and with vec_sub_ba alike (-fsched-verbose-5 dump, block 119). A `u8 *p`
+ * assigned `a0 + 0x10` in both arms (to make its alias base unknown), with vec_sub_ba or vec_sub_ab, and p as the load
+ * and/or the call argument: 18 (cse folds p back to $s2 + 16). A block-scoped `vu0_v4 *pv = &L.v90;` for the destination
+ * and the third argument, with either helper: 18. */
 #include "common.h"
 #include "vu0.h"
 

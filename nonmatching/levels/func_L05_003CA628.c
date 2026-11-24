@@ -31,6 +31,15 @@
  *      func_L01_00446760 call and passed to func_003D3CB0 gives the same 18 (sched1 moves it back below the call); `pos`
  *      also passed to func_0038CF00 gives 151; `pos` set at the top of the block gives 159. The prototype
  *      `(void *, void *, s32, f32, void *)` used by other files (EABI-equivalent) gives the same 18 (168 with `old` first).
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, task 3031, upstream 626eebd0): still 18 at level 05 (19 at 11, 18 at 17) with the row.
+ *  - The func_L01_00446760 / func_003D3CB0 calls in a nested block with named locals (`vu0_q *w = work;` and `u8 *p` set to
+ *    `obj + 0x10` before or after the first call): 18, the same code.
+ *  - `old` and `dest` as members of one local struct (old first): 168, as with `old` declared first.
+ *  - A `vu0_v4 *dp = &dest;` pointer (old first): set at the top of the `sub + 0x30` block and used everywhere, or only for
+ *    func_0038CF68 and func_003D3CB0: 164; set at the top of the function: 167. dp takes $s4 and is never rematerialised.
+ *  - The gcse dump (`-dG`) of the old-first form: PRE handles two expressions, 18 (`obj + 0x10`, copied to the pseudo
+ *    func_0038CF00 uses: that is retail's `move $s4, $s0`) and 11 (`&dest`, copied at the end of both arms: the extra $s5).
+ *    Retail has the first and not the second.
  */
 #include "common.h"
 #include "vu0.h"
