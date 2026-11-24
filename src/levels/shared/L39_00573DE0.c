@@ -265,7 +265,51 @@ void func_L39_00574308(u8 *self) {
 }
 /* localdecomp:end func_L39_00574308 */
 
-INCLUDE_ASM("asm/levels", func_L39_00574518);
+/* localdecomp:start func_L39_00574518 */
+#include "vu0.h"
+
+extern s32 D_002412DC;
+__asm__(".extern D_002412DC, 16");
+extern s32 *D_00241120;
+extern u8 *func_L39_0061BF38(s32);
+extern f32 func_0038D000(void *, void *, void *);
+extern void func_L39_005F38D0(s32, s32, s32, s32, s32);
+
+void func_L39_00574518(u8 *a0)
+{
+    u8 *s = *(u8 **)(a0 + 8);
+    vu0_v4 d;
+    vu0_v4 o;
+    vu0_v4 t;
+    s32 v;
+
+    if (D_002412DC == 0x30 || D_002412DC == 0x15) {
+        func_L39_005F38D0(0, s[0], *(s32 *)(s + 4), s[1], s[2]);
+        return;
+    }
+    if (*D_00241120 < 2) {
+        *(vu0_q *)&t = *(vu0_q *)(func_L39_0061BF38(0) + 0xA0);
+        vec_sub_ba(&d, &t, a0 + 0x40);
+        d.w = 0.0f;
+        func_0038D000(&o, &d, a0 + 0x50);
+        if (fabs_asm(o.x) <= 1.0f && fabs_asm(o.y) <= 1.0f && fabs_asm(o.z) <= 1.0f) {
+            v = (f32)*(s32 *)(s + 4) * ((o.x + 1.0f) * 0.5f);
+            if (*(s32 *)(s + 4) < v) {
+                v = *(s32 *)(s + 4);
+            }
+            func_L39_005F38D0((s32)a0, s[0], v, s[1], s[2]);
+            s[3] = 1;
+        } else if (s[3] != 0) {
+            if (o.x > 0.0f) {
+                func_L39_005F38D0(0, s[0], *(s32 *)(s + 4), s[1], s[2]);
+            } else {
+                func_L39_005F38D0((s32)a0, 0, 0, 0, 0);
+            }
+            s[3] = 0;
+        }
+    }
+}
+/* localdecomp:end func_L39_00574518 */
 
 /* localdecomp:start func_L39_005746B8 */
 #include "vu0.h"

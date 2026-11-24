@@ -2204,4 +2204,67 @@ void func_L05_0035AEC8(O_35AEC8 *a0) {
 }
 /* localdecomp:end func_L05_0035AEC8 */
 
-INCLUDE_ASM("asm/levels", func_L05_0035AFB8);
+/* localdecomp:start func_L05_0035AFB8 */
+/* PROVISIONAL, VU0 j-constraint form (docs/wiki/Matching-Patterns.md, "VU0 j-form") */
+/* The add, the copy into t and the sub interleave with the call setup, so each VU0 instruction is
+ * its own statement. The copy loads into y, the add's used-up operand, so it stays after the vadd;
+ * t and d are TImode operands (as in "*(vu0_q *)&d = ..." copies) so the sub loads p before t. */
+extern void func_003C2F58(s32, s32, void *);
+extern void func_003C2EC0(void *, s32, void *);
+extern void func_0038D028(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003C4C18(void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038D000(void *, void *, void *);
+extern s32 func_00382468(s32);
+extern u8 *func_L05_00468EA8(void *, void *, void *, s32, s32);
+extern vu0_v4 D_L05_001E2680;
+__asm__(".extern D_L05_001DD670, 8");
+extern u8 D_L05_001DD670[8];
+__asm__(".extern D_L05_001DD650, 8");
+extern u8 D_L05_001DD650[8];
+
+void func_L05_0035AFB8(u8 *arg0)
+{
+    u8 *v;
+    s32 i;
+    s32 j;
+    vu0_v4 r;
+    vu0_v4 p;
+    vu0_v4 m[4];
+    vu0_v4 q;
+    vu0_v4 d;
+    vu0_v4 t;
+
+    v = *(u8 **)(arg0 + 0x68);
+    *(vu0_q *)&r = 0;
+    for (i = 0; i < 2; i++) {
+        func_003C2F58(*(s32 *)(v + 0x3EC), 2, &p);
+        func_003C2EC0(*(void **)(v + 0x3EC), 2, m);
+        func_0038D028(&q, D_L05_001DD670 + i * 0x10, m);
+        {
+            vu0_q x, y, a, u, w;
+            __asm__("lqc2 %0, %1" : "=j"(x) : "m"(p));
+            __asm__("lqc2 %0, %1" : "=j"(y) : "m"(q));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(a) : "j"(x), "j"(y));
+            __asm__("lqc2 %0, %1" : "=j"(y) : "m"(D_L05_001E2680));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&t) : "j"(y));
+            __asm__("sqc2 %1, %0" : "=m"(p) : "j"(a));
+            __asm__("lqc2 %0, %1" : "=j"(u) : "m"(p));
+            __asm__("lqc2 %0, %1" : "=j"(w) : "m"(*(vu0_q *)&t));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(u) : "j"(w), "j"(u));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&d) : "j"(u));
+        }
+        func_0038CF68(&d, &d, 0.0f);
+        vec_add_ab(&p, &p, &d);
+        for (j = 0; j < 5; j++) {
+            func_003C4C18(&p, 0.0f);
+            r.x = func_003824E0(0.0f, 0.0f) * 0.020000001f;
+            r.y = func_003824E0(0.0f, 0.0f) * 0.020000001f;
+            r.z = func_003824E0(-15.0f, -16.0f) * 0.020000001f;
+            func_0038D000(&r, &r, arg0 + 0xC0);
+            func_L05_00468EA8(&p, &r, D_L05_001DD650, func_00382468(2), func_00382468(3) - 1);
+        }
+    }
+}
+/* localdecomp:end func_L05_0035AFB8 */

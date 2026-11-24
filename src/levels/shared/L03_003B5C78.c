@@ -2,116 +2,117 @@
 
 INCLUDE_ASM("asm/levels", func_L03_003B5C78);
 
-INCLUDE_ASM("asm/levels", func_L03_003B5EF8);
-
-/* localdecomp:start func_L03_003B6180 */
-typedef struct {
-    u8 pad0[0x24];
-    s32 state;
-    u8 pad28[0xC];
-    f32 angle;
-    f32 f38;
-    f32 f3C;
-} B6180Data_003B6180;
-
-typedef struct {
-    u8 pad0[0x10];
-    u8 pos[0x58];
-    B6180Data_003B6180 *data;
-} B6180Obj_003B6180;
-
-extern f32 func_0038DAB8(f32 a, f32 b);
-extern f32 func_003C4138(f32 *, f32, f32);
-extern void func_L03_0034B248_003B6180(void *, void *);
-extern void func_003D9508(u8 *, s32, s32, s32, f32, f32, f32);
-extern u8 D_L03_001E1DC8_003B6180[];
-extern f32 D_L03_001DE9FC_003B6180;
-__asm__(".extern D_L03_001DE9FC_003B6180, 4");
-extern f32 D_L03_001DEA00_003B6180;
-__asm__(".extern D_L03_001DEA00_003B6180, 4");
-extern f32 D_L03_001DEA04_003B6180;
-__asm__(".extern D_L03_001DEA04_003B6180, 4");
-extern s32 D_L03_001DEA10_003B6180;
-__asm__(".extern D_L03_001DEA10_003B6180, 4");
-extern s32 D_L03_001DEA14_003B6180;
-__asm__(".extern D_L03_001DEA14_003B6180, 4");
-extern s32 D_L03_001DEA18_003B6180;
-__asm__(".extern D_L03_001DEA18_003B6180, 4");
-extern s32 D_L03_001DEA1C_003B6180;
-__asm__(".extern D_L03_001DEA1C_003B6180, 4");
-extern f32 D_L03_001DEA20_003B6180;
-__asm__(".extern D_L03_001DEA20_003B6180, 4");
-extern s32 D_L03_001DEA24_003B6180;
-__asm__(".extern D_L03_001DEA24_003B6180, 4");
-extern s32 D_L03_001DEA28_003B6180;
-__asm__(".extern D_L03_001DEA28_003B6180, 4");
-extern s32 D_L03_001DEA2C_003B6180;
-__asm__(".extern D_L03_001DEA2C_003B6180, 4");
-
-void func_L03_003B6180(B6180Obj_003B6180 *obj)
-{
-    B6180Data_003B6180 *p = obj->data;
-    f32 roll;
-    f32 half;
-
-    roll = func_0038DAB8(0.0f, p->angle * 0.017453292f);
-    if (p->state == 0 || p->state == 3 || p->state == 6) {
-        func_L03_0034B248_003B6180(D_L03_001E1DC8_003B6180, obj);
-        if (p->state == 6) {
-            if (func_003C4138(&p->f38, p->f3C, D_L03_001DEA04_003B6180) == 0.0f) {
-                if (p->f3C == D_L03_001DE9FC_003B6180) {
-                    p->f3C = D_L03_001DEA00_003B6180;
-                } else {
-                    p->f3C = D_L03_001DE9FC_003B6180;
-                }
-            }
-            func_003D9508(obj->pos, D_L03_001DEA28_003B6180, D_L03_001DEA2C_003B6180, 1, p->f38, 0.0f, -roll);
-            func_003D9508(obj->pos, D_L03_001DEA24_003B6180, D_L03_001DEA2C_003B6180, 1, p->f38 * 0.9f, 0.0f, roll);
-        }
-    } else {
-        half = D_L03_001DEA20_003B6180;
-        func_L03_0034B248_003B6180(D_L03_001E1DC8_003B6180, obj);
-        func_003D9508(obj->pos, D_L03_001DEA1C_003B6180, D_L03_001DEA14_003B6180, 1, half, 0.0f, -roll);
-        func_003D9508(obj->pos, D_L03_001DEA18_003B6180, D_L03_001DEA10_003B6180, 1, half, 0.0f, roll);
-    }
-    p->angle += 1.0f;
-    if (359.0f < p->angle) {
-        p->angle = 0.0f;
-    } else if (p->angle < 0.0f) {
-        p->angle = 359.0f;
-    }
-}
-/* localdecomp:end func_L03_003B6180 */
-
-INCLUDE_ASM("asm/levels", func_L03_003B6370);
-
-/* localdecomp:start func_L03_003B6740 */
+/* localdecomp:start func_L03_003B5EF8 */
 #include "vu0.h"
 
-extern f32 func_003824E0(f32, f32);
-extern s32 func_00382468(s32);
-extern void func_L01_00443B88(void *, f32, f32);
-extern u8 *func_L01_0046B458(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
+typedef struct { u8 pad[0x18]; u8 *hit; } Collision_003B5EF8;
+typedef struct {
+    vu0_v4 end;
+    vu0_v4 start;
+    f32 speed;
+    s32 kind;
+    s32 x28;
+    void *x2C;
+    s32 joint;
+    s32 x34;
+    f32 x38;
+    f32 x3C;
+} State_003B5EF8;
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 pad20[0x4];
+    u8 *x24;
+    u8 pad28[0x4];
+    f32 scale;
+    u8 b30;
+    u8 b31;
+    u16 h32;
+    u16 h34;
+    u8 pad36[0x32];
+    State_003B5EF8 *state;
+    u8 pad6C[0x2C];
+    s32 x98;
+    u8 pad9C[0x1C];
+    void *owner;
+} Obj_003B5EF8;
+extern Collision_003B5EF8 D_L03_001E9200[];
+extern f32 D_L03_001DEA08;
+__asm__(".extern D_L03_001DEA08, 4");
+extern f32 D_L03_001DEA0C;
+__asm__(".extern D_L03_001DEA0C, 4");
+extern s32 D_L03_001E1DC8;
+extern f32 D_L03_001DE9FC;
+__asm__(".extern D_L03_001DE9FC, 4");
+extern f32 D_L03_001DEA00;
+__asm__(".extern D_L03_001DEA00, 4");
+extern s32 D_L03_001DE9F8;
+__asm__(".extern D_L03_001DE9F8, 4");
+extern void func_L03_003B6370(void);
+extern void func_003C2F58(void *, s32, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00446748(void *, void *, s32, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern u8 *func_003C24B0(s32, s32);
+extern void func_L03_0034B218(u8 *, s32, s32, f32, s32, void *);
 
-void func_L03_003B6740(vu0_v4 *position, s32 count, s32 color1, s32 color2) {
-    vu0_v4 point;
-    vu0_v4 velocity;
-    vu0_v4 *pt = &point;
-    f32 size;
-    s32 spin;
-    s32 i;
-    u8 *particle;
+u8 *func_L03_003B5EF8(u8 *self, s32 joint, s32 kind, f32 speed) {
+    vu0_v4 start, end, delta, point;
+    u8 collision[0x30];
+    u8 *owner = *(u8 **)(self + 0x68);
+    Obj_003B5EF8 *object;
+    State_003B5EF8 *state;
 
-    point = *position;
-    for (i = 0; i < count; i++) {
-        size = func_003824E0(1.0f, 2.0f);
-        spin = func_00382468(2);
-        if (spin == 0) spin--;
-        func_L01_00443B88(&velocity, 0.05f, 0.25f);
-        particle = func_L01_0046B458(pt, 0x11, size * 0.1f, size, color1, 0, spin, &velocity, 0.0028800003f, 0);
-        if (particle) particle[9] = 0x74;
-        particle = func_L01_0046B458(pt, 0x11, size * 0.07f, size * 0.7f, color2, 1, -spin, &velocity, 0.0028800003f, 0);
-        if (particle) particle[9] = 0x74;
+    func_003C2F58(*(void **)owner, joint, &start);
+    func_003C2F58(*(void **)owner, joint + 0x20, &end);
+    vec_sub_ba(&delta, &end, &start);
+    func_0038CF68(&delta, &delta, D_L03_001DEA08);
+    vec_add_ab(&point, &start, &delta);
+    func_L01_00446748(collision, self, 0, 0.0f);
+    *(u16 *)(collision + 0x1A) = *(u16 *)(self + 0xAA);
+    if (func_003D3CB0(&start, &point, 0, self, collision)) {
+        if (D_L03_001E9200->hit && *(s16 *)(D_L03_001E9200->hit + 0xAA) == 0x1C06)
+            return 0;
+        if (kind == 0 || kind == 3 || kind == 6) {
+            u8 *hit = D_L03_001E9200->hit;
+            if (hit && *(s16 *)(hit + 0xAA) == 0x1C04) {
+                s32 hit_kind = *(s32 *)(*(u8 **)(hit + 0x68) + 0x24);
+                if (hit_kind == 0 || hit_kind == 3 || hit_kind == 6) return 0;
+            }
+        }
     }
+    object = (Obj_003B5EF8 *)func_003C24B0(0x1C04, 0x80);
+    if (object) {
+        object->b30 = 0xFF;
+        object->b31 = 1;
+        object->h32 = 0x40;
+        object->scale *= D_L03_001DEA0C;
+        object->owner = self;
+        state = object->state;
+        if (kind == 0 || kind == 3 || kind == 6) {
+            object->b31 = 0;
+            object->h34 |= 1;
+        } else {
+            object->b31 = 1;
+            object->h34 &= 0xFFFE;
+        }
+        object->x98 = *(s32 *)(object->x24 + 0x10);
+        state->kind = kind;
+        state->speed = speed * 0.020000001f;
+        state->joint = joint;
+        state->x38 = D_L03_001DEA00;
+        state->x3C = D_L03_001DE9FC;
+        state->x28 = 0;
+        state->x34 = 0;
+        state->start = start;
+        state->end = end;
+        state->x2C = *(void **)owner;
+        object->pos = state->start;
+    }
+    if (D_L03_001DE9F8 == 0) {
+        D_L03_001DE9F8 = 1;
+        func_L03_0034B218((u8 *)&D_L03_001E1DC8, 0x19, 0x11, 2.1f, 2, func_L03_003B6370);
+    }
+    return (u8 *)object;
 }
-/* localdecomp:end func_L03_003B6740 */
+/* localdecomp:end func_L03_003B5EF8 */

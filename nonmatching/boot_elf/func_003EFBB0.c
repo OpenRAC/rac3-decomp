@@ -1,16 +1,25 @@
-/* func_003EFBB0 (boot_elf), FE-C 2026-11-22: near miss. From FE-A1's draft of the boot_elf twin
-   (itself from Flavius's functional draft), with the switch's cases in the jump table's address order
-   (0, 4, 2, 3, 1), the background colours built by an inline that returns a compound literal and the
-   colour argument passed through an inline's by-value parameter (both as func_003EE840 in frontbin 3EE160.c).
-   218 differences (tools/check.py) with its file's line (src/boot_elf/text/3EF658.c: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as),
-   the same with --no-context. FE-A1's draft gave 220, Flavius's functional draft 244. Its frontbin twin func_003EF7F8 (3EE160.c) is the same code, also 218.
+/* func_003EFBB0 (boot_elf), near miss. FE-C 2026-11-22 (218), retried by NM-FE7 2026-11-22 (166).
+   From FE-A1's draft of the boot_elf twin (itself from Flavius's functional draft), with the switch's cases
+   in the jump table's address order (0, 4, 2, 3, 1), the background colours built by an inline that returns
+   a compound literal and the colour argument passed through an inline's by-value parameter (both as
+   func_003EE840 in frontbin 3EE160.c). NM-FE7: the "invisible" flag is computed into a scoped local and
+   assigned after the four colour stores, which gives retail's $t2 -> $s1 move.
+   166 differences (tools/check.py) with its file's line (src/boot_elf/text/3EF658.c: -mvu0-use-vf0-vf2 -O2 -G8
+   -fopt-stack -mno-check-zero-division -mno-split-addresses @ps2as), the same with --no-context (FE-C's
+   draft: 218; FE-A1's: 220; Flavius's functional draft: 244). Its frontbin twin func_003EF7F8 (3EE160.c)
+   is the same code; the same change gives 166 there.
    Left:
-   - the jump table's dispatch: retail builds the table's address (lui/addiu) and loads at offset 0; ours,
-     with -mno-split-addresses, folds %lo into the load. check.py --mode S (split addresses, not the file's
-     flags) gives retail's dispatch and 106 differences;
-   - ours keeps the call's colour slot address (sp+0x10) in $s1 for both calls; retail recomputes it in each
-     delay slot and keeps the "invisible" flag in $s1 (computed in $t2, then moved);
-   - the registers of the four colours and alphas.
+   - the jump table's dispatch: retail builds the table's address (lui, sll, addiu: split HIGH/LO_SUM)
+     and loads at offset 0; ours, with -mno-split-addresses, folds %lo into the load (a plain 5-case
+     switch compiled with this line does the same). check.py --mode S gives retail's dispatch (106 with
+     FE-C's wording, 119 with this one), but split addresses are not the file's line: under --mode S the
+     file's matched func_003F0270 (2) and func_003F02D0 (5) stop matching, so no flag change; a cut
+     would need this function at 0 under S first;
+   - ours keeps the call's colour slot address (sp+0x10) in a saved register for both calls; retail
+     recomputes it in each jal delay slot;
+   - the registers of the four colours (retail c0..c3 in $s5, $s3, $s4, $s2) and alphas.
+   Tried without gain (NM-FE7): alphas as u8 (166), alphas declared in reverse order (166), colours
+   assigned after the declarations (218 with FE-C's wording).
    The INCLUDE_RODATA line of jtbl_0031CC60 goes with the marker when it matches. */
 #include "common.h"
 /* localdecomp:start func_003EFBB0 */
@@ -106,11 +115,14 @@ void func_003EFBB0(Obj_003EFBB0 *o, s32 a1)
             al2 = (u8)((s32)(al2 * diff) / o->max);
             break;
         }
-        invisible = al0 == 0 && al1 == 0 && al2 == 0 && al3 == 0;
+        {
+        s32 inv = al0 == 0 && al1 == 0 && al2 == 0 && al3 == 0;
         o->col0 = (al0 << 24) | (c0 & 0xFFFFFF);
         o->col1 = (al1 << 24) | (c1 & 0xFFFFFF);
         o->col2 = (al2 << 24) | (c2 & 0xFFFFFF);
         o->col3 = (al3 << 24) | (c3 & 0xFFFFFF);
+        invisible = inv;
+        }
     }
 
     o->vt->fill(o, a1, rect, 1);

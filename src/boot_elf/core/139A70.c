@@ -502,7 +502,49 @@ extern char D_00152210[];
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00139A70);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00139E50);
+#include "cpu.h"
+/* API and inline key conversion compared with the RAC1 NTSC decomp, Lombyte (GPL-3.0):
+ * src/sdk/dma/sce_mpeg_add_str_callback.c and src/sdk/library/type2id.c. */
+typedef struct { u64 key; u64 mask; s32 handler; s32 argument; void *gp; u32 pad; } CallbackRecord;
+typedef struct { u8 pad[0x60]; CallbackRecord *records; s32 count; } CallbackState;
+typedef struct { u8 pad[0x40]; CallbackState *state; } CallbackOwner;
+typedef struct { u64 key; u64 mask; } CallbackDescriptor;
+extern CallbackDescriptor D_00141700[];
+static __inline__ u64 callback_key(s32 type, s32 data) {
+    u64 key = 0;
+    s32 shift = 0;
+    if ((u32)type < 10) {
+        switch (D_00141700[type].mask) {
+        case 0xFFFFFFFFFFULL: shift = 0; break;
+        case 0xFFFF000000ULL: shift = 24; break;
+        case 0xFF00000000ULL: shift = 32; break;
+        default: return 0;
+        }
+        key = D_00141700[type].key | ((u64)data << shift);
+    }
+    return key;
+}
+/* localdecomp:start func_00139E50 */
+s32 func_00139E50(CallbackOwner *owner, s32 type, s32 data, s32 handler, s32 argument) {
+    CallbackState *state = owner->state;
+    CallbackRecord *records = state->records;
+    s32 previous = 0;
+    u64 key = callback_key(type, data);
+    s32 i;
+    for (i = 0; i < state->count; i++) {
+        if (key == records[i].key) { previous = records[i].handler; break; }
+    }
+    if (i < 64) {
+        records[i].key = key;
+        records[i].handler = handler;
+        records[i].argument = argument;
+        records[i].mask = D_00141700[type].mask;
+        records[i].gp = CpuGetGp();
+        state->count++;
+    }
+    return previous;
+}
+/* localdecomp:end func_00139E50 */
 
 /* localdecomp:start func_00139F80 */
 extern u8 D_00152260[];

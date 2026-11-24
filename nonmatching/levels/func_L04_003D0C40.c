@@ -19,7 +19,21 @@
  * Stopped per AGENTS.md.
  * Task #2882 (2026-11-22): re-measured 89 differences (tools/check.py) at level 04 with the file's line. One more
  * wording: the three searches as one `static __inline__` helper returning the found moby (or 0), with the
- * `+0x94` store in the caller under `if (e != 0)`: 276 differences. */
+ * `+0x94` store in the caller under `if (e != 0)`: 276 differences.
+ * Task #2940 (2026-11-22, upstream 70e001ab): re-measured 89 differences (tools/check.py) at levels 04 and 18. The
+ * placement comes from loop.c (find_and_verify_loops): each found-exit block (`p94 = e; break;`) moves to the
+ * nearest BARRIER before its jump target at the target's loop depth. Here the BARRIER after arm 1's `else` jump
+ * (outside any loop) is the nearest, so the blocks land after loop 1; in retail they sit after the early
+ * `return 0`, so retail had no such BARRIER there when loop.c ran. Arm 2 written as a separate test after arm 1,
+ * `if (v->w90 != -1) { if (v->w90 >= -1) { ... } }`, reproduces that: all three blocks move after the `return 0`,
+ * and arm 2's head is retail's exactly (`lw $v0, 0x90; move $t2, $v0; slti; bnel`, the first `bne` threaded to it).
+ * But arm 1 then falls into the `!= -1` test (`lw; addiu; beql`) where retail has `b` to the join, and the third
+ * block is not crossjumped: 265 differences (tools/check.py), 40 aligned rows against this draft's 43. No pass
+ * after loop.c can make that test unconditional (cse follows only conditional jumps to labels behind a BARRIER;
+ * thread_jumps only retargets conditional jumps), and every C form tried keeps it: an `s32 n` for both tests
+ * 263, `if (!(v->w90 == -1))` 265, `w90 != -1 && w90 >= -1` in one test 262 (merged into `bltz`), `else if
+ * (w90 != -1)` 89 (the else jump is back). The file's own struct types (`M_003D0968`/`V_003D0968` fields)
+ * instead of byte offsets: 89, and `for (;;)` with the test as a leading `break`: 89 (same RTL after rotation). */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */

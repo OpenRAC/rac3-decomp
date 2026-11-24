@@ -130,4 +130,62 @@ void func_L04_003C8DA0(s32 a0, s32 a1, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_L04_003C8DA0 */
 
-INCLUDE_ASM("asm/levels", func_L04_003C8E10);
+/* localdecomp:start func_L04_003C8E10 */
+extern s32 func_L01_00456500(void *, s32);
+typedef int q_t __attribute__((mode(TI)));
+extern q_t D_L04_001E27C0;
+extern q_t D_001A4C60;
+extern void func_L04_003C89E0(s32, s32, s32);
+extern void func_L04_003C8DA0(s32, s32, s32, s32);
+
+void func_L04_003C8E10(u8 *a0) {
+    u8 *pv;
+    q_t q;
+    s32 flag;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 *p;
+
+    pv = *(u8 **)(a0 + 0x68);
+    a0[0x30] = 0xFF;
+    flag = 0;
+    if (*(s8 *)(pv + 0x7E) != 0) {
+        q = D_L04_001E27C0;
+    } else {
+        q = D_001A4C60;
+    }
+    if (a0[0x95] == 0) {
+        for (i = 0; i < 4; i++) {
+            if (((s32 *)pv)[i] == -1) continue;
+            if (func_L01_00456500(&q, ((s32 *)pv)[i]) != 0) {
+                break;
+            }
+        }
+        if (i < 4) goto found;
+    } else {
+        if (a0[0x95] == 1) {
+found:
+            flag = 1;
+        } else {
+            flag = 0;
+        }
+    }
+    if (flag != 0) {
+        if (a0[0xBC] == 0) goto set;
+    } else {
+        if (a0[0xBC] != 0) goto set;
+    }
+    if (a0[0x20] != 0) return;
+set:
+    if (flag != 0) a0[0xBC] = 1; else a0[0xBC] = 0;
+    a0[0x20] = a0[0xBC] + 1;
+    for (j = 0; j < 13; j++) {
+        if (((s32 *)(pv + 0x10))[j] != -1) func_L04_003C8DA0((s32)a0, (s32)pv, ((s32 *)(pv + 0x10))[j], flag);
+    }
+    p = (s32 *)(pv + 0x44);
+    for (k = 0; k < 14; k++, p++) {
+        if (*p != -1) func_L04_003C89E0(*p, (s32)pv, flag);
+    }
+}
+/* localdecomp:end func_L04_003C8E10 */

@@ -1,7 +1,17 @@
-/* PAL near miss (Codex wave 11): near miss: 188 words differ in its file's context with the file's flags.
- * Replaces the earlier draft (PAL reconstruction, 2026-11-16: 190 words differ under tools/check.py in its file's context with the file's flags, measured 2026-11-21;
- * this one: 188).
- * Worker's note: 188 diff (W/func_L20_003372C8.checks/level_20.log; the draft was 190): an early __asm__ .extern D_L20_001DCAF0, 4 hint now gives retail's split forms of the UV table (la D -> addiu gp,0x240 in both k loops, la D+4 -> lui/addiu in the n loop), the first 140 words match; left, unchanged from the draft's own note: in both 4-corner k loops retail keeps (f32)(j % 4) mtc1/cvt and one mul.s in the merge block per iteration, gcc puts mtc1/cvt at the loop top, duplicates mul.s into both arms and copies k & 1 (move a0,a1), shifting registers a1/a2/a3/t0/t1 by one, and the index-range test of the grid loop folds differently; 3 checks, stopped (previous worker's ten attempts on the same blocks)
+/* PAL near miss: 76 differing words with PROPOSED whole-file
+ * -fno-sched-interblock added to the owning flags, not the centrally retained
+ * owning configuration. A private flag-only full level-20 build prints MATCH;
+ * this target remains INCLUDE_ASM and has not passed a full linked C build.
+ * The earlier 188-word draft remains in git history; experimental logs and
+ * exact snapshots are local evidence, not required public provenance.
+ * Corrected the old false four-byte UV-table hint to its declared 32 bytes.
+ * Under the proposed file flags that honest old body gives 131 differences;
+ * a conjunctive range predicate improves it to 76, but folds retail's
+ * redundant signed range test into sltiu. The UV base still uses lui/addiu
+ * where retail has GP; do not restore a false size to hide that difference.
+ * The proposed file-wide flag resolves the old corner-loop scheduling problem.
+ * Early-return predicates gave 324 twice; a G32 diagnostic gave 139.
+ * No promotion; the old current-flags history is not reset.
  */
 #include "common.h"
 
@@ -39,7 +49,7 @@ __asm__(".extern D_L20_001DCAD8, 4");
 __asm__(".extern D_L20_001DCADC, 4");
 __asm__(".extern D_L20_001DCAE0, 4");
 extern f32 D_L20_001DCAF0[4][2] __attribute__((section(".sdata")));
-__asm__(".extern D_L20_001DCAF0, 4");
+__asm__(".extern D_L20_001DCAF0, 32");
 extern void func_0038D328(void *, void *);
 extern void func_0038D5B0(void *, void *);
 extern void func_0038D000(void *, void *, void *);
@@ -53,10 +63,7 @@ static __inline__ void copy_3372C8(void *d, void *s) {
 }
 
 static __inline__ s32 valid_3372C8(s32 index) {
-    if (index < 31) {
-        if (index >= 0) return 1;
-    }
-    return 0;
+    return index < 31 && index >= 0;
 }
 
 void func_L20_003372C8(void *self) {

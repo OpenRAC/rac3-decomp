@@ -11,7 +11,7 @@
    D_001D4BDC, then [10], f10, D_001D4BC0-CC, f240/f248, [2], [6], [8]). Tried at 72: D_001A1ED0 or
    D_00225900 as arrays, a pointer to D_001A1ED0, base read before scr, the two globals declared in
    the other order, and five orders of the store block (moving [4], f10, [2]/[6]/[8] or f240/f248);
-   [10] right after [4] gives 77. When it matches: its delay slot (0x387EE8, `addiu $sp, $sp,
+   [10] right after [4] gives 77. Retried 2026-11-22 (13 more compiles, none below 72): five orders of the locals' declarations and dropping the unused `long gs` (72 each); the f10 store moved to five earlier places (72 each: the compiler places it after [8] wherever the source has it, so the store order is set by the scheduler, not the source order, and retail's stores follow the source order exactly); [2] = [4] (72); the [4]/[2] value in a local computed after base (79); w >> 6 read from the struct (80). When it matches: its delay slot (0x387EE8, `addiu $sp, $sp,
    0xB0`) is marked LINKER_REMNANT(func_00387EE8), but config/inventory.tsv gives the function 980
    bytes, that word included: drop the remnant line. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;

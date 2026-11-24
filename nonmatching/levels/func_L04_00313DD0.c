@@ -1,3 +1,10 @@
+/* 2026-11-22 (task 2893, NM-R10, rac3-w3): re-measured on upstream 6de86dfe, still 236 differences (tools/check.py) at
+ * level 04 with `--as ps2as --flags=-mvu0-use-vf0-vf2` (without the vf2 flag it still does not compile: vf17 spilled).
+ * Tried for case 3's hero.0x1A0 reload: the call's first argument as `D_001A4BE0 + 0x98` (one symbol with the hero, so
+ * that CSE could derive the hero as $s0 - 0x98 as retail does) with h = D_001A4BE0 or h = D_001A4BE0 + 0x98 - 0x98:
+ * 302, because CSE then reuses the previous block's hero register and forwards the stored 0x1A0 value instead of
+ * reloading it; `D_001A4BE0 + 0x98` with h = D_001A4C78 - 0x98: 251. No gain, so the draft is unchanged below.
+ */
 /* 2026-11-21 (task 2813, Promises fleet rac3-w1): 236 differences (tools/check.py) at level 04 with
  * `--as ps2as --flags=-mvu0-use-vf0-vf2`, with or without the divs_nops line `func_L04_00313DD0 0 2`. Most follow from
  * case 3 being one instruction short (see "case 3 after hero.1A0" below). Declaring `u8 *h = D_001A4C78 - 0x98;` before

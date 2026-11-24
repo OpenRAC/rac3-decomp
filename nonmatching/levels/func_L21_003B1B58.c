@@ -1,11 +1,15 @@
-/* r04 wave 12 retry of func_L21_003B1B58: 47 diff with the file's flags (the draft: 195). Changed against the draft:
+/* P02 retry: 44 diff with the owning file's flags after loading tmp.v[3]
+   before tmp.v[1] for the second VU add. Both inputs remain unchanged.
+   No candidate promotion. The original wave-12 draft is backed up in
+   build/reserved50/P02/l21-original.c.
+   r04 wave 12 retry: 47 diff (the earlier draft: 195). Changed against the draft:
    - the target-angle expression as a static inline helper (Angle_003B1B58, used by the cone test and the hit record):
      with it the first loop is no longer one haifa scheduling region, so n-- stays at the continue point (retail's
      beql/bc1tl decrements, s->owner in the blezl slot) and the loop has retail's length (the draft was 6 words short);
    - the hit record stored in the order owner, flags, f, g, a, b, id (retail's store schedule);
    - the second loop counts with its own j (retail keeps the first loop's down-counter in s2 apart from it);
    - the last u copy is a plain store of the VU0 value (*(vu0_q *)&tmp.v[2] = qw), so it fills the jal delay slot.
-   Still differs: m in s0 and the list pointer / j in s1 (retail s1 / s0), vf1/vf2 swapped in the second vadd, the
+    Still differs: m in s0 and the list pointer / j in s1 (retail s1 / s0), the
    func_003D3CB0 argument setup order around the VU0 sequence, and the 0.4f load hoisted above the beqz. */
 #include "common.h"
 
@@ -102,8 +106,8 @@ void func_L21_003B1B58(void *arg0, void *arg1) {
             __asm__("vadd.xyz %0, %1, %2" : "=j"(qv) : "j"(qv), "j"(qp));
             __asm__("sqc2 %1, %0" : "=m"(tmp.v[0]) : "j"(qv));
             __asm__("sqc2 %1, %0" : "=m"(tmp.v[2]) : "j"(qv));
-            __asm__("lqc2 %0, %1" : "=j"(qw) : "m"(tmp.v[1]));
             __asm__("lqc2 %0, %1" : "=j"(qt) : "m"(tmp.v[3]));
+            __asm__("lqc2 %0, %1" : "=j"(qw) : "m"(tmp.v[1]));
             __asm__("vadd.xyz %0, %1, %2" : "=j"(qw) : "j"(qw), "j"(qt));
             __asm__("sqc2 %1, %0" : "=m"(tmp.v[1]) : "j"(qw));
             *(vu0_q *)&tmp.v[2] = qw;

@@ -446,6 +446,18 @@ class LevelCodeTest(unittest.TestCase):
         finally:
             del level_tree._RETAIL[99]
 
+    def test_zero_words_before_fill(self):
+        import level_tree
+        word = lambda *w: b"".join(x.to_bytes(4, "little") for x in w)
+        # 0x1000: one code word, 0x1004..0x101C: six zero words, 0x101C: one fill word, 0x1020: the next file
+        level_tree._RETAIL[99] = (0x1000, word(1, *([0] * 6), 0xCDCDCDCD))
+        try:
+            self.assertEqual(level_tree.zero_words(99, 0x1000, 0x04, 0x1020), 6)
+            self.assertEqual(level_tree.fill_words(99, 0x1000, 0x04 + 6 * 4, 0x1020), 1)
+            self.assertEqual(level_tree.zero_words(99, 0x1000, 0x04, 0x1010), 3)    # stops at the next function
+        finally:
+            del level_tree._RETAIL[99]
+
     def test_parse_source(self):
         import level_tree
         text = ('#include "common.h"\r\n\r\nINCLUDE_ASM("asm/levels", func_L01_002F7800);\r\n\r\n'

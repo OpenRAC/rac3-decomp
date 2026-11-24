@@ -384,6 +384,8 @@
 #define func_003A0010 func_003A5430
 #define func_003A00D0 func_003A54F0
 #define func_003A00E8 func_003A5508
+#define func_003A0170 func_003A5590
+#define func_003A0178 func_003A5598
 #define func_003A01F8 func_003A5618
 #define func_003A0268 func_003A5688
 #define func_003A03F8 func_003A0510
@@ -587,6 +589,7 @@
 #define func_003AC150 func_003B16F8
 #define func_003AC2B0 func_003B1858
 #define func_003AC3A0 func_003B1948
+#define func_003AC3F8 func_003B19A0
 #define func_003AC5E0 func_003B1B88
 #define func_003AC6F0 func_003B1C98
 #define func_003ACA00 func_003B1FA8
@@ -711,7 +714,6 @@
 #define func_003B15B8 func_003B6A98
 #define func_003B15E0 func_003B6AC0
 #define func_003B16B0 func_003B6B90
-#define func_003B1BB8 func_003B1D58
 #define func_003B1DA8 func_003B7288
 #define func_003B22C0 func_003B77A0
 #define func_003B23F8 func_003B78D8
@@ -2863,6 +2865,7 @@
 #define func_L01_0041E198 func_L01_004208C8
 #define func_L01_0041E3B0 func_L01_00420AE0
 #define func_L01_0041F000 func_L01_00421730
+#define func_L01_0041F198 func_L01_004218C8
 #define func_L01_0041F258 func_L01_00421988
 #define func_L01_0041F300 func_L01_00421A30
 #define func_L01_0041FC08 func_L01_00422338
@@ -4460,7 +4463,6 @@
 #define func_L03_003B10D8 func_L03_003B2C08
 #define func_L03_003B1278 func_L03_003B2DA8
 #define func_L03_003B4090 func_L03_003B5C78
-#define func_L03_003B4310 func_L03_003B5EF8
 #define func_L03_003B4598 func_L03_003B6180
 #define func_L03_003B4CD0 func_L03_003B68D8
 #define func_L03_003B51F0 func_L03_003B6DF8
@@ -4528,7 +4530,6 @@
 #define func_L03_0044A4C8 func_L03_0044DC40
 #define func_L03_0044A510 func_L03_0044DC88
 #define func_L03_0044A650 func_L03_0044DDC8
-#define func_L03_00454FD8 func_L03_00458A70
 #define func_L03_0045E320 func_L03_00461E88
 #define func_L03_00460460 func_L34_0044A8E8
 #define func_L03_00460468 func_L03_004640A8
@@ -5150,7 +5151,6 @@
 #define func_L08_0034A648 func_L08_0034B508
 #define func_L08_00374F90 func_L08_00376460
 #define func_L08_0037B820 func_L08_0037CD98
-#define func_L08_0037B8B8 func_L08_0037CE30
 #define func_L08_0037BA30 func_L08_0037CFC0
 #define func_L08_0037BEC0 func_L08_0037D450
 #define func_L08_0038DDB0 func_L08_0038F5F8
@@ -5540,9 +5540,6 @@
 #define func_L20_003EE920 func_L20_003F0960
 #define func_L20_003EE990 func_L20_003F09D0
 #define func_L20_003F79F0 func_L20_003F9C10
-#define func_L20_003F8A48 func_L20_003FACD8
-#define func_L20_003F8E90 func_L20_003FB120
-#define func_L20_003F8EF0 func_L20_003FB180
 #define func_L20_003F8F60 func_L20_003FB1F0
 #define func_L20_003FC6A0 func_L20_003FE9B0
 #define func_L20_003FCCB0 func_L20_003FEFC0
@@ -6142,7 +6139,6 @@
 #define func_L33_003BBCA8 func_L33_003BD978
 #define func_L33_003BBD88 func_L33_003BDA58
 #define func_L34_0034FCB8 func_L34_003509D8
-#define func_L34_00350EF8 func_L34_00351C18
 #define func_L34_003BD170 func_L34_003BEF28
 #define func_L34_003BD208 func_L34_003BEFC0
 #define func_L34_003BD240 func_L34_003BEFF8
@@ -6160,7 +6156,6 @@
 #define func_L35_003A3170 func_L35_003A4A88
 #define func_L35_003A32C0 func_L35_003A4BD8
 #define func_L35_003A33E8 func_L35_003A4D00
-#define func_L35_003A3920 func_L35_003A5238
 #define func_L35_003A3AE0 func_L35_003A53F8
 #define func_L35_003A3F60 func_L35_003A5878
 #define func_L35_003A3FD0 func_L35_003A58E8
@@ -7546,7 +7541,6 @@
 #define func_L39_005082A8 func_L39_005084A8
 #define func_L39_005083B0 func_L39_005085B0
 #define func_L39_00508420 func_L39_00508620
-#define func_L39_00508488 func_L39_00508688
 #define func_L39_00508558 func_L39_00508758
 #define func_L39_005086D0 func_L39_005088D0
 #define func_L39_005087B0 func_L39_005089B0
@@ -8379,7 +8373,6 @@
 #define func_L39_00668F68 func_L39_0066B870
 #define func_L39_00668FA0 func_L39_0066B8A8
 #define func_L39_00669050 func_L39_0066B958
-#define func_L39_00669098 func_L39_0066B9A0
 #define func_L39_00669170 func_L39_0066BA78
 #define func_L39_00669238 func_L39_0066BB40
 #define func_L39_00669250 func_L39_0066BB58
@@ -9196,11 +9189,8 @@
 #define func_L40_00422290 func_L40_00422B60
 #define func_L40_00422360 func_L40_00422C30
 #define func_L40_00422C40 func_L40_00423510
-#define func_L40_00424218 func_L40_00424B10
-#define func_L40_00424228 func_L40_00424B20
 #define func_L40_004242A8 func_L40_00424BA0
 #define func_L40_00424328 func_L40_00424C20
-#define func_L40_00424370 func_L40_00424C68
 #define func_L40_004244A0 func_L40_00424D98
 #define func_L40_00424508 func_L40_00424E00
 #define func_L40_00424570 func_L40_00424E68
@@ -9211,13 +9201,10 @@
 #define func_L40_004247A8 func_L40_004250A0
 #define func_L40_00424CA8 func_L40_004255A0
 #define func_L40_004250E8 func_L40_004259E0
-#define func_L40_00425118 func_L40_00425A10
 #define func_L40_00426250 func_L40_00426B60
 #define func_L40_004263B0 func_L40_00426CC0
 #define func_L40_00426658 func_L40_00426F68
-#define func_L40_004268D0 func_L40_004271E0
 #define func_L40_00426DD0 func_L40_004276F0
-#define func_L40_00427000 func_L40_00427920
 #define func_L40_004270B8 func_L40_004279D8
 #define func_L40_004270E0 func_L40_00427A00
 #define func_L40_00427108 func_L40_00427A28
@@ -9302,7 +9289,6 @@
 #define func_L41_00414130 func_L41_004149E0
 #define func_L41_00414160 func_L41_00414A10
 #define func_L41_0041AA50 func_L41_0041B308
-#define func_L41_0041AE28 func_L41_0041B6F0
 #define func_L41_0041C3E0 func_L41_0041CCE0
 #define func_L41_0041C3F8 func_L41_0041CCF8
 #define func_L41_00434E70 func_L41_00435AA0

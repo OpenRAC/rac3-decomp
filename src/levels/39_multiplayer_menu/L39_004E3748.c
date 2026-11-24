@@ -3,7 +3,84 @@
 /* declared by functions of L39_004E2DD0.c, which this file was cut from */
 extern s32 func_L39_004E3748(void *, s32, u8 *, u32 *, u32, s32, s32, s32);
 
-INCLUDE_ASM("asm/levels", func_L39_004E3748);
+/* localdecomp:start func_L39_004E3748 */
+typedef struct BN_004E3748 {
+    u32 *d;
+    s32 top;
+    s32 dmax;
+    s32 neg;
+    s32 flags;
+} BN_004E3748;
+
+typedef struct M_004E3748 {
+    s32 (*fn)(s32, u8 *, s32, s32, s32, s32);
+} M_004E3748;
+
+typedef struct R_004E3748 {
+    s32 _p0;
+    BN_004E3748 n;
+    u8 _p18[0x30];
+    s32 f48;
+    u8 _p4C[0xC];
+    M_004E3748 *meth;
+} R_004E3748;
+
+typedef struct X_004E3748 {
+    s32 _p0[2];
+    R_004E3748 *rsa;
+} X_004E3748;
+
+extern void func_L39_004FC370();
+extern s32 func_L39_004FC158(BN_004E3748 *);
+extern void func_L39_004FC780(u8 *, s32, BN_004E3748 *);
+extern s32 func_L39_004E38F0();
+extern s32 func_L39_004FC8C0(BN_004E3748 *, u8 *);
+extern void func_L39_004FC228(BN_004E3748 *);
+
+s32 func_L39_004E3748(void *x, s32 type, u8 *to, u32 *outlen, u32 max, s32 a5, s32 a6, s32 a7)
+{
+    BN_004E3748 f;
+    BN_004E3748 ret;
+    R_004E3748 *rsa;
+    s32 num;
+    s32 i;
+    s32 k;
+    s32 r = 1;
+
+    if (type != 1 && type != 10) {
+        return 2;
+    }
+    func_L39_004FC370(&f);
+    func_L39_004FC370(&ret);
+    rsa = ((X_004E3748 *)x)->rsa;
+    num = (func_L39_004FC158(&rsa->n) + 7) / 8;
+    if (max < num) {
+        r = 1;
+        goto err;
+    }
+    if (rsa->meth->fn(rsa->f48, to, num, a5, a6, a7) != 0) {
+        goto err;
+    }
+    func_L39_004FC780(to, num, &f);
+    if (func_L39_004E38F0(&ret, &f, rsa) != 0) {
+        goto err;
+    }
+    k = (func_L39_004FC158(&ret) + 7) / 8;
+    if (num < k) {
+        goto err;
+    }
+    i = num - func_L39_004FC8C0(&ret, to + (num - k));
+    for (k = 0; k < i; k++) {
+        to[k] = 0;
+    }
+    *outlen = num;
+    r = 0;
+err:
+    func_L39_004FC228(&ret);
+    func_L39_004FC228(&f);
+    return r;
+}
+/* localdecomp:end func_L39_004E3748 */
 
 /* localdecomp:start func_L39_004E38F0 */
 typedef struct BN_004E38F0 {

@@ -60,7 +60,7 @@ extern void func_L01_004450F0(char *, s32, s32);
 extern f32 func_003C4138(f32 *, f32, f32);
 extern void func_L01_00340FB0(char *);
 extern void func_L01_00340DC0(char *);
-extern void func_L01_003411A8(void);
+extern void func_L01_003411A8(char *);
 extern void func_L01_00404808(void (*)(void), char *);
 extern void func_L01_0044E820(char *, s32);
 

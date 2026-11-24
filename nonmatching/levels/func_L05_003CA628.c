@@ -1,25 +1,25 @@
 /* func_L05_003CA628 (levels 05, 11, 17): near miss. PAL port (2026-11-20) of the NTSC-U draft of func_L05_003C8498, reworked
- * 2026-11-21 (task 2785) and 2026-11-22 (task 2834). 16 differences (tools/check.py) at level 05, 17 at level 11, 16 at level 17,
- * with the file's committed line (`-mvu0-use-vf0-vf2 ... @ps2as`) and a divs_nops.txt row `func_L05_003CA628 2 2` (not committed:
- * 93 differences at level 05 without it). --version us: 92 (NTSC-U's code differs).
- * Form (2026-11-22, r3-44): no VU0 value crosses between separate asm blocks through the registers alone. The first vadd is the
- * include/vu0.h helper vec_add_ab; the branch loads its two operands into real "j" variables (a, b) in each arm, and one vadd and
- * one sqc2 follow the branch: the inline VU0 j-form (PROVISIONAL, VU0 j-constraint form; r3-34: a match would need that comment,
- * its own commit and a PR flag). func_0038CF68 keeps the file's out-parameter prototype (the func_L05_003CA8F0 block declares it
- * `void func_0038CF68(void *, void *, f32)`), so there is no by-value prototype any more.
- * Still differs (16 words at level 05):
- *  (1) The layout of `old` and `dest`: `dest` has to be the first local declared, so it is at sp+0 and `old` at sp+0x10 (retail:
- *      old at sp+0, dest at sp+0x10). 3 words: the sq of `old`, and `move $a0/$a1, $sp` for retail's `addiu $a0/$a1, $sp, 0x10`.
- *      With retail's order (old first) gcse makes &dest at sp+0x10 partially redundant (the else arm's func_0038CF68 argument,
- *      then the func_003D3CB0 argument) and keeps it in a saved register: 168 differences (frame 0xa0, $s5 saved). Five wordings
- *      give those same 168: the out-parameter call, a by-value func_0038CF68 into `dest`, a by-value call as the lqc2's "m"
- *      operand, a `vu0_v4 *pd = &dest` pointer for all three uses, and a pointer local in the else arm only. A block-scoped
- *      temporary for the else arm's call (at sp+0x50, 32 differences) or `dest` and `work` declared in a nested block after the
- *      branch (dest at sp+0x20, 31) avoid gcse, but not at retail's offsets. Only a by-value temporary shares retail's slot with
- *      `dest`, and then gcse is back (fact #46726).
- *  (2) The argument setup of the func_L01_00446760 call (13 words): ours puts `addiu $s1, $sp, 0x20` (&work) before the
- *      `sqc2 vf1` of the vadd and `lui $a3, %hi(D_L05_001D66B0)` first; retail has the sqc2, then &work, `lwc1 $f12`, `lui $a2`,
- *      the moves, then the `lui`/`addiu $a3`. The registers are now retail's ($s1 &work, $s0/$s4 obj+0x10).
+ * 2026-11-21 (task 2785), 2026-11-22 (task 2834) and 2026-11-22 (task 2935). 18 differences (tools/check.py) at level 05, 19 at level 11,
+ * 18 at level 17, with the file's committed line (`-mvu0-use-vf0-vf2 ... @ps2as`) and a divs_nops.txt row `func_L05_003CA628 2 2`
+ * (not committed: 95 differences at levels 05, 11 and 17 without it).
+ * Form (task 2935, r3-44): only include/vu0.h helpers, no inline VU0 asm, so no VU0 value crosses between asm blocks. Retail's
+ * single vadd.xyz + sqc2 after the branch is gcc's cross-jumping of the two arms' identical tails: both arms call vec_add_ab
+ * (`vec_add_ab(&dest, obj + 0x10, sub)` and, after func_0038CF68, `vec_add_ab(&dest, &dest, obj + 0x10)`), and an inline
+ * function's asm statements carry the header's line, so the two vadd/sqc2 pairs are equal insns and become one tail. The
+ * scheduler swaps the then-arm's two lqc2 (sub into vf2 first), as retail has it. Both arms with vec_add_ba also cross-jump, but
+ * from the obj+0x10 load on (140); vec_add_ba then vec_add_ab do not cross-jump (134). Because the arms end in their own blocks,
+ * sched1 no longer moves the &work setup above the sqc2.
+ * The previous draft (task 2834: one inline j-form vadd/sqc2 after the branch, fed by "j" variables loaded in each arm) was 16
+ * with the same row, but #2918 Q5 read its j values living across the branch as VU0 state between asm blocks (r3-44).
+ * Still differs (18 words at level 05):
+ *  (1) The layout of `old` and `dest` (6 words): `dest` has to be the first local declared, so it is at sp+0 and `old` at
+ *      sp+0x10 (retail: old at sp+0, a dead store, dest at sp+0x10): the sq of `old`, `move $a0/$a1, $sp` for retail's
+ *      `addiu $a0/$a1, $sp, 0x10`, and the lqc2/sqc2 offsets of dest. With retail's order (old first) gcse makes &dest at
+ *      sp+0x10 partially redundant and keeps it in a saved register: 168 (frame 0xa0, $s5 saved), also in this form (fact #46726).
+ *  (2) The func_L01_00446760 call (12 words): retail has `addiu $s1, $sp, 0x20` (&work), `lwc1 $f12`, `lui $a2`, the moves,
+ *      `ori $a2`, then `lui`/`addiu $a3` and `addiu $s0, $s2, 0x10` in the jal's delay slot; ours puts `lui $a3` first and
+ *      `ori $a2` in the slot, and swaps $s0/$s1 (&work / obj+0x10). Unchanged (18) with a named f32 local for the sub+0x34
+ *      argument, `&work[0]` / `&D_L05_001D66B0[0]`, a `(u8 *)obj + 0x10` cast, and `work` declared vu0_v4[3].
  */
 #include "common.h"
 #include "vu0.h"
@@ -51,7 +51,6 @@ void func_L05_003CA628(u8 *obj) {
     u8 *hit;
     s32 result;
     f32 len;
-    vu0_q a, b, r;
 
     old = *(vu0_v4 *)(obj + 0x10);
     sub = *(u8 **)(obj + 0x68);
@@ -64,17 +63,12 @@ void func_L05_003CA628(u8 *obj) {
             return;
         }
         if (*(s32 *)(sub + 0x30) == 0) {
-            /* PROVISIONAL, VU0 j-constraint form */
             if (func_0038CEA8(sub) > *(f32 *)(sub + 0x20)) {
-                __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)sub));
-                __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)(obj + 0x10)));
+                vec_add_ab(&dest, obj + 0x10, sub);
             } else {
                 func_0038CF68(&dest, sub, *(f32 *)(sub + 0x20));
-                __asm__("lqc2 %0, %1" : "=j"(a) : "m"(dest));
-                __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*(vu0_v4 *)(obj + 0x10)));
+                vec_add_ab(&dest, &dest, obj + 0x10);
             }
-            __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(b));
-            __asm__("sqc2 %1, %0" : "=m"(dest) : "j"(r));
             func_L01_00446760(work, obj, 0x10001, D_L05_001D66B0, *(f32 *)(sub + 0x34));
             func_L01_004CB320();
             result = func_003D3CB0(obj + 0x10, &dest, 16, obj, work);

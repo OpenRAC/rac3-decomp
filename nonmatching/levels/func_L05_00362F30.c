@@ -13,6 +13,12 @@
  * fields: 77 -> 76); struct assignment s.p[i] = D[i] gives ldl/ldr pairs, two float pointers 85. The VU0 roles of
  * (1) did not change with vec_sub_ba or vec_sub_ab for c, nor with the copies placed before the argument copy or
  * after c, nor with p loaded before the argument copy. */
+/* RT-B retry (2026-11-22, rac3-w1, upstream b7be60ac): the copy loop reads its second column through its own
+ * symbol, D_L05_001DDA84 (`s.p[i].a = D_L05_001DDA80[i * 2]; s.p[i].b = D_L05_001DDA84[i * 2];`): retail's loop
+ * shape now comes out (four pointers, counter 3 down to -1). 76 -> 39 differences (tools/check.py) at levels 05
+ * and 10 with `-mvu0-use-vf0-vf2` added to L05_003629B8.c's line. Left: the loop's register choice and the
+ * order of the stores before it, and the VU0 roles at the top. Four explicit pointers 84; a struct-typed
+ * D_L05_001DDA80 for the first column 39; scalar temporaries 39; a `dst` pointer to s.p 77. */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
@@ -29,7 +35,8 @@ typedef struct {
 } S_00362F30;
 extern vu0_v4 D_L05_001E2680;
 __asm__(".extern D_L05_001E2680, 16");
-extern P_00362F30 D_L05_001DDA80[4];
+extern f32 D_L05_001DDA80[];
+extern f32 D_L05_001DDA84[];
 extern f32 D_L05_001DDA64;
 __asm__(".extern D_L05_001DDA64, 4");
 extern s32 D_L05_001DDA6C;
@@ -79,15 +86,9 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     s.c[3] = D_L05_001DDA74;
     s.c[2] = D_L05_001DDA74;
     s.c[1] = D_L05_001DDA74;
-    {
-        P_00362F30 *src = D_L05_001DDA80;
-        P_00362F30 *dst = s.p;
-        for (i = 0; i < 4; i++) {
-            dst->a = src->a;
-            dst->b = src->b;
-            src++;
-            dst++;
-        }
+    for (i = 0; i < 4; i++) {
+        s.p[i].a = D_L05_001DDA80[i * 2];
+        s.p[i].b = D_L05_001DDA84[i * 2];
     }
     vec_sub_ba(&e, p, &a);
     d = e;

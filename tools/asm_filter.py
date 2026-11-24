@@ -309,13 +309,21 @@ def divs_pass(text):
     for line in text.splitlines(True):
         s = line.strip()
         em = re.match(r"\.ent\s+(\S+)", s)
-        if cur is None and em and em.group(1) in table:
-            cur, buf = em.group(1), [line]
-            continue
+        if cur is None and em:
+            name = em.group(1)
+            counts = table.get(name)
+            if counts is None and name.startswith("func_U_L"):
+                import version
+                import version_map
+                if version.is_us():
+                    counts = table.get(version_map.native_level_counterpart(name))
+            if counts is not None:
+                cur, buf, selected_counts = name, [line], counts
+                continue
         if cur is not None:
             buf.append(line)
             if re.match(r"\.end\s", s):
-                out.extend(divs_rewrite(buf, table[cur]))
+                out.extend(divs_rewrite(buf, selected_counts))
                 cur, buf = None, []
             continue
         out.append(line)
