@@ -1,4 +1,5 @@
-/* NEAR MISS: func_L01_005138F8 / xp_level_check. 2026-11-22 (round 13, r13_b/x27.c): 178 words
+/* NEAR MISS: func_L01_005138F8 / xp_level_check (src file L01_00512DF8.c since the master split;
+   D_001425C0 and D_L01_002C5600 declared here now). 2026-11-22 (round 13, r13_b/x27.c): 178 words
    positional, 76 structural, 41 ignoring registers (round 10: 178 / 88 / 70).
    What closed the gap this round:
    - the item loop indexes D_001425C0[item] and D_00142DE0[item] instead of walking tier/xp
@@ -55,6 +56,8 @@ typedef struct {
     s32 health;                    /* 0x2850 */
 } H_5138F8;
 extern s32 D_L01_001DFB40;
+extern u8 D_001425C0[];
+extern u8 D_L01_002C5600[];
 extern s32 D_001DFB40_sda;
 extern s32 D_001DC088_sda;
 __asm__(".extern D_001DC088_sda, 4");

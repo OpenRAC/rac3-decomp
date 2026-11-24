@@ -591,7 +591,7 @@ extern f32 func_0038CF38(S_4E56A8vec *a, S_4E56A8vec *b);
 extern f32 func_0038D160(f32 a, f32 b);
 extern f32 func_0038DBA0(f32 a, f32 b);
 extern s32 func_003C4B50(S_4E56A8m *m);
-f32 func_L01_004E9470(S_4E56A8m *m, s32 *out, f32 a, f32 b, f32 c, f32 d) {
+f32 func_L01_004E9470(S_4E56A8m *m, f32 a, f32 b, f32 c, f32 d, s32 *out) {
     S_4E56A8g *g;
     S_4E56A8vec p;
     f32 dist;
@@ -639,9 +639,118 @@ f32 func_L01_004E9470(S_4E56A8m *m, s32 *out, f32 a, f32 b, f32 c, f32 d) {
 }
 /* localdecomp:end func_L01_004E9470 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E96E8);
+/* localdecomp:start func_L01_004E96E8 */
+#include "vu0.h"
+extern u8 D_001A4C60[];
+extern u8 D_001A4C20[];
+extern S_4E56A8q D_L01_001E2A40;
+extern f32 func_0038CF00(S_4E56A8vec *a, S_4E56A8vec *b);
+extern void func_0038D028(Vec4 *out, void *a, void *b);
+extern f32 func_0038D160(f32 a, f32 b);
+extern f32 func_0038DBA0(f32 a, f32 b);
+extern f32 func_0038CED8(void *a0);
+extern s32 func_003C4B50(S_4E56A8m *m);
+/* target_search's score of one target in first person (func_L01_004E9470 is the third-person
+ * one): the target's distance from the hero plus the distance times its yaw off the aim direction,
+ * measured in the hero's frame (in the camera's when the hero is in state 1 or 29), with *out set
+ * when it is beyond the range, the cone or the rise; 80% of the range is added when
+ * func_003C4B50 accepts the target. */
+f32 func_L01_004E96E8(S_4E56A8m *moby, Vec4 *forward, f32 range, f32 cone, f32 rise, s32 *out, void *camera_matrix) {
+    Vec4 position, direction, facing, camera_direction;
+    u8 *hero;
+    void *hero_matrix;
+    f32 distance, angle, facing_angle, yaw, pitch, limit, result;
+    *out = 0;
+    position.q = *(s128 *)D_001A4C60;
+    hero = D_001A4C60 - 0x80;
+    if (*(s32 *)(hero + 0x25C4) == 20 && *(f32 *)(hero + 0x338) > 0.0f) {
+        position.q = *(s128 *)(hero + 0x2F0);
+    }
+    distance = func_0038CF00((S_4E56A8vec *)&position, &moby->x10);
+    if (range < distance) *out = 1;
+    vec_sub_ba(&direction, &moby->x10, &position);
+    hero_matrix = D_001A4C20;
+    func_0038D028(&direction, &direction, hero_matrix);
+    facing.q = forward->q;
+    func_0038D028(&facing, &facing, hero_matrix);
+    angle = func_0038D160(direction.f[0], direction.f[1]);
+    facing_angle = func_0038D160(facing.f[0], facing.f[1]);
+    yaw = func_0038DBA0(angle, facing_angle);
+    limit = yaw;
+    pitch = func_0038D160(func_0038CED8(&direction), direction.f[2]);
+    if (*(s32 *)((u8 *)hero_matrix + 0x2584) == 1 || *(s32 *)((u8 *)hero_matrix + 0x2584) == 29) {
+        vec_sub_ab(&camera_direction, &moby->x10, &D_L01_001E2A40.x0);
+        func_0038D028(&camera_direction, &camera_direction, camera_matrix);
+        angle = func_0038D160(camera_direction.f[0], camera_direction.f[1]);
+        pitch = func_0038D160(func_0038CED8(&camera_direction), camera_direction.f[2]);
+        limit = pitch;
+        yaw = angle + pitch;
+        if (pitch < angle) limit = angle;
+    }
+    if (0.0f < cone && cone < limit) *out = 1;
+    if (0.0f < rise && rise < pitch) *out = 1;
+    result = distance + yaw * distance;
+    if (func_003C4B50(moby)) result += range * 0.8f;
+    return result;
+}
+/* localdecomp:end func_L01_004E96E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E9980);
+/* localdecomp:start func_L01_004E9980 */
+#include "vu0.h"
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_004E9980;
+typedef struct { u8 pad[0x25F4]; u8 first_person; } Hero_004E9980;
+extern u8 D_001A4BE0[];
+extern u8 D_L01_001E2DC0[];
+extern S_4E56A8m *D_L01_0021E860[];
+extern void func_0038D5B0(void *a0, void *a1);
+extern u8 *func_00382348(void *);
+extern f32 func_L01_004E96E8(S_4E56A8m *moby, Vec4 *forward, f32 range, f32 cone, f32 rise, s32 *out, void *camera_matrix);
+extern f32 func_L01_004E9470(S_4E56A8m *m, f32 a, f32 b, f32 c, f32 d, s32 *out);
+extern void func_0038CF68(void *, s32, float);
+extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+/* target_search: the best target in the target list (flag 0x1000) within range, cone and rise,
+ * optionally of one class category only (5: lock-on, with a nonzero first word of target data)
+ * and only when a ray from the hero reaches it. */
+S_4E56A8m *func_L01_004E9980(void *aim, f32 range, f32 yaw, f32 cone, f32 rise, s32 cls, s32 in_sight) {
+    struct { s128 view[4]; s128 start; Vec_004E9980 end; s32 reject; } local;
+    s32 i;
+    S_4E56A8m *m;
+    S_4E56A8m *best = 0;
+    f32 score, best_score = 100000000.0f;
+
+    if (((Hero_004E9980 *)D_001A4BE0)->first_person) {
+        func_0038D5B0(local.view, D_L01_001E2DC0);
+    }
+    i = 0;
+    while ((m = D_L01_0021E860[i]) != 0) {
+        if (cls != -1 && m->x24->x46 != cls) goto next;
+        if (cls == 5) {
+            u8 *data = func_00382348(m);
+            if (!data || *(f32 *)data == 0.0f) goto next;
+        }
+        if (*(u16 *)((u8 *)m + 0x34) & 0x1000) {
+            if (((Hero_004E9980 *)D_001A4BE0)->first_person) {
+                score = func_L01_004E96E8(m, aim, range, cone, rise, &local.reject, local.view);
+            } else {
+                score = func_L01_004E9470(m, yaw, range, cone, rise, &local.reject);
+            }
+            if (!local.reject && score < best_score) {
+                if (in_sight) {
+                    local.start = *(s128 *)(D_001A4BE0 + 0xE0);
+                    func_0038CF68(&local.end, (s32)((u8 *)m + 0xE0), 1.0f);
+                    vec_add_ab(&local.end, &local.end, (u8 *)m + 0x10);
+                    if (func_003D3CB0(&local.start, &local.end, 2, 0, 0)) goto next;
+                }
+                best_score = score;
+                best = m;
+            }
+        }
+next:
+        i++;
+    }
+    return best;
+}
+/* localdecomp:end func_L01_004E9980 */
 
 /* localdecomp:start func_L01_004E9BB0 */
 s32 func_L01_004E9BB0(s32 value) {
@@ -932,7 +1041,164 @@ void func_L01_004EAA80(void)
 }
 /* localdecomp:end func_L01_004EAA80 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EAB10);
+/* localdecomp:start func_L01_004EAB10 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x80];
+    f32 x;
+    f32 y;
+    u8 pad88[0x8];
+    u128_t rot;
+    u8 padA0[0x5EC - 0xA0];
+    f32 yaw;
+    f32 pitch;
+    u8 pad5F4[0x640 - 0x5F4];
+    f32 target_yaw;
+    u8 pad644[0x4];
+    u8 *target;
+    u8 pad64C[0x6C0 - 0x64C];
+    u128_t gun_matrix[3];
+    u128_t gun_pos;
+    u128_t gun_rot;
+    u8 pad710[0xE78 - 0x710];
+    u8 *hands[2];
+    u8 padE80[0x4];
+    s32 holster;
+    u8 padE88[0x1434 - 0xE88];
+    s16 lock;
+    u8 pad1436[0x16B0 - 0x1436];
+    s32 camera_mode;
+    u8 pad16B4[0x25C0 - 0x16B4];
+    void *moby;
+    u8 pad25C4[0x25CC - 0x25C4];
+    s32 mode;
+    u8 pad25D0[0x25E9 - 0x25D0];
+    u8 active;
+    u8 pad25EA[0x1];
+    u8 flags;
+    u8 pad25EC[0x25F4 - 0x25EC];
+    u8 first_person;
+    u8 pad25F5[0x2830 - 0x25F5];
+    s32 anim;
+    s32 item;
+} H_004EAB10;
+extern u8 D_001A4BE0[];
+extern u8 D_001425C0[];
+extern Def_004EA7D8 D_L01_002C5600[];
+extern Buf_004EA7D8 D_L01_00255880[];
+extern u8 D_L01_002F4540[];
+extern s32 func_L01_005119E0(s32);
+extern void func_L01_004EAA80(void);
+extern s32 func_L01_004E9238();
+extern void func_L01_0043A1E8(void *, u8 *, s32, s32, s32, s32);
+extern void func_L01_00439E10(u8 *, u8 *);
+extern f32 func_003C4138(f32 *, f32, f32);
+extern void func_L01_00439D70(M004E9888 *, s32 *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038D308(void *, void *);
+extern void func_0038D000(void *, void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern s32 func_L01_004606E8(s32, s32, s32, s32);
+/* hero_gun_update: runs the two arm layers of the firing animation (fading in at 0.24 a frame,
+ * out at 0.084, or 0.3 when cut), stops firing when the held gun is done, and sets the fire
+ * direction (gun_matrix, gun_rot) from the hero's matrix and angles: toward the target in mode 15,
+ * else with the yaw turned by the camera's unless in first person. */
+void func_L01_004EAB10(void) {
+    u128_t matrix[3];
+    Vec4 v;
+    H_004EAB10 *hero;
+    s32 i;
+    f32 angle;
+
+    if (((H_004EAB10 *)D_001A4BE0)->active && ((H_004EAB10 *)D_001A4BE0)->flags && !func_L01_005119E0(-1)) {
+        func_L01_004EAA80();
+    }
+    for (i = 0; i < 2; i++) {
+        s32 item;
+        if (!((H_004EAB10 *)D_001A4BE0)->hands[i]) continue;
+        *(u8 **)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 0x38) = D_L01_00255880[i].first;
+        *(u8 **)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 0x3C) = D_L01_00255880[i].second;
+        item = func_L01_004E9238(0);
+        if (item == ((H_004EAB10 *)D_001A4BE0)->item) {
+            Def_004EA7D8 *def = &D_L01_002C5600[D_001425C0[item]];
+            s32 anim = def->held;
+            if (((H_004EAB10 *)D_001A4BE0)->mode == 12) anim = def->alternate;
+            if (anim != -1 && ((H_004EAB10 *)D_001A4BE0)->hands[i][0x23] != anim) {
+                ((H_004EAB10 *)D_001A4BE0)->anim = anim;
+                func_L01_0043A1E8(((H_004EAB10 *)D_001A4BE0)->moby, ((H_004EAB10 *)D_001A4BE0)->hands[i], anim, 0, 7, 1);
+            }
+        }
+        func_L01_00439E10((u8 *)((H_004EAB10 *)D_001A4BE0)->moby, ((H_004EAB10 *)D_001A4BE0)->hands[i]);
+        if (((H_004EAB10 *)D_001A4BE0)->holster) {
+            if (((H_004EAB10 *)D_001A4BE0)->holster == 2) {
+                func_003C4138((f32 *)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 8), 0.0f, 0.3f);
+            } else {
+                func_003C4138((f32 *)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 8), 0.0f, 0.084000006f);
+            }
+            if (*(f32 *)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 8) == 0.0f) {
+                func_L01_00439D70((M004E9888 *)((H_004EAB10 *)D_001A4BE0)->moby, (s32 *)&((H_004EAB10 *)D_001A4BE0)->hands[i]);
+                return;
+            }
+        } else {
+            func_003C4138((f32 *)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 8), 1.0f, 0.24000001f);
+            if ((((H_004EAB10 *)D_001A4BE0)->hands[i][5] & 2) && !((H_004EAB10 *)D_001A4BE0)->flags) {
+                ((H_004EAB10 *)D_001A4BE0)->holster = 1;
+                *(s32 *)(((H_004EAB10 *)D_001A4BE0)->hands[i] + 0x28) = 0;
+                ((H_004EAB10 *)D_001A4BE0)->active = 0;
+                return;
+            }
+        }
+    }
+    hero = (H_004EAB10 *)D_001A4BE0;
+    if (hero->mode == 15) {
+        u8 *target = hero->target;
+        u128_t *m;
+        if (target) {
+            f32 x = hero->x;
+            f32 y = hero->y;
+            hero->gun_rot = hero->rot;
+            ((f32 *)&hero->gun_rot)[2] = func_0038D160(*(f32 *)(target + 0x10) - x, *(f32 *)(target + 0x14) - y);
+            ((f32 *)&hero->gun_rot)[1] = -hero->pitch;
+        } else {
+            hero->gun_rot = hero->rot;
+            ((f32 *)&hero->gun_rot)[2] = func_0038DAB8(hero->yaw, hero->target_yaw);
+            ((f32 *)&hero->gun_rot)[1] = -hero->pitch;
+        }
+        m = ((H_004EAB10 *)D_001A4BE0)->gun_matrix;
+        func_0038D308(m, m + 4);
+        qzero(m + 3);
+        *(f32 *)(m + 3) = 1.0f;
+        func_0038D000(m + 3, m + 3, m);
+        return;
+    }
+    angle = 0.0f;
+    if (hero->lock == 0 && (hero->camera_mode != 1 || !func_L01_004606E8(40, 2, 0, 0))) {
+        u8 *camera = D_L01_002F4540;
+        f32 yaw = *(f32 *)(camera + 0xF8);
+        angle = func_0038DAB8(*(f32 *)(camera + 0x1A8), yaw);
+    }
+    qzero(&v);
+    v.f[2] = angle;
+    func_0038D308(matrix, &v);
+    {
+        u128_t *m = ((H_004EAB10 *)D_001A4BE0)->gun_matrix;
+        u8 *moby;
+        func_0038D5F0(m, m, matrix);
+        moby = ((H_004EAB10 *)D_001A4BE0)->moby;
+        m[0] = *(u128_t *)(moby + 0xC0);
+        m[1] = *(u128_t *)(moby + 0xD0);
+        m[2] = *(u128_t *)(moby + 0xE0);
+        qzero(&((H_004EAB10 *)D_001A4BE0)->gun_pos);
+        *(f32 *)&((H_004EAB10 *)D_001A4BE0)->gun_pos = 1.0f;
+        func_0038D000(&((H_004EAB10 *)D_001A4BE0)->gun_pos, &((H_004EAB10 *)D_001A4BE0)->gun_pos, ((H_004EAB10 *)D_001A4BE0)->gun_matrix);
+        ((H_004EAB10 *)D_001A4BE0)->gun_rot = ((H_004EAB10 *)D_001A4BE0)->rot;
+        if (!((H_004EAB10 *)D_001A4BE0)->first_person) {
+            ((f32 *)&((H_004EAB10 *)D_001A4BE0)->gun_rot)[2] = func_0038DAB8(((f32 *)&((H_004EAB10 *)D_001A4BE0)->gun_rot)[2], angle);
+        }
+    }
+}
+/* localdecomp:end func_L01_004EAB10 */
 
 /* localdecomp:start func_L01_004EAEE8 */
 extern s32 func_L01_004E9FB0();
@@ -1340,7 +1606,90 @@ f32 func_L01_004EB918(f32 a[][4], f32 b[][4]) {
 }
 /* localdecomp:end func_L01_004EB918 */
 
-INCLUDE_ASM("asm/levels", func_L01_004EB978);
+/* localdecomp:start func_L01_004EB978 */
+#include "vu0.h"
+typedef struct { Vec4 row[3]; } HandMtx_004EB978;
+typedef struct {
+    u8 pad0[0x1D8];
+    s32 state_timer;
+    u8 pad1DC[0x16E0 - 0x1DC];
+    HandMtx_004EB978 history[16];
+    u8 pad19E0[0x25C4 - 0x19E0];
+    s32 state;
+    u8 pad25C8[0x25E9 - 0x25C8];
+    u8 firing;
+    u8 pad25EA[0x26FC - 0x25EA];
+    s32 history_next;
+    s32 history_count;
+    s32 smoothing;
+} H_004EB978;
+extern u8 D_001A4BE0[];
+/* level data read through $gp: 0x1DBD34 in level 01, elsewhere in some levels (0x1DBC74 in 19) */
+__asm__(".extern D_L01_001DBD34_004EB978, 4");
+extern s32 D_L01_001DBD34_004EB978;
+extern void func_0038D590(void *, void *);
+extern void func_L01_00448E10(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_L01_004EB918(f32 a[][4], f32 b[][4]);
+extern void func_003C48A8(Vec4 *, Vec4 *);
+/* hero_hand_smooth: keeps the last 16 hand matrices (history_next, history_count) and, when enabled,
+ * sets the held object's matrix (self + 0xF0) to the average of the last n (2 to 7, 3 while firing
+ * early): each scored by its summed difference from the others, the outliers left out when only one
+ * or two stand out. */
+void func_L01_004EB978(u8 *self, void *matrix, s32 enabled) {
+    Vec4 sum[4];
+    f32 scores[16]; /* never cleared, as in retail */
+    s32 i, j, k, n;
+    s32 good, used;
+    f32 best;
+
+    func_0038D590(&((H_004EB978 *)D_001A4BE0)->history[((H_004EB978 *)D_001A4BE0)->history_next], matrix);
+    func_L01_00448E10(&((H_004EB978 *)D_001A4BE0)->history[((H_004EB978 *)D_001A4BE0)->history_next]);
+    ((H_004EB978 *)D_001A4BE0)->history_next = (((H_004EB978 *)D_001A4BE0)->history_next + 1) % 16;
+    ((H_004EB978 *)D_001A4BE0)->history_count++;
+    if (((H_004EB978 *)D_001A4BE0)->history_count > 16) {
+        ((H_004EB978 *)D_001A4BE0)->history_count = 16;
+    }
+    if (!enabled) return;
+    for (k = 2; k >= 0; k--) qzero(&sum[k]);
+    if (((H_004EB978 *)D_001A4BE0)->state == 2) D_L01_001DBD34_004EB978 = 5;
+    else D_L01_001DBD34_004EB978 = 7;
+    if (((H_004EB978 *)D_001A4BE0)->smoothing < D_L01_001DBD34_004EB978) ((H_004EB978 *)D_001A4BE0)->smoothing++;
+    else if (((H_004EB978 *)D_001A4BE0)->smoothing > D_L01_001DBD34_004EB978) ((H_004EB978 *)D_001A4BE0)->smoothing--;
+    n = ((H_004EB978 *)D_001A4BE0)->smoothing;
+    if (n < 2) n = 2;
+    if (((H_004EB978 *)D_001A4BE0)->firing && ((H_004EB978 *)D_001A4BE0)->state_timer < 8 && n > 3) n = 3;
+    if (((H_004EB978 *)D_001A4BE0)->history_count < n) return;
+    good = 0;
+    for (i = 0; i < n; i++) {
+        s32 back = i - 15;
+        s32 row = (((H_004EB978 *)D_001A4BE0)->history_next - back) % 16;
+        for (j = 0; j < n; j++) {
+            if (i != j) {
+                s32 back2 = j - 15;
+                s32 other = (((H_004EB978 *)D_001A4BE0)->history_next - back2) % 16;
+                scores[i] += func_L01_004EB918((f32 (*)[4])&((H_004EB978 *)D_001A4BE0)->history[row], (f32 (*)[4])&((H_004EB978 *)D_001A4BE0)->history[other]);
+            }
+        }
+    }
+    best = 0.0f;
+    for (i = 0; i < n; i++) if (scores[i] > best) best = scores[i];
+    for (i = 0; i < n; i++) if (scores[i] > best * 0.2f) good++;
+    used = 0;
+    for (i = 0; i < n; i++) {
+        if (!(scores[i] > best * 0.2f && good > 0 && good < 3)) {
+            s32 back = i - 15;
+            s32 row = (((H_004EB978 *)D_001A4BE0)->history_next - back) % 16;
+            used++;
+            for (k = 0; k < 3; k++) {
+                vec_add_ab(&sum[k], &sum[k], &((H_004EB978 *)D_001A4BE0)->history[row].row[k]);
+            }
+        }
+    }
+    for (k = 0; k < 3; k++) func_0038CE20(&sum[k], &sum[k], 1.0f / (f32)used);
+    func_003C48A8(sum, (Vec4 *)(self + 0xF0));
+}
+/* localdecomp:end func_L01_004EB978 */
 
 INCLUDE_ASM("asm/levels", func_L01_004EBDA8);
 

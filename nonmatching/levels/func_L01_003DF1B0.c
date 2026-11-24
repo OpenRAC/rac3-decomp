@@ -15,6 +15,11 @@
  * an inline copy helper instead of the pointer. Worse: s32 i = 0 at the declaration (spills, 115);
  * do/while with a count > 0 guard (44); an explicit cursor pointer (68); reusing i for the clear
  * loop (38).
+ * Round 14 (agent C): still 10. Added the per-caller alias func_L01_00404A10_003DF1B0 (retail calls
+ * another address at levels 03, 11, 16, 23; check.py does not show it, callcheck.py does) and the clear
+ * loop as a count-up for. Why i outranks the constants: global.c priority floor_log2(refs)*refs/live,
+ * i = 2*7/120 = 0.117 against 2*5/170 = 0.059 for the hoisted 3 and 1 (their refs are 1 set + 2 uses
+ * at loop weight 2). Same bytes: reusing i for the clear loop (31, worse), count-up clear loop.
  * func_00382348 keeps the file's (void) prototype and is called through a cast, as origin/master's
  * ryno_seeker_blast does.
  */
@@ -44,7 +49,7 @@ void func_L01_003DF1B0(u8 *obj) {
     extern void func_L01_00404808(void (*)(u8 *), void *);
     extern void func_L01_003DF620(u8 *);
     extern s32 func_0038CAD0(void *);
-    extern void func_L01_00404A10(void (*)(u8 *), void *);
+    extern void func_L01_00404A10_003DF1B0(void (*)(u8 *), void *);
     extern void func_L01_003DF558(u8 *);
     extern void func_0038CBA0(void *, s32);
     extern void func_L01_004C84D8(void *);
@@ -73,7 +78,7 @@ void func_L01_003DF1B0(u8 *obj) {
         if (func_0038CAD0(vars + 8)) {
             obj[0x20] = 3;
             *(s32 *)(vars + 8) = 53;
-        } else func_L01_00404A10(func_L01_003DF558, obj);
+        } else func_L01_00404A10_003DF1B0(func_L01_003DF558, obj);
     } else if (obj[0x20] == 3) {
         {
             vu0_v4 *d = &direction;
@@ -107,7 +112,7 @@ void func_L01_003DF1B0(u8 *obj) {
         }
         {
             s32 n;
-            for (n = 23; n >= 0; n--) {
+            for (n = 0; n < 24; n++) {
                 ((Spark_003DF1B0 *)D_L01_002A3A40)[n].owner = 0;
             }
         }

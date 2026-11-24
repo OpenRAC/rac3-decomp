@@ -1,4 +1,18 @@
-/* PAL near miss (haiku-w4): 59 words differ with the file's flags; frame and s-register set now match (0x70, no spill of p+0xB0), remaining diffs are register allocation of base/index/loop counter (retail s5=base, s6=index, s3 loop, s4=divisor 6) and call scheduling around the vector adds. */
+/* PAL near miss (haiku-w4, round 14 2026-11-24). check.py says 145 words, but that is positional:
+ * ignoring registers the code is 18 instructions off retail, all from one value. haiku-w4's form
+ * (59 words: the random scale computed into a local first) has retail's frame but also keeps
+ * p + 0xB0 in an $s register, so every other $s register differs; this one has retail's $s0..$s6
+ * plus the extra $s7.
+ * What differs: gcse (PRE) finds the loop's `p + 0xB0` (func_L01_00474078's position argument) redundant
+ * with the same expression passed to func_0038CF00 before the loop, keeps it in $s7 across both, and
+ * moves it into $a0 in the loop; retail recomputes `addiu $a0, $s2, 0xB0` each iteration (with
+ * -fno-gcse, as an experiment, it does too). So retail's earlier p + 0xB0 was not a gcse candidate.
+ * Tried: &row->position in either place (same bytes); recomputing the row (base + index * 0xE0) for
+ * the loop argument (PRE then keeps a copy of p in $s7 instead) or for the distance call (cse folds
+ * it back to p).
+ * What closed the rest: func_0038CF68(&direction, &D_L01_001EAA20[2], random * 0.02f) as one call, so
+ * &direction and &D[2] are set up before the random call and live in $s1/$s0, as retail has them.
+ */
 #include "common.h"
 /* localdecomp:start func_L01_003D4F30 */
 #include "vu0.h"
@@ -29,7 +43,7 @@ void func_L01_003D4F30(u8 *self, s32 index)
                 *(s32 *)(p + 0xC0) = *(s32 *)(p + 0xC4);
                 if (func_0038CF00(&previous, (u8 *)p + 0xB0) > 1.6f) {
                     s32 i;
-                    { f32 sc = func_003824E0(1.5f, 1.7f) * 0.020000001415610313f; func_0038CF68(&direction, &D_L01_001EAA20[2], sc); }
+                    func_0038CF68(&direction, &D_L01_001EAA20[2], func_003824E0(1.5f, 1.7f) * 0.020000001415610313f);
                     for (i = 4; i >= 0; --i) {
                         func_00382580(&velocity, 0.03f, 0.045f);
                         vec_add_ab(&velocity, &velocity, &direction);

@@ -1,6 +1,7 @@
 /* NEAR MISS: func_L01_004E9FB0 (hero_hold_layers_update).
  * 2026-11-22 (r13): 300 words positionally (check.py), 60 structurally, 21 ignoring register
- * names (scratch/match/r13_a/sd.py), from 305/65/31. What closed the gap:
+ * names (scratch/match/r13_a/sd.py), from 305/65/31. Remeasured 2026-11-23 with the file's new
+ * -mvu0-use-vf0-vf2: the same 300/60/21. What closed the gap:
  *   - the file split left L01_004E8EE0.c without D_L01_002F4540: declared here as u8[] (the
  *     springs are still written through Springs_4E9FB0);
  *   - `u8 **anim = layer->anim;` at the top of the static (not-blending) arm, so retail's spill
@@ -22,6 +23,10 @@
  * Same bytes (don't repeat): a local for D_001A5A50[i] (or layer) in the no_hold block;
  * `changing` as s16, as a `!=` of the two bytes, or through a block temporary; the anim local
  * also in the blending arm; three other orders of the springs stores (all worse or equal).
+ * 2026-11-23: also the same 21: the springs through a Springs_4E9FB0 * or f32 * local;
+ * `changing` as u8/u16/s8, as `?1:0`, as `(u32)x > 0`. Worse: the springs at u8 offsets (29),
+ * gun_target_y copied from other_target_y (45), a fresh D_001A4BE0 pointer taken before the
+ * `layer == 0` test (66: the hero leaves $fp everywhere).
  * Older notes (r10): structure, branch layout, stack layout and callee-saved registers (hero in
  * $fp, i in $s7, layer $s1) match; the k-loops' counter/pointer registers were swapped.
  * Externs not in the src file: func_003C4138 (core f32 step function), func_L01_004DFE80,

@@ -1,5 +1,13 @@
-/* PAL near miss (Codex wave 8): near miss: 99 words differ with the file's flags.
- * Worker's note: Best ordinary wrapper check05.log: 99 diff; frame and most damage block agree, index strength reduction/64-bit index wording and dead-state conditional allocation remain. Eight compiles; best actual draft retained.
+/* PAL near miss: acid_mod_tick. 99 words differ with the file's flags; 27 instructions ignoring
+ * registers (round 14, 2026-11-24: the draft compiles in L01_00314158.c's context again, its
+ * func_L01_00446760/func_L01_00446978 declarations were removed in favour of the file's).
+ * Earlier worker's note: frame and most damage block agree, index strength reduction/64-bit index
+ * wording and dead-state conditional allocation remain.
+ * Retail tests D_L01_00274580[i].id with an unreduced `sll i,5; addu base` at the loop top while a
+ * separate walking pointer ($s2, copied to $s1) serves the rest, and keeps i counting up. Written
+ * plainly (`D[i].id` and a row pointer, or every access through &D[i]) gcc reduces the test to a
+ * walking pointer and reverses the loop (136-139 words); this draft's 64-bit index arithmetic avoids
+ * that but leaves dsll32/dsra32.
  */
 #include "common.h"
 /* localdecomp:start func_L01_0031AD78 */
@@ -14,8 +22,6 @@ void func_L01_0031AD78(u8 *m) {
     extern f32 *func_00382348(u8 *);
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern void func_0038CF68(f32 *, f32 *, f32);
-    extern void func_L01_00446760(f32 *, u8 *, s32, f32 *, f32);
-    extern void func_L01_00446978(u8 *, Damage_0031AD78 *);
     extern s32 func_0038CAD0(void *);
     extern void func_L01_0031AFB8(u8 *);
     extern f32 func_0038D098(f32);

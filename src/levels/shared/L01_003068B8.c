@@ -476,7 +476,38 @@ void func_L01_003083E8(s32 a0, f32 *e, s32 n)
 }
 /* localdecomp:end func_L01_003083E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00308508);
+/* localdecomp:start func_L01_00308508 */
+#include "vu0.h"
+/* An arc of 10 points along the Bezier curve from start to end (controls+0x50 and controls+0x60,
+   each relative to its end), each jittered by up to 0.04 u, drawn as an 11-point strip at alpha 0x80. */
+void func_L01_00308508(s32 owner, vu0_v4 *start, vu0_v4 *end, u8 *controls) {
+    extern void func_L01_00308238(void *, void *, void *, f32);
+    extern void func_L01_003082D0(f32 *, f32 *, f32 *, f32 *, f32 *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_L01_003088D8(s32, s32, void *, s32);
+    vu0_v4 points[11];
+    vu0_v4 control0, control1, jitter;
+    s32 i;
+    f32 t;
+    for (i = 0; i < 10; i++) {
+        t = (f32)i / 9.0f;
+        func_L01_00308238(&points[i], start, end, t);
+        *(vu0_q *)&control0 = *(vu0_q *)(controls + 0x50);
+        *(vu0_q *)&control1 = *(vu0_q *)(controls + 0x60);
+        vec_add_ba(&control0, &control0, start);
+        vec_add_ba(&control1, &control1, end);
+        func_L01_003082D0((f32 *)&points[i], (f32 *)start, (f32 *)end, (f32 *)&control0, (f32 *)&control1, t);
+        jitter.w = 0.0f;
+        jitter.x = func_003824E0(-1.0f, 1.0f);
+        jitter.y = func_003824E0(-1.0f, 1.0f);
+        jitter.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68((f32 *)&jitter, (f32 *)&jitter, 0.04f);
+        vec_add_ab(&points[i], &points[i], &jitter);
+    }
+    func_L01_003088D8(owner, 0x80, points, 11);
+}
+/* localdecomp:end func_L01_00308508 */
 
 LINKER_REMNANT("asm/levels", func_L01_003086C8);
 
@@ -687,7 +718,67 @@ void func_L01_003090E0(u8 *obj, u8 *src, void *target) {
 }
 /* localdecomp:end func_L01_003090E0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003091A8);
+/* localdecomp:start func_L01_003091A8 */
+#include "vu0.h"
+extern u8 D_001A4BE0[];
+extern vu0_q D_L01_001EAA20[];
+typedef struct { u8 pad[0x25C0]; void *moby; } Hero_003091A8;
+/* A shot's tick: move by its velocity (state+0x00); on a hit (a ray against the hero's moby, or
+   func_L01_003FB640's test) throw blast pieces and damage, outside the 2..1021 box just die, and
+   when its life (state+0x14) runs out without the stay flag (state+0x34) throw pieces and die. */
+void func_L01_003091A8(u8 *obj) {
+    extern void func_00382760(vu0_v4 *, f32, f32, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern s32 func_L01_003FB640(void *, s32, void *, f32);
+    extern void func_L01_0040E790(void *, void *, void *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_L01_0044AF78(void *, void *, void *, f32, f32, s32, s32, s32, f32, f32, s32, f32, f32, f32, s32, s32, s32, s32, s32);
+    extern void func_L01_003090E0(u8 *, u8 *, void *);
+    extern s32 func_0038CB00(void *);
+    extern void func_003C2880(void *);
+    extern void func_L01_004471A8(void *, f32);
+    struct { vu0_q old, direction, hit; } stack;
+    Hero_003091A8 *hero;
+    vu0_q *old;
+    vu0_q *dir;
+    u8 *state;
+    u8 *pos;
+    state = *(u8 **)(obj + 0x68);
+    pos = obj + 0x10;
+    old = &stack.old;
+    *old = *(vu0_q *)(obj + 0x10);
+    stack.direction = 0;
+    ((f32 *)&stack.direction)[2] = 0.1600000113248825f; /* 0x3E23D70B, one ulp above 0.16f */
+    func_00382760((vu0_v4 *)state, *(f32 *)(state + 0x18), *(f32 *)(obj + 0xF8), -*(f32 *)(obj + 0xF4));
+    vec_add_ab(obj + 0x10, obj + 0x10, state);
+    hero = (Hero_003091A8 *)D_001A4BE0;
+    if (func_003D3CB0(old, pos, 0, hero->moby, 0) ||
+        func_L01_003FB640(pos, 1, hero->moby, 0.3f)) {
+        dir = &stack.direction;
+        stack.hit = D_L01_001EAA20[0];
+        func_L01_0040E790(dir, state, D_L01_001EAA20 + 2);
+        func_0038CF68((f32 *)dir, (f32 *)dir, 0.04000000283122063f); /* 0x3D23D70B */
+        func_L01_0044AF78(obj, dir, &stack.hit, 0.0f, 0.0f, 0, 0, 4, 0.0f, 0.0f, -1, 9.0f, 0.4f, 0.0f, 0, 0, -1, 0, 0x1010001);
+        func_L01_003090E0(obj, state, &stack.hit);
+        func_003C2880(obj);
+        return;
+    }
+    if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
+        *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||
+        *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) {
+        func_003C2880(obj);
+        return;
+    }
+    if (*(s32 *)(state + 0x34) == 0 &&
+        (func_0038CB00(state + 0x26) || *(f32 *)(state + 0x14) < 0.0f)) {
+        func_L01_0044AF78(obj, &stack.direction, 0, 0.0f, 0.0f, 0, 0, 4, 0.0f, 0.0f, -1, 9.0f, 0.4f, 0.0f, 0, 0, -1, 0, 0x1010001);
+        func_003C2880(obj);
+        return;
+    }
+    *(f32 *)(state + 0x14) -= *(f32 *)(state + 0x18);
+    func_L01_004471A8(obj, 0.2f);
+}
+/* localdecomp:end func_L01_003091A8 */
 
 /* localdecomp:start func_L01_003094A0 */
 typedef int s128_003094A0 __attribute__((mode(TI)));
@@ -1124,7 +1215,41 @@ void func_L01_0030ABF8(f32 *out, f32 *start, f32 *end, f32 *control0, f32 *contr
 }
 /* localdecomp:end func_L01_0030ABF8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030AD10);
+/* localdecomp:start func_L01_0030AD10 */
+#include "vu0.h"
+/* An arc of 16 points along the Bezier curve from state+0x20 to state+0x30 (controls state+0x00 and
+   state+0x10, each relative to its end), each jittered by up to 0.075 * 0.5 u, drawn as a 17-point
+   strip whose alpha is 64..128 at strength 8 and up (state+0x88), else 0..64. */
+void func_L01_0030AD10(u8 *obj, u8 *state)
+{
+    extern void func_L01_0030ABF8(f32 *, f32 *, f32 *, f32 *, f32 *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_0030AF18(u8 *, s32, vu0_v4 *, s32);
+    vu0_v4 points[17];
+    vu0_v4 control0, control1, jitter;
+    s32 i;
+    for (i = 0; i < 16; i++) {
+        *(vu0_q *)&control0 = *(vu0_q *)state;
+        *(vu0_q *)&control1 = *(vu0_q *)(state + 0x10);
+        vec_add_ba(&control0, &control0, state + 0x20);
+        vec_add_ba(&control1, &control1, state + 0x30);
+        func_L01_0030ABF8((f32 *)&points[i], (f32 *)(state + 0x20), (f32 *)(state + 0x30),
+                          (f32 *)&control0, (f32 *)&control1, (f32)i / 15.0f);
+        jitter.w = 0;
+        jitter.x = func_003824E0(-0.5f, 0.5f);
+        jitter.y = func_003824E0(-0.5f, 0.5f);
+        jitter.z = func_003824E0(-0.5f, 0.5f);
+        func_0038CF68((f32 *)&jitter, (f32 *)&jitter, 0.075f);
+        vec_add_ab(&points[i], &points[i], &jitter);
+    }
+    if (*(s32 *)(state + 0x88) >= 8)
+        func_L01_0030AF18(obj, func_00382498(64, 128), points, 17);
+    else
+        func_L01_0030AF18(obj, func_00382498(0, 64), points, 17);
+}
+/* localdecomp:end func_L01_0030AD10 */
 
 /* localdecomp:start func_L01_0030AED8 */
 void func_L01_0030AED8(vu0_v4 *a, s32 i) {

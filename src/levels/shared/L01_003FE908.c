@@ -356,7 +356,7 @@ extern s32 D_L01_001E64C0[];
 extern S_003FF4E8 D_L01_001E6850[];
 void func_L01_003FF9F0(u8 *text,s32 mode,s32 color,s32 x,s32 style,f32 t) {
     extern s32 func_0011B868_003FF9F0(u8 *) __asm__("func_0011B868");
-    extern s32 func_L01_00412708(u8 *,s32);
+    extern s32 func_L01_00412708_003FF9F0(u8 *,s32);
     extern s32 func_L01_00400368(f32,f32,f32);
     extern void func_003910C0(void *,s32,s32,s32,s32,s32,s32,s32,s32);
     extern void func_0038FA18(void *,s32,s32,s32,long,f32,f32);
@@ -365,7 +365,7 @@ void func_L01_003FF9F0(u8 *text,s32 mode,s32 color,s32 x,s32 style,f32 t) {
     s32 shift=0;
     s32 width;
     f32 alpha=0.0f;
-    width=func_L01_00412708(text,func_0011B868_003FF9F0(text));
+    width=func_L01_00412708_003FF9F0(text,func_0011B868_003FF9F0(text));
     switch(mode) {
     case 1: shift=(s32)t;
     case 0: shift+=D_001D4BC0/2; alpha=1.0f; break;

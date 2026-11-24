@@ -1,4 +1,12 @@
-/* PAL near miss (haiku-w3): 1 word differs with the file's flags: `addu $s16, $s16, $v0` (row + func_L01_002F94F8()*28) comes out as `addu $s0, $v0, $s0`; no operand form tried changed it. Needs the S_002F94F8 typedef hoisted above this block (the callee prototype must use it, as the file's later definition does); the local S_88E0 typedef here is a stand-in with the same layout. */
+/* bolt_pickup_collect, PAL near miss: 1 word with the file's flags (round 14, agent C rechecked):
+ * retail `addu $s0, $s0, $v0` (row + func_L01_002F94F8()*28), this C `addu $s0, $v0, $s0`.
+ * Cause (cse dump): cse puts an operand with a known constant value second in a commutative plus;
+ * `row` is known to be &D_L01_002BE708, so (plus row prod) becomes (plus prod row). Retail's cse did
+ * not know row's value at the add. Same bytes: row += f(m); &row[f(m)]; f(m) + row; (s32) sums with
+ * either order; the product or the index in a local declared before row; row set after the
+ * declarations. Worse: the field read straight from &D_L01_002BE708[f(m)] (16, the add moves after
+ * the call and folds the +24). func_L01_002F94F8 is declared K&R `()` so the block compiles before
+ * the file's later definition with S_002F94F8 *. */
 #include "common.h"
 /* localdecomp:start func_L01_002F88E0 */
 extern s32 D_00142660[];
@@ -9,7 +17,7 @@ extern s32 D_001D545C_sda;
 extern s32 D_001A9280[];
 typedef struct { u8 pad[0xAA]; u16 f_AA; } S_88E0;
 void func_L01_002F88E0(u8 *m) {
-    extern s32 func_L01_002F94F8(S_88E0 *);
+    extern s32 func_L01_002F94F8();
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern f32 func_003824E0(f32, f32);
     extern s32 func_00382468(s32);
@@ -23,7 +31,7 @@ void func_L01_002F88E0(u8 *m) {
     s32 n;
     s32 increment;
     f32 scale;
-    row = (Src_002F7888 *)((s32)row + func_L01_002F94F8((void *)m) * 28);
+    row += func_L01_002F94F8(m);
     increment = *(s32 *)((u8 *)row + 24);
     D_00142660[0] += increment;
     if ((vars[0x6D] & 2) || (D_L01_001D6714 && m < D_001E0020_sda)) {

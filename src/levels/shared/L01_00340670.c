@@ -111,11 +111,139 @@ void func_L01_00340C68(char *obj)
 }
 /* localdecomp:end func_L01_00340C68 */
 
-INCLUDE_ASM("asm/levels", func_L01_00340DC0);
+/* localdecomp:start func_L01_00340DC0 */
+typedef struct {
+    u8 pad0[0xC];
+    f32 scale;
+    u8 *moby[4];
+    u8 pad20[0x10];
+    s32 color[4];
+    u8 offset[3][4];
+    u8 angle[3][4];
+} Vars_00340DC0;
+/* Updates the effect's mobys: moby[0] is scaled by vars->scale and coloured, mobys 1..3 are
+   placed at their packed offsets and angles in moby[0]'s frame and coloured the same way. */
+void func_L01_00340DC0(char *self) {
+    extern void func_0038D308(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_0038DBD8(u32, s32, f32);
+    extern void func_L01_0044E820(char *, s32);
+    extern void func_003C7DD8(void *);
+    extern void func_L01_0044E130(void *, void *);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038D5F0(void *, void *, void *);
+    vu0_v4 offset;
+    vu0_v4 angles;
+    Vars_00340DC0 *vars = *(Vars_00340DC0 **)(self + 0x68);
+    s32 i;
+    if (*(void **)(vars->moby[0] + 0x24)) {
+        *(u16 *)(vars->moby[0] + 0x34) &= 0xFFFE;
+        vars->moby[0][0x31] = 1;
+        *(s32 *)(vars->moby[0] + 0x98) = *(s32 *)(*(u8 **)(vars->moby[0] + 0x24) + 0x10);
+    }
+    func_0038D308(vars->moby[0] + 0xC0, vars->moby[0] + 0xF0);
+    func_0038CE20(vars->moby[0] + 0xC0, vars->moby[0] + 0xC0, vars->scale);
+    func_0038CE20(vars->moby[0] + 0xD0, vars->moby[0] + 0xD0, vars->scale);
+    func_L01_0044E820(vars->moby[0], func_0038DBD8(0x80FF8000, vars->color[0], vars->scale));
+    func_003C7DD8(vars->moby[0]);
+    for (i = 1; i < 4; i++) {
+        if (vars->moby[i]) {
+            if (*(void **)(vars->moby[i] + 0x24)) {
+                *(u16 *)(vars->moby[i] + 0x34) &= 0xFFFE;
+                vars->moby[i][0x31] = 1;
+                *(s32 *)(vars->moby[i] + 0x98) = *(s32 *)(*(u8 **)(vars->moby[i] + 0x24) + 0x10);
+            }
+            func_L01_0044E130(&offset, vars->offset[i - 1]);
+            func_0038D000(&offset, &offset, vars->moby[0] + 0xC0);
+            vec_add_ba(vars->moby[i] + 0x10, vars->moby[0] + 0x10, &offset);
+            func_L01_0044E130(&angles, vars->angle[i - 1]);
+            func_0038D308(vars->moby[i] + 0xC0, &angles);
+            func_0038D5F0(vars->moby[i] + 0xC0, vars->moby[0] + 0xC0, vars->moby[i] + 0xC0);
+            func_L01_0044E820(vars->moby[i], func_0038DBD8(0x80FF8000, vars->color[i], vars->scale));
+            func_003C7DD8(vars->moby[i]);
+        }
+    }
+}
+/* localdecomp:end func_L01_00340DC0 */
 
 INCLUDE_ASM("asm/levels", func_L01_00340FB0);
 
-INCLUDE_ASM("asm/levels", func_L01_003411A8);
+/* localdecomp:start func_L01_003411A8 */
+#include "vu0.h"
+typedef struct {
+    vu0_q vertex[4];
+    s32 color[4];
+    f32 uv[4][2];
+    long mode, texture, alpha, bits;
+} Packet_003411A8;
+extern f32 D_L01_001E29D8[];
+extern f32 D_L01_001DD22C, D_L01_001DD230;
+extern s32 D_L01_001DD220[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DD22C, 4");
+__asm__(".extern D_L01_001DD230, 4");
+__asm__(".extern D_L01_001DD220, 4");
+__asm__(".extern D_L01_001DD1B4, 4");
+__asm__(".extern D_L01_001DD1B8, 4");
+__asm__(".extern D_L01_001DD1C0, 4");
+__asm__(".extern D_L01_001DD1E0, 4");
+extern f32 D_L01_001DD1C0[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DD1C4[2];
+extern vu0_q D_L01_001DD1E0[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DD1B0, D_L01_001DD1B4, D_L01_001DD1B8;
+/* DrawEffectQuad: the shield charger's glow quad, scaled by its charge (vars+8) and pulse (vars+12),
+   drawn twice. The colour pair is D_L01_001DD220[0..1] while charging and [1..2] when full: the
+   [1] and [2] accesses are symbol+offset loads, which gcc never puts in a delay slot.
+   Defined under an alias because block 00340C68 declares it as a void(void) callback. */
+void func_L01_003411A8_003411A8(u8 *obj) __asm__("func_L01_003411A8");
+void func_L01_003411A8_003411A8(u8 *obj)
+{
+    extern void func_0038D328(f32 *, f32 *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern long func_00389598(s32);
+    extern void func_003D2DA0(void *, void *, s32);
+    Packet_003411A8 packet;
+    f32 matrix[4][4];
+    vu0_v4 angles, zero;
+    u8 *vars;
+    f32 width, height, extra;
+    s32 color, i;
+    *(vu0_q *)&zero = 0;
+    vars = *(u8 **)(obj+0x68);
+    zero.z = D_L01_001E29D8[0];
+    *(vu0_q *)&angles = *(vu0_q *)&zero;
+    func_0038D328(matrix[0], (f32 *)&angles);
+    width = *(f32 *)(vars+8);
+    height = (1.0f-width)*D_L01_001DD22C+1.0f;
+    extra = D_L01_001DD230 * *(f32 *)(vars+12);
+    width += extra;
+    height += extra;
+    func_0038CE20(matrix[0],matrix[0],width);
+    func_0038CE20(matrix[1],matrix[1],width);
+    func_0038CE20(matrix[2],matrix[2],height);
+    *(vu0_q *)matrix[3] = *(vu0_q *)(obj+0x10);
+    matrix[3][2] -= D_L01_001DD230 * *(f32 *)(vars+12) * 0.5f;
+    matrix[3][3] = 1.0f;
+    {
+        f32 w = *(f32 *)(vars+8);
+        if (w < 1.0f)
+            color = func_0038DBD8(D_L01_001DD220[0],D_L01_001DD220[1],w);
+        else color = func_0038DBD8(D_L01_001DD220[1],D_L01_001DD220[2],*(f32 *)(vars+12));
+    }
+    for (i=0;i<4;i++) {
+        packet.color[i] = color;
+        packet.uv[i][0] = D_L01_001DD1C0[i*2];
+        packet.uv[i][1] = D_L01_001DD1C4[i*2];
+        packet.vertex[i] = D_L01_001DD1E0[i];
+    }
+    packet.texture = func_00389598(D_L01_001DD1B0);
+    packet.bits = ((long)D_L01_001DD1B4 << 2) | ((long)D_L01_001DD1B8 << 6) | 0x8000000000L;
+    packet.alpha = 0xFF9000000260L;
+    packet.mode = 5;
+    func_003D2DA0(&packet,matrix,1);
+    func_003D2DA0(&packet,matrix,1);
+}
+/* localdecomp:end func_L01_003411A8 */
 
 /* localdecomp:start func_L01_003413D0 */
 #include "vu0.h"

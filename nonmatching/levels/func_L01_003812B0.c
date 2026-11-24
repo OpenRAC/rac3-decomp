@@ -1,12 +1,17 @@
-/* Near miss: func_L01_003812B0 (qwack_beam_pulses_draw), 53 words. Same instructions as retail. Round 10: the corner
-   colours stored 3, 2, 1, 0 from one `col` give retail's store order (0x40, 0x4C, 0x48, 0x44), and rows[3] written
-   before rows[0] gives retail's load order (sched1 then puts the E10 address first, so i << 4 dies at the DE0 address
-   and is tied to it, as in retail). What still differs is local allocation in the loop body: retail gives the
-   {i << 4, DE0 address} quantity $v1, the alpha/colour quantity $a2 and the copies $a3/$a1; here alpha takes $v1
-   first, i << 4 gets $a1, and the pulse index (pseudo i) follows its preference for $a1 (global.c copies the hard
-   reg of `i << 4`) instead of retail's $a0; base's two loads land in $v1 instead of $a2. Needs @ps2as and size
-   hints for the $gp globals. Tried: alpha/rows/colour statement orders (all three give the same bytes), the loop
-   body as `if (...) { }` instead of `continue`. */
+/* Near miss: func_L01_003812B0 (qwack_beam_pulses_draw), 43 words with the file's flags
+   (round 13, 2026-11-23; the file now has -mvu0-use-vf0-vf2, and the pulse index is now in retail's
+   $a0). Round 13 changed the declarations only: D_L01_001E1E80 and D_L01_001E1E10 are declared
+   by block 0037F860 (u8[3] and a TI-mode array in .sdata), so this C uses those and casts
+   (the old draft no longer compiled in its file). What still differs: the spilled base colour
+   is built in $v1 where retail's reload uses $a2, and the loop body's local allocation and
+   sched2 order: retail computes &scale[i] into $s7 first, loads -1.0f before the alpha load,
+   puts i << 4 in $v1 (here it reuses i's $a0) and alpha/colour in $a2 (here $v0).
+   Round 13 tried (same 43): rows/alpha/colour statement orders, `!active`, alpha without the
+   cast, a chained colour store, `(alpha << 24) | base`; rows[0] before rows[3] is worse (101).
+   Round 10 note: the corner colours stored 3, 2, 1, 0 from one `col` give retail's store order
+   (0x40, 0x4C, 0x48, 0x44), and rows[3] written before rows[0] gives retail's load order. Needs
+   @ps2as and size hints for the $gp globals. Tried earlier: the loop body as `if (...) { }`
+   instead of `continue`. */
 #include "structs/weapon.h"
 
 typedef int u128_3812B0 __attribute__((mode(TI)));
@@ -26,10 +31,8 @@ __asm__(".extern D_L01_001DDC80, 4");
 extern s32 D_L01_001DDC30;
 extern s32 D_L01_001DDC34;
 extern s32 D_L01_001DDC80;
-extern u8 D_L01_001E1E80[];
 extern f32 D_L01_001E1E70[];
 extern f32 D_L01_001E1E50[];
-extern V_3812B0 D_L01_001E1E10[];
 extern V_3812B0 D_L01_001E1DE0[];
 extern V_3812B0 D_001A4EC0[];
 extern long func_00389598(s32);
@@ -67,7 +70,7 @@ void func_L01_003812B0(void) {
         if (D_L01_001E1E80[i] == 0) continue;
         alpha = (s32)D_L01_001E1E50[i];
         rows[3] = D_L01_001E1DE0[i];
-        rows[0] = D_L01_001E1E10[i];
+        rows[0] = ((V_3812B0 *)D_L01_001E1E10)[i];
         col = base | (alpha << 24);
         quad.c[3] = col;
         quad.c[2] = col;

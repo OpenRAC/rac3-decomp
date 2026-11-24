@@ -1,5 +1,34 @@
-/* PAL near miss (haiku-w2): 141 words differ with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as); the slot base is written as &(*(H *)&D_001A4BE0).slot[k] (the k*0x50 form built with a different lui register and madd), the remaining diff is the preheader register choice for the hero base and the mat/i+1 spills. */
-/* NEAR MISS: func_L01_004EBDA8. check.py: 386 differing lines but only ~96 differing instructions after alignment (22 ignoring register names). Same frame (0xC0), saved regs, control flow, spill slots 0x54/0x58/0x5C. Differs: (1) fp-loop preheader schedule (sp+0x10 'mat' pointer is a user var here; retail's is hoisted one loop level only), (2) temp register choices in the body start (k*0x50 in a3/slot in a1 in retail), (3) loop-tail delay-slot fill. Uses aliases func_L01_004E9270_004EBDA8 etc. (file defines them as int f(void)) and typedef s64_X mode(DI). */
+/* NEAR MISS: func_L01_004EBDA8 (hero_place_item_mobys).
+ * 2026-11-23 (r13), with the file's flags since the master merge (-mvu0-use-vf0-vf2 added):
+ * check.py 386 words by position, 101 structurally, 26 ignoring register names
+ * (scratch/match/r13_a/sd.py). The previous draft (a `mat = scratch` local) measures 141 / 128 / 53
+ * with those flags: the higher loop-hoisting threshold of -mvu0-use-vf0-vf2 moved more out of the
+ * inner loop. Same frame (0xC0), saved registers, control flow and spill slots 0x54/0x58/0x5C.
+ * What changed: no `mat` local; both calls take `scratch` itself. The inner loop then hoists
+ * the scratch address to its preheader, after the k+1 that gcse inserts there, as retail does
+ * (0x58 is stored in the outer body, not once at the top). The inner loop head (slot reload in
+ * $v1, the 1 in $a0) now matches. The three slot tests are called through casts of their real
+ * names, ((s32 (*)(s32))func_L01_004E9270)(k), since the file defines them as f(void) and
+ * retail passes k in $a0 (same bytes as the old alias names).
+ * Still differs:
+ *   - the outer preheader: same instructions in retail's RTL order (slot base, k+1, scratch),
+ *     but every reload register is one step on in reload's round robin of $v0/$v1/$a0 (retail
+ *     slot $v1, k+1 $a0, scratch $v0; here $a0, $v0, $v1), so retail has one reload fewer (or
+ *     two more) somewhere before it. Every instruction before it agrees, registers included;
+ *   - the body start: k*0x50 in $a3 and the slot address in $a1 in retail ($t0/$a3 here), and
+ *     the order of the 0x25C0 load;
+ *   - the loop tail: its branches take `addiu $a0,$zero,1` and `lw $v1,0x54($sp)` from their
+ *     targets in retail, the same register story.
+ * Without -mvu0-use-vf0-vf2 (the flags before the merge): the scratch address was hoisted out of
+ * both loops unless its life in the inner loop reached 13 (threshold 28 there after 12 moves,
+ * 352 insns); a block scope around the 0x22C0 store does that and gives these same bytes.
+ * Same bytes or worse (don't repeat): `mat` set after `slot`, at the inner loop top, in the
+ * pack block or before the outer loop; `mat[3]` for the 0x40 loads (adds instructions); the
+ * inner loop test as the for condition; mslot as if/else, ternary or nested if (the ternary
+ * and if/else are 99 and 108); chained p58/p5C stores (44); no `mode` local; moby_arg reused for
+ * hero_moby; the continue test written with != and &&.
+ * 2026-11-23: local declaration order: k/fp last or first, moby/mslot/slot moved later: same 26;
+ * slot (or moby and slot) declared first: 36; all reversed: 62. */
 extern u8 D_001A4BE0[];
 extern u8 *D_001A71A0[];
 extern u8 D_001425C0[];
@@ -85,9 +114,9 @@ extern f32 func_0038CED8(void *);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern void func_003C48A8(Vec4 *, Vec4 *);
-extern s32 func_L01_004E9270_004EBDA8(s32);
-extern s32 func_L01_004E9298_004EBDA8(s32);
-extern s32 func_L01_004E92C0_004EBDA8(s32);
+extern int func_L01_004E9270(void);
+extern int func_L01_004E9298(void);
+extern s32 func_L01_004E92C0(void);
 extern void func_003C2EC0(u8 *, s32, void *);
 extern void *func_003C24B0(s32, s32);
 extern void func_L01_00448E10(void *);
@@ -108,7 +137,6 @@ void func_L01_004EBDA8(s32 moby_arg)
     s32 mode;
     f32 hundred;
     u8 *slot;
-    s128 *mat;
     H_4EBDA8_moby *moby;
     s32 mslot;
     s32 a, b, c;
@@ -126,8 +154,7 @@ void func_L01_004EBDA8(s32 moby_arg)
                 continue;
             }
         }
-        mat = scratch;
-        slot = (u8 *)&(*(H_4EBDA8_hero *)&D_001A4BE0).slot[k];
+        slot = (u8 *)&D_001A4BE0 + k * 0x50;
         for (fp = 0; fp < 3; fp++) {
             if (fp > 0 && !(k == 1 || k == 3 || k == 4)) {
                 break;
@@ -156,9 +183,9 @@ void func_L01_004EBDA8(s32 moby_arg)
                         if (k == 0) {
                             func_L01_004EB978(moby, &D_001A5810[mslot], 0);
                         }
-                        a = func_L01_004E9270_004EBDA8(k);
-                        b = func_L01_004E9298_004EBDA8(k);
-                        c = func_L01_004E92C0_004EBDA8(k);
+                        a = ((s32 (*)(s32))func_L01_004E9270)(k);
+                        b = ((s32 (*)(s32))func_L01_004E9298)(k);
+                        c = ((s32 (*)(s32))func_L01_004E92C0)(k);
                         if (!a && !b && !c) {
                             func_003C6FE0((u8 *)moby);
                         }
@@ -235,11 +262,11 @@ void func_L01_004EBDA8(s32 moby_arg)
                 }
                 pack = (*(H_4EBDA8_hero *)&D_001A4BE0).slot[3].pack;
                 if ((pack[0x34] ^ 1) & 1) {
-                    func_003C2EC0((u8 *)moby, 8, mat);
+                    func_003C2EC0((u8 *)moby, 8, scratch);
                     (*(H_4EBDA8_hero *)&D_001A4BE0).w22C0 = scratch[3];
                     func_L01_004E3268();
                     *(s128 *)(pack + 0x10) = scratch[3];
-                    func_0038D590(pack + 0xC0, mat);
+                    func_0038D590(pack + 0xC0, scratch);
                     func_003C7C38(pack);
                     {
                         s32 r = D_L01_001DFB40 % 100;

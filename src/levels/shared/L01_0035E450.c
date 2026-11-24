@@ -136,9 +136,90 @@ INCLUDE_ASM("asm/levels", func_L01_0035E710);
 
 LINKER_REMNANT("asm/levels", func_L01_0035EB18);
 
-INCLUDE_ASM("asm/levels", func_L01_0035EB20);
+/* localdecomp:start func_L01_0035EB20 */
+#include "vu0.h"
+extern S_38C110v D_L01_001E29C0;
+/* agent_bullet_hit_embers: twenty embers thrown from where an agent's bullet hit. */
+void func_L01_0035EB20(S_38C110v *origin) {
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_00382760(void *, f32, f32, f32);
+    extern void func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+    S_38C110v direction;
+    S_38C110v velocity;
+    S_38C110v position;
+    f32 heading;
+    f32 factor, elevation, yaw;
+    s32 kind;
+    s32 i;
+    f32 lifetime_scale;
+    vec_sub_ab(&direction, &D_L01_001E29C0, origin);
+    heading = func_0038D160(direction.x, direction.y);
+    for (i = 19; i >= 0; i--) {
+        factor = func_003824E0(0.5f, 1.0f);
+        kind = (s32)func_L01_00443A18(1.0f, 2.0f);
+        func_003824E0(0.05f, 0.2f);
+        lifetime_scale = 210000.0f;
+        elevation = func_003824E0(0.0f, 1.3962634f);
+        yaw = func_0038DAB8(heading, func_L01_00443A18(0.0f, 1.3962634f));
+        func_00382760(&velocity, factor * 0.020000001f, yaw, elevation);
+        position.x = origin->x + func_L01_00443A18(0.0f, 0.1f);
+        position.y = origin->y + func_L01_00443A18(0.0f, 0.1f);
+        position.z = origin->z + func_L01_00443A18(0.0f, 0.1f);
+        func_L01_0046A610(&position, &velocity, 25, 127, 0x7F7F7F, kind,
+                         func_003824E0(0.05f, 0.2f) * lifetime_scale, 500.0f, 1.0f, 0.0f, 1.0f);
+    }
+}
+/* localdecomp:end func_L01_0035EB20 */
 
-INCLUDE_ASM("asm/levels", func_L01_0035ED40);
+/* localdecomp:start func_L01_0035ED40 */
+#include "vu0.h"
+extern S_38C110v D_L01_001E29C0;
+/* agent_bullet_tracer: the tracer quad behind an agent's bullet, along its velocity. */
+void func_L01_0035ED40(u8 *moby) {
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_003D2DA0(void *, void *, s32);
+    S_38C110v basis[4];
+    u8 packet[0x90] __attribute__((aligned(16)));
+    S_38C110v shifted;
+    void *vars=*(void **)(moby+0x68);
+    f32 width=func_003824E0(0.14f,0.22f);
+    f32 length=func_003824E0(1.333f,1.5f);
+    s32 i;
+    func_0038CF68(&basis[0],vars,1.0f);
+    vec_sub_ba(&basis[1], &D_L01_001E29C0, moby+0x10);
+    func_0038CE90(&basis[2],&basis[1],&basis[0]);
+    func_0038CF68(&basis[2],&basis[2],width);
+    func_0038CF68(&basis[0],&basis[0],length);
+    *(s32 *)&basis[0].w=0;
+    *(s32 *)&basis[1].w=0;
+    *(s32 *)&basis[2].w=0;
+    func_003D93B0(packet,63,1,128);
+    *(s32 *)(packet+0x50)=0; *(s32 *)(packet+0x54)=0;
+    *(s32 *)(packet+0x58)=0; *(f32 *)(packet+0x5C)=1.0f;
+    *(f32 *)(packet+0x60)=1.0f; *(s32 *)(packet+0x64)=0;
+    *(f32 *)(packet+0x68)=1.0f; *(f32 *)(packet+0x6C)=1.0f;
+    for (i=0;i<4;i++) {
+        qzero((vu0_q *)packet+i);
+        { S_38C110v *v=(S_38C110v *)packet+i;
+        if (i<2) *(s32 *)&v->x=0; else v->x=1.0f;
+        *(s32 *)&v->y=0;
+        if (i&1) v->z=1.0f; else v->z=-1.0f;
+        v->w=1.0f;
+        ((u32 *)(packet+0x40))[i]=0x7FFFFFFF;
+        }
+    }
+    func_0038CF68(&shifted,vars,-1.25f);
+    vec_add_ba(&basis[3], &shifted, moby+0x10);
+    basis[3].w=1.0f;
+    func_003D2DA0(packet,basis,0);
+}
+/* localdecomp:end func_L01_0035ED40 */
 
 /* localdecomp:start func_L01_0035EF20 */
 typedef struct {

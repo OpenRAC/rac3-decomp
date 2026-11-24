@@ -1293,7 +1293,203 @@ void func_L01_004E1F00(s32 camera)
 }
 /* localdecomp:end func_L01_004E1F00 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E20E8);
+/* localdecomp:start func_L01_004E20E8 */
+#include "vu0.h"
+extern s32 D_L01_001D673C;
+extern s32 D_L01_001D6694;
+extern u8 D_00142CAB[];
+typedef struct { u8 pad0[0x50]; u8 *object; u8 pad54[0x2A0-0x54]; s16 counter; } State_004E20E8;
+extern State_004E20E8 D_L01_001E2A40;
+typedef struct {
+    u8 p0[0x80];
+    f32 f80[4];             /* 0x80: position */
+    f32 f90[2];             /* 0x90 */
+    f32 f98;                /* 0x98: facing */
+    u8 p9C[0x110 - 0x9C];
+    u8 f110[0x10];          /* 0x110 */
+    u8 p120[0x178 - 0x120];
+    f32 f178;               /* 0x178 */
+    u8 p17C[0x308 - 0x17C];
+    f32 f308;               /* 0x308 */
+    u8 p30C[0x338 - 0x30C];
+    f32 f338;               /* 0x338 */
+    f32 f33C;               /* 0x33C */
+    u8 p340[0x500 - 0x340];
+    u8 f500[0x10];          /* 0x500 */
+    u8 p510[0xA28 - 0x510];
+    s32 fA28;               /* 0xA28 */
+    u8 pA2C[0xA5E - 0xA2C];
+    s16 fA5E;               /* 0xA5E */
+    u8 pA60[0xAC4 - 0xA60];
+    s32 fAC4;               /* 0xAC4 */
+    u8 pAC8[0x1228 - 0xAC8];
+    s32 f1228;              /* 0x1228 */
+    u8 p122C[0x1476 - 0x122C];
+    u8 f1476, f1477, f1478; /* 0x1476 */
+    u8 p1479[0x147D - 0x1479];
+    u8 f147D, f147E;        /* 0x147D */
+    u8 p147F[0x23D0 - 0x147F];
+    s16 f23D0, f23D2;       /* 0x23D0 */
+    u8 p23D4[0x25C0 - 0x23D4];
+    s32 f25C0, f25C4;       /* 0x25C0 */
+    u8 p25C8[0x25E4 - 0x25C8];
+    u8 f25E4, f25E5, f25E6, f25E7, f25E8; /* 0x25E4 */
+    u8 p25E9[0x25F0 - 0x25E9];
+    u8 f25F0;               /* 0x25F0 */
+    u8 p25F1[0x280C - 0x25F1];
+    s32 f280C;              /* 0x280C */
+} H_4E20E8;
+extern H_4E20E8 D_001A4BE0_004E20E8;
+/* hero_tick: the hero's per-frame update. */
+void func_L01_004E20E8(void) {
+    extern void func_0038CE20(void *,void *,f32);
+    extern f32 func_0038CF38(void *,void *);
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_0038DBA0(f32,f32);
+    extern int func_003D3CB0(char *,char *,int,int,int);
+    extern void func_L01_00430118(void *);
+    extern void func_L01_004436F4(u8 *);
+    extern s32 func_L01_004606E8(s32,s32,s32,s32);
+    extern void func_L01_004E04A0(void);
+    extern void func_L01_004E0618(void);
+    extern void func_L01_004E0920(void);
+    extern void func_L01_004E1218(void);
+    extern void func_L01_004E13A0_004E20E8(void);
+    extern void func_L01_004E1638(void);
+    extern void func_L01_004E1F00(s32);
+    extern s32 func_L01_004E26A0(void);
+    extern void func_L01_004E2C48(void);
+    extern void func_L01_004E2ED0(void);
+    extern void func_L01_004E3148(void);
+    extern void func_L01_004E45C8(void);
+    extern void func_L01_004E48C8(void);
+    extern void func_L01_004E52E0();
+    extern void func_L01_004E64C0(void);
+    extern void func_L01_004E67F8(void);
+    extern void func_L01_004E6D10_004E20E8(void);
+    extern void func_L01_004E6D18(void);
+    extern void func_L01_004E7338(void);
+    extern void func_L01_004E7CB8_004E20E8(void);
+    extern void func_L01_004E8318(void *,void *,void *);
+    extern void func_L01_004E8EE0(void);
+    extern void func_L01_004E90C8(void);
+    extern void func_L01_004E9450_004E20E8(void);
+    extern void func_L01_004EAEE8(void);
+    extern void func_L01_004ED328(void);
+    extern void func_L01_004EE4E0_004E20E8(void);
+    extern void func_L01_004F2A08(void);
+    extern void func_L01_004F5010(void);
+    extern void func_L01_004FF780(void);
+    extern void func_L01_004FFA10(void);
+    extern void func_L01_004FFD00(void);
+    extern s32 func_L01_004FFF58(void);
+    extern void func_L01_00507AF8_004E20E8(void);
+    extern void func_L01_0050FF00(void);
+    extern void func_L01_005108C0(s32);
+    extern void func_L01_00510AD0(void);
+    extern void func_L01_005129A8(s32);
+    extern void func_L01_00512E68(void);
+    extern void func_L01_005138F8(void);
+    extern s32 func_L01_00513EF0(void);
+    vu0_v4 point,top,bottom;
+    s32 allow;
+    s32 eligible;
+    D_001A4BE0_004E20E8.f23D2=0;
+    D_001A4BE0_004E20E8.f23D0=0;
+    if (D_001A4BE0_004E20E8.f25E4) {
+        func_L01_004E13A0_004E20E8();
+        func_L01_004E1F00(0);
+        if (D_001A4BE0_004E20E8.f25E4==5) func_L01_004E1638();
+        return;
+    }
+    allow=0;
+    func_L01_0050FF00();
+    func_L01_004EE4E0_004E20E8();
+    func_L01_004E7CB8_004E20E8();
+    func_L01_004E8318(D_001A4BE0_004E20E8.f80,D_001A4BE0_004E20E8.f90,D_001A4BE0_004E20E8.f500);
+    func_L01_004E8EE0();
+    func_L01_004E90C8();
+    if (D_001A4BE0_004E20E8.f338==0.0f || D_001A4BE0_004E20E8.f308-D_001A4BE0_004E20E8.f338>2.0f || D_001A4BE0_004E20E8.f147D || D_001A4BE0_004E20E8.f1476 || D_001A4BE0_004E20E8.f147E || D_001A4BE0_004E20E8.f1477 || D_001A4BE0_004E20E8.f1478) allow=1;
+    if (func_L01_004606E8(0x20,0x11,0,0)) {
+        if (D_001A4BE0_004E20E8.f33C>0.7f && D_001A4BE0_004E20E8.f178>0.10000000894069672f) {
+            func_0038CE20(&point,D_001A4BE0_004E20E8.f110,20.0f);
+            point.z=0.0f;
+            vec_add_ba(&point, &point, D_001A4BE0_004E20E8.f80);
+            *(vu0_q *)&top=*(vu0_q *)&point;
+            *(vu0_q *)&bottom=*(vu0_q *)&point;
+            top.z+=1.0f;
+            bottom.z-=1.5f;
+            if (!func_003D3CB0((char *)&top,(char *)&bottom,2,0,0)) allow=1;
+        }
+    }
+    if (D_L01_001D673C) allow=0;
+    if (func_L01_004606E8(0x20,4,0,0)) {
+        if (D_001A4BE0_004E20E8.f1228==11) goto update;
+        eligible=D_001D545C==5;
+        if (D_001D545C==17) {
+            *(vu0_q *)&point=0;
+            point.x=424.5f;
+            point.y=455.70001220703125f;
+            point.z=120.2699966430664f;
+            if (func_0038CF38(D_001A4BE0_004E20E8.f80,&point)<11.5f) {
+                f32 angle=func_0038D160(point.x-D_001A4BE0_004E20E8.f80[0],point.y-D_001A4BE0_004E20E8.f80[1]);
+                if (func_0038DBA0(D_001A4BE0_004E20E8.f98,angle)<30.0f) eligible=1;
+            }
+        }
+        if (eligible) {
+            func_L01_004FFF58();
+            if (D_001A4BE0_004E20E8.fAC4) allow=1;
+        }
+    }
+    if (D_001A4BE0_004E20E8.f1228==11 || allow) {
+update:
+        func_L01_004FF780();
+        func_L01_004FFA10();
+        func_L01_004FFD00();
+        func_L01_004FFF58();
+        if ((D_001A4BE0_004E20E8.fA28 || D_001A4BE0_004E20E8.fA5E || D_001A4BE0_004E20E8.fAC4) && allow && D_001A4BE0_004E20E8.f25E8==0 && D_001A4BE0_004E20E8.f25F0==0 && D_00142CAB[0]) D_001A4BE0_004E20E8.f25E7=1;
+    }
+    func_L01_00507AF8_004E20E8();
+    if (D_L01_001D6694==2 || D_L01_001D6694==6) {
+        if (D_001A4BE0_004E20E8.f25E5) func_L01_005108C0(0);
+        else func_L01_00510AD0();
+        { func_L01_004E1F00(0); return; }
+    }
+    func_L01_005129A8(D_001A4BE0_004E20E8.f25C0);
+    func_L01_004E9450_004E20E8();
+    if (D_001A4BE0_004E20E8.f25E4) { func_L01_004E1F00(0); return; }
+    func_L01_004F5010();
+    func_L01_004E7338();
+    func_L01_004E64C0();
+    func_L01_004E67F8();
+    func_L01_004E6D18();
+    func_L01_004E6D10_004E20E8();
+    func_L01_004E0618();
+    func_L01_004E0920();
+    func_L01_004F2A08();
+    func_L01_004E04A0();
+    func_L01_004E45C8();
+    func_L01_004E52E0(0);
+    func_L01_004ED328();
+    func_L01_004EAEE8();
+    if (D_001A4BE0_004E20E8.f25E5 || func_L01_00513EF0()==2) {
+        if (func_L01_00513EF0()==2 && (D_L01_001E2A40.counter || (D_L01_001E2A40.object && *(s16 *)(D_L01_001E2A40.object+0x86)==0))) func_L01_00510AD0();
+        else func_L01_005108C0(0);
+    } else func_L01_00510AD0();
+    func_L01_004E3148();
+    func_L01_004E2ED0();
+    func_L01_004E1638();
+    func_L01_005138F8();
+    func_L01_004E1218();
+    func_L01_00512E68();
+    if (D_001A4BE0_004E20E8.f25C4!=0x31 || func_L01_004E26A0()) func_L01_00430118(D_001A4BE0_004E20E8.f80);
+    func_L01_004436F4((u8 *)D_001A4BE0_004E20E8.f25C0);
+    func_L01_004E2C48();
+    func_L01_004E48C8();
+    if (func_L01_00513EF0() && D_001A4BE0_004E20E8.f280C!=4 && D_001A4BE0_004E20E8.f280C!=0x51) D_001A4BE0_004E20E8.f280C=0x20;
+    func_L01_004E1F00(0);
+}
+/* localdecomp:end func_L01_004E20E8 */
 
 /* localdecomp:start func_L01_004E26A0 */
 extern s32 D_001D545C;

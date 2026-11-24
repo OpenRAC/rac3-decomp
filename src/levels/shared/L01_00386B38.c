@@ -18,7 +18,72 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_00386B38);
 
-INCLUDE_ASM("asm/levels", func_L01_003882A0);
+/* localdecomp:start func_L01_003882A0 */
+#include "vu0.h"
+
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_003882A0;
+typedef struct { u8 pad[0x46]; u8 kind; } Class_003882A0;
+typedef struct { u8 pad[0x24]; Class_003882A0 *cls; } Moby_003882A0;
+typedef struct { u8 pad[0x18]; Moby_003882A0 *moby; } Hit_003882A0;
+typedef struct { u8 pad[0x6C]; f32 damage; u8 tail[0x80]; } WeaponRow_003882A0;
+
+extern Hit_003882A0 D_L01_001EAA00;
+extern Vec_003882A0 D_L01_001EAA20;
+extern WeaponRow_003882A0 D_L01_002C5600_003882A0[];
+extern u8 D_001425E7[];
+extern s32 D_001A71A0[];
+
+/* shock_cannon_ray_test: tests one of the Shock Cannon's rays from start to end. On a hit, the
+ * distance sets the damage (all of it under 10 u, 3/4 under 14, 1/2 under 20, else 1/8), queued on
+ * the moby hit; returns that moby if its class is of kind 5, else 0. */
+Moby_003882A0 *func_L01_003882A0(void *gun, Vec_003882A0 *start, Vec_003882A0 *end, Vec_003882A0 *shot, f32 radius) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+    extern void *func_L01_00389B00_003882A0(void *, void *, void *, s32, f32);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_00446978(void *, void *);
+    extern void func_L01_0034C9F0(void *, s32, void *);
+    Vec_003882A0 delta;
+    f32 damage, dist;
+    Moby_003882A0 *moby, *ret;
+    Vec_003882A0 *hit_pos;
+
+    vec_sub_ab(shot, end, start);
+    func_0038CF68(shot, shot, 1.5f);
+    shot->w = 5627.925f;
+    if (func_003D3CB0(start, end, 16, D_001A71A0[0], 0)) {
+        vec_sub_ab(&delta, end, start);
+        func_0038CF68(&delta, &delta, 1.0f);
+        hit_pos = &D_L01_001EAA20;
+        vec_sub_ab(&delta, hit_pos, start);
+        func_L01_00389B00_003882A0(start, &delta, hit_pos, 1, radius);
+        if (((s32 *)hit_pos)[-2]) {
+            damage = ((WeaponRow_003882A0 *)D_L01_002C5600_003882A0)[D_001425E7[0]].damage;
+            dist = func_0038CF00(hit_pos, start);
+            if (dist < 10.0f) ((f32 *)shot)[7] = damage;
+            else if (dist < 14.0f) ((f32 *)shot)[7] = damage * 0.75f;
+            else if (dist < 20.0f) ((f32 *)shot)[7] = damage * 0.5f;
+            else ((f32 *)shot)[7] = damage * 0.125f;
+            func_L01_00446978(D_L01_001EAA00.moby, shot);
+            func_L01_0034C9F0(D_L01_001EAA00.moby, 39, gun);
+            moby = D_L01_001EAA00.moby;
+            ret = 0;
+            if (moby != 0) {
+                Class_003882A0 *cls = moby->cls;
+                ret = moby;
+                if (cls == 0 || cls->kind != 5) ret = 0;
+            }
+        } else {
+            ret = 0;
+        }
+    } else {
+        vec_sub_ab(&delta, end, start);
+        func_L01_00389B00_003882A0(start, &delta, end, 0, -1.0f);
+        ret = 0;
+    }
+    return ret;
+}
+/* localdecomp:end func_L01_003882A0 */
 
 /* localdecomp:start func_L01_003884D8 */
 #include "vu0.h"
@@ -71,9 +136,165 @@ void func_L01_003884D8(u8 *obj) {
 }
 /* localdecomp:end func_L01_003884D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003886E8);
+/* localdecomp:start func_L01_003886E8 */
+typedef struct {
+    u8 pad0[0x16B0]; s32 mode;
+    u8 pad16B4[0x25C0 - 0x16B4]; u8 *camera;
+    u8 pad25C4[0x2874 - 0x25C4]; s16 aiming;
+} Hero_003886E8;
+extern Hero_003886E8 D_001A4BE0_003886E8;
+extern s128 D_L01_001E29E0;
+extern f32 D_L01_001DDE00, D_L01_001DDE04, D_L01_001DDE08;
+extern s32 D_L01_001DDDF4, D_L01_001DDDF8, D_L01_001DDDFC;
+extern s32 D_L01_001E1EA4;
+extern f32 D_L01_001E1EA8, D_L01_001E1EAC, D_L01_001E1EB0;
+__asm__(".extern D_L01_001DDE00, 4");
+__asm__(".extern D_L01_001DDE04, 4");
+__asm__(".extern D_L01_001DDE08, 4");
+__asm__(".extern D_L01_001DDDF4, 4");
+__asm__(".extern D_L01_001DDDF8, 4");
+__asm__(".extern D_L01_001DDDFC, 4");
 
-INCLUDE_ASM("asm/levels", func_L01_00388AC8);
+/* shock_cannon_domes_draw: the Shock Cannon lance's three spinning domes (fx_dome), from the gun
+ * along the aim, the camera's facing, or the scripted direction, opening out along the lance. */
+void func_L01_003886E8(u8 *moby) {
+    extern void func_003C2F58(void *, s32, void *);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0038D328(s128 *, S_38C110v *);
+    extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+    extern void func_003D9740(s128 *, s32, u32, s32, s32, f32);
+    struct { s128 matrix[4], position, direction; S_38C110v rotation; s128 offset; } v;
+    func_003C2F58(moby, 0, &v.position);
+    if (D_001A4BE0_003886E8.aiming) {
+        func_0038CE20(&v.direction, moby + 0xD0, -1.0f);
+    } else if (D_001A4BE0_003886E8.mode == 1) {
+        v.direction = D_L01_001E29E0;
+    } else {
+        v.direction = *(s128 *)(D_001A4BE0_003886E8.camera + 0xC0);
+    }
+    v.rotation.x = 0.0f;
+    v.rotation.y = -func_0038D160(func_0038CED8(&v.direction), ((f32 *)&v.direction)[2]) + -1.57079637f;
+    v.rotation.z = func_0038D160(((f32 *)&v.direction)[0], ((f32 *)&v.direction)[1]);
+    v.rotation.w = 1.0f;
+    func_0038D328(v.matrix, &v.rotation);
+    if (D_001A4BE0_003886E8.aiming) {
+        func_0038CE20(&v.offset, moby + 0xD0, -1.0f);
+    } else if (D_001A4BE0_003886E8.mode == 1) {
+        v.offset = D_L01_001E29E0;
+    } else {
+        v.offset = *(s128 *)(D_001A4BE0_003886E8.camera + 0xC0);
+    }
+    func_0038CE20(&v.offset, &v.offset, D_L01_001DDE00 - 0.5f);
+    vec_add_ab(&v.position, &v.position, &v.offset);
+    v.matrix[3] = v.position;
+    func_0038CE20(&v.matrix[0], &v.matrix[0], D_L01_001DDE08);
+    func_0038CE20(&v.matrix[1], &v.matrix[1], D_L01_001DDE04);
+    func_0038CE20(&v.matrix[2], &v.matrix[2], D_L01_001DDE00);
+    /* each dome's spin, wrapped at 7 */
+    D_L01_001E1EA8 += 0.15f;
+    if (D_L01_001E1EA8 >= 7.0f) D_L01_001E1EA8 -= 7.0f;
+    D_L01_001E1EAC += 0.1f;
+    if (D_L01_001E1EAC >= 7.0f) D_L01_001E1EAC -= 7.0f;
+    D_L01_001E1EB0 += 0.05f;
+    if (D_L01_001E1EB0 >= 7.0f) D_L01_001E1EB0 -= 7.0f;
+    func_0038D890((f32 *)&v.matrix[0], (f32 *)&v.matrix[0], (f32 *)&v.matrix[2], 0.785398185f);
+    func_0038D890((f32 *)&v.matrix[1], (f32 *)&v.matrix[1], (f32 *)&v.matrix[2], 0.785398185f);
+    func_003D9740(v.matrix, D_L01_001DDDF4, (D_L01_001E1EA4 << 25) | 0x804020, 8, 1, D_L01_001E1EA8);
+    func_0038D890((f32 *)&v.matrix[0], (f32 *)&v.matrix[0], (f32 *)&v.matrix[2], -1.57079637f);
+    func_0038D890((f32 *)&v.matrix[1], (f32 *)&v.matrix[1], (f32 *)&v.matrix[2], -1.57079637f);
+    func_003D9740(v.matrix, D_L01_001DDDF8, (D_L01_001E1EA4 << 25) | 0x801040, 8, 1, D_L01_001E1EAC);
+    func_003D9740(v.matrix, D_L01_001DDDFC, (D_L01_001E1EA4 << 25) | 0x804010, 8, 1, D_L01_001E1EB0);
+    func_0038CE20(&v.matrix[0], &v.matrix[0], 1.1f);
+    func_0038CE20(&v.matrix[1], &v.matrix[1], 1.1f);
+    func_003D9740(v.matrix, 10, (D_L01_001E1EA4 << 24) | 0xD20A40, 6, 1, D_L01_001E1EA8);
+}
+/* localdecomp:end func_L01_003886E8 */
+
+/* localdecomp:start func_L01_00388AC8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad_0[0x110];
+    s128 velocity;              /* 0x110 */
+    u8 pad_120[0x360 - 0x120];
+    s32 moving;                 /* 0x360 */
+    u8 pad_364[0x6C0 - 0x364];
+    S_38C110v axes[2];          /* 0x6C0 */
+} Hero_00388AC8;
+extern Hero_00388AC8 D_001A4BE0_00388AC8;
+extern u8 *D_L01_00221098[];
+
+/* A burst of 20 smoke puffs (particle_spawn_smoke) and embers (particle_spawn_ember) from position,
+ * thrown out along a direction tilted 20 deg about the hero's axes and spun by a random angle each
+ * time, carrying 1.7 x the hero's velocity when he moves. */
+void func_L01_00388AC8(void *unused, s128 *position) {
+    extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+    extern u8 *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D850(void *, void *, void *);
+    S_38C110v spin, direction, base, origin, velocity, point, inherited, offset;
+    s32 i, kind;
+    f32 angle = 0.0f;
+    u8 *particle;
+
+    *(s128 *)&base = 0;
+    base.x = 0.3f;
+    base.y = -1.0f;
+    base.w = 1.0f;
+    *(s128 *)&origin = *position;
+    func_0038D890((f32 *)&base, (f32 *)&D_001A4BE0_00388AC8.axes[0], (f32 *)&D_001A4BE0_00388AC8.axes[1], 0.34906584f);
+    direction = base;
+    qzero(&inherited);
+    if (D_001A4BE0_00388AC8.moving)
+        func_0038CE20(&inherited, &D_001A4BE0_00388AC8.velocity, 1.7f);
+    func_0038CE20(&offset, &D_001A4BE0_00388AC8.axes[0], 0.4f);
+    vec_add_ab(&origin, &origin, &offset);
+    for (i = 0; i < 20; i++) {
+        angle = func_0038DAB8(angle, func_003824E0(0.0f, 0.62831855f));
+        func_0038CE20(&velocity, &direction, func_003824E0(0.24000001f, 0.32000002f));
+        vec_add_ab(&velocity, &velocity, &inherited);
+        point.x = origin.x + func_L01_00443A18(0.0f, 0.3f);
+        point.y = origin.y + func_L01_00443A18(0.0f, 0.3f);
+        point.z = origin.z + func_L01_00443A18(0.0f, 0.3f);
+        kind = (s32)func_L01_00443A18(1.0f, 2.0f);
+        particle = func_L01_004669B0(&point, 0.0f, 1.0f, 1.01f, func_003824E0(0.2f, 0.75f) * 210000.0f, kind,
+                                     &D_001A4BE0_00388AC8.velocity, 0x7FFFFFFF, 0);
+        if (particle) {
+            u8 *p;
+            particle[3] = 72;
+            *(s16 *)(particle + 10) = 50;
+            p = particle + 0x20;
+            particle[9] = 68;
+            *(f32 *)(p + 0x1C) = 4.0f;
+            *(s32 *)(p + 4) = 3;
+            p[10] = 48;
+            p[11] = particle[10];
+        }
+        point.x = origin.x + func_L01_00443A18(0.0f, 0.6f);
+        point.y = origin.y + func_L01_00443A18(0.0f, 0.6f);
+        point.z = origin.z + func_L01_00443A18(0.0f, 0.6f);
+        {
+            f32 size = func_003824E0(0.2f, 1.75f);
+            vec_sub_ab(&point, &point, &velocity);
+            particle = func_L01_0046A610(&point, &velocity, 5, 127, 0x404040, kind, size * 210000.0f, 500.0f, 0.95f, 0.0f, 0.0f);
+        }
+        if (particle) particle[2] = D_L01_00221098[0x5B][1];
+        if (fabs_asm(angle) > 0.00001f) {
+            func_003C4840(&spin, &D_001A4BE0_00388AC8.axes[0], angle);
+            func_0038D850(&direction, &base, &spin);
+        }
+    }
+    {
+        f32 scale = func_003824E0(8.0f, 12.0f) * 0.020000001f;
+        func_0038CE20(&base, &D_001A4BE0_00388AC8.axes[0], scale);
+    }
+}
+/* localdecomp:end func_L01_00388AC8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00388EE0);
 
@@ -235,7 +456,109 @@ Moby_00389B00 *func_L01_00389B00(s128 *position, void *direction, s128 *rotation
 
 INCLUDE_ASM("asm/levels", func_L01_00389C28);
 
-INCLUDE_ASM("asm/levels", func_L01_0038A0F8);
+/* localdecomp:start func_L01_0038A0F8 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 position[4];
+    u32 colour[4];
+    f32 uv[4][2];
+    u8 pad70[0x20];
+} Quad_0038A0F8;
+extern s32 D_L01_001DDEA0;
+extern s32 D_L01_001DDEA4;
+extern vu0_v4 D_L01_001E29C0;
+__asm__(".extern D_L01_001DDEA0, 4");
+__asm__(".extern D_L01_001DDEA4, 4");
+
+/* shock_cannon_ray_draw: draws the Shock Cannon's ray (class 0x1883) from the moby to the end point
+ * in its vars (+0x50) as camera-facing quads, their u scrolled by vars+0x30 each frame: the first
+ * texture in (0x20, 0x40, 0x80) blended over two halves, then the second in (0, 0x40, 0xFF), its
+ * alpha 96 x life x fade. */
+void func_L01_0038A0F8(u8 *moby) {
+    extern void func_003D93B0(Quad_0038A0F8 *, s32, s32, s32);
+    extern void func_003D2DA0(Quad_0038A0F8 *, s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    Quad_0038A0F8 quad;
+    vu0_v4 eye, step, end, side;
+    u8 *vars;
+    f32 intensity, *uv;
+    s32 i;
+    u32 colour;
+
+    vars = *(u8 **)(moby + 0x68);
+    if (moby == 0) return;
+    if (moby[0x20] == 0xFE) return;
+    if (moby[0x20] == 0xFD) return;
+    if (vars == 0) return;
+    intensity = (f32)*(s32 *)(vars + 0x38) * *(f32 *)(vars + 0x3C);
+    func_003D93B0(&quad, D_L01_001DDEA0, 0, 0x80);
+    colour = ((s32)(intensity * 96.0f) << 24) | 0x804020;
+    quad.colour[1] = colour;
+    quad.colour[0] = colour;
+    quad.colour[3] = colour;
+    quad.colour[2] = colour;
+    quad.uv[0][0] = 0.0f;
+    quad.uv[0][1] = 0.0f;
+    quad.uv[1][0] = 0.0f;
+    quad.uv[1][1] = 1.0f;
+    quad.uv[2][0] = 1.0f;
+    quad.uv[2][1] = 0.0f;
+    quad.uv[3][0] = 1.0f;
+    quad.uv[3][1] = 1.0f;
+    uv = &quad.uv[0][0];
+    for (i = 3; i >= 0; i--, uv += 2) {
+        *uv += *(f32 *)(vars + 0x30);
+        if (*uv >= 7.0f) *uv -= 7.0f;
+    }
+    *(f32 *)(vars + 0x30) += 0.1f;
+    if (*(f32 *)(vars + 0x30) >= 4.0f) *(f32 *)(vars + 0x30) -= 4.0f;
+    vec_sub_ab(&eye, moby + 0x10, &D_L01_001E29C0);
+    vec_sub_ab(&step, vars + 0x50, moby + 0x10);
+    func_0038CE20(&step, &step, 0.5f);
+    vec_add_ba(&end, moby + 0x10, &step);
+    func_0038CE90(&side, &eye, &step);
+    func_0038CF68(&side, &side, 1.4f);
+    vec_add_ba(&quad.position[0], moby + 0x10, &side);
+    vec_sub_ab(&quad.position[1], moby + 0x10, &side);
+    func_0038CF68(&side, &side, 0.6f);
+    vec_add_ba(&quad.position[2], &end, &side);
+    vec_sub_ba(&quad.position[3], &end, &side);
+    func_003D2DA0(&quad, 0, 0);
+    quad.colour[0] = quad.colour[2];
+    quad.colour[1] = quad.colour[3];
+    quad.colour[3] = 0x204080;
+    quad.colour[2] = 0x204080;
+    *(vu0_q *)&quad.position[0] = *(vu0_q *)&quad.position[2];
+    *(vu0_q *)&quad.position[1] = *(vu0_q *)&quad.position[3];
+    vec_add_ba(&quad.position[2], &quad.position[2], &step);
+    vec_add_ab(&quad.position[3], &quad.position[3], &step);
+    func_003D2DA0(&quad, 0, 0);
+    func_003D93B0(&quad, D_L01_001DDEA4, 1, 0x80);
+    colour = ((s32)(intensity * 96.0f) << 24) | 0xFF4000;
+    quad.uv[0][0] = 0.0f;
+    quad.uv[0][1] = 0.0f;
+    quad.uv[1][0] = 0.0f;
+    quad.uv[1][1] = 1.0f;
+    quad.colour[1] = colour;
+    quad.uv[2][0] = 1.0f;
+    quad.uv[2][1] = 0.0f;
+    quad.uv[3][0] = 1.0f;
+    quad.colour[0] = colour;
+    quad.colour[3] = 0xFF4000;
+    quad.uv[3][1] = 1.0f;
+    quad.colour[2] = 0xFF4000;
+    func_0038CF68(&side, &side, 0.6f);
+    vec_add_ba(&quad.position[0], moby + 0x10, &side);
+    vec_sub_ab(&quad.position[1], moby + 0x10, &side);
+    vec_add_ab(&end, moby + 0x10, &step);
+    vec_add_ba(&end, &end, &step);
+    vec_add_ab(&quad.position[2], &end, &side);
+    vec_sub_ab(&quad.position[3], &end, &side);
+    func_003D2DA0(&quad, 0, 0);
+}
+/* localdecomp:end func_L01_0038A0F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_0038A4B8);
 
@@ -254,7 +577,7 @@ typedef struct {
     u8 p25ea[3]; u8 flag25ed;
     u8 p25ee[0x28bc-0x25ee]; s32 cooldown;
 } Hero_0038A708;
-extern Hero_0038A708 D_001A4BE0;
+extern Hero_0038A708 D_001A4BE0_0038A708;
 extern u8 D_L01_001DAFF0;
 extern s32 D_001D545C;
 extern s32 D_L01_001D673C;
@@ -275,10 +598,10 @@ __asm__(".extern D_L01_001DDEB4, 4");
 /* nitro_v5_update: the Nitro Launcher V5 moby (class 0x1885): aims at the lock-on target or the nearest one in reach, and fires */
 void func_L01_0038A708(u8 *m)
 {
-    extern void func_003C2F58(u8 *,s32,void *);
+    extern void func_003C2F58(void *, s32, void *);
     extern void func_L01_00444F38(u8 *,s32,s32,s32,s32);
-    extern u8 *func_00382348(u8 *);
-    extern s32 func_0038CAD0(s32 *);
+    extern u8 *func_00382348(void *);
+    extern s32 func_0038CAD0(void *);
     extern u8 *func_L01_004501E8(void *,void *,s32 *,f32,f32,f32,f32,s32,s32,s32,f32,s32,void *,s32,s32,s32);
     extern void func_L01_0038AD40(void *,void *,u8 *,s32,f32,f32,f32,f32);
     extern s32 func_L01_004C7A18(void *,void *,void *,void *,u8 *,s32,s32,f32);
@@ -288,14 +611,14 @@ void func_L01_0038A708(u8 *m)
     extern s32 func_L01_003F2058(void *,s32);
     extern void func_0038D890(f32 *,f32 *,f32 *,f32);
     extern f32 func_0038CEA8(void *);
-    extern void func_0038CF68(f32 *,f32 *,f32);
+    extern void func_0038CF68(void *, void *, f32);
     extern void func_L01_00362610(void *,void *,u8 *,s32,s32);
-    extern void func_003A52A0(s32,s32,u8 *);
+    extern s32 func_003A52A0(s32, s32, void *);
     extern s32 func_L01_005119E0(s32);
     extern void func_L01_003F2278(s32,s32);
     extern void func_L01_0040E050(void *);
     extern void func_L01_0038ACE8(Obj3899C0 *);
-    extern void func_L01_00404A10(void (*)(Obj3899C0 *),u8 *);
+    extern void func_L01_00404A10_0038A708(void (*)(Obj3899C0 *),u8 *);
     S_38C110v pos;
     union {
         ParamsA_0038A708 params;
@@ -312,25 +635,25 @@ void func_L01_0038A708(u8 *m)
     if(m[0x42]==m[0x43] && (m[0x60]&2))
         func_L01_00444F38(m,1,0,2,0);
     target=0;
-    check=D_001A4BE0.target;
+    check=D_001A4BE0_0038A708.target;
     if(check && check[0x20]!=254 && check[0x20]!=253) {
         u8 *state=func_00382348(check);
         if(state && *(f32 *)state>0.0f)
-            target=D_001A4BE0.target;
+            target=D_001A4BE0_0038A708.target;
     }
     canfire=1;
-    if(D_001A4BE0.state==29 || D_001A4BE0.state==1) {
-        if(!func_0038CAD0(&D_001A4BE0.cooldown)) canfire=0;
+    if(D_001A4BE0_0038A708.state==29 || D_001A4BE0_0038A708.state==1) {
+        if(!func_0038CAD0(&D_001A4BE0_0038A708.cooldown)) canfire=0;
     } else {
-        D_001A4BE0.cooldown=33;
+        D_001A4BE0_0038A708.cooldown=33;
         if(!target) {
             aim.params=D_L01_001DDEB8;
-            target=func_L01_004501E8(&pos,(u8 *)&D_001A4BE0+0x6f0,&out0,0.3926990926f,1.5707963705f,11.1000003815f,0.0f,0,0,0,0.0f,0,&aim.params,1,-1,0);
+            target=func_L01_004501E8(&pos,(u8 *)&D_001A4BE0_0038A708+0x6f0,&out0,0.3926990926f,1.5707963705f,11.1000003815f,0.0f,0,0,0,0.0f,0,&aim.params,1,-1,0);
         }
     }
     if(D_L01_001DAFF0 && D_001D545C==5) {
         params2=D_L01_001DDED0;
-        target=func_L01_004501E8(&pos,(u8 *)&D_001A4BE0+0x6f0,&out1,0.8726646304f,1.0471975803f,30.0f,0.0f,0,0,0,0.0f,0,&params2,1,-1,0);
+        target=func_L01_004501E8(&pos,(u8 *)&D_001A4BE0_0038A708+0x6f0,&out1,0.8726646304f,1.0471975803f,30.0f,0.0f,0,0,0,0.0f,0,&params2,1,-1,0);
         if(target && *(s16 *)(target+0xaa)==0x1a13) {
             /* a 0x1A13 target: range 10, speed 50 */
             D_L01_001DDEA8=10.0f;
@@ -356,26 +679,26 @@ aim:
         *(s32 *)(vars+0x20)=0;
         *(s32 *)(vars+0x28)=0;
     case 1:
-        if(D_001A4BE0.field1d8>=18) func_L01_004EAA80();
-        if(canfire && *(f32 *)(vars+0x20)==0.0f && !D_001A4BE0.flag25ed &&
-            (*(s32 *)(D_001D52FC+0x1a0)&D_001A4BE0.flags) && D_001A4BE0.field1220>=19) {
+        if(D_001A4BE0_0038A708.field1d8>=18) func_L01_004EAA80();
+        if(canfire && *(f32 *)(vars+0x20)==0.0f && !D_001A4BE0_0038A708.flag25ed &&
+            (*(s32 *)(D_001D52FC+0x1a0)&D_001A4BE0_0038A708.flags) && D_001A4BE0_0038A708.field1220>=19) {
             if(func_L01_005118D0(-1,1)) {
                 D_L01_001E1F10=1;
                 func_L01_004EA7D8(-1);
                 *(s32 *)(vars+0x2c)=func_L01_003F2058(D_L01_002B3C60,0);
                 func_L01_00444F38(m,2,0,2,0);
-                if(target) func_0038D890((f32 *)&aim.dir,(f32 *)&aim.dir,(f32 *)(D_001A4BE0.moby+0xd0),-0.1745329201f);
-                else func_0038D890((f32 *)&aim.dir,(f32 *)&aim.dir,(f32 *)(D_001A4BE0.moby+0xd0),0.0872664601f);
+                if(target) func_0038D890((f32 *)&aim.dir,(f32 *)&aim.dir,(f32 *)(D_001A4BE0_0038A708.moby+0xd0),-0.1745329201f);
+                else func_0038D890((f32 *)&aim.dir,(f32 *)&aim.dir,(f32 *)(D_001A4BE0_0038A708.moby+0xd0),0.0872664601f);
                 if(func_0038CEA8(&aim.dir)>0.6f)
                     func_0038CF68((f32 *)&aim.dir,(f32 *)&aim.dir,0.4400000274f);
                 func_L01_00362610(&pos,&aim.dir,m,1,0);
                 func_003A52A0(0,0,m);
                 *(f32 *)(vars+0x20)=1.0f / ((WeaponRow_0038A708 *)(D_00142637[0] * 0xF0 + (s32)D_L01_002C5600))->rate;
-            } else if((*(s32 *)(D_001D52FC+0x1a4)&D_001A4BE0.flags) || D_L01_001E1F10==1) {
+            } else if((*(s32 *)(D_001D52FC+0x1a4)&D_001A4BE0_0038A708.flags) || D_L01_001E1F10==1) {
                 func_003A52A0(1,0,m);
                 D_L01_001E1F10=0;
             }
-            if(!(*(s32 *)(D_001D52FC+0x1a0)&D_001A4BE0.flags) || !func_L01_005119E0(-1) || !D_001A4BE0.flag25e9) {
+            if(!(*(s32 *)(D_001D52FC+0x1a0)&D_001A4BE0_0038A708.flags) || !func_L01_005119E0(-1) || !D_001A4BE0_0038A708.flag25e9) {
                 if(*(s32 *)(vars+0x2c)>=0) {
                     func_L01_003F2278(*(s32 *)(vars+0x2c),0);
                     *(s32 *)(vars+0x2c)=-1;
@@ -385,7 +708,7 @@ aim:
         break;
     }
     func_L01_0040E050(vars+0x20);
-    func_L01_00404A10(func_L01_0038ACE8,m);
+    func_L01_00404A10_0038A708(func_L01_0038ACE8,m);
 }
 /* localdecomp:end func_L01_0038A708 */
 
