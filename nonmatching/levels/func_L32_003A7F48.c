@@ -1,4 +1,6 @@
-/* func_L32_003A7F48: 114 diff with the file's flags. Structure matches; callee-saved registers are assigned s0=v s1=a1 s2=a0 where retail has s0=a1 s1=a0 s2=v (every later line differs only by that), plus load order of the a1->obj/a1->4 pair and D_L32_001DE8D4/mov order in the flags&1 block. Tried local orders, v inline, o passed as first arg of func_L02_003BAFA0 (retail passes the object in $a0). */
+/* Unlinked regional matching draft. PAL: 114 to 55 words; alpha clamp adds one word and final interpolation scheduling differs. */
+#include "common.h"
+
 extern f32 D_L32_001DE8C0;
 extern f32 D_L32_001DE8D4;
 extern f32 D_L32_001DE8C8;
@@ -23,58 +25,72 @@ extern f32 func_003824E0(f32, f32);
 extern s32 func_0038DBD8(f32, s32, s32);
 extern s32 func_00382498(s32, s32);
 extern f32 func_L03_0034B440(f32, f32, f32, s32, s32, s32);
-extern f32 func_L03_0034B148(f32, s32);
+extern f32 func_L03_0034B148(s32, s32, f32);
 extern f32 func_003C4088(f32, f32, f32);
 
-void func_L32_003A7F48(u8 *a0, u8 *a1) {
-    u8 *o;
+typedef struct { u8 pad00[0x68]; u8 *vars; } Owner_003A7F48;
+typedef struct {
+    Owner_003A7F48 *owner;
+    void *system;
+    s16 life;
+    u16 flags;
+    s16 threshold;
+    u16 color;
+    f32 speedY, speedX, speedX2, speedZ;
+} Params_003A7F48;
+typedef struct {
+    u8 pad00[4];
+    u32 color;
+    u8 alpha;
+    u8 pad09;
+    s16 age;
+    f32 size, x, y, z;
+} Particle_003A7F48;
+
+void func_L32_003A7F48(Particle_003A7F48 *a0, Params_003A7F48 *a1) {
+    Owner_003A7F48 *o;
     u8 *v;
-    s32 t;
+    void *t;
     f32 k, y;
-    s32 w;
     f32 r, f1, lo, x, one;
     s32 al;
     s32 hi;
     if (a1 != 0) {
-        o = *(u8 **)a1;
-        t = *(s32 *)(a1 + 4);
+        o = a1->owner;
+        t = a1->system;
         if (o != 0) {
-            v = *(u8 **)(o + 0x68);
+            v = o->vars;
             if (v != 0 && t != 0) {
-                if (*(u16 *)(a1 + 0xA) & 1) {
-                    func_L02_003BAFA0(o, D_L32_002A2E40, a0 + 0x10, a1 + 0x14, 0.0f);
-                    *(f32 *)(a0 + 0x14) = *(f32 *)(a0 + 0x14) + D_L32_001DE8C0;
-                    *(f32 *)(a1 + 0x10) = 0.0f;
+                if (a1->flags & 1) {
+                    func_L02_003BAFA0(o, D_L32_002A2E40, &a0->x, &a1->speedX, 0.0f);
+                    a0->y = a0->y + D_L32_001DE8C0;
+                    a1->speedY = 0.0f;
                     k = D_L32_001DE8D4;
-                    *(f32 *)(a1 + 0x18) = k * *(f32 *)(v + 0x90);
-                    *(f32 *)(a1 + 0x1C) = k * *(f32 *)(v + 0x98);
-                    w = func_0038DBD8(func_003824E0(0.0f, 1.0f), D_L32_001DE8A8, D_L32_001DE8AC);
+                    a1->speedX2 = k * *(f32 *)(v + 0x90);
+                    a1->speedZ = k * *(f32 *)(v + 0x98);
+                    a0->color = func_0038DBD8(func_003824E0(0.0f, 1.0f), D_L32_001DE8A8, D_L32_001DE8AC);
                     y = func_003824E0(D_L32_001DE8C8, D_L32_001DE8C4);
-                    *(s32 *)(a0 + 4) = w;
-                    *(f32 *)(a0 + 0xC) = y;
-                    *(s16 *)(a1 + 0xC) = func_00382498(0, *(s16 *)(a1 + 8));
+                    a0->size = y;
+                    a1->threshold = func_00382498(0, a1->life);
                 }
                 one = 1.0f;
-                r = func_L03_0034B440((f32)*(s16 *)(a0 + 0xA), (f32)*(s16 *)(a1 + 8), one, 1, 0, 0);
-                if (*(s16 *)(a0 + 0xA) < *(s16 *)(a1 + 0xC)) {
-                    *(f32 *)(a1 + 0x10) = *(f32 *)(a1 + 0x10) + D_L32_001DE8B0;
-                    *(f32 *)(a0 + 0x18) = *(f32 *)(a0 + 0x18) + *(f32 *)(a1 + 0x10);
-                    *(f32 *)(a0 + 0x10) = *(f32 *)(a0 + 0x10) + *(f32 *)(a1 + 0x18);
-                    *(f32 *)(a0 + 0x18) = *(f32 *)(a0 + 0x18) + *(f32 *)(a1 + 0x1C);
+                r = func_L03_0034B440((f32)a0->age, (f32)a1->life, one, 1, 0, 0);
+                if (a0->age < a1->threshold) {
+                    a1->speedY = a1->speedY + D_L32_001DE8B0;
+                    a0->z = a0->z + a1->speedY;
+                    a0->x = a0->x + a1->speedX2;
+                    a0->z = a0->z + a1->speedZ;
                 }
                 f1 = (one - r) / D_L32_001DE8D0;
-                if (one < f1) {
-                    al = 0x80000000;
-                } else {
-                    al = (s32)(f1 * 128.0f) << 24;
+                al = a0->color & 0xFFFFFF;
+                a0->color = al | ((one < f1) ? 0x80000000 : (u32)(s32)(f1 * 128.0f) << 24);
+                {
+                    u16 color = a1->color;
+                    hi = color >> 8;
+                    lo = (f32)(color & 0xFF);
                 }
-                *(u32 *)(a0 + 4) = (*(u32 *)(a0 + 4) & 0xFFFFFF) | al;
-                hi = *(u16 *)(a1 + 0xE) >> 8;
-                lo = (f32)(*(u16 *)(a1 + 0xE) & 0xFF);
-                x = D_L32_001DE8D8 * (f32)*(s16 *)(a1 + 8) * (f32)hi * 0.00390625f;
-                x = lo + x;
-                x = lo + x;
-                *(u8 *)(a0 + 8) = func_003C4088(lo, x, func_L03_0034B148(0.0f, *(s16 *)(a0 + 0xA)));
+                x = lo + (lo + D_L32_001DE8D8 * (f32)a1->life * (f32)hi * 0.00390625f);
+                a0->alpha = func_003C4088(lo, x, func_L03_0034B148(a0->age, a1->life, 0.0f));
             }
         }
     }

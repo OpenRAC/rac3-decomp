@@ -1,8 +1,14 @@
-/* PAL near miss (level 23, Nov 2026): 337 words differ (842 against retail's 842; 721 of 842 equal when aligned) with -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as, which the function needs as its own file line (L23_003098F8.c's flags do not compile the vu0.h helpers: "vf17 was spilled").
+/* Unlinked regional matching draft. PAL: 337 to 322 words with diagnostic vf2 and Ps2EeAs; VU add/store sequence and scheduling remain. */
+#include "common.h"
+
+/* PAL near miss: 322 differing words (prior draft: 337), with diagnostic
+ * -mvu0-use-vf0-vf2 and @ps2as. The owning file flags are unchanged.
  * Legal C only: the hero struct (structs/hero.h, D_001A4BE0) for the lui %hi(D_1A4BE0) + 0x25C0/0x25E4 reads, .extern size hints, and the include/vu0.h helpers; no hardcoded addresses or new inline asm.
  * Blocker: retail does one vadd and stores the result twice (sqc2 at 0x309C18/0x309C20 and 0x30A1BC/0x30A1D8, the second in a bc1t delay slot). No vu0.h helper or pair of helpers does that, so each site costs an extra lqc2 and the second store moves. An exact match needs a two-destination helper in include/vu0.h (a maintainer decision). With raw multi-statement vu0 asm in that spot (not allowed) the best was 717 of 842 aligned, so even that does not match yet.
  * Found on the way: the mixed $gp/lui access of D_001D6160 and D_001DEC40 needs no alias (ps2as gives a load/store in a branch delay slot the $gp form); constants 0.039473683f, 0.27999998f, 0.0024000001f, 0.020000001f, +-0.120000005f and 315000.0f (not 313000); slot = (owner == hero_moby) ? &D_L23_001DC5F4 : &D_L23_001DC5F8.
- * Register allocation (separate study, not merged here): with the loop-1 colour locals inside loop 1, one counter per loop, and a `pos` local scoped to state 1's body only, the prologue matches retail (slot $17, v $19, self $20, frame 0x140).
+ * P05: a typed local position pointer is used for state 1's repeated accesses.
+ * The two-destination VU0 residual remains.
+ * Earlier register-allocation study: with the loop-1 colour locals inside loop 1, one counter per loop, and a `pos` local scoped to state 1's body only, the prologue matches retail (slot $17, v $19, self $20, frame 0x140).
  * Left besides the blocker: D_L23_001D6174/6178 accesses land in delay slots where retail has nop (0x434, 0x488; the declarations in L23_00309798.c look right); sparkle block andi order (0x5A8); min block $f0->$f12 move (0x660); vf1/vf2 order in state 1's vadd (0x7F4); x40 branch rand scheduling (0xA2C-0xA98). */
 #include "vu0.h"
 #include "structs/hero.h"
@@ -211,6 +217,7 @@ void func_L23_003099D0(u8 *self) {
         f32 f21, f22, sz;
         s32 r, g, b, n;
         Fx_99D0 *e;
+        V4_99D0 *pos = (V4_99D0 *)(self + 0x10);
         f21 = v->x14 * 1.0000001f * 0.5f + 1.3f;
         v->x14 = v->x14 + 1;
         f22 = f21 + 3.5f;
@@ -223,10 +230,10 @@ void func_L23_003099D0(u8 *self) {
             }
         }
         if (v->x14 < 43 && D_001A4BE0.body_kind == 2) {
-            vec_add_ba((V4_99D0 *)(self + 0x10), (V4_99D0 *)(self + 0x10), &v->vel);
-            vec_copy(&vA0, (V4_99D0 *)(self + 0x10));
-            if (!(((V4_99D0 *)(self + 0x10))->x < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->x) && !(((V4_99D0 *)(self + 0x10))->y < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->y) &&
-                !(((V4_99D0 *)(self + 0x10))->z < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->z)) {
+            vec_add_ba(pos, pos, &v->vel);
+            vec_copy(&vA0, pos);
+            if (!(pos->x < 2.0f) && !(1021.0f < pos->x) && !(pos->y < 2.0f) && !(1021.0f < pos->y) &&
+                !(pos->z < 2.0f) && !(1021.0f < pos->z)) {
                 goto ok;
             }
         }
@@ -239,7 +246,7 @@ void func_L23_003099D0(u8 *self) {
         goto end;
     ok:
                 if (v->x40) {
-                    r = func_003D4D00((V4_99D0 *)(self + 0x10), 0x10, D_001A4BE0.hero_moby, 0, f21);
+                    r = func_003D4D00(pos, 0x10, D_001A4BE0.hero_moby, 0, f21);
                     *(u128_t *)&vA0 = *(u128_t *)(self + 0x10);
                     func_L01_00447718(self, &vA0, D_L23_001EC800, r, 0, 0x10B0000, 2, 1, -1, D_L23_001DC5EC, 1.0f, 1.0f);
                     if (r != 0 && (D_L23_001DEC40 & 1)) {
@@ -261,7 +268,7 @@ void func_L23_003099D0(u8 *self) {
                         func_003C4C18(&vA0, 0.3f);
                         vA0.z += 0.120000005f;
                         g = func_00382468(2) ? 0x7FFF7F40 : 0x7FFFDF80;
-                        e = (Fx_99D0 *)func_L01_00465738((V4_99D0 *)(self + 0x10), &vA0, g, 0xFF0000, func_00382498(8, 17), 0, -1, -1, 0, 315000.0f);
+                        e = (Fx_99D0 *)func_L01_00465738(pos, &vA0, g, 0xFF0000, func_00382498(8, 17), 0, -1, -1, 0, 315000.0f);
                         if (e) {
                             *(f32 *)((u8 *)e + 0x2C) = 0.0024000001f;
                             ((u8 *)e)[2] = *D_L23_0021ED58[53];
@@ -269,7 +276,7 @@ void func_L23_003099D0(u8 *self) {
                     }
                     goto clear;
                 }
-                r = func_003D4D00((V4_99D0 *)(self + 0x10), 0x10, *(void **)(self + 0xB8), 0, f21);
+                r = func_003D4D00(pos, 0x10, *(void **)(self + 0xB8), 0, f21);
                 *(u128_t *)&vA0 = *(u128_t *)(self + 0x10);
                 func_L01_00447718(self, &vA0, D_L23_001EC800, r, 0, 0x10B0007, 2, 1, -1, D_L23_001DC5EC, 1.0f, 1.0f);
                 if (r != 0 && (D_L23_001DEC40 & 1)) {

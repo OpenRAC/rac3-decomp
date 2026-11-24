@@ -1,15 +1,4 @@
-/* PAL near miss (wave 12 retry r01): 25 words differ with the file's flags (the wave 11 draft: 120).
- * Changed against the draft: D_L32_001DEE74/EE78 are read as D_L32_001DEE70_sdata[2]/[1] and
- * D_L32_001DFE1C is an unsized extern, both with section(".sdata") and no .extern hint (the
- * Matching-Patterns recipe): gcc emits one lw/la macro per table, counts the offset forms as two
- * instructions (so the div stays in each arm's b delay slot, as retail) and loop.c has no split
- * %hi to hoist; the 0x210 stride is a local set before loop 2 (retail keeps it in s7: frame 0x60);
- * the first loop is written as a goto loop (37 with the for loop: its loop notes double i's
- * reference weight, so i outranks st in global-alloc).
- * Left: callee-saved permutation slot s3/s1, i s1/s2, obj s2/s3 (global-alloc priorities slot
- * 0.353 < obj 0.358 < i 0.395; retail needs st > slot > i > obj), and tbl[i]'s reload address
- * addu s4,s5 where retail has addu s5,s4.
- */
+/* Unlinked regional matching draft. PAL: 25 to 24 words; the typed slot table corrects a reload's operand order, but allocation still differs. */
 #include "common.h"
 
 /* localdecomp:start func_L32_003B6A58 */
@@ -28,40 +17,63 @@ typedef struct R_003B6A58 {
 } R_003B6A58;
 extern R_003B6A58 *D_L32_001DFE1C[] __attribute__((section(".sdata")));
 
-void func_L32_003B6A58(u8 *obj)
+typedef struct {
+    u8 pad00[0x68];
+    f32 *geometry;
+} Spawned_003B6A58;
+typedef struct {
+    u8 pad00[0x130];
+    f32 anchorX;
+    u8 pad134[0x1C];
+    struct SpawnTable_003B6A58 { Spawned_003B6A58 *items[48]; } slots;
+    u8 pad210[0x14];
+    f32 band0, band1, maxX;
+    s32 tile;
+    u8 pad234[4];
+    f32 minX;
+    u8 pad23C[0x14];
+    f32 anchorZ;
+} SpawnerState_003B6A58;
+typedef struct {
+    u8 pad00[0x10];
+    f32 x, y, z;
+    u8 pad1C[0x4C];
+    SpawnerState_003B6A58 *state;
+} Spawner_003B6A58;
+void func_L32_003B6A58(Spawner_003B6A58 *obj)
 {
     extern void func_003C2F58(void *, s32, void *);
     extern s32 func_00382498(s32, s32);
-    extern u8 *func_L32_0039FE78(u128_003B6A58 *, s32, s32, f32 *, f32 *);
-    u8 *st;
-    u8 **tbl;
-    u8 **q, **slot;
+    extern Spawned_003B6A58 *func_L32_0039FE78(u128_003B6A58 *, s32, s32, f32 *, f32 *);
+    SpawnerState_003B6A58 *st;
+    struct SpawnTable_003B6A58 *tbl;
+    Spawned_003B6A58 **q, **slot;
     s32 i, flag, found, n, j, lo, hi, off, size;
     u128_003B6A58 vec;
     f32 y;
     f32 *p;
 
     flag = 0;
-    st = *(u8 **)(obj + 0x68);
-    tbl = (u8 **)(st + 0x150);
-    q = tbl;
+    st = obj->state;
+    tbl = &st->slots;
+    q = tbl->items;
     i = 0x2F;
 loop1:
     if (*q != 0) {
-        if (!((*q)[0x20] < 0xFD)) {
+        if (!(((u8 *)*q)[0x20] < 0xFD)) {
             *q = 0;
         }
     }
     i--;
     q++;
     if (i >= 0) goto loop1;
-    y = *(f32 *)(obj + 0x10);
-    if (!(*(f32 *)(st + 0x22C) < y)) {
-        if (*(f32 *)(st + 0x228) < y) {
+    y = obj->x;
+    if (!(st->maxX < y)) {
+        if (st->band1 < y) {
             flag = (D_L32_001DF9C0 % D_L32_001DEE70_sdata[2]) == 0;
-        } else if (*(f32 *)(st + 0x224) < y) {
+        } else if (st->band0 < y) {
             flag = (D_L32_001DF9C0 % D_L32_001DEE70_sdata[1]) == 0;
-        } else if (*(f32 *)(st + 0x238) < y) {
+        } else if (st->minX < y) {
             flag = (D_L32_001DF9C0 % D_L32_001DEE70) == 0;
         }
     }
@@ -70,11 +82,11 @@ loop1:
         i = 0;
         size = 0x210;
         for (; i < 0x30 && !found; i++) {
-            slot = &tbl[i];
+            slot = &tbl->items[i];
             if (*slot == 0) {
                 found = 1;
                 func_003C2F58(obj, 1, &vec);
-                if (*(f32 *)(obj + 0x10) > *(f32 *)(st + 0x228)) {
+                if (obj->x > st->band1) {
                     hi = 3;
                     lo = 2;
                 } else {
@@ -83,12 +95,12 @@ loop1:
                 }
                 n = func_00382498(lo, hi);
                 off = n * size + 0x80;
-                *slot = func_L32_0039FE78(&vec, (s32)D_L32_001DFE1C[0][*(s32 *)(st + 0x230)].f68 + off, 1, 0, 0);
-                if (tbl[i] != 0) {
-                    p = (f32 *)(*(u8 **)(tbl[i] + 0x68) + 0x100);
+                *slot = func_L32_0039FE78(&vec, (s32)D_L32_001DFE1C[0][st->tile].f68 + off, 1, 0, 0);
+                if (tbl->items[i] != 0) {
+                    p = tbl->items[i]->geometry + 64;
                     for (j = 0x1F; j >= 0; j--, p++) {
-                        p[-0x20] += *(f32 *)(obj + 0x10) - *(f32 *)(st + 0x130);
-                        p[0] += *(f32 *)(obj + 0x18) - *(f32 *)(st + 0x250);
+                        p[-0x20] += obj->x - st->anchorX;
+                        p[0] += obj->z - st->anchorZ;
                     }
                 }
             }

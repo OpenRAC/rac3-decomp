@@ -1,4 +1,7 @@
-/* PAL near miss (opus-w3): 6 words differ with the file's flags; the inner rest-length loop's exit test computes j + m after the b17 test (retail: before it, with b17 in $v1, which needs sched1 interblock motion that this form's CFG gets no region for), and the final loop's pointer/index inits before func_0040F0A0 are swapped. With -fno-sched-interblock the pl++ form (final loop) is 4 words, inner loop only. */
+/* Unlinked regional matching draft. PAL: 6 to 2 words; the final pointer and index initializations are exchanged. */
+/* PAL near miss: two words differ with the owning file's flags. The final
+ * loop's pointer and index initializations before func_0038D000 are exchanged.
+ * Keeping the inner bounds predicate in a local after the call matches that loop. */
 #include "common.h"
 #include "vu0.h"
 #include "structs/moby.h"
@@ -43,7 +46,7 @@ void func_L07_003DC0C8(void *moby)
     Priv_003DC0C8 *p;
     f32 d, t;
     s32 i, j, k, m, jn;
-    vu0_v4 *pl, *pp, *pa, *pb, *pq;
+    vu0_v4 *pl, *pp, *pa, *pb;
     vu0_v4 *anchor, *psaved;
 
     p = *(Priv_003DC0C8 **)(obj + 0x68);
@@ -85,9 +88,16 @@ void func_L07_003DC0C8(void *moby)
             m = 1;
             jn = j + 1;
             pb = pa + 1;
-            for (; m <= prm.b17 && j + m < 8; m++) {
-                f32 rest = (f32)m * prm.f00;
-                func_L07_003DC4C8(pa, pa + m, j >= prm.b15, j + m >= prm.b15, rest * rest);
+            if (m <= prm.b17 && j + m < 8) {
+                do {
+                    s32 in_range;
+                    f32 rest = (f32)m * prm.f00;
+                    func_L07_003DC4C8(pa, pa + m, j >= prm.b15, j + m >= prm.b15, rest * rest);
+                    ++m;
+                    in_range = j + m < 8;
+                    if (m > prm.b17) break;
+                    if (!in_range) break;
+                } while (1);
             }
             pa = pb;
         }

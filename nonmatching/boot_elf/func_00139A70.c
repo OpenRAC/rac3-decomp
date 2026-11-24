@@ -1,9 +1,12 @@
-/* PAL near miss: 187 raw positional word differences with @ee29 -O2 -G0.
+/* Unlinked regional matching draft. PAL: 187 to 130 words; reader and packet allocation and loop shape remain. */
+/* PAL near miss: 130 raw positional word differences with @ee29 -O2 -G0.
  * Replaces local GP-switch assembly with approved CpuSwapGp() calls at the
  * two callback sites and their restores. No ordinary EE asm remains here.
  * Initial helper conversion gave 235 differences; initializing the packet
  * pointer at declaration, starting i after refill, and ordering the bit-reader
- * zero stores reduced that to 187. The 0x150 frame remains correct.
+ * zero stores reduced that to 187. Initializing bits before the ring bounds
+ * and using the reader pointer from its declaration through refill and
+ * parsing improves alignment further. The 0x150 frame remains correct.
  * Remaining: initialization/store scheduling, table addressing and loop/branch
  * shape; the historical 64 aligned-word score is not this positional metric.
  * Not linked; no full-build match is claimed.
@@ -82,7 +85,7 @@ s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
     R_139A70 rr;
     B_139A70 bb;
     P_139A70 p;
-    R_139A70 *r;
+    R_139A70 *r = &rr;
     B_139A70 *b = &bb;
     s32 arg = 0;
     Ctx_139A70 *ctx = obj->ctx;
@@ -97,13 +100,12 @@ s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
     rr.size = a4;
     rr.cur = a1;
     rr.rp = a1;
+    rr.bits = 0;
     rr.start = a3;
     rr.end = a3 + a4;
-    rr.bits = 0;
     rr.acc = 0;
     rr.fill = 0;
-    fill_139A70(&rr);
-    r = &rr;
+    fill_139A70(r);
     r->bits = 0;
     i = 0;
     if (ctx->count > 0) {
