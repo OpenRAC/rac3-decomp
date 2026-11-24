@@ -24,6 +24,16 @@
  * frame address is folded back into the $a0 insn); the retreat code as the impact test's else arm; the product in a
  * scoped float local; `point` reused to carry &p->dir. A `dir` local for &p->dir in the branch: 160 (every use), 160
  * (the call only), 154 (set inside the distance test). */
+/* CLOSEOUT attempt 1 of 2 (2026-11-24, rac3-w1, upstream 626eebd0): still 4 differences (tools/check.py) at levels 05
+ * and 10 with -mvu0-use-vf0-vf2, also with --no-context. The sched1 dump of block 31 shows why the tie is lost: at
+ * t = 1 the memory unit takes the D_L05_001DDA44 load (insn 582) and the single alu slot goes to the better ranked of
+ * 590 ($a1 = r296, weight 0) and 588 ($a0 = frame+0x60, weight 1); retail issues 588 with 582 and 590 with the
+ * constant in the next cycle. r296 is the PRE reaching register of &p->dir, set right after the branch's own
+ * p + 0x20 (insn 326) and dead at 590. Retail's order needs 590 not ready at t = 1 (its source set inside this
+ * block) or r296 live after the call. Tried without effect (all 4): a scoped pointer to retreat used by the call
+ * and the add; `point` set to &retreat (used by both, or by the call only); `g` set to &p->dir; `particle` set to
+ * &retreat; the add's origin written as (u8 *)&p->dir - 0x20 or point - 2 with point = &p->dir (cse folds them back
+ * to p). Reloading p after the add: 247. */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L05_003629B8 */
