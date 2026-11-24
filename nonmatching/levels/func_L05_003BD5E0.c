@@ -1,8 +1,8 @@
 /* PAL port (2026-11-20) of the NTSC-U draft of func_L05_003BB658 (Codex worker, 2026-11-14), with PAL names, PAL data
  * and PAL's 50 Hz timer `(D_L05_001DEAE0 * 5 + 2) / 6`, and the VU0 sums written with include/vu0.h's helpers.
  * tools/check.py at levels 05, 06, 11, 17 and 21 with its file's line (L05_003BD448.c, which has -fno-sched-interblock):
- * 113 differences (task #3009, 2026-11-23; 347 before). Aligned with diff(1) at level 05, 30 instruction lines differ
- * (48 before). NTSC-U (--version us): 175 (342 before).
+ * 111 differences (CLOSEOUT attempt 1 of 2, task #3045, 2026-11-24; 113 before). NTSC-U (--version us): 173 (175 before).
+ * The only remaining difference is the colour's set (below).
  * The table D_L05_002A64C0 (`Row_3BD448`) is the file's own declaration, from func_L05_003BD448's block, so this
  * draft compiles in its file's context only (check.py without --no-context). Every other global and callee is
  * declared here (r3-37).
@@ -17,11 +17,15 @@
  * - The colour's set: retail `lui $s0; ori $s0` (the `lui` in the random call's delay slot); ours builds it in $v1,
  *   copies it (`por $v0, $zero, $v1`, the TImode copy) and truncates it into $s0 (`dsll32`/`dsra32`). Three extra words,
  *   which shift every branch offset after them (most of the 113).
- * - The damage record's stores: retail `sb 1, +0x19; sh type, +0x1A; sb 1, +0x18`. In the source order a18, a19, type
- *   sched1 (-dS) produces exactly retail's order (+0x19, +0x1A, +0x18: the two stores with a dying register first, by
- *   insn order), and .greg still has it; sched2 (-dR) then puts `sb +0x18` before the `sh` (both ready at t = 7, the
- *   `sh` waits for the `lhu`). All 6 orders, a chained `a18 = a19 = 1`, `a19 = a18`, a pointer form, a `u8 one` local,
- *   s16/s8 field types: 113-116, never retail's order.
+ * Fixed in task #3045: the damage record's stores (retail `sb 1, +0x19; sh type, +0x1A; sb 1, +0x18`). sched1 already
+ * gave that order; sched2 put `sb +0x18` before the `sh` because, with func_003D4D00 declared void, the two `sb` (which
+ * read $v0) also had the later `lw $v0, -8($s4)` as an anti-dependent (3 dependents against the `sh`'s 2, -dR
+ * -fsched-verbose-5). Declared `s32` (as src/frontbin/3D3CB0.c, its own file, declares it), the call sets $v0, takes
+ * that dependence, and the three stores tie and go out in luid order, retail's.
+ * Colour forms tried in task #3045 without improvement: the u64 local before the random call or declared at function
+ * top (111); `u64 w = c; u32 col = w;` (111); `s32 c; s64 col = c;` (111); `u32 col = (u64)c;` and `u64 col = 0x1010FF;`
+ * (347, folded); the spawner's colour parameter declared u64 (125, `por` moves); RGBA bitfields in a union with a u32
+ * (362, loop hoists the masks); a plain `u32 col` (347: cse deletes the set and puts the constant in both argument moves).
  * Fixed in task #2895: D_L05_001DEAE0 declared with its `.extern` size ($gp load); the spawner func_L01_0046FB40
  * declared as the rest of src/ declares it, `(..., f32, f32, f32, s32)`, which puts `move $t3, $zero` in the `jal`
  * delay slots as retail has it; the damage record as a local struct written +0x18, +0x19, type, which gives retail's
@@ -55,7 +59,7 @@ extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 extern void func_0038CE20(void *, void *, f32);
 extern u8 *func_00382348(void *);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
-extern void func_003D4D00(void *, s32, void *, void *, f32);
+extern s32 func_003D4D00(void *, s32, void *, void *, f32);
 extern void func_L05_003BDFA8(void *, s32, void *);
 extern s32 func_0038CAD0(void *);
 extern void func_003C2880(void *);
