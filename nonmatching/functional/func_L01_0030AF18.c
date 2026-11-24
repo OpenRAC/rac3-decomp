@@ -1,4 +1,6 @@
 /* functional: high. Draft verified against PAL assembly line by line (two ribbons, colour lerps toward 0x7FDDB973 / 0x40FF0000 along the bolt, u scroll 0.33 a segment); corrected so the u wrap subtracts from both ends as retail does. 135 words differ in codegen only. */
+/* GetEffectTex: the whole 64-bit TEX0 (TH, TCC and CBP sit above bit 31). */
+extern long func_00389598(s32);
 typedef struct {
     vu0_v4 point[4];
     u32 color[4];

@@ -31,7 +31,7 @@ extern s32 D_L09_001E0158 __attribute__((section(".sdata")));
 extern u16 *D_L09_0021CE20[];
 extern u32 D_00142BA0[];
 extern u8 D_0014271D[];
-extern s32 func_00384EC0(s32);
+extern long func_00384EC0(s32);
 extern void func_00388BD0(void *, void *);
 extern void func_00388758(void *, void *, void *);
 extern void func_00388830(void *, void *, f32);
@@ -39,8 +39,8 @@ extern void func_00388EB8(void *, void *, void *);
 extern void func_L01_0040C920(void *, void *);
 extern s32 func_00392108(s32, s32);
 extern void func_00392A40(s32, void *, f32, f32, f32, f32, f32);
-extern void func_L09_00317570(void *, s32, void *, void *, s32);
-extern void func_L09_00317800(void *, void *, s32);
+extern void func_L09_00317570(void *, s32, void *, void *, long);
+extern void func_L09_00317800(void *, void *, long);
 
 void func_L09_003179E0(void) {
     V_00317D00 pos;
@@ -51,7 +51,7 @@ void func_L09_003179E0(void) {
     V_00317D00 b;
     S_00317D00 s;
     u8 *st = *(u8 **)(D_L09_001DC750 + 0x68);
-    s32 t = func_00384EC0(0x3B);
+    long t = func_00384EC0(0x3B);
     f32 fx, fy;
     f32 sx, sy;
     s32 c;

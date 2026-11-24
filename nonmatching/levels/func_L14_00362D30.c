@@ -82,7 +82,7 @@ extern void func_L14_00361AC8(u8 *, u8 *, s32);
 extern void func_L14_00361920(u8 *, u8 *, void *, void *, void *, void *, f32, f32);
 extern void func_L14_00361AF8(u8 *, u8 *, void *, void *, void *, void *, f32);
 extern void func_003A3EF0(s32, long);
-extern s32 func_00384EC0(s32);
+extern long func_00384EC0(s32);
 extern void func_00388018(void);
 
 void func_L14_00361C00(u8 *self) {

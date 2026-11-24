@@ -71,10 +71,10 @@ __asm__(".extern D_001D73A0_sda, 8");
 extern s32 D_001D73A0_sda[2];
 
 extern void func_L39_005F0E48(s32, s32, s32);
-extern s32 func_L39_00588720(s32);
+extern unsigned long func_L39_00588720(s32);
 extern s32 func_120884(s32);
 extern void func_0038C888(u16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
-extern void func_0038C9B8(u16 *p, long a, s32 b, s32 c, s32 d, s32 e, f32 f, unsigned long g);
+extern void func_0038C9B8(u16 *p, long a, s32 b, s32 c, unsigned long d, s32 e, f32 f, unsigned long g);
 extern void func_00389920(s32);
 
 /* Opens a menu entry's widget: marks it active with a zero timer, picks its layout rectangle values

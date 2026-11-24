@@ -28,7 +28,7 @@ typedef struct { s32 w; u8 pad[2]; u8 b6; u8 b7; } W_392400;
 extern P_392108 *D_001D9EA8_00396C60;
 extern W_392400 *D_001D9EAC_00396C60;
 extern u32 *D_001DA050;
-extern s32 func_00396A38_00396C60();
+extern unsigned long func_00396A38_00396C60();
 extern s32 D_001D4BD0;
 extern s32 D_001D4BD4;
 extern s32 D_001D9E94;
@@ -145,7 +145,7 @@ void func_00396E50(s32 idx, s32 x, s32 y, s32 w, s32 h, s32 *uv) {
 /* localdecomp:end func_00396E50 */
 
 extern u32 *D_001DA050;
-extern s32 func_00396A38_003970D8();
+extern unsigned long func_00396A38_003970D8();
 extern s32 D_001D4BD0;
 extern s32 D_001D4BD4;
 extern s32 D_001D9E94;

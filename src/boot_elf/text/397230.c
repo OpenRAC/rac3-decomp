@@ -66,7 +66,7 @@ void func_00397230(s32 idx, s32 x, s32 y, s32 w, s32 h, s32 *uv) {
 
 /* localdecomp:start func_003974B8 */
 extern u32 *D_001DA050;
-extern s32 func_00396E18_003974B8();
+extern unsigned long func_00396E18_003974B8();
 extern s32 D_001D4BD0;
 extern s32 D_001D4BD4;
 extern s32 D_001D9E94;

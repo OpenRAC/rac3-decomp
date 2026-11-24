@@ -17,6 +17,9 @@ extern V3_365E28 D_L01_0028F1B0[];
 extern s32 D_L01_0028F3A8[];
 extern Uv_365E28 D_L01_0028F450[];
 extern s32 func_003A9440(s32 a, unsigned long b);
+/* GetEffectTex returns the whole 64-bit TEX0, but this caller was compiled against a 32-bit
+   declaration: a long one moves the register allocation of the two table addresses below. The
+   value still reaches func_003A9440 whole in $v0; a native build must keep all 64 bits itself. */
 extern s32 func_00389598(s32 a);
 extern void func_0038C750(void);
 extern f32 func_0038DB48(f32 a);

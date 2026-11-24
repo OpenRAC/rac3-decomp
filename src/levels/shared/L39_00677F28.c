@@ -405,8 +405,8 @@ extern f32 D_L39_0024665C_00678A50;
 __asm__(".extern D_L39_0024665C_00678A50, 4");
 extern s32 D_L39_00246660_00678A50;
 __asm__(".extern D_L39_00246660_00678A50, 4");
-extern s32 func_L39_00589890_00678A50(s32);
-extern void func_L39_0058B9F8_00678A50(f32, f32, f32, f32, s32, s32, s32, s32, long, s32);
+extern unsigned long func_L39_00589890_00678A50(s32);
+extern void func_L39_0058B9F8_00678A50(f32, f32, f32, f32, s32, s32, s32, s32, long, unsigned long);
 
 void func_L39_00678A50(void) {
     if (D_L39_00352CE0_00678A50.f6AC) {
@@ -540,8 +540,8 @@ extern f32 D_L39_00246674;
 __asm__(".extern D_L39_00246674, 4");
 extern f32 D_L39_00246678;
 __asm__(".extern D_L39_00246678, 4");
-extern s32 func_L39_00589890(s32);
-extern void func_L39_0058B9F8(f32, f32, f32, f32, s32, s32, s32, s32, long, s32);
+extern unsigned long func_L39_00589890(s32);
+extern void func_L39_0058B9F8(f32, f32, f32, f32, s32, s32, s32, s32, long, unsigned long);
 
 void func_L39_006793D8(s32 a) {
     double d;
@@ -610,10 +610,10 @@ extern s32 D_L39_0024B9C8;
 __asm__(".extern D_L39_0024D03C, 16");
 extern f32 D_L39_0024D03C;
 extern void func_003A9440(s32, unsigned long);
-extern s32 func_L39_00589890(s32);
-extern void func_L39_0058B9F8(f32, f32, f32, f32, s32, s32, s32, s32, long, s32);
+extern unsigned long func_L39_00589890(s32);
+extern void func_L39_0058B9F8(f32, f32, f32, f32, s32, s32, s32, s32, long, unsigned long);
 extern void func_L39_0058B1B8(s32, s32, s32, s32);
-extern void func_00397638(f32, f32, f32, f32, f32, s32, s32, s32);
+extern void func_00397638(f32, f32, f32, f32, f32, s32, s32, unsigned long);
 
 void func_L39_00679630(void) {
     f32 w = (f32)D_L39_00240300;

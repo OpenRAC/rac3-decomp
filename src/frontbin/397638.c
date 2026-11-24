@@ -37,7 +37,7 @@ extern s32 D_001D4BD4_00397638;
 extern s32 D_001D9E94_00397638;
 extern f32 func_0038D098_00397638(f32);
 extern f32 func_0038D0B0_00397638(f32);
-void func_00397638(f32 x, f32 y, f32 w, f32 h, f32 ang, s32 tw, s32 th, s32 tex) {
+void func_00397638(f32 x, f32 y, f32 w, f32 h, f32 ang, s32 tw, s32 th, unsigned long tex) {
     V4_00397638 a, b, c, p0, p1, p2, p3;
     unsigned long *q;
     c.x = x;

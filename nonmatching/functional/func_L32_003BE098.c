@@ -20,7 +20,7 @@ extern u32 D_L32_001E25B0[16];
 void func_L32_003BE098(void *arg) {
     extern f32 func_0038D0B0(f32);
     extern f32 func_0038D098(f32);
-    extern s32 func_00389598(u32);
+    extern long func_00389598(u32);
     extern void func_003A9440(s32, unsigned long);
     extern void func_0038C750(void);
     extern void func_003D3A24(s32, void *, void *, void *, s32);

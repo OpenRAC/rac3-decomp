@@ -74,8 +74,8 @@ extern void func_0038FDF8(T_3DBEC8 *, unsigned long, void *, s32, unsigned long,
 extern void func_003AF7C0(T_3DBEC8 *, u32, void *, s32, s32, s32, s32, void *, void *, s32);
 extern s32 func_00396D48(s32, s32);
 extern void func_00397040(s32, s32, s32, s32, s32, s32);
-extern s32 func_00396E18(s32);
-extern void func_00397A18(f32, f32, f32, f32, f32, s32, s32, s32);
+extern unsigned long func_00396E18(s32);
+extern void func_00397A18(f32, f32, f32, f32, f32, s32, s32, unsigned long);
 extern s32 func_0011A264(void *, s32, s32);
 extern void func_0038E530(s32);
 extern void func_00382490(void);
@@ -114,7 +114,7 @@ void func_003E17D0(void) {
         f32 w;
         char *str;
         f32 a, fx;
-        s32 r;
+        unsigned long r;
         s210 = D_001D94D0;
         func_11BB58(s, func_00382468(0xB75), 0x400);
         p = s;

@@ -1,4 +1,6 @@
 /* functional: high. Draft verified against PAL assembly line by line; changed so the four vectors (direction, side, normal, position) are one contiguous basis[4], because func_0038D028 reads the whole 4x4 (the draft passed one vector). 153 words differ in codegen only. S_0030CD20 here is defined again by the snippet: the file defines it later, so one of the two must go. */
+/* GetEffectTex: the whole 64-bit TEX0 (TH, TCC and CBP sit above bit 31). */
+extern long func_00389598(s32);
 typedef struct {
     f32 v[4][4];
     u8 pad40[0x10];

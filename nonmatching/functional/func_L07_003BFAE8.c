@@ -13,7 +13,7 @@ void func_L07_003BFAE8(f32 t, f32 scale, u8 *self, u8 mode) {
     extern void func_0038D810(void *,void *);
     extern void func_0038D000(void *,void *,void *);
     extern void func_0038C750(void);
-    extern s32 func_00389598(s32);
+    extern long func_00389598(s32);
     extern void func_003A9440(s32,unsigned long);
     extern void func_003D3A24(s32,void *,void *,void *,s32);
     V_003BFAE8 rot;

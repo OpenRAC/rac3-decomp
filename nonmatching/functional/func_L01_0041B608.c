@@ -1,4 +1,6 @@
 /* functional: medium. Help/hint box draw per state of D_L01_002E5F30: states 1/3/7 draw the opening/closing frame and a quad; 4-6 draw the box with the row text via func_0038FA18; reads the row id at +0xE (pad in HelpRow_0041A9A0). Uses the context's Help_0041A9A0/TextBox_0041A9A0 types. */
+/* GetEffectTex: the whole 64-bit TEX0 (TH, TCC and CBP sit above bit 31). */
+extern long func_00389598(s32);
 extern s32 D_001D6520[];
 
 extern void func_0038C3B0(s32, s32, s32, s32, s32, s32);

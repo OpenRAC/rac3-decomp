@@ -125,7 +125,7 @@ extern u32 D_L07_002A2CC0[][2];
 extern UV_003CE618 D_L07_002A2D10[];
 extern f32 D_L07_001E17A0[] __attribute__((section(".sdata")));
 extern void func_0038C750(void);
-extern s32 func_00389598(s32);
+extern long func_00389598(s32);
 extern s32 func_003A9440(long, unsigned long);
 extern f32 func_0038CF00(void *, void *);
 extern void *func_0038CC88(void *, void *, s32);

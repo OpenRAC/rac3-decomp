@@ -1,4 +1,6 @@
 /* functional: medium. Written from the disassembly with plain C for the vector math; the three quad packets are one local struct each, so the stack layout differs from retail, which does not matter. */
+/* GetEffectTex: the whole 64-bit TEX0 (TH, TCC and CBP sit above bit 31). */
+extern long func_00389598(s32);
 typedef struct {
     vu0_v4 m[4];
     s32 c[4];

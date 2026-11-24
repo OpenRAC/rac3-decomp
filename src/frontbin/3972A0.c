@@ -21,7 +21,7 @@ extern E_392A40 *D_001D9EAC_003972A0;
 typedef int Q_392A40 __attribute__((mode(TI)));
 typedef struct { f32 x, y, z, w; } V4_392A40;
 extern u32 *D_001DA050;
-extern s32 func_00396A38_003972A0();
+extern unsigned long func_00396A38_003972A0();
 extern s32 D_001D4BD0;
 extern s32 D_001D4BD4;
 extern Q_392A40 D_001D76F0_003972A0[];

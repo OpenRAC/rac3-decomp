@@ -2124,8 +2124,8 @@ extern void func_00389240(s32);
 extern void func_003A9440(s32, unsigned long);
 extern s32 func_00396968(s32, s32);
 extern void func_00396C60(s32, s32, s32, s32, s32, s32);
-extern s32 func_00396A38(s32);
-extern void func_00397638(f32, f32, f32, f32, f32, s32, s32, s32);
+extern unsigned long func_00396A38(s32);
+extern void func_00397638(f32, f32, f32, f32, f32, s32, s32, unsigned long);
 extern void func_00389370(void);
 
 void func_L01_003F1218(void) {
