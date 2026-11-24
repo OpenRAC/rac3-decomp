@@ -1,59 +1,64 @@
-/* PAL near miss (Codex wave 6): near miss: 173 words differ with the file's flags.
- * Worker's note: 173 diff; build/codex/w284/func_003EF698.best.log; rectangle and color-copy reconstruction; saved registers, float scheduling and color temporary lifetimes differ; c05/c08/c09 same wrong bytes
- */
+/* func_003EF698 (boot_elf), near miss. FE-A1 2026-11-22 (175, frontbin; the boot_elf Codex wave 6 draft 177), NM-FE6
+   2026-11-22 (lead: 187), PASS-P5 2026-11-23: 146 differences (tools/check.py) with its file's line
+   (src/boot_elf/text/3EF658.c: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division -mno-split-addresses
+   @ps2as), the same with --no-context and with --version us. Its twin, frontbin func_003EF2E0, is this C with the
+   names moved, with the same counts. Unlike func_003EFBB0, split addresses change nothing (--mode S: the same).
+   Draws the object's texture as a quad over the rectangle and, with flag 0x40, an offset backdrop in the
+   object's background colour first. The colours are 16-byte structs passed by value (by reference under EABI).
+   PASS-P5: the backdrop colour `b` is declared at function scope and set from the returning inline inside the
+   branch, and the second call rebuilds the colour from `col`'s fields. This gives retail's frame (0x90) and
+   four 16-byte slots (175 -> 146).
+   Left:
+   - retail keeps sp+0x10 in $s3 from just after the first call and passes it to the second func_00397680
+     call; ours keeps sp+0x20 in a saved register and passes it to both calls (their arguments share one temp
+     slot before reload, and GCSE holds its address across the calls, the mechanism PASS-P5 removed from
+     func_003EF7F8). Retail's second argument shares the slot of the entry's colour temporary instead;
+   - the backdrop: retail stores the background colour four times at 0x10, word-copies it to 0x30 (through
+     four registers) and ldl/sdl-copies that to the argument at 0x20; ours builds it at 0x20 and makes two
+     ldl/sdl copies (0x20 -> 0x10 -> 0x20). The second call: retail copies col (0x00) by words to 0x20, then
+     ldl/sdl to 0x10; ours copies to 0x30, then to 0x20;
+   - the order of the float loads of the first block (r[1] first in ours).
+   Tried without gain (PASS-P5, about 80 compiles): the colour inline returning a compound literal (185-189); the
+   draw helper taking four u32s with the backdrop chained or built through the inline (182-195); `b` chained in
+   the branch or at function scope (162-189); the helper copying its parameter into a local, or taking a pointer
+   (185-195); the colour declared and assigned apart (no change). */
 #include "common.h"
 /* localdecomp:start func_003EF698 */
-typedef struct { u32 c0, c1, c2, c3; } Color_003EF698;
+typedef struct { u32 c0, c1, c2, c3; } Col_3EF698;
 typedef struct {
     u8 pad0[0x20];
-    f32 offset_x, offset_y;
-    u32 background;
+    f32 ox, oy;
+    u32 bg;
     f32 depth;
     u8 pad30[8];
     u32 c0, c1, c2, c3;
-    u16 texture, frame;
-} Obj_003EF698;
+    u16 tex, frame;
+} Obj_3EF698;
 extern f32 D_001D9698;
-__asm__(".extern D_001D9698, 16");
 extern f32 D_001D969C;
-__asm__(".extern D_001D969C, 16");
-static __inline__ Color_003EF698 color_003EF698(u32 a, u32 b, u32 c, u32 d) {
-    Color_003EF698 v;
+extern f32 func_0038DF28(f32);
+extern void func_00397680(s32, Col_3EF698, f32, f32, f32, f32, f32);
+extern s32 func_00396D48(s32, s32);
+extern s32 func_003EDEB0(void *, s32);
+static __inline__ Col_3EF698 col_3EF698(u32 a, u32 b, u32 c, u32 d) {
+    Col_3EF698 v;
     v.c0 = a; v.c1 = b; v.c2 = c; v.c3 = d;
     return v;
 }
-void func_003EF698(Obj_003EF698 *o, f32 *rect) {
-    extern f32 func_0038DF28(f32);
-    extern void func_00397680(s32, Color_003EF698, f32, f32, f32, f32, f32);
-    extern s32 func_00396D48(s32, s32);
-    extern s32 func_003EDEB0(void *, s32);
-    s32 texture;
-    Color_003EF698 color;
-    texture = func_00396D48(o->texture, o->frame);
-    color = color_003EF698(o->c0, o->c1, o->c2, o->c3);
+static __inline__ void draw_3EF698(s32 tex, Col_3EF698 c, f32 x0, f32 y0, f32 x1, f32 y1, f32 depth) {
+    f32 hx = (x1 - x0) * 0.5f;
+    f32 hy = (y1 - y0) * 0.5f;
+    func_00397680(tex, c, (f32)(s32)((x0 + hx) * D_001D9698), (f32)(s32)((y0 + hy) * D_001D969C),
+                  (f32)(s32)(hx * D_001D9698), (f32)(s32)(hy * D_001D969C), func_0038DF28(depth));
+}
+void func_003EF698(Obj_3EF698 *o, f32 *r) {
+    s32 tex = func_00396D48(o->tex, o->frame);
+    Col_3EF698 col = col_3EF698(o->c0, o->c1, o->c2, o->c3);
+    Col_3EF698 b;
     if (func_003EDEB0(o, 0x40)) {
-        Color_003EF698 background;
-        f32 x0, y0, x1, y1, half_x, half_y;
-        x0 = rect[0] + o->offset_x;
-        x1 = rect[2] + o->offset_x;
-        y0 = rect[1] + o->offset_y;
-        y1 = rect[3] + o->offset_y;
-        half_x = (x1 - x0) * 0.5f;
-        half_y = (y1 - y0) * 0.5f;
-        background.c0 = o->background; background.c1 = o->background;
-        background.c2 = o->background; background.c3 = o->background;
-        func_00397680(texture, color_003EF698(background.c0, background.c1, background.c2, background.c3),
-            (f32)(s32)((x0 + half_x) * D_001D9698), (f32)(s32)((y0 + half_y) * D_001D969C),
-            (f32)(s32)(half_x * D_001D9698), (f32)(s32)(half_y * D_001D969C), func_0038DF28(o->depth));
+        b = col_3EF698(o->bg, o->bg, o->bg, o->bg);
+        draw_3EF698(tex, b, r[0] + o->ox, r[1] + o->oy, r[2] + o->ox, r[3] + o->oy, o->depth);
     }
-    {
-        f32 x0, y0, x1, y1, half_x, half_y;
-        x0 = rect[0]; x1 = rect[2]; y0 = rect[1]; y1 = rect[3];
-        half_x = (x1 - x0) * 0.5f;
-        half_y = (y1 - y0) * 0.5f;
-        func_00397680(texture, color_003EF698(color.c0, color.c1, color.c2, color.c3),
-            (f32)(s32)((x0 + half_x) * D_001D9698), (f32)(s32)((y0 + half_y) * D_001D969C),
-            (f32)(s32)(half_x * D_001D9698), (f32)(s32)(half_y * D_001D969C), func_0038DF28(o->depth));
-    }
+    draw_3EF698(tex, col_3EF698(col.c0, col.c1, col.c2, col.c3), r[0], r[1], r[2], r[3], o->depth);
 }
 /* localdecomp:end func_003EF698 */

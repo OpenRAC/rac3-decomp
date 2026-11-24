@@ -33,7 +33,25 @@
  * thread_jumps only retargets conditional jumps), and every C form tried keeps it: an `s32 n` for both tests
  * 263, `if (!(v->w90 == -1))` 265, `w90 != -1 && w90 >= -1` in one test 262 (merged into `bltz`), `else if
  * (w90 != -1)` 89 (the else jump is back). The file's own struct types (`M_003D0968`/`V_003D0968` fields)
- * instead of byte offsets: 89, and `for (;;)` with the test as a leading `break`: 89 (same RTL after rotation). */
+ * instead of byte offsets: 89, and `for (;;)` with the test as a leading `break`: 89 (same RTL after rotation).
+ * Task #3002 (2026-11-23, upstream 1dbb16a7): 89 -> 32 differences (tools/check.py --no-context) at levels 04 and 18
+ * (by difflib alignment of the instruction columns: 56 -> 23 rows). What moved it:
+ * - The found-exits are written as plain `goto`s to two labelled blocks placed after the early `return 0`
+ *   (`found2: p94 = e; goto test3;` then `found13: p94 = e; goto join;`), so loop.c has no block to move and they land
+ *   where retail has them; loops 1 and 3 share found13 as in retail (89 -> 51; with found2 first, 47).
+ * - The child-vars stores in the order +0x60, +0x68, +0x74, +0x90, +0x70, +0x6C (a search over the 720 orders), and
+ *   +0x7C before +0x40 (47 -> 44 -> 37 on the earlier base).
+ * - `p = *(D_L04_0021C9A0 + m[0x21])` for the three list heads (the loop setup's $v1/$a0 now match): 44 -> 39.
+ * Still open (the blocker): retail reloads +0x90 at arm 2's head and keeps it in $t2 (`lw $v0; move $t2, $v0; slti`),
+ * then compares `$t2 + 1` in loop 2; here cse follows the first test's `bne` into arm 2 (its label sits after arm 1's
+ * `else` jump and BARRIER) and reuses the first load, so loop 2 reloads +0x90 itself. -fno-cse-follow-jumps (a study
+ * flag only, not the file's) gives the reload. The #2940 form (`if (w90 != -1) { if (w90 >= -1) ... } }` after arm 1)
+ * with the gotos gives retail's arm-2 head exactly, but arm 1 then ends in `lw; addiu; beql` instead of `b`. Tried
+ * without gain: `n` assigned in the else-if test or as an else-block statement (233), `goto join` at the end of arm 1
+ * plus a plain `if` (47), a `switch` with `case -1` / `default` (47), `vv->w90` / `mm->vars->w90` for one of the tests
+ * (32 / 211), the `+0x94 = 0` store moved into each arm (60). Also open: the two copies of m[0x21] for the loop tests
+ * (retail `move $t0, $v1` and `move $a3, $v1`; here `$a3` then `move $t0, $a3`, from gcse), unchanged by
+ * `(s32)`, `(u8)0xFF`, `< 0xFF` (38), `D >= m[0x21]` or a `for` form. Stopped per AGENTS.md. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */
@@ -79,10 +97,16 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
         v[0x7E] = 4;
         t[0](m);
         return 0;
+    found2:
+        *(u8 **)(v + 0x94) = e;
+        goto test3;
+    found13:
+        *(u8 **)(v + 0x94) = e;
+        goto join;
     }
     *(u8 **)(v + 0x94) = 0;
     if (*(s32 *)(v + 0x90) == -1) {
-        p = D_L04_0021C9A0[m[0x21]];
+        p = *(D_L04_0021C9A0 + m[0x21]);
         while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
                ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
             e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
@@ -90,13 +114,12 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
                 break;
             }
             if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == 1) {
-                *(u8 **)(v + 0x94) = e;
-                break;
+                goto found13;
             }
             p++;
         }
     } else if (*(s32 *)(v + 0x90) >= -1) {
-        p = D_L04_0021C9A0[m[0x21]];
+        p = *(D_L04_0021C9A0 + m[0x21]);
         while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
                ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
             e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
@@ -104,13 +127,13 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
                 break;
             }
             if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == *(s32 *)(v + 0x90) + 1) {
-                *(u8 **)(v + 0x94) = e;
-                break;
+                goto found2;
             }
             p++;
         }
+    test3:
         if (*(u8 **)(v + 0x94) == 0) {
-            p = D_L04_0021C9A0[m[0x21]];
+            p = *(D_L04_0021C9A0 + m[0x21]);
             while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&
                    ((s16)p[-1] >= 0 || p == D_L04_0021C9A0[m[0x21]])) {
                 e = D_L04_001DFD9C + ((*p & 0x7FFF) << 8);
@@ -118,13 +141,13 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
                     break;
                 }
                 if (*(s32 *)(*(u8 **)(e + 0x68) + 0x90) == -2) {
-                    *(u8 **)(v + 0x94) = e;
-                    break;
+                    goto found13;
                 }
                 p++;
             }
         }
     }
+join:
     if (*(s32 *)(v + 0x90) == -2 || *(s32 *)(v + 0x90) == -1) {
         *(u16 *)(m + 0x34) = (*(u16 *)(m + 0x34) | 0x41) & ~0x1000;
         *(s32 *)(m + 0x98) = 0;
@@ -140,18 +163,18 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
         (*(u8 **)(v + 0x9C))[0x30] = m[0x30];
         *(u16 *)(*(u8 **)(v + 0x9C) + 0x32) = *(u16 *)(m + 0x32);
         cv = *(u8 **)(*(u8 **)(v + 0x9C) + 0x68);
-        *(f32 *)(cv + 0x68) = 1.0f;
-        *(s32 *)(cv + 0x90) = -1;
-        *(s32 *)(cv + 0x74) = -1;
-        *(f32 *)(cv + 0x70) = 3.5f;
         *(s32 *)(cv + 0x60) = *(s32 *)(v + 0x98);
+        *(f32 *)(cv + 0x68) = 1.0f;
+        *(s32 *)(cv + 0x74) = -1;
+        *(s32 *)(cv + 0x90) = -1;
+        *(f32 *)(cv + 0x70) = 3.5f;
         *(s32 *)(cv + 0x6C) = 0;
         func_0038D000(*(u8 **)(v + 0x9C) + 0x10, &D_L04_001DEB10, m + 0xC0);
         vec_add_ba(*(u8 **)(v + 0x9C) + 0x10, *(u8 **)(v + 0x9C) + 0x10, m + 0x10);
         *(vu0_q *)(*(u8 **)(v + 0x9C) + 0xF0) = *(vu0_q *)(m + 0xF0);
         func_0038D308(*(u8 **)(v + 0x9C) + 0xC0, *(u8 **)(v + 0x9C) + 0xF0);
-        *(s32 *)(cv + 0x40) = 0;
         *(f32 *)(cv + 0x7C) = *(f32 *)(*(u8 **)(v + 0x9C) + 0x18);
+        *(s32 *)(cv + 0x40) = 0;
         func_L01_00456230(*(u8 **)(v + 0x9C), 0);
         (*(u8 **)(v + 0x9C))[0x20] = 6;
         func_003C7C38(*(u8 **)(v + 0x9C));

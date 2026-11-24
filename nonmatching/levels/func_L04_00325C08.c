@@ -20,6 +20,19 @@
  *   shifts that loop by a word. Loops 2 and 3 have mult + addu in retail too, with the table's base
  *   hoisted into $s5 (ours reloads it). No tried shape produces madd, not even L01_003041A0.c's matched
  *   `(D_L01_002C5600 + D_001425C0[0x11])` compiled on its own.
+ * Task 3013 (2026-11-23) found no closer C; the count is still 381 at levels 04, 05, 23 and 35:
+ * - madd: in upstream's matched func_L01_003F5BE0, combine makes madd from mult + add once the loop
+ *   pass has moved the mult's constant and the table base out of the loop ("savings 2": the same set
+ *   appears twice in that loop). Here the loop pass leaves burst loop 1's 0x460 and the lo_sum of the
+ *   table "life 1, not desirable" (-da, .loop dump), so combine leaves mult + addu. These forms compile
+ *   to the same 381: `(Pl *)((s32)D_L04_001E2840 + D_001D52F0 * 0x460)`, the same with the index first,
+ *   `(u8 *)D_L04_001E2840 + D_001D52F0 * 0x460`, `D_L04_001E2840 + D_001D52F0`. A table pointer
+ *   assigned before the loop gives 428. Moving the table out of the loop is not enough on its own: a
+ *   small test loop with both hoisted still compiles to mult + addu;
+ * - $s1/$s2: in the .lreg/.greg dumps the vars pointer (77 refs over 747 insns) is allocated before
+ *   the divisor 6 (5 refs over 102 insns), and global.c's priority puts it about six times higher.
+ *   So retail's $s1 must go first to some higher-priority pseudo that conflicts with vars. `rs`, which
+ *   retail keeps in $s1 in the burst loops and this draft in $s2, is one candidate; this was not tried.
  */
 #include "common.h"
 #include "vu0.h"

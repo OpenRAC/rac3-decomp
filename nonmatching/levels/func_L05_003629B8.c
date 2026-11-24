@@ -14,6 +14,16 @@
  * local for the product (before the block, at the top, in its own block), a local pointer to p->dir (141 diffs), a
  * pointer to retreat, retreat declared in the inner block, 0.020000001f * D_L05_001DDA44, the float as the second
  * parameter of the prototype (all 4); &m->p->dir (101), p reloaded after the call (246). */
+/* NM-R22 retry (2026-11-23, rac3-w1, upstream 1dbb16a7): still 4 differences (tools/check.py) at levels 05 and 10
+ * with -mvu0-use-vf0-vf2 added. The -dc, -dS and -dR (-fsched-verbose=5) dumps: before sched1 the arguments are in
+ * the order $a0 = $sp+0x60 (insn 588), then $a1 = r296 (590). sched2 sees the same ready list and keeps sched1's order,
+ * so only sched1's pick matters. There the $a1 copy wins on register weight alone (0 against 1): r296 is a gcse PRE
+ * copy of &p->dir, inserted after the func_003D3CB0 call in the predecessor block, and it dies at 590. A source-order
+ * tie would give retail's order, so the copy's weight would have to be 1 or the address's 0. Tried without effect
+ * (all 4): a pointer to retreat set at the branch's top, at the function's top, or in a scoped block at the call (the
+ * frame address is folded back into the $a0 insn); the retreat code as the impact test's else arm; the product in a
+ * scoped float local; `point` reused to carry &p->dir. A `dir` local for &p->dir in the branch: 160 (every use), 160
+ * (the call only), 154 (set inside the distance test). */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L05_003629B8 */

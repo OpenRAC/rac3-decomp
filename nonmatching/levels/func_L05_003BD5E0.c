@@ -1,29 +1,31 @@
 /* PAL port (2026-11-20) of the NTSC-U draft of func_L05_003BB658 (Codex worker, 2026-11-14), with PAL names, PAL data
  * and PAL's 50 Hz timer `(D_L05_001DEAE0 * 5 + 2) / 6`, and the VU0 sums written with include/vu0.h's helpers.
- * tools/check.py at level 05 with its file's line (L05_003BD448.c, which has -fno-sched-interblock): 347 differences
- * (task #2895, 2026-11-22). The positional count is higher than the earlier 312 although the code is closer: aligned
- * with diff(1), 48 instruction lines differ, against 78 for the earlier draft. The 312 included two `lui`/`lw` pairs
- * for D_L05_001DEAE0 that offset part of the one-word shift below; with the block's own declaration and `.extern`
- * hint retail's `lw 0x2230($gp)` comes out, which removes that accidental compensation.
+ * tools/check.py at levels 05, 06, 11, 17 and 21 with its file's line (L05_003BD448.c, which has -fno-sched-interblock):
+ * 113 differences (task #3009, 2026-11-23; 347 before). Aligned with diff(1) at level 05, 30 instruction lines differ
+ * (48 before). NTSC-U (--version us): 175 (342 before).
  * The table D_L05_002A64C0 (`Row_3BD448`) is the file's own declaration, from func_L05_003BD448's block, so this
  * draft compiles in its file's context only (check.py without --no-context). Every other global and callee is
- * declared here (r3-37); func_L05_003BD078 was undeclared (implicit int) in the earlier draft.
- * Fixed in task #2895: D_L05_001DEAE0 declared with its `.extern` size ($gp load); the spawner func_L01_0046FB40
- * declared as the rest of src/ declares it, `(..., f32, f32, f32, s32)`, which puts `move $t3, $zero` in the
- * `jal` delay slots as retail has it; the damage record as a local struct written +0x18, +0x19, type, which gives
- * retail's registers ($v1 type, $v0 the 1).
+ * declared here (r3-37).
+ * Fixed in task #3009: the particle colour. Retail keeps 0x1010FF in $s0 across the two spawner calls (frame 0xE0,
+ * $s0-$s5 saved, loop counter $s4, table base $s5). Any SImode form (a local inside or outside the loop, before or
+ * after the random call, u32/s32, `long`, a one-field struct, an array, a union, byte channels) is folded by cse into
+ * both argument moves (-ds dump: `(set (reg:SI 7 a3) (const_int 1052927))` already in .cse), because MIPS prices every
+ * CONST_INT at 0. Converting a u32 to u64 (TImode on this compiler) emits a no-conflict block that cse cannot fold, so
+ * the value stays one pseudo across both calls and gets $s0: the prologue, the epilogue and every register of the loop
+ * now match. What that costs is below. It is plain C, but the u64 is not claimed to be the original's type.
  * What still differs:
- * - Retail keeps the particle colour 0x1010FF in $s0, set at the head of the loop (`lui` in the random call's delay
- *   slot), with the loop counter in $s4 and the table base in $s5. Ours puts the constant into $a3 at each call, so it
- *   saves one register fewer (frame 0xD0 against 0xE0). Task #2895's RTL dumps (-da) show why: CSE (in the same block)
- *   and GCSE's constant propagation (from a set before the loop, "CONST-PROP: Replacing reg ... with constant") put the
- *   constant into both argument moves, because this port prices every CONST_INT at 0. So retail's colour was not a
- *   constant CSE could see. Tried without effect: a `col` local inside or outside the loop (s32/u32, before or after
- *   the random call), set before the loop in an enclosing block, the loop counting up (`for`, `while`) or as a
- *   do-while: 346/347 each, all with the same 0x1010FF diff.
- * - The damage record's stores: retail `sb 1, +0x19; sh type, +0x1A; sb 1, +0x18`, its source order kept. In our
- *   sched1 dump the three stores are independent and are reordered; all 6 orders and 5 chained or copied forms put
- *   the `sh` first or last, never between. (The L01 twin func_L01_0035B710 gets that order, but its +0x18 store is 0.)
+ * - The colour's set: retail `lui $s0; ori $s0` (the `lui` in the random call's delay slot); ours builds it in $v1,
+ *   copies it (`por $v0, $zero, $v1`, the TImode copy) and truncates it into $s0 (`dsll32`/`dsra32`). Three extra words,
+ *   which shift every branch offset after them (most of the 113).
+ * - The damage record's stores: retail `sb 1, +0x19; sh type, +0x1A; sb 1, +0x18`. In the source order a18, a19, type
+ *   sched1 (-dS) produces exactly retail's order (+0x19, +0x1A, +0x18: the two stores with a dying register first, by
+ *   insn order), and .greg still has it; sched2 (-dR) then puts `sb +0x18` before the `sh` (both ready at t = 7, the
+ *   `sh` waits for the `lhu`). All 6 orders, a chained `a18 = a19 = 1`, `a19 = a18`, a pointer form, a `u8 one` local,
+ *   s16/s8 field types: 113-116, never retail's order.
+ * Fixed in task #2895: D_L05_001DEAE0 declared with its `.extern` size ($gp load); the spawner func_L01_0046FB40
+ * declared as the rest of src/ declares it, `(..., f32, f32, f32, s32)`, which puts `move $t3, $zero` in the `jal`
+ * delay slots as retail has it; the damage record as a local struct written +0x18, +0x19, type, which gives retail's
+ * registers ($v1 type, $v0 the 1).
  * Fixed earlier: `scale = 1.0f` assigned after the two normalise calls gives retail's `mov.s $f21, $f20`, and a
  * sized `D_L05_001D66B0[8]` with its `.extern` gives the per-call `lui`/`addiu`.
  */
@@ -158,7 +160,10 @@ void func_L05_003BD5E0(M_003BD5E0 *m) {
         tbl = D_L05_00220758;
         for (i = 9; i >= 0; i--) {
             f32 size = func_003824E0(0.15f, 0.25f) * 210000.0f;
-            s32 col = 0x1010FF;
+            /* u64 is TImode here: the u32 -> u64 conversion is a no-conflict (libcall) block that cse and
+             * gcse cannot fold, which is what keeps the colour in $s0 (see the header). */
+            u32 c = 0x1010FF;
+            u64 col = c;
             part = func_L01_0046FB40(&m->pos, D_L05_001D66B0, 2, col, 2, 127, 16, size, size, 0.0f, 0);
             if (part) {
                 part[2] = **(u8 **)(tbl + 0x64);

@@ -1,19 +1,30 @@
 /* func_00387B18 (PAL frontbin, src/frontbin/382380.c, flags -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack
-   -mno-check-zero-division @ps2as), written from the assembly 2026-11-21; on 2026-11-22 replaced by
-   the wording of its boot_elf twin's draft (nonmatching/boot_elf/func_00387EF8.c) with frontbin's
-   callees. Near miss: 72 differences (tools/check.py, PAL; also 72 with --no-context), down from
-   153 for the first wording and 74 for the twin's. NTSC-U has no twin of it (config/us/map.tsv:
-   its code differs there). The two else branches store 0x118000 to .f8 first, D_00142360 /
-   D_001422F0 are arrays, and D_00143950 is `extern s32 D_00143950[]` read as [0], as elsewhere in
-   382380.c (74 -> 72: retail loads it into $v1). What still differs is the same as in the boot_elf
-   twin: the bases of D_001A1ED0 and D_00225900 swap $t1/$t2 (and h $t4/$t3 follows), and the block
-   of global stores after the branches is scheduled in another order (retail stores [4] right after
-   D_001D4BDC, then [10], f10, D_001D4BC0-CC, f240/f248, [2], [6], [8]). Tried at 72: D_001A1ED0 or
-   D_00225900 as arrays, a pointer to D_001A1ED0, base read before scr, the two globals declared in
-   the other order, and five orders of the store block (moving [4], f10, [2]/[6]/[8] or f240/f248);
-   [10] right after [4] gives 77. Retried 2026-11-22 (13 more compiles, none below 72): five orders of the locals' declarations and dropping the unused `long gs` (72 each); the f10 store moved to five earlier places (72 each: the compiler places it after [8] wherever the source has it, so the store order is set by the scheduler, not the source order, and retail's stores follow the source order exactly); [2] = [4] (72); the [4]/[2] value in a local computed after base (79); w >> 6 read from the struct (80). When it matches: its delay slot (0x387EE8, `addiu $sp, $sp,
-   0xB0`) is marked LINKER_REMNANT(func_00387EE8), but config/inventory.tsv gives the function 980
-   bytes, that word included: drop the remnant line. */
+   -mno-check-zero-division @ps2as), written from the assembly 2026-11-21, then the wording of its
+   boot_elf twin (nonmatching/boot_elf/func_00387EF8.c) with frontbin's callees. Near miss: 15
+   differences (tools/check.py --target frontbin, PAL; also 15 with --no-context), down from 72 on
+   2026-11-23. NTSC-U has no twin of it (config/us/map.tsv).
+
+   What took it from 72 to 15 is only the order of the global stores after the screen-mode
+   branches. In gcc's first scheduling pass (sched1, -dS dump), a store whose value or base
+   register dies there (a REG_DEAD note, register weight -1) is picked before a store whose value
+   stays live (weight 0), and only then by insn order; so the store order follows those deaths,
+   not the source order. With f240/f248/[2]/[6]/[8] before [4]/[10]/f10 in the source, the
+   D_001A1ED0/D_00225900 bases also land in retail's $t1/$t2 (109 differences, with the bases
+   right); single-statement moves from there (a greedy search over every move and swap, about
+   1,100 compiles) gave the order below at 15. Locals for the [2]/[4] or [6]/[8] values (s32 or
+   long) give 15; one long local reused for the [2] and [6] values gives 167; reading f8 into a
+   local any earlier than the [6] store gives 79 or more. The unused `long gs` of the old draft
+   is gone (15 either way).
+
+   What still differs (15 words, in the block before the [12] store and at the end of the store
+   block): retail loads .f8 before .f4 and puts `dsll $v1, $v1, 0x10` and `lui $v0, 0x100` between
+   the loads; ours loads .f4 first and does the ALU work after (sched1 takes the .f4 load first by
+   insn order, and the order sched2 leaves differs); and retail stores f240, f248, [2], ours
+   [2], f248, f240 (putting f240/f248 before [2] in the source makes the rest worse).
+
+   When it matches: its delay slot (0x387EE8, `addiu $sp, $sp, 0xB0`) is marked
+   LINKER_REMNANT(func_00387EE8), but config/inventory.tsv gives the function 980 bytes, that word
+   included: drop the remnant line. */
 typedef struct { s32 f0, f4, f8, fC, f10, f14, f18, f1C, f20; } S_1A1ED0_387B18;
 typedef struct { u8 p0[0x150]; u16 f150, f152; u8 p154[4]; s16 f158, f15A; } S_1CFEC0_387B18;
 typedef struct { u8 p0[0x240]; s32 f240, f244, f248, f24C; } S_225900_387B18;
@@ -43,7 +54,6 @@ extern void func_003D9338(void);
 void func_00387B18(s32 load) {
     u8 buf[0x60];
     s32 w, h, base, n, i;
-    long gs;
     S_1CFEC0_387B18 *scr;
     func_11F0A0(0);
     if (D_00143950[0] != 0) {
@@ -72,26 +82,26 @@ void func_00387B18(s32 load) {
     D_001D4BD4_00387B18 = (0x800 - (h >> 1)) << 4;
     D_001D4BD0_00387B18 = (0x800 - (w >> 1)) << 4;
     D_00225900_00387B18.f244 = w - 1;
+    D_001D4BC8_00387B18 = (w >> 1);
+    D_001D4BCC_00387B18 = (h >> 1);
     D_00225900_00387B18.f24C = h - 1;
-    D_00142120_00387B18[12] = (long)D_001D4BD0_00387B18 | ((long)D_001D4BD4_00387B18 << 32);
     D_001A1ED0_00387B18.f14 = base + 0x1000;
     D_001A1ED0_00387B18.f18 = base + 0x1400;
     D_001A1ED0_00387B18.f1C = base + 0x1800;
     D_001A1ED0_00387B18.f20 = base + 0x1C00;
     D_001D4BD8_00387B18 = ((w >> 1) + 0x800) << 4;
     D_001D4BDC_00387B18 = ((h >> 1) + 0x800) << 4;
+    D_00142120_00387B18[2] = ((long)D_001A1ED0_00387B18.f4 >> 13) | ((long)(w >> 6) << 16);
+    D_00225900_00387B18.f248 = 0;
+    D_00225900_00387B18.f240 = 0;
+    D_00142120_00387B18[6] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
+    D_00142120_00387B18[8] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
     D_00142120_00387B18[4] = ((long)D_001A1ED0_00387B18.f4 >> 13) | ((long)(w >> 6) << 16);
     D_00142120_00387B18[10] = (long)D_001D4BD0_00387B18 | ((long)D_001D4BD4_00387B18 << 32);
+    D_00142120_00387B18[12] = (long)D_001D4BD0_00387B18 | ((long)D_001D4BD4_00387B18 << 32);
     D_001A1ED0_00387B18.f10 = base;
     D_001D4BC0_00387B18 = w;
     D_001D4BC4_00387B18 = h;
-    D_001D4BC8_00387B18 = (w >> 1);
-    D_001D4BCC_00387B18 = (h >> 1);
-    D_00225900_00387B18.f240 = 0;
-    D_00225900_00387B18.f248 = 0;
-    D_00142120_00387B18[2] = ((long)D_001A1ED0_00387B18.f4 >> 13) | ((long)(w >> 6) << 16);
-    D_00142120_00387B18[6] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
-    D_00142120_00387B18[8] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;
     D_001D5330_00387B18[2] = ((long)D_00225900_00387B18.f244 << 16) | ((long)D_00225900_00387B18.f24C << 48);
     D_00142360[0] = ((D_001A1ED0_00387B18.f8 >> 13) | 0x1000000) | 0x100000000L;
     D_001422F0[0] = (D_001A1ED0_00387B18.f8 >> 13) | 0x1000000;

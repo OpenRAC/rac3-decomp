@@ -22,7 +22,24 @@
  * into vf2 for the F110 add. Two vec_add_ba calls with vec as the second source (no vec_copy, no tmp) do share one
  * load: gcc's CSE merges the two equal `lqc2` asms from the same helper line. But the value then stays in vf2 for
  * both adds, nothing is spilled, and the frame loses 0x10 (193 differences, mostly the frame offsets; ab/ab 193,
- * ab/ba and ba/ab 195). An unused `tmp` local does not size the frame back. */
+ * ab/ba and ba/ab 195). An unused `tmp` local does not size the frame back. *
+ * Task #2998 (2026-11-23): 2 differences (tools/check.py, --as ps2as --flags=-mvu0-use-vf0-vf2, the divs_nops
+ * line; also with --no-context) at levels 04, 08 and 27. Two changes:
+ * 1. The vec value is one TI variable loaded once and used by both adds, with no tmp. With only vf1/vf2 to
+ *    allocate, reload spills it: the lqc2 into vf1, the sqc2 to the spill slot at sp+0x10 and the reload into vf2
+ *    for the F110 add are retail's `tmp`. F110 is p[2] of p = &D_001A4BE0.fF0, which gives retail's fresh
+ *    `lui $v0`, the %lo access of F0 and `addiu $v1, $v0, 0x4cd0` with F110 at 0x20($v1). That block is inline
+ *    VU0 j-form (one asm per instruction; PROVISIONAL, r3-34).
+ * 2. One `return 1` after the if/else instead of one at the end of each branch. The VU0 block then branches to
+ *    the shared `addiu $v0, 1` (retail's `b` with that addiu in its delay slot), so sched1 no longer hoists the
+ *    return value and the lui gets $v0, as in retail.
+ * Left: the spill store `sqc2 vf1, 0x10($sp)` comes before `lqc2 vf2, F0` where retail has it after. Both issue
+ * in the same sched2 cycle (ready list `835 839 1060`, gcc takes the spill store 1060). Unchanged at 2 by: the
+ * F0 and vec loads in either source order, p set before or after the vec load or outside the block, reused
+ * TI variables for the sums, TImode instead of BLKmode memory operands, a plain C load of F110. An explicit
+ * tmp store instead of the spill gives 196 (the lui goes first again); plain C loads of vec or F0 give 53-204.
+ * NTSC-U (--version us): 15 differences, real ones (the 0x40/0xF timers and the float constants differ), plus
+ * the same pair. */
 #include "common.h"
 
 /* localdecomp:start func_L04_004FCAF0 */
@@ -100,7 +117,6 @@ s32 func_L04_004FCAF0(s32 apply) {
     s32 flag;
     s16 cls;
     vu0_v4 vec;
-    vu0_v4 tmp;
 
     if (D_001A4BE0.f25CC == 0x14 || D_001A4BE0.f25CC == 7) {
         return 0;
@@ -215,10 +231,18 @@ s32 func_L04_004FCAF0(s32 apply) {
             func_L01_004ED838(&vec, flag, 0.100000009f, 0.0480000041f);
             break;
         }
-        vec_copy(&tmp, &vec);
-        vec_add_ba(&D_001A4BE0.fF0, &D_001A4BE0.fF0, &vec);
-        vec_add_ab(&D_001A4BE0.f110, &D_001A4BE0.f110, &tmp);
-        return 1;
+        {
+            /* PROVISIONAL, VU0 j-constraint form */
+            vu0_q v, a, b, r, s;
+            vu0_v4 *p = &D_001A4BE0.fF0;
+            __asm__("lqc2 %0, %1" : "=j"(v) : "m"(vec));
+            __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*p));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(v));
+            __asm__("sqc2 %1, %0" : "=m"(*p) : "j"(r));
+            __asm__("lqc2 %0, %1" : "=j"(b) : "m"(p[2]));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(s) : "j"(b), "j"(v));
+            __asm__("sqc2 %1, %0" : "=m"(p[2]) : "j"(s));
+        }
     } else {
         if (D_001A4BE0.f1DC != 0) {
             return 1;
@@ -230,7 +254,6 @@ s32 func_L04_004FCAF0(s32 apply) {
             func_L01_004DFEA0(1);
         }
         D_001A4BE0.f1DC = 0x40;
-        return 1;
     }
     return 1;
 }

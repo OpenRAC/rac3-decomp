@@ -20,6 +20,17 @@
  *      `ori $a2`, then `lui`/`addiu $a3` and `addiu $s0, $s2, 0x10` in the jal's delay slot; ours puts `lui $a3` first and
  *      `ori $a2` in the slot, and swaps $s0/$s1 (&work / obj+0x10). Unchanged (18) with a named f32 local for the sub+0x34
  *      argument, `&work[0]` / `&D_L05_001D66B0[0]`, a `(u8 *)obj + 0x10` cast, and `work` declared vu0_v4[3].
+ * 2026-11-23 retry (task 2984, upstream 59c6db4f): still 18 at level 05 (19 at 11, 18 at 17, 18 with --no-context) with the row.
+ *  (1) gcc's gcse dump (`--flags "-dG"`) shows where the 168 comes from: with `old` first, the address of `dest` (`at` + 16)
+ *      is computed into a pseudo for the else arm's func_0038CF68 call and for func_003D3CB0, and PRE copies it to a new
+ *      register at the end of both arms ("PRE/HOIST: end of bb 7 / bb 8 ... expression 11"), which then lives across the calls
+ *      in $s5. With `dest` first its address is $sp itself and there is no expression to move. `dest` and `work` declared in
+ *      the `*(s32 *)(sub + 0x30) == 0` block (retail's offsets) give the same 168.
+ *  (2) In ours `obj + 0x10` for func_003D3CB0 is created after the func_L01_004CB320 call and sched1 lifts it over that call
+ *      only; retail has it in func_L01_00446760's delay slot. A `u8 *pos = obj + 0x10;` set before or after the
+ *      func_L01_00446760 call and passed to func_003D3CB0 gives the same 18 (sched1 moves it back below the call); `pos`
+ *      also passed to func_0038CF00 gives 151; `pos` set at the top of the block gives 159. The prototype
+ *      `(void *, void *, s32, f32, void *)` used by other files (EABI-equivalent) gives the same 18 (168 with `old` first).
  */
 #include "common.h"
 #include "vu0.h"
