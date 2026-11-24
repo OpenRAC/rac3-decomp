@@ -1,38 +1,53 @@
-/* func_L04_00325C08: Promises (task 2790, 2026-11-21; retried in task 2907, 2026-11-22), from upstream's
- * nonmatching/functional/func_L04_00325C08.c.
- * Near miss: 381 differences (tools/check.py), level 04, with -mvu0-use-vf0-vf2 @ps2as on L04_00325C08.c
- * (the file has neither yet; it has no other function). The file's own line does not compile it (VU0
- * "vf17 spilled"). NM-R5's line for L04_00325460.c (without -fopt-stack) is worse here: retail saves with
- * sd in a 0xF0 frame, so -fopt-stack stays.
- * Task 2790's changes from the functional draft: the 210000.0f constant written at each use, each spawned
- * particle in its own block-scoped pointer, the `v += off` / `pos += off` triples as vec_add_ab().
- * Task 2907's changes (544 -> 381):
- * - the player table as an array of 0x460-byte records indexed by a plain `extern s32 D_001D52F0`, as
- *   NM-R5's sibling func_L04_00325460 has it (544 -> 390);
- * - func_L01_0046FB40 declared with its eighth integer argument after the three floats, an
- *   EABI-equivalent order that upstream's C also uses for this callee: retail moves $t3 last, into the
- *   jal delay slot (390 -> 381).
- * Left:
- * - register roles swap throughout: $s1/$s2 for the hoisted divisor 6 and the vars pointer (the RTL
- *   dump's global allocation takes the vars pointer before the 6), $s6/$s7 for 0xF4 and `off`,
- *   $f20/$f21, and the loop counter of the two opening loops ($s4 here, $s0 in retail);
- * - burst loop 1 computes &D_L04_001E2840[D_001D52F0] with mtlo + madd, ours with mult + addu, which
- *   shifts that loop by a word. Loops 2 and 3 have mult + addu in retail too, with the table's base
- *   hoisted into $s5 (ours reloads it). No tried shape produces madd, not even L01_003041A0.c's matched
- *   `(D_L01_002C5600 + D_001425C0[0x11])` compiled on its own.
- * Task 3013 (2026-11-23) found no closer C; the count is still 381 at levels 04, 05, 23 and 35:
- * - madd: in upstream's matched func_L01_003F5BE0, combine makes madd from mult + add once the loop
- *   pass has moved the mult's constant and the table base out of the loop ("savings 2": the same set
- *   appears twice in that loop). Here the loop pass leaves burst loop 1's 0x460 and the lo_sum of the
- *   table "life 1, not desirable" (-da, .loop dump), so combine leaves mult + addu. These forms compile
- *   to the same 381: `(Pl *)((s32)D_L04_001E2840 + D_001D52F0 * 0x460)`, the same with the index first,
- *   `(u8 *)D_L04_001E2840 + D_001D52F0 * 0x460`, `D_L04_001E2840 + D_001D52F0`. A table pointer
- *   assigned before the loop gives 428. Moving the table out of the loop is not enough on its own: a
- *   small test loop with both hoisted still compiles to mult + addu;
- * - $s1/$s2: in the .lreg/.greg dumps the vars pointer (77 refs over 747 insns) is allocated before
- *   the divisor 6 (5 refs over 102 insns), and global.c's priority puts it about six times higher.
- *   So retail's $s1 must go first to some higher-priority pseudo that conflicts with vars. `rs`, which
- *   retail keeps in $s1 in the burst loops and this draft in $s2, is one candidate; this was not tried.
+/* func_L04_00325C08: Promises (task 2790, 2026-11-21; retried in tasks 2907, 2026-11-22, and 3013,
+ * 2026-11-23; closeout attempt 1 of 2 in task 3055 and attempt 2 of 2 in task 3060, 2026-11-24), from
+ * upstream's nonmatching/functional/func_L04_00325C08.c. CLOSEOUT attempt 2 of 2: 21 -> 3; DONE.
+ * Near miss: 3 differences (tools/check.py --no-context), level 04, with
+ * -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as on L04_00325C08.c (the file has
+ * neither the VU0 flag nor @ps2as yet; it has no other function). The file's own line does not compile it
+ * (VU0 "vf17 spilled"). -fopt-stack stays: retail saves with sd in a 0xF0 frame.
+ *
+ * Task 3055 (381 -> 21). Each step is plain C; the counts are check.py at level 04:
+ * - q10's tail through its own pointer `sub = q10 + 0x20` (retail: addiu $s0, $s1, 0x20). q10 and sub
+ *   both conflict with vars, so vars drops from $s1 to $s2 and the 6 takes $s1 (381 -> 259);
+ * - three loop counters: j for the two opening loops (retail $s0), i for the bursts ($s4), k for the
+ *   last loop ($s5) (259 -> 248);
+ * - q1..q4 one variable q (retail keeps all four in $a2) (248 -> 240);
+ * - the last loop: the player angle in its own variable yaw ($f24), the 1.396 random in ang ($f20) and
+ *   the 1.571 random passed straight to func_0038DAB8 (240 -> 225); burst loop 4: the 15..20 random
+ *   inline, its two angles in ang and spd (225 -> 224);
+ * - each of burst loops 1-3 declares its own ang, spd and ang2, with ang2 = func_0038DAB8(ang, ...)
+ *   feeding the cos/sin. ang2 is short and dense, so it takes $f20 before spd; spd gets $f21 and the
+ *   D160 angle, which does not conflict with ang2, also gets $f20 (224 -> 194);
+ * - the madd: *mul_acc_si_r5900 needs the mult and the add adjacent when combine runs. With
+ *   `Pl_325C08 *base = D_L04_001E2840; pl = &base[D_001D52F0];` in the loop, base's lo_sum lives
+ *   4 insns, so the loop pass moves it out (life 4, savings 1, moved); the mult and the add become
+ *   adjacent and combine makes the madd. All callee-saved registers are busy in loop 1, so base gets
+ *   none and reload rematerialises lui/addiu in the loop, as retail has it. Loops 2 and 3 take the same
+ *   form; there base gets $s5 and stays mult + addu, as in retail;
+ * - q5/q6 one variable (the function's p) (retail $a0); pl declared in each burst loop, which lets
+ *   local-alloc tie the madd's result to the index ($v0) (-> 30);
+ * - the opening loops written `for (j = 0; j < 2; j++)`: the loop pass reverses them and emits the
+ *   count-down start after the hoisted 6 and 0xF0, as retail orders them (30 -> 24);
+ * - func_L01_0044AF78 declared (void *, void *, void *, f32, f32, s32, s32, s32, f32 x5, s32 x6), an
+ *   EABI-equivalent order upstream uses at other call sites; it changes the argument schedule (24 -> 21).
+ *
+ * Task 3060 (21 -> 3): D_001D66B0 through a local `tbl`, assigned in the first opening block and passed
+ * to func_L01_0044AF78. tbl gets no hard register and reload rematerialises it at the call as one insn,
+ * (set $a1 (symbol_ref D_001D66B0)) in the -dR dump, which prints as retail's adjacent lui/addiu; sgn = 1
+ * and k = 0 fall back to retail's places (21 -> 3). Where the assignment goes only
+ * moves which block's $v0/$v1 choice it disturbs: at the function's top 10, before the opening loops 5,
+ * before each burst loop 5, just before the call 21 (tbl gets a register), before the if 85; 3 inside
+ * the first opening block (here), inside the burst loops or inside the if.
+ *
+ * Left (3, the call block): our la $a1 issues one slot before sw $zero, 0($sp); retail has the sw first.
+ * Our reading of the -fsched-verbose-5 trace: sched1 orders the two equal-priority insns by register
+ * weight. Our (set $a1 tbl) is tbl's last use, so it frees a register (weight -1) and goes ahead of the
+ * store (weight 0); sched2 then keeps that order.
+ * With tbl kept live after the call (a test store `D_L04_0021FD88[0] = tbl;` before the last loop) the
+ * block comes out in retail's order, so retail's $a1 move did not free a register there. No form found
+ * that keeps it live without extra code. Also tried: the ten argument orders upstream declares for this
+ * callee, with tbl (3 for four of them, 6-8 for the rest), and the assignment at 108 statement positions
+ * (3 at best).
  */
 #include "common.h"
 #include "vu0.h"
@@ -58,7 +73,7 @@ extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, 
 extern u8 *func_L01_004713C8(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern u8 *func_L01_00470668(void *, void *, s32, f32);
 extern void func_L01_002F9578(void *, void *, void *, s32, s32, s32, s32, s32, f32);
-extern void func_L01_0044AF78(void *, void *, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern void func_L01_0044AF78(void *, void *, void *, f32, f32, s32, s32, s32, f32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32);
 extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_L01_00443A18(f32, f32);
@@ -77,50 +92,55 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
     f32 v[4] __attribute__((aligned(16)));
     f32 w[4] __attribute__((aligned(16)));
     f32 fa, fb, scale;
-    f32 ang, spd, up, r;
-    s32 i, n, rs, sgn;
+    f32 ang, spd, up, yaw;
+    s32 i, j, k, n, rs, sgn;
     u8 *p;
+    u8 *q;
     Pl_325C08 *pl;
+    u8 *tbl;
 
     scale = *(f32 *)(vars + 0x14);
     fa = D_L04_001DC7A8 * scale * 210000.0f;
     fb = D_L04_001DC7AC * scale * 210000.0f;
     {
-        u8 *q1 = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 100, 0, fa, fb, 0.0f, 0);
-        if (q1) {
-            q1[2] = *D_L04_0021FD88[0];
-            q1[9] = 0xF0;
+        q = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 100, 0, fa, fb, 0.0f, 0);
+        tbl = D_001D66B0;
+        if (q) {
+            q[2] = *D_L04_0021FD88[0];
+            q[9] = 0xF0;
         }
     }
     {
-        u8 *q2 = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x63F7, 0, 100, 0, fa, fb, 0.0f, 0);
-        if (q2) {
-            q2[2] = *D_L04_0021FD88[0];
-            q2[9] = 0xF0;
+        q = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x63F7, 0, 100, 0, fa, fb, 0.0f, 0);
+        if (q) {
+            q[2] = *D_L04_0021FD88[0];
+            q[9] = 0xF0;
         }
     }
-    for (i = 1; i >= 0; i--) {
+    for (j = 0; j < 2; j++) {
         {
-            u8 *q3 = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 0x7F, 0, fa, fb, 0.0f, 0);
-            if (q3) {
-                q3[2] = D_L04_0021FC18[0x170 / 4][5];
-                q3[9] = 0xF0;
+            q = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 0x7F, 0, fa, fb, 0.0f, 0);
+            if (q) {
+                q[2] = D_L04_0021FC18[0x170 / 4][5];
+                q[9] = 0xF0;
             }
         }
     }
-    for (i = 1; i >= 0; i--) {
+    for (j = 0; j < 2; j++) {
         {
-            u8 *q4 = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 0x7F, 0, fa, fb, 0.0f, 0);
-            if (q4) {
-                q4[2] = D_L04_0021FC18[0x170 / 4][6];
-                q4[9] = 0xF0;
+            q = func_L01_0046FB40(m + 0x10, off, (D_L04_001DC7B0 * 5 + 2) / 6, 0x388EF7, 0, 0x7F, 0, fa, fb, 0.0f, 0);
+            if (q) {
+                q[2] = D_L04_0021FC18[0x170 / 4][6];
+                q[9] = 0xF0;
             }
         }
     }
 
     /* burst type 1 (count at +0x20): two particles per round */
     for (i = 0; i < *(s32 *)(vars + 0x20); i++) {
-        pl = &D_L04_001E2840[D_001D52F0];
+        f32 ang, spd, ang2;
+        Pl_325C08 *base = D_L04_001E2840;
+        Pl_325C08 *pl = &base[D_001D52F0];
         ang = func_0038D160(pl->x - *(f32 *)(m + 0x10), pl->y - *(f32 *)(m + 0x14));
         rs = (s32)func_L01_00443A18(2.0f, 5.0f);
         n = func_00382498(30, 50);
@@ -129,32 +149,34 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
         pos[2] = *(f32 *)(m + 0x18) + func_L01_00443A18(0.0f, 0.1f) * *(f32 *)(vars + 0x14);
         up = func_003824E0(0.6f, 1.0f) * *(f32 *)(vars + 0x14);
         spd = func_003824E0(9.0f, 12.0f) * *(f32 *)(vars + 0x14);
-        ang = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
+        ang2 = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
         spd = spd * 0.020000001f;
-        v[0] = func_0038D098(ang) * spd;
-        v[1] = func_0038D0B0(ang) * spd;
+        v[0] = func_0038D098(ang2) * spd;
+        v[1] = func_0038D0B0(ang2) * spd;
         v[2] = 0.0f;
         spd = func_003824E0(0.0f, 12.0f) * *(f32 *)(vars + 0x14);
         v[2] = spd * 0.020000001f;
         vec_add_ab(v, v, off);
         {
-            u8 *q5 = func_L01_004713C8(pos, v, (n * 5 + 2) / 6, 0x407FFF, rs, 0x7F, 0x7F, 1, up * 210000.0f, *(f32 *)(vars + 0x14) * 0.01f * 210000.0f, 0.00584f);
-            if (q5) {
-                q5[9] = 0xF4;
+            p = func_L01_004713C8(pos, v, (n * 5 + 2) / 6, 0x407FFF, rs, 0x7F, 0x7F, 1, up * 210000.0f, *(f32 *)(vars + 0x14) * 0.01f * 210000.0f, 0.00584f);
+            if (p) {
+                p[9] = 0xF4;
             }
         }
         {
-            u8 *q6 = func_L01_004713C8(pos, v, (n * 5 + 2) / 6, 0x20FF, -(rs * 2), 0x30, 0x30, 0, up * 6.0f * 210000.0f, *(f32 *)(vars + 0x14) * 0.02f * 210000.0f, 0.00584f);
-            if (q6) {
-                q6[2] = *D_L04_0021FC18[0xD4 / 4];
-                q6[9] = 0xF4;
+            p = func_L01_004713C8(pos, v, (n * 5 + 2) / 6, 0x20FF, -(rs * 2), 0x30, 0x30, 0, up * 6.0f * 210000.0f, *(f32 *)(vars + 0x14) * 0.02f * 210000.0f, 0.00584f);
+            if (p) {
+                p[2] = *D_L04_0021FC18[0xD4 / 4];
+                p[9] = 0xF4;
             }
         }
     }
 
     /* burst type 2 (count at +0x24) */
     for (i = 0; i < *(s32 *)(vars + 0x24); i++) {
-        pl = &D_L04_001E2840[D_001D52F0];
+        f32 ang, spd, ang2;
+        Pl_325C08 *base = D_L04_001E2840;
+        Pl_325C08 *pl = &base[D_001D52F0];
         ang = func_0038D160(pl->x - *(f32 *)(m + 0x10), pl->y - *(f32 *)(m + 0x14));
         rs = (s32)func_L01_00443A18(2.0f, 5.0f);
         n = func_00382498(30, 50);
@@ -163,10 +185,10 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
         pos[2] = *(f32 *)(m + 0x18) + func_L01_00443A18(0.0f, 0.1f) * *(f32 *)(vars + 0x14);
         up = func_003824E0(0.75f, 1.5f) * *(f32 *)(vars + 0x14);
         spd = func_003824E0(9.0f, 12.0f) * *(f32 *)(vars + 0x14);
-        ang = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
+        ang2 = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
         spd = spd * 0.020000001f;
-        v[0] = func_0038D098(ang) * spd;
-        v[1] = func_0038D0B0(ang) * spd;
+        v[0] = func_0038D098(ang2) * spd;
+        v[1] = func_0038D0B0(ang2) * spd;
         v[2] = 0.0f;
         spd = func_003824E0(0.0f, 12.0f) * *(f32 *)(vars + 0x14);
         v[2] = spd * 0.020000001f;
@@ -181,7 +203,9 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
 
     /* burst type 3 (count at +0x28) */
     for (i = 0; i < *(s32 *)(vars + 0x28); i++) {
-        pl = &D_L04_001E2840[D_001D52F0];
+        f32 ang, spd, ang2;
+        Pl_325C08 *base = D_L04_001E2840;
+        Pl_325C08 *pl = &base[D_001D52F0];
         ang = func_0038D160(pl->x - *(f32 *)(m + 0x10), pl->y - *(f32 *)(m + 0x14));
         rs = (s32)func_L01_00443A18(2.0f, 5.0f);
         n = func_00382498(30, 50);
@@ -190,10 +214,10 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
         pos[2] = *(f32 *)(m + 0x18) + func_L01_00443A18(0.0f, 0.1f) * *(f32 *)(vars + 0x14);
         up = func_003824E0(0.6f, 1.0f) * *(f32 *)(vars + 0x14);
         spd = func_003824E0(9.0f, 12.0f) * *(f32 *)(vars + 0x14);
-        ang = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
+        ang2 = func_0038DAB8(ang, func_L01_00443A18(0.0f, 1.3962634f));
         spd = spd * 0.020000001f;
-        v[0] = func_0038D098(ang) * spd;
-        v[1] = func_0038D0B0(ang) * spd;
+        v[0] = func_0038D098(ang2) * spd;
+        v[1] = func_0038D0B0(ang2) * spd;
         v[2] = 0.0f;
         spd = func_003824E0(0.0f, 12.0f) * *(f32 *)(vars + 0x14);
         v[2] = spd * 0.020000001f;
@@ -208,13 +232,12 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
 
     /* burst type 4 (count at +0x30): sparks along the basis vectors at m+0xC0 / m+0xD0 */
     for (i = 0; i < *(s32 *)(vars + 0x30); i++) {
-        r = func_003824E0(15.0f, 20.0f) * *(f32 *)(vars + 0x14);
-        func_0038CE20(pos, m + 0xC0, r * 0.020000001f);
+        func_0038CE20(pos, m + 0xC0, func_003824E0(15.0f, 20.0f) * *(f32 *)(vars + 0x14) * 0.020000001f);
+        ang = func_L01_00443A18(0.2617994f, 1.3962634f);
         spd = func_L01_00443A18(0.2617994f, 1.3962634f);
-        up = func_L01_00443A18(0.2617994f, 1.3962634f);
-        func_003C4840(w, m + 0xD0, spd);
+        func_003C4840(w, m + 0xD0, ang);
         func_0038D850(v, pos, w);
-        func_003C4840(w, m + 0xC0, up);
+        func_003C4840(w, m + 0xC0, spd);
         func_0038D850(v, v, w);
         vec_add_ab(v, v, off);
         n = func_00382498(20, 35);
@@ -234,32 +257,32 @@ void func_L04_00325C08(u8 *m, void *basis, f32 *off, f32 extra) {
         func_L01_002F9578(m, m + 0x10, pos, 0xD, 0xFF, 0, 0, 0x28, *(f32 *)(vars + 0x14) * 3.5f);
     }
 
-    func_L01_0044AF78(m, D_001D66B0, m + 0x10, 0, 0, 0, -1, 0, 0, -1, 0, 0x1010001, 0.0f, 0.0f, 0.0f, 0.0f, 9.0f, 0.0f, extra * *(f32 *)(vars + 0x14));
+    func_L01_0044AF78(m, tbl, m + 0x10, 0.0f, 0.0f, 0, 0, 0, 0.0f, 0.0f, 9.0f, 0.0f, extra * *(f32 *)(vars + 0x14), -1, 0, 0, -1, 0, 0x1010001);
 
     sgn = 1;
     pl = &D_L04_001E2840[D_001D52F0];
-    ang = func_0038D160(pl->x - *(f32 *)(m + 0x10), pl->y - *(f32 *)(m + 0x14));
-    for (i = 0; i < *(s32 *)(vars + 0x2C); i++) {
+    yaw = func_0038D160(pl->x - *(f32 *)(m + 0x10), pl->y - *(f32 *)(m + 0x14));
+    for (k = 0; k < *(s32 *)(vars + 0x2C); k++) {
         sgn = -sgn;
         pos[0] = *(f32 *)(m + 0x10) + func_L01_00443A18(0.0f, 1.0f) * *(f32 *)(vars + 0x14);
         pos[1] = *(f32 *)(m + 0x14) + func_L01_00443A18(0.0f, 1.0f) * *(f32 *)(vars + 0x14);
         pos[2] = *(f32 *)(m + 0x18) + func_L01_00443A18(0.0f, 1.0f) * *(f32 *)(vars + 0x14);
         spd = func_003824E0(0.020000001f, 0.040000003f) * *(f32 *)(vars + 0x14);
-        up = func_L01_00443A18(0.0f, 1.3962634f);
-        r = func_L01_00443A18(0.0f, 1.5707964f);
-        func_00382760(v, spd, func_0038DAB8(ang, r), up);
+        ang = func_L01_00443A18(0.0f, 1.3962634f);
+        func_00382760(v, spd, func_0038DAB8(yaw, func_L01_00443A18(0.0f, 1.5707964f)), ang);
         vec_add_ab(v, v, off);
         {
             u8 *q10 = func_L01_004669B0(pos, 0.0f, 1.0f, 1.01f, *(f32 *)(vars + 0x14) * 1.5f * 210000.0f, sgn, v, 0x7F60A0FF, 0);
             if (q10) {
+                u8 *sub = q10 + 0x20;
                 n = func_00382498(40, 70);
                 q10[9] = 0xF4;
                 *(s16 *)(q10 + 0xA) = (n * 5 + 2) / 6;
-                *(s32 *)(q10 + 0x20 + 4) = 3;
+                *(s32 *)(sub + 4) = 3;
                 n = func_00382498(1, 10);
-                *(u8 *)(q10 + 0x20 + 0xA) = 0x40;
-                *(f32 *)(q10 + 0x20 + 0x1C) = (f32)((n * 5 + 2) / 6);
-                *(u8 *)(q10 + 0x20 + 0xB) = *(u8 *)(q10 + 0xA);
+                sub[0xA] = 0x40;
+                *(f32 *)(sub + 0x1C) = (f32)((n * 5 + 2) / 6);
+                sub[0xB] = q10[0xA];
             }
         }
     }
