@@ -1,15 +1,4 @@
-/* PAL near miss (Sonnet round 20, b33 h4b): 24 raw / 18 aligned / 4 registers-masked differences in the file's flags (S + @ps2as + vu flag).
- * Two-quad billboard drawer (family of func_L07_003CB1F8): the table row D_L01_002C5600[D_001425C0[0x7F]] selects the quad colours
- * (D_L01_001DD698 / 69C), the half-widths (D_L01_001DD6A0 / 6A4) and, through the state word D_001A71A4 in 0x13..0x14, a second width;
- * `a` and `b` are STRUCT PARAMETERS passed by hidden reference (retail copies them to sp+0 / sp+0x10 and keeps `move $s3,$sp` /
- * `addiu $s4,$sp,0x10` as their addresses: a plain `vu0_v4 a, b` by value reproduces that); the four quad corners go through the temporaries
- * u (sp+0xf0) and t (sp+0xe0) (`sqc2 u; lq; sq t; sq q.p[k]`). The float selection needs the goto form: retail's shared 0.12 block is reached
- * by the first arm's branch and by the second arm's fall-through. Needs the file's context (typedefs of earlier blocks); when it moves
- * into the file the later block func_L01_0035B5A0 must declare func_L01_0035AB50 under an alias (slices of the file merge once this
- * function is C: `func_L01_0035AB50_0035B5A0(S_35A8A0 *)`).
- * Left: the allocation of the flag `b1 < 4` (gcse's PRE reaching register: retail `slti $a2` in both arms, tested with `bnez $a2`, copied to
- * $fp before the first call and used by the second; ours keeps ONE pseudo in $s5 for both calls and shifts s5/s6/s7/fp by one). Tried: one
- * variable / two variables / assignment inside the argument / `<= 3`, `!(>= 4)`, `& 1` forms / declaration order: all the same bytes. */
+/* PAL near miss (round 23 W1): 21 positional word differences with --no-context. Reuse the width branch predicate in the color chain and draw calls. Retail passes the predicate in a2 and saves a copy in fp, while this draft keeps it in s5 across both calls. The owning file also needs compatible object and row declarations before integration. */
 #include "common.h"
 #include "vu0.h"
 extern void func_003D2DA0();
@@ -57,12 +46,12 @@ void func_L01_0035A6B0(u8 *o, vu0_v4 a, vu0_v4 b) {
     s = *(S_0035A6B0 **)(o + 0x68);
     b1 = ent->b1;
     if ((u32)(D_001A71A4[0] - 0x13) >= 2) {
-        if (b1 >= 4) {
+        if (!(small = (b1 < 4))) {
             w = 0.06f;
             goto wdone;
         }
     } else {
-        if (b1 >= 4) {
+        if (!(small = (b1 < 4))) {
             w = 0.09f;
             goto wdone;
         }
@@ -75,10 +64,10 @@ wdone:
         D_L01_001DD69C = 0x5F202080;
     } else if (b1 == 2 || b1 == 3) {
         D_L01_001DD69C = D_L01_001DD698 = 0x5F804020;
-    } else if (b1 >= 4) {
+    } else if (!small) {
         D_L01_001DD69C = D_L01_001DD698 = 0x7F000000;
     }
-    func_003D93B0(&q, D_L01_001DD6A8, b1 < 4, 0x80);
+    func_003D93B0(&q, D_L01_001DD6A8, small, 0x80);
     q.c[3] = D_L01_001DD698;
     q.c[2] = D_L01_001DD698;
     q.c[1] = D_L01_001DD698;
@@ -119,7 +108,7 @@ wdone:
     q.p[3] = t;
     func_003D2DA0(&q, 0, 0);
 
-    func_003D93B0(&q, 0xE, b1 < 4, 0x80);
+    func_003D93B0(&q, 0xE, small, 0x80);
     q.c[3] = D_L01_001DD69C;
     q.c[2] = D_L01_001DD69C;
     q.c[1] = D_L01_001DD69C;

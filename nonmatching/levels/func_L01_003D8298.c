@@ -1,9 +1,8 @@
-/* PAL near miss (Codex wave 10): near miss: 49 words differ with the file's flags.
- * Worker's note: w531/func_L01_003D8298.attempt10.log: 49 diff / 313 words, same size; residual saved-register swaps (state/a, b/divisor), stack-slot cycle 80/84/88/8C, kind arithmetic temporary and first joint-call scheduling. Ten compiles; retained best draft; fixed flags, ...
- */
+/* PAL near miss, 36 diff (b37 W8; 49 reproduced from the Codex draft): lever = the outer loop written `for (i = 0; i < 6; i++)` with `next = i + 1` kept (it was `i = next` in the increment): 49 -> 36.
+ * Left: state/a saved registers swapped (retail state=s4, a=s3, b=s5, divisor 6=s6), the spill slots at 0x80..0x8c(sp) in another order and the `kind*5+2` temporary in s0 (ours v1) because retail spills `next` to 0x88(sp).
+ * Tried (36 each): next removed / next kept with i+1, state declared first, the previous[] copy moved after the first call. */
 #include "common.h"
 /* localdecomp:start func_L01_003D8298 */
-#include "vu0.h"
 extern f32 D_L01_001DF4AC, D_L01_001DF4B0;
 __asm__(".extern D_L01_001DF4AC, 4");
 __asm__(".extern D_L01_001DF4B0, 4");
@@ -51,7 +50,7 @@ void func_L01_003D8298(u8 *obj) {
     vec_add_ab(obj+0x10,s,obj+0x10);
     if(func_L01_004CB2D8()) func_L01_004CAB30(obj+0x10,obj+0x10);
     if(s->time<25) {
-        for(i=0;i<6;i=next) {
+        for(i=0;i<6;i++) {
             func_003C2F58(obj,i,a);
             next=i+1;
             func_003C2F58(obj,next,b);

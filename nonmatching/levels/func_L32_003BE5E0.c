@@ -1,9 +1,9 @@
-/* func_L32_003BE5E0: 50 diff with the file's flags. Needs the f32 D_ globals declared const (store/load scheduling) and u16 v. Remaining: first null tests (retail beqz/beqz/beql, mine beql/beql/beqz), the f4/f3 float register choice for the func_L03_0034B440 result and t, the lwc1 D_001DF1A0 in both delay slots of the || (retail), and the first lh in the lq/sq branch (retail beql). */
+/* func_L32_003BE5E0: 34 diff with the file's flags (b37 W12; was 38 in W8 and 50 originally). The block's extern in func_L32_003BE830 must read `(u8 *, u8 *)` to compile. Levers: both loads (p, a1->4) before the null test (`q = *(a1+4); if (p == 0 || q == 0) return;`: retail's three tests now match, reorg puts the lw in the delay slot) and D_L32_001DF1A8/1A4 NOT const (const let sched1 hoist their lwc1 above the lq/sq). Separate the random-amplitude local from the later velocity local so the call result uses $f4. Remaining: the FP register choices and scheduling downstream of the velocity adjustment, and the lwc1 D_001DF1A0 in both delay slots of the || (retail: it is the then-block's first instruction, plain bc1t/bc1f; mine bc1tl/bc1fl with lwc1 0x10($s1) first). Tried (38 each): const toggles of every other D_, nested ifs, `k = D_L32_001DF1A0` temp, swapped operands of the <, flag variable (87), goto form, extra f3 copy. */
 #include "common.h"
 
 typedef int u128_t __attribute__((mode(TI)));
-extern const f32 D_L32_001DF1A8; __asm__(".extern D_L32_001DF1A8, 4");
-extern const f32 D_L32_001DF1A4; __asm__(".extern D_L32_001DF1A4, 4");
+extern f32 D_L32_001DF1A8; __asm__(".extern D_L32_001DF1A8, 4");
+extern f32 D_L32_001DF1A4; __asm__(".extern D_L32_001DF1A4, 4");
 extern const f32 D_L32_001DF1AC; __asm__(".extern D_L32_001DF1AC, 4");
 extern const f32 D_L32_001DF1C4; __asm__(".extern D_L32_001DF1C4, 4");
 extern const f32 D_L32_001DF18C; __asm__(".extern D_L32_001DF18C, 4");
@@ -22,19 +22,20 @@ extern s32 func_0038DBD8(s32, s32, f32);
 
 void func_L32_003BE5E0(u8 *a0, u8 *a1) {
     u8 *p;
-    f32 f21, f20, d, t, f4;
+    u8 *q;
+    f32 f21, f20, d, t, f4, amplitude;
     u16 v;
     if (a1 == 0) return;
     p = *(u8 **)a1;
-    if (p == 0) return;
-    if (*(u8 **)(a1 + 4) == 0) return;
+    q = *(u8 **)(a1 + 4);
+    if (p == 0 || q == 0) return;
             if (*(u16 *)(a1 + 0xA) & 1) {
                 *(u128_t *)(a0 + 0x10) = *(u128_t *)(p + 0x10);
                 *(f32 *)(a1 + 0x10) = func_003824E0(D_L32_001DF1A8, D_L32_001DF1A4);
-                t = D_L32_001DF1AC;
-                *(f32 *)(a1 + 0x14) = func_003824E0(-t, t);
-                t = D_L32_001DF1C4;
-                *(f32 *)(a0 + 0x10) += func_003824E0(-t, t);
+                amplitude = D_L32_001DF1AC;
+                *(f32 *)(a1 + 0x14) = func_003824E0(-amplitude, amplitude);
+                amplitude = D_L32_001DF1C4;
+                *(f32 *)(a0 + 0x10) += func_003824E0(-amplitude, amplitude);
                 *(f32 *)(a0 + 0xC) = func_003824E0(D_L32_001DF18C, D_L32_001DF188);
                 *(s32 *)(a0 + 4) = func_0038DBD8(D_L32_001DF178, D_L32_001DF17C, func_003824E0(0.0f, 1.0f));
             }

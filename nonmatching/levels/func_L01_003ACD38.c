@@ -1,10 +1,9 @@
-/* PAL near miss (b30 J6): 19 words differ, all of them one register swap: retail keeps the first parameter `a` in $s1 and the pointer `r`
- * (func_00382348's result) in $s2; ours has `a` in $s2 and `r` in $s1. Global-alloc priorities (floor_log2(refs) * refs / live): a = 9 refs over
- * 86 insns (0.314), r = 8 refs over 73 insns (0.329), so r is allocated first; one more reference to `a` flips it (a dummy `|| a == 0` test gives
- * 7 words but adds a branch). No code-free extra reference found (tried: variable forms, switch for the t cases, `!r`, an extra temp for the
- * func_L01_00449020 result). Everything else is retail's: layout (the two func_L01_003ACCD8 calls cross-jump into one block), the `% 8` pair,
- * the mixed $gp / lui read of D_L01_001DFB40 (a single `g = D_L01_001DFB40` after the join), the 64-bit mask test.
- * Check with: python tools/check.py nonmatching/levels/func_L01_003ACD38.c func_L01_003ACD38 --no-context
+/* PAL near miss: 18 words differ in S mode with Ps2EeAs.
+ * Declaring func_L01_00452860 with the signed return type used in the matched
+ * Florana caller fixes the move of its third argument into the call delay slot.
+ * The remaining words reflect a single allocation swap: retail puts a in $s1
+ * and r in $s2. The draft allocates r first (priority 0.329 versus 0.314).
+ * Reproduce with tools/check.py on this draft in file context, --mode S --as ps2as.
  */
 #include "common.h"
 
@@ -18,7 +17,7 @@ extern s32 func_L01_00448FF0(void *);
 extern s32 func_L01_00452FB0(void *, s32, s32, s32, s32);
 extern void func_L01_00445170(void *, s32);
 extern s32 func_L01_00449020(void *);
-extern void func_L01_00452860(void *, void *, s32);
+extern s32 func_L01_00452860(void *, void *, s32);
 extern void func_L01_00456BD0(void *, s32);
 extern void func_L01_00456C98(void *, s32, f32, void *, s32, s32, s32, s32, s32, f32, f32, s32, s32);
 
