@@ -239,7 +239,188 @@ INCLUDE_ASM("asm/levels", func_L01_0038A0F8);
 
 INCLUDE_ASM("asm/levels", func_L01_0038A4B8);
 
-INCLUDE_ASM("asm/levels", func_L01_0038A708);
+/* localdecomp:start func_L01_0038A708 */
+typedef struct {
+    u8 pad_0[0x1D8];
+    s32 i1D8;                  /* 0x1D8 */
+    u8 pad_1DC[0x6F0 - 0x1DC];
+    S_38C110v aim;             /* 0x6F0 */
+    u8 pad_700[0x1210 - 0x700];
+    s32 fire_button;           /* 0x1210 */
+    u8 pad_1214[0x1220 - 0x1214];
+    s32 i1220;                 /* 0x1220 */
+    u8 pad_1224[0x1430 - 0x1224];
+    u8 *lockon_target;         /* 0x1430 */
+    u8 pad_1434[0x25C0 - 0x1434];
+    u8 *moby;                  /* 0x25C0 */
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x25E9 - 0x25C8];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x25ED - 0x25EA];
+    u8 no_firing;              /* 0x25ED */
+    u8 pad_25EE[0x28BC - 0x25EE];
+    s32 aiming_fire_wait;      /* 0x28BC */
+} Hero_0038A708;
+typedef struct {
+    u8 pad_0[0x10];
+    u8 landing[0x10];          /* 0x10 */
+    f32 timer;                 /* 0x20 */
+    s32 w24;                   /* 0x24 */
+    s32 w28;                   /* 0x28 */
+    s32 rumble;                /* 0x2C */
+} Vars_0038A708;
+typedef struct {
+    u8 pad_0[0x20];
+    u8 phase;                  /* 0x20 */
+    u8 pad_21[0x42 - 0x21];
+    u8 b42;                    /* 0x42 */
+    u8 b43;                    /* 0x43 */
+    u8 pad_44[0x60 - 0x44];
+    u8 b60;                    /* 0x60 */
+    u8 pad_61[0x68 - 0x61];
+    Vars_0038A708 *vars;       /* 0x68 */
+} Moby_0038A708;
+typedef struct { u8 pad_0[0x50]; f32 rate; u8 pad_54[0xF0 - 0x54]; } Row_0038A708;
+typedef struct { s32 w[5]; } Skip_0038A708;
+typedef struct { s32 w[6]; } Skip2_0038A708;
+extern Hero_0038A708 D_001A4BE0_0038A708;
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern u8 D_00142637[];
+extern u8 D_L01_001DAFF0_0038A708;
+extern s32 D_L01_001D673C_0038A708;
+extern s32 D_L01_001E1F10_0038A708;
+extern f32 D_L01_001DDEA8_0038A708;
+__asm__(".extern D_L01_001DDEA8_0038A708, 4");
+extern f32 D_L01_001DDEAC_0038A708;
+__asm__(".extern D_L01_001DDEAC_0038A708, 4");
+extern f32 D_L01_001DDEB0_0038A708;
+__asm__(".extern D_L01_001DDEB0_0038A708, 4");
+extern f32 D_L01_001DDEB4_0038A708;
+__asm__(".extern D_L01_001DDEB4_0038A708, 4");
+extern Skip_0038A708 D_L01_001DDEB8_0038A708;
+extern Skip2_0038A708 D_L01_001DDED0_0038A708;
+extern u8 D_L01_002B3C60_0038A708[];
+extern Row_0038A708 D_L01_002C5600_0038A708[];
+extern void func_003C2F58(void *, s32, void *);
+extern void func_L01_00444F38_0038A708(u8 *, s32, s32, s32, s32);
+extern u8 *func_00382348(void *);
+extern s32 func_0038CAD0(void *);
+extern u8 *func_L01_004501E8_0038A708(void *, void *, f32, f32, f32, f32, void *, s32, s32, s32, f32, s32, void *, s32, s32, s32);
+extern void func_L01_0038AD40_0038A708(void *, void *, void *, s32, f32, f32, f32, f32);
+extern s32 func_L01_004C7A18_0038A708(f32, void *, void *, void *, void *, void *, s32, s32);
+extern void func_L01_004EAA80_0038A708(void);
+extern s32 func_L01_005118D0_0038A708(s32, s32);
+extern void func_L01_004EA7D8_0038A708(s32);
+extern s32 func_L01_003F2058_0038A708(void *, void *);
+extern void func_0038D890(void *, void *, void *, f32);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00362610_0038A708(void *, void *, void *, s32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_005119E0_0038A708(s32);
+extern void func_L01_003F2278_0038A708(s32, void *);
+extern s32 func_L01_0040E050_0038A708(void *);
+extern void func_L01_00404A10_0038A708(void *, void *);
+extern void func_L01_0038ACE8_0038A708(void *);
+
+void func_L01_0038A708(Moby_0038A708 *m)
+{
+    Vars_0038A708 *vars = m->vars;
+    u8 *target;
+    S_38C110v pos;
+    union { Skip_0038A708 skip; S_38C110v dir; } u;
+    Skip2_0038A708 skip2;
+    s32 at;
+    s32 at2;
+    s32 can_fire;
+
+    func_003C2F58(m, 0, &pos);
+    if (m->b42 == m->b43 && (m->b60 & 2))
+        func_L01_00444F38_0038A708((u8 *)m, 1, 0, 2, 0);
+    target = 0;
+    if (D_001A4BE0_0038A708.lockon_target != 0 && D_001A4BE0_0038A708.lockon_target[0x20] != 0xFE &&
+        D_001A4BE0_0038A708.lockon_target[0x20] != 0xFD) {
+        f32 *health = (f32 *)func_00382348(D_001A4BE0_0038A708.lockon_target);
+        if (health != 0 && 0.0f < *health)
+            target = D_001A4BE0_0038A708.lockon_target;
+    }
+    can_fire = 1;
+    if (D_001A4BE0_0038A708.state == 0x1D || D_001A4BE0_0038A708.state == 1) {
+        if (func_0038CAD0(&D_001A4BE0_0038A708.aiming_fire_wait) == 0)
+            can_fire = 0;
+    } else {
+        D_001A4BE0_0038A708.aiming_fire_wait = 0x21;
+        if (target == 0) {
+            u.skip = D_L01_001DDEB8_0038A708;
+            target = func_L01_004501E8_0038A708(&pos, &D_001A4BE0_0038A708.aim, 0.39269909262657166f, 1.5707963705062866f,
+                                       11.100000381469727f, 0.0f, &at, 0, 0, 0, 0.0f, 0, &u.skip, 1, -1, 0);
+        }
+    }
+    if (D_L01_001DAFF0_0038A708 != 0 && D_001D545C == 5) {
+        skip2 = D_L01_001DDED0_0038A708;
+        target = func_L01_004501E8_0038A708(&pos, &D_001A4BE0_0038A708.aim, 0.8726646304130554f, 1.0471975803375244f,
+                                   30.0f, 0.0f, &at2, 0, 0, 0, 0.0f, 0, &skip2, 1, -1, 0);
+        if (target != 0 && *(s16 *)(target + 0xAA) == 0x1A13) {
+            D_L01_001DDEA8_0038A708 = 10.0f;
+            D_L01_001DDEB4_0038A708 = 50.0f;
+        } else {
+            D_L01_001DDEA8_0038A708 = 12.0f;
+            D_L01_001DDEB4_0038A708 = 12.5f;
+        }
+    } else if (D_L01_001D673C_0038A708 != 0) {
+        D_L01_001DDEA8_0038A708 = 6.0f;
+        D_L01_001DDEB4_0038A708 = 12.5f;
+    } else {
+        D_L01_001DDEA8_0038A708 = 12.0f;
+        D_L01_001DDEB4_0038A708 = 12.5f;
+    }
+    func_L01_0038AD40_0038A708(&u.dir, &pos, target, 0, D_L01_001DDEAC_0038A708, D_L01_001DDEA8_0038A708,
+                      D_L01_001DDEB4_0038A708 * 0.020000001415610313f, D_L01_001DDEB0_0038A708 * 0.0004000000189989805f);
+    vars->w24 = func_L01_004C7A18_0038A708(D_L01_001DDEB0_0038A708 * 0.0004000000189989805f, &pos, &u.dir, vars, vars->landing,
+                                  m, 0, 0);
+    switch (m->phase) {
+    case 0:
+        m->phase = 1;
+        vars->rumble = -1;
+        vars->timer = 0.0f;
+        vars->w28 = 0;
+    case 1:
+        if (D_001A4BE0_0038A708.i1D8 >= 0x12)
+            func_L01_004EAA80_0038A708();
+        if (can_fire && vars->timer == 0.0f && D_001A4BE0_0038A708.no_firing == 0 &&
+            (*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0038A708.fire_button) &&
+            D_001A4BE0_0038A708.i1220 >= 0x13) {
+            if (func_L01_005118D0_0038A708(-1, 1)) {
+                D_L01_001E1F10_0038A708 = 1;
+                func_L01_004EA7D8_0038A708(-1);
+                vars->rumble = func_L01_003F2058_0038A708(D_L01_002B3C60_0038A708, 0);
+                func_L01_00444F38_0038A708((u8 *)m, 2, 0, 2, 0);
+                if (target != 0)
+                    func_0038D890(&u.dir, &u.dir, D_001A4BE0_0038A708.moby + 0xD0, -0.17453292012214661f);
+                else
+                    func_0038D890(&u.dir, &u.dir, D_001A4BE0_0038A708.moby + 0xD0, 0.08726646006107330f);
+                if (func_0038CEA8(&u.dir) > 0.6000000238418579f)
+                    func_0038CF68(&u.dir, &u.dir, 0.4400000274181366f);
+                func_L01_00362610_0038A708(&pos, &u.dir, m, 1, 0);
+                func_003A52A0(0, 0, m);
+                vars->timer = 1.0f / (D_L01_002C5600_0038A708 + D_00142637[0])->rate;
+            } else if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_0038A708.fire_button) || D_L01_001E1F10_0038A708 == 1) {
+                func_003A52A0(1, 0, m);
+                D_L01_001E1F10_0038A708 = 0;
+            }
+            if (!((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0038A708.fire_button) && func_L01_005119E0_0038A708(-1) &&
+                  D_001A4BE0_0038A708.b25E9 != 0) && vars->rumble >= 0) {
+                func_L01_003F2278_0038A708(vars->rumble, 0);
+                vars->rumble = -1;
+            }
+        }
+        break;
+    }
+    func_L01_0040E050_0038A708(&vars->timer);
+    func_L01_00404A10_0038A708(func_L01_0038ACE8_0038A708, m);
+}
+/* localdecomp:end func_L01_0038A708 */
 
 /* localdecomp:start func_L01_0038ACE8 */
 

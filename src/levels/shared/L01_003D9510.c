@@ -24,7 +24,292 @@ s32 func_L01_003D9540(void) {
 }
 /* localdecomp:end func_L01_003D9540 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D9548);
+/* localdecomp:start func_L01_003D9548 */
+typedef struct Moby_003D9548 Moby_003D9548;
+
+typedef struct {
+    u8 pad0[0x46];
+    u8 type;                        /* 0x46 */
+} Class_003D9548;
+
+struct Moby_003D9548 {
+    u8 pad0[0x10];
+    vu0_v4 pos;                     /* 0x10 */
+    u8 state;                       /* 0x20 */
+    u8 pad21[3];
+    Class_003D9548 *cls;            /* 0x24 */
+    u8 pad28[0x34 - 0x28];
+    u16 flags;                      /* 0x34 */
+    u8 pad36[0x42 - 0x36];
+    u8 anim_state;                  /* 0x42 */
+    u8 anim;                        /* 0x43 */
+    u8 pad44[0x68 - 0x44];
+    struct Vars_003D9548 *vars;     /* 0x68 */
+    u8 pad6C[0x98 - 0x6C];
+    s32 w98;                        /* 0x98 */
+    u8 pad9C[0xC0 - 0x9C];
+    u128_t m[3];                    /* 0xC0 */
+    u8 padF0[8];
+    f32 rot;                        /* 0xF8 */
+};
+
+typedef struct Vars_003D9548 {
+    u8 pad0[0x14];
+    f32 speed;                      /* 0x14 */
+    Moby_003D9548 *home;            /* 0x18 */
+    f32 turn;                       /* 0x1C */
+    u8 pad20[0x28 - 0x20];
+    Moby_003D9548 *target;          /* 0x28 */
+    u8 pad2C[0x3C - 0x2C];
+    s32 count;                      /* 0x3C */
+    u8 pad40[0x48 - 0x40];
+    s32 synced;                     /* 0x48 */
+    s32 sound;                      /* 0x4C */
+} Vars_003D9548;
+
+typedef struct {
+    u8 pad0[0x80];
+    f32 x;                          /* 0x80 */
+    f32 y;                          /* 0x84 */
+    u8 pad88[0x25C0 - 0x88];
+    Moby_003D9548 *ride;            /* 0x25C0 */
+} Hero_003D9548;
+
+extern Hero_003D9548 D_001A4BE0_003D9548;
+extern f32 D_001A4C60[];
+extern s32 D_001A71A0[];
+extern u8 D_001425C0[];
+/* a weapon row (include/structs/weapon.h, struct WeaponRow): 0xF0 bytes, damage at 0x6C */
+typedef struct {
+    u8 pad0[0x6C];
+    f32 damage;                     /* 0x6C */
+    u8 pad70[0xF0 - 0x70];
+} Row_003D9548;
+
+extern Row_003D9548 D_L01_002C5600_003D9548[];
+extern vu0_v4 D_L01_001E2420 __attribute__((section(".sdata")));
+extern u8 D_L01_001E2430[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E2420, 16");
+__asm__(".extern D_L01_001E2430, 16");
+
+/* the 8-byte stub at 0x3D9540 in level 01; other levels call another copy of it (func_L01_003BEAA0 in level 02) */
+extern s32 func_L01_003D9540_003D9548(void);
+extern s32 func_L01_003D9510(void);
+extern s32 func_L01_003D9FD0(void *);
+extern void func_L01_003DB588(u8 *);
+extern void func_L01_003DAAE0(void *);
+extern s32 func_0038CAD0(void *);
+/* the file declares func_L01_004450F0 with void * and with u8 * (in other functions): an alias of its own */
+extern void func_L01_004450F0_003D9548(void *, s32, s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern u8 *func_00382348_003D9548(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L01_00448340(void *, void *, void *, f32, f32, f32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_L01_00448890(void *, f32, void *, f32, f32, f32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern Moby_003D9548 *func_L01_00450010(void *, f32, f32, f32, f32, s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_004395E0(void *);
+extern f32 func_0038CF38(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CF00(void *, void *);
+/* declared as func_L01_003DF1B0 (waiting to land in this file) declares it: the callback takes the moby */
+extern void func_L01_00404808(void (*)(u8 *), void *);
+
+/* moves pos toward target through vel, the same acceleration on both axes */
+static __inline__ void move_003D9548(vu0_v4 *pos, vu0_v4 *target, f32 *vel, f32 acc, f32 max) {
+    func_L01_00448340(pos, target, vel, acc, acc, max);
+}
+
+void func_L01_003D9548(Moby_003D9548 *m) {
+    Vars_003D9548 *v = m->vars;
+    vu0_v4 a, b, c;
+    f32 f;                          /* the distance, then the turn angle */
+    f32 d4;
+    f32 saved;                      /* the distance in state 2, the old speed in state 4 */
+    f32 saved2;
+    u8 *r;
+    Moby_003D9548 *t;
+    Moby_003D9548 *n;
+    Moby_003D9548 *h;
+
+    if (func_L01_003D9FD0(m) != 0) {
+        return;
+    }
+
+    switch (m->state) {
+    case 0:
+        if (func_0038CAD0(D_L01_001E2430) == 0) {
+            func_L01_003DB588((u8 *)m);
+        } else {
+            func_L01_004450F0_003D9548(m, 3, -1);
+            if (m->anim != 2) {
+                func_003C3A10(m, 2, 0, 0);
+            }
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        m->w98 = 0;
+        if (func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m)) {
+            v->synced = 1;
+            m->flags |= 0x100;
+            m->m[0] = D_001A4BE0_003D9548.ride->m[0];
+            m->m[1] = D_001A4BE0_003D9548.ride->m[1];
+            m->m[2] = D_001A4BE0_003D9548.ride->m[2];
+        }
+        t = v->target;
+        if (t != 0 && t->state != 0xFE && t->state != 0xFD) {
+            *(u128_t *)&a = *(u128_t *)&t->pos;
+            r = func_00382348_003D9548(v->target);
+            if (r != 0) {
+                func_0038CE20(&a, v->target->m + 2, *(f32 *)(r + 0x10));
+                vec_add_ab(&a, &a, &v->target->pos);
+            }
+            f = func_L01_0040E548(&a, &m->pos);
+            move_003D9548(&m->pos, &a, &v->speed, 0.00160000008f, 0.26000002f);
+            saved = f;
+            if (!(func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m))) {
+                f32 *rot = &m->rot;
+                f = func_0038D160(a.x - m->pos.x, a.y - m->pos.y);
+                func_L01_00448890(rot, f, &v->turn, 0.0062831854f, 0.0062831854f, 0.31415927f, 0);
+            }
+            if (saved < 0.75f) {
+                if (v->sound == 0) {
+                    v->sound = 8;
+                    func_003A52A0(3, 0, m);
+                }
+                v->count++;
+                func_L01_00446780(m, &m->pos, 0x110000, 2.0f, (D_L01_002C5600_003D9548 + D_001425C0[0x8F])->damage * 0.2f, 1.0f, 0, 1, 0);
+                *(u128_t *)&b = *(u128_t *)&m->pos;
+                n = func_L01_00450010(&b, 1.0471976f, 30.0f, -1.0f, -1.0f, 0);
+                v->target = n;
+                if (n != 0 && !(n->flags & 2) && n->state != 0xFE && n->state != 0xFD && n->cls != 0 && n->cls->type == 5) {
+                    *(u128_t *)&b = *(u128_t *)&n->pos;
+                    r = func_00382348_003D9548(v->target);
+                    if (r != 0) {
+                        func_0038CE20(&b, v->target->m + 2, *(f32 *)(r + 0x10));
+                        vec_add_ab(&b, &b, &v->target->pos);
+                    }
+                    if (func_003D3CB0(&m->pos, &b, 2, m, 0) != 0) {
+                        v->target = 0;
+                        func_L01_004450F0_003D9548(m, 3, -1);
+                        if (m->anim != 3) {
+                            func_003C3A10(m, 3, 0, 0);
+                        }
+                    }
+                } else {
+                    v->target = 0;
+                }
+            }
+        } else {
+            v->target = 0;
+            func_L01_004450F0_003D9548(m, 3, -1);
+            if (m->anim != 3) {
+                func_003C3A10(m, 3, 0, 0);
+            }
+        }
+        break;
+    case 3:
+        if (func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m)) {
+            v->synced = 1;
+            m->flags |= 0x100;
+            m->m[0] = D_001A4BE0_003D9548.ride->m[0];
+            m->m[1] = D_001A4BE0_003D9548.ride->m[1];
+            m->m[2] = D_001A4BE0_003D9548.ride->m[2];
+        }
+        m->w98 = 0;
+        func_L01_00448340(&m->pos, &D_L01_001E2420, &v->speed,
+                          func_003824E0(3.0f, 4.0f) * 0.000400000019f,
+                          func_003824E0(2.0f, 3.0f) * 0.000400000019f,
+                          func_003824E0(6.0f, 8.0f) * 0.020000001415610313f);
+        if (!(func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m))) {
+            func_L01_00448890(&m->rot, func_0038D160(D_001A4BE0_003D9548.x - m->pos.x, D_001A4BE0_003D9548.y - m->pos.y), &v->turn, 0.012566371f, 0.012566371f, 0.62831855f, 0);
+        }
+        {
+            f32 t3 = func_L01_004395E0(m);
+            if (m->anim_state == 2 && t3 >= 9.0f && m->anim != 3) {
+                func_003C3A10(m, 3, 0, 0);
+            }
+        }
+        if (func_0038CF38(&m->pos, &D_L01_001E2420) < 0.5f) {
+            func_L01_004450F0_003D9548(m, 4, -1);
+            if (m->anim != 3) {
+                func_003C3A10(m, 3, 0, 0);
+            }
+        }
+        break;
+    case 4:
+        if (func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m)) {
+            v->synced = 1;
+            m->flags |= 0x100;
+            m->m[0] = D_001A4BE0_003D9548.ride->m[0];
+            m->m[1] = D_001A4BE0_003D9548.ride->m[1];
+            m->m[2] = D_001A4BE0_003D9548.ride->m[2];
+        }
+        m->w98 = 0;
+        d4 = func_L01_0040E548(&m->pos, D_001A4C60);
+        if (d4 > 50.0f) {
+            move_003D9548(&m->pos, &D_L01_001E2420, &v->speed, 0.00160000008f, 0.20000002f);
+        } else if (d4 > 20.0f && d4 < 50.0f) {
+            *(u128_t *)&a = *(u128_t *)&m->pos;
+            saved = v->speed;
+            move_003D9548(&a, &D_L01_001E2420, &v->speed, 0.00160000008f, 0.20000002f);
+            vec_sub_ba(&b, &a, &m->pos);
+            func_0038CF68(&b, &b, 0.2f);
+            vec_add_ab(&c, &b, &m->pos);
+            if (func_003D3CB0(&m->pos, &c, 0, m, 0) != 0) {
+                v->speed = saved;
+            } else {
+                *(u128_t *)&m->pos = *(u128_t *)&a;
+            }
+        } else {
+            *(u128_t *)&a = *(u128_t *)&m->pos;
+            saved2 = v->speed;
+            func_L01_00448340(&a, &D_L01_001E2420, &v->speed,
+                              func_003824E0(0.5f, 1.0f) * 0.000400000019f,
+                              func_003824E0(0.5f, 1.0f) * 0.000400000019f,
+                              func_003824E0(3.0f, 6.0f) * 0.020000001415610313f);
+            vec_sub_ba(&b, &a, &m->pos);
+            func_0038CF68(&b, &b, 0.2f);
+            vec_add_ab(&c, &b, &m->pos);
+            if (func_003D3CB0(&m->pos, &c, 0, m, 0) != 0) {
+                v->speed = saved2;
+            } else {
+                *(u128_t *)&m->pos = *(u128_t *)&a;
+            }
+        }
+        if (!(func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m))) {
+            h = v->home;
+            if (h != 0 && h->state != 0xFE && h->state != 0xFD) {
+                func_L01_00448890(&m->rot, func_0038D160(h->pos.x - m->pos.x, h->pos.y - m->pos.y), &v->turn, 0.012566371f, 0.012566371f, 0.62831855f, 0);
+            } else if (func_0038CF00(&m->pos, &D_L01_001E2420) < 0.1f) {
+                vec_add_ab(&a, &m->pos, (u8 *)D_001A71A0[0] + 0xC0);
+                func_L01_00448890(&m->rot, func_0038D160(a.x - m->pos.x, a.y - m->pos.y), &v->turn, 0.002792527f, 0.002792527f, 0.13962635f, 0);
+            } else {
+                func_L01_00448890(&m->rot, func_0038D160(D_L01_001E2420.x - m->pos.x, D_L01_001E2420.y - m->pos.y), &v->turn, 0.0062831854f, 0.0062831854f, 0.31415927f, 0);
+            }
+        }
+        break;
+    case 5:
+        break;
+    }
+
+    if (!(func_L01_003D9540_003D9548() || ((s32 (*)(void *))func_L01_003D9510)(m)) && v != 0 && v->synced != 0) {
+        v->synced = 0;
+        m->flags &= ~0x100;
+        m->m[0] = D_001A4BE0_003D9548.ride->m[0];
+        m->m[1] = D_001A4BE0_003D9548.ride->m[1];
+        m->m[2] = D_001A4BE0_003D9548.ride->m[2];
+    }
+    func_L01_00404808((void (*)(u8 *))func_L01_003DAAE0, m);
+}
+/* localdecomp:end func_L01_003D9548 */
 
 INCLUDE_ASM("asm/levels", func_L01_003D9FD0);
 

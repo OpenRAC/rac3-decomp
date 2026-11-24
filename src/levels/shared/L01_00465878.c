@@ -1389,7 +1389,67 @@ void func_L01_00469130(u8 *self) {
 }
 /* localdecomp:end func_L01_00469130 */
 
-INCLUDE_ASM("asm/levels", func_L01_00469210);
+/* localdecomp:start func_L01_00469210 */
+#include "vu0.h"
+typedef struct {
+    u8 type;                       /* 0x00 */
+    s8 flags;                      /* 0x01 */
+    u8 texture;                    /* 0x02 */
+    u8 render;                     /* 0x03 */
+    u32 rgba;                      /* 0x04 */
+    u8 spin;                       /* 0x08 */
+    u8 render2;                    /* 0x09 */
+    s16 life;                      /* 0x0A */
+    f32 size;                      /* 0x0C */
+    vu0_q position;                /* 0x10 */
+} Particle_00469210;
+typedef struct {
+    vu0_q velocity;                /* 0x20 */
+    f32 phase;                     /* 0x30 */
+    s16 t34;                       /* 0x34 */
+    s16 t36;                       /* 0x36 */
+    u8 kind;                       /* 0x38 */
+    u8 scale;                      /* 0x39 */
+    u8 pad3A[2];
+    s32 value;                     /* 0x3C */
+} Debris_00469210;
+extern u8 *D_L01_002210C8[];
+extern u8 *func_L01_004618E0(s32);
+extern u32 func_L01_00448CC0(f32, f32, f32, f32);
+extern f32 func_00382538(void);
+extern u8 func_0013D3E0(void);
+extern f32 func_003824E0(f32, f32);
+
+u8 *func_L01_00469210(vu0_q *position, vu0_q *velocity, u8 type, s32 value, u8 size, s32 render) {
+    Particle_00469210 *p = (Particle_00469210 *)func_L01_004618E0(0x28);
+    Debris_00469210 *d;
+    if (p) {
+        p->position = *position;
+        d = (Debris_00469210 *)((u8 *)p + 0x20);
+        d->velocity = *velocity;
+        p->rgba = func_L01_00448CC0(0.7f, 0.7f, 0.7f, 0.08f);
+        p->flags = 0;
+        p->render2 = ((render >> 5) << 4) + 4;
+        p->render = 0x44;
+        d->phase = func_00382538();
+        p->spin = (s32)(d->phase * 256.0f);
+        p->texture = D_L01_002210C8[0][func_0013D3E0() & 7];
+        d->scale = size;
+        d->kind = type;
+        d->t34 = 0;
+        d->t36 = 0;
+        if (type < 5) {
+            p->size = func_003824E0((d->scale * 0.03125f) * 21000.0f, (d->scale * 0.03125f) * 30000.0f);
+            p->life = 15 - ((s32 (*)(void))func_0013D3E0)() % 12;
+        } else {
+            p->size = (d->scale * 0.03125f) * 30000.0f;
+            p->life = 15;
+        }
+        d->value = value;
+    }
+    return (u8 *)p;
+}
+/* localdecomp:end func_L01_00469210 */
 
 INCLUDE_ASM("asm/levels", func_L01_004693D8);
 

@@ -587,7 +587,287 @@ int func_L01_003D30E8(u8 *a) {
 }
 /* localdecomp:end func_L01_003D30E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D3100);
+/* localdecomp:start func_L01_003D3100 */
+typedef struct {
+    u8 p0[0xB0];
+    s32 xB0;
+    u8 pB4[0x168 - 0xB4];
+    u8 x168[0x18];
+    s32 x180;
+    u8 p184[4];
+    s32 x188;
+} P_003D3100;
+typedef struct {
+    u8 p0[0x10];
+    vu0_v4 pos;
+    u8 state;
+    u8 p21[0x21];
+    u8 x42;
+    u8 p43[5];
+    f32 x48;
+    u8 p4C[0x14];
+    u8 x60;
+    u8 p61[7];
+    P_003D3100 *p68;
+    u8 p6C[0x10];
+    s16 x7C;
+    u8 p7E[0x42];
+    vu0_v4 xC0;
+    u8 pD0[0x20];
+    vu0_v4 xF0;
+} M_003D3100;
+typedef struct { u8 p0[0x18]; void *w18; u8 p1C[4]; vu0_v4 v20; } T_003D3100;
+typedef struct { u8 p0[1]; u8 b1; u8 p2[0xEE]; } R_003D3100;
+extern T_003D3100 D_L01_001EAA00;
+extern R_003D3100 D_L01_002C5600[];
+extern u8 D_001425C0[];
+extern void *D_L01_001DAFEC;
+extern s32 D_L01_001D6740;
+extern s32 D_L01_001D673C;
+extern void func_0038D570(void *, void *);
+extern void func_003C48A8(void *, void *);
+extern void func_L01_0044C638(void *, s32, void *, void *, void *, void *);
+extern void func_0038D308(void *, void *);
+extern s32 func_L01_00447490(void *, s32, s32);
+extern s32 func_0038CAD0(s32 *);
+extern void func_L01_003D42D0(void *);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_004471A8(void *, f32);
+extern void func_L01_004450F0(u8 *, s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern s32 func_L01_0044E1B8(void *, f32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_L01_003D3CF8(u8 *);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038DBA0(f32, f32);
+extern void func_L01_004455E8(void *, f32, f32, void *, f32, f32);
+extern f32 func_0038CF38(void *, void *);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern void func_0038CF68_003D3100(vu0_v4 *, vu0_v4 *, f32);
+extern s32 func_L01_0045A898(void *, void *, f32);
+extern void func_003C3DA0(void *, void *, s32, s32, f32);
+extern s32 func_003D5630(void);
+extern void func_L01_00451290(void *, void *, s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+typedef struct { u8 p0[0x368]; s16 mode; } Hero_003D3100;
+
+void func_L01_003D3100(M_003D3100 *obj)
+{
+    P_003D3100 *p = obj->p68;
+    vu0_v4 a, b;
+    f32 angle, r;
+    s32 m;
+
+    if (obj->state != 0 && D_L01_001DAFEC != 0) {
+        f32 mtx[16];
+        {
+        func_0038D570(mtx, &obj->xC0);
+        func_003C48A8(mtx, &a);
+        func_L01_0044C638(obj, (s32)D_L01_001DAFEC, &obj->pos, &a, &obj->pos, &b);
+        func_0038D308(&obj->xC0, &b);
+        obj->xF0 = b;
+        }
+    }
+    m = func_L01_00447490(obj, 0x8010000, 0);
+    if (func_0038CAD0(&p->x188) || m) {
+        func_L01_003D42D0(obj);
+    }
+    if (((R_003D3100 *)((u8 *)D_L01_002C5600 + D_001425C0[0x8F] * 0xF0))->b1 >= 2) {
+        obj->x7C = 3;
+    }
+    angle = func_0038D160(obj->pos.x - D_001A4BE0.pos.x, obj->pos.y - D_001A4BE0.pos.y);
+    if (((Hero_003D3100 *)&D_001A4BE0)->mode == 0 && D_L01_001D673C == 0) {
+        func_L01_004471A8(obj, 0.4f);
+    }
+    switch (obj->state) {
+    case 0:
+        func_L01_004450F0((u8 *)obj, 1, -1);
+        break;
+    case 1:
+        if (obj->x60 & 2) {
+            r = func_003824E0(0.0f, 100.0f);
+            if (0.0f <= r && r < 20.0f) func_003C3A10(obj, 0, 0, 8);
+            if (20.0f <= r && r < 40.0f) func_003C3A10(obj, 1, 0, 8);
+            if (40.0f <= r && r < 100.0f) func_003C3A10(obj, 2, 0, 8);
+        }
+        if (func_L01_0044E1B8(obj, 15.0f) && obj->x42 == 2) {
+            u8 n = ((R_003D3100 *)((u8 *)D_L01_002C5600 + D_001425C0[0x8F] * 0xF0))->b1;
+            if (n != 0) {
+                if (n < 4) {
+                    func_003A52A0(0, 0, obj);
+                    func_L01_003D3CF8((u8 *)obj);
+                }
+            }
+        }
+        if (obj->x42 == 2) {
+            func_L01_004455E8(obj, func_0038DAB8(obj->xF0.z, 3.1415927f), 0.0004886922f, p->x168, 0.0006283186f, 0.03141593f);
+        }
+        if (func_0038CF38(&obj->pos, D_001A4C60) < 2.0f && D_L01_001D6740 == 0 && D_L01_001D673C == 0) {
+            func_L01_004450F0((u8 *)obj, 2, -1);
+            func_003C3A10(obj, 3, 0, 8);
+            obj->x48 = 0.75f;
+        }
+        if (func_0038CAD0(&p->x180) && D_L01_001D6740 == 0 && D_L01_001D673C == 0) {
+            if (func_00382468(2)) {
+                func_L01_004450F0((u8 *)obj, 5, -1);
+                p->x180 = (func_00382498(400, 600) * 5 + 2) / 6;
+                func_003C3A10(obj, 3, 0, 8);
+                obj->x48 = 0.75f;
+            } else {
+                func_L01_004450F0((u8 *)obj, 6, -1);
+                p->x180 = (func_00382498(180, 360) * 5 + 2) / 6;
+                func_003C3A10(obj, 4, 0, 8);
+            }
+        }
+        break;
+    case 6:
+        if (obj->x60 & 2) {
+            func_003C3A10(obj, 4, 0, 8);
+        }
+        if (func_0038CAD0(&p->x180)) {
+            func_L01_004450F0((u8 *)obj, 1, -1);
+            p->x180 = (func_00382498(120, 600) * 5 + 2) / 6;
+            func_003C3A10(obj, func_00382468(2), 0, 8);
+        }
+        break;
+    case 5:
+        if (obj->x60 & 2) {
+            func_003C3A10(obj, 3, 0, 8);
+            obj->x48 = 0.75f;
+        }
+        if (func_0038CF38(&obj->pos, D_001A4C60) < 2.0f) {
+            func_L01_004450F0((u8 *)obj, 2, -1);
+            obj->x48 = 0.1f;
+            func_003C3A10(obj, 3, 0, 8);
+        }
+        if (func_0038CAD0(&p->x180)) {
+            func_L01_004450F0((u8 *)obj, 1, -1);
+            p->x180 = (func_00382498(400, 600) * 5 + 2) / 6;
+        }
+        {
+            vu0_v4 c;
+            func_L01_004455E8(obj, func_0038DAB8(obj->xF0.z, func_003824E0(-45.0f, 45.0f) * 0.017453292f), 0.00020943953f, p->x168, 0.0006283186f, 0.015707964f);
+            func_0038CF68_003D3100(&b, &obj->xC0, 10.0f);
+            vec_add_ba(&a, &obj->pos, &b);
+            c = obj->pos;
+            func_L01_0045A898(obj, &a, obj->xF0.z);
+            if (p->xB0 >= 10) {
+                func_L01_004455E8(obj, func_0038DAB8(obj->xF0.z, 3.1415927f), 0.00055850536f, p->x168, 0.0006283186f, 0.015707964f);
+            }
+        }
+        break;
+    case 2:
+        if (func_0038CF38(&obj->pos, D_001A4C60) < 2.0f) {
+            vu0_v4 c;
+            func_L01_004455E8(obj, func_0038DAB8(obj->xF0.z, func_003824E0(-30.0f, 30.0f) * 0.017453292f), 0.00020943953f, p->x168, 0.0006283186f, 0.015707964f);
+            func_0038CF68_003D3100(&b, &obj->xC0, 10.0f);
+            vec_add_ba(&a, &obj->pos, &b);
+            c = obj->pos;
+            func_L01_0045A898(obj, &a, obj->xF0.z);
+            if (p->xB0 >= 10) {
+                func_L01_004455E8(obj, func_0038DAB8(obj->xF0.z, 3.1415927f), 8.377581e-05f, p->x168, 0.0006283186f, 0.015707964f);
+            } else if (func_0038DBA0(angle, obj->xF0.z) > 0.5235988f) {
+                func_L01_004455E8(obj, angle, 0.00055850536f, p->x168, 0.0006283186f, 0.015707964f);
+            }
+        } else {
+            obj->x48 = 1.0f;
+            func_L01_004450F0((u8 *)obj, 1, -1);
+        }
+        break;
+    case 9:
+        func_003C3DA0(&obj->pos, &obj->pos, 0, 0, 0.5f);
+        {
+            s32 mode = func_003D5630();
+            if (mode > 0 && mode != 10 && mode != 7 && D_L01_001D6740 == 0) {
+                func_L01_003D42D0(obj);
+                return;
+            }
+        }
+        func_L01_004450F0((u8 *)obj, 8, -1);
+        break;
+    case 4:
+        {
+            vu0_v4 d, e, f;
+            func_L01_00451290(obj, &d, 0);
+            func_0038CF68_003D3100(&d, &d, 4.0f);
+            vec_add_ba(&e, &obj->pos, &d);
+            func_0038CF68_003D3100(&d, &d, -1.0f);
+            vec_add_ba(&f, &obj->pos, &d);
+            if (func_003D3CB0(&f, &e, 0, obj, 0) && D_L01_001EAA00.w18 != D_001A4BE0.hero_moby) {
+                obj->pos = D_L01_001EAA00.v20;
+            }
+        }
+        {
+            s32 mode = func_003D5630();
+            if (mode > 0 && mode != 10 && mode != 7 && D_L01_001D6740 == 0) {
+                func_L01_003D42D0(obj);
+                return;
+            }
+        }
+        if (D_L01_001D673C != 0) {
+            func_L01_004450F0((u8 *)obj, 8, -1);
+        } else {
+            func_L01_004450F0((u8 *)obj, 0, -1);
+        }
+        if (obj->x60 & 2) {
+            r = func_003824E0(0.0f, 100.0f);
+            if (0.0f <= r && r < 20.0f) func_003C3A10(obj, 0, 0, 8);
+            if (20.0f <= r && r < 40.0f) func_003C3A10(obj, 1, 0, 8);
+            if (40.0f <= r && r < 100.0f) func_003C3A10(obj, 2, 0, 8);
+        }
+        if (func_L01_0044E1B8(obj, 15.0f) && obj->x42 == 2) {
+            u8 n = ((R_003D3100 *)((u8 *)D_L01_002C5600 + D_001425C0[0x8F] * 0xF0))->b1;
+            if (n != 0) {
+                if (n < 4) {
+                    func_003A52A0(0, 0, obj);
+                    func_L01_003D3CF8((u8 *)obj);
+                }
+            }
+        }
+        if (func_0038CAD0(&p->x188)) {
+            func_L01_003D42D0(obj);
+            return;
+        }
+        break;
+    case 7:
+    case 8:
+        if (obj->x60 & 2) {
+            r = func_003824E0(0.0f, 100.0f);
+            if (0.0f <= r && r < 20.0f) func_003C3A10(obj, 0, 0, 8);
+            if (20.0f <= r && r < 40.0f) func_003C3A10(obj, 1, 0, 8);
+            if (40.0f <= r && r < 100.0f) func_003C3A10(obj, 2, 0, 8);
+        }
+        if (func_L01_0044E1B8(obj, 15.0f) && obj->x42 == 2) {
+            u8 n = ((R_003D3100 *)((u8 *)D_L01_002C5600 + D_001425C0[0x8F] * 0xF0))->b1;
+            if (n != 0) {
+                if (n < 4) {
+                    func_003A52A0(0, 0, obj);
+                    func_L01_003D3CF8((u8 *)obj);
+                }
+            }
+        }
+        if (func_0038CAD0(&p->x188)) {
+            func_L01_003D42D0(obj);
+            return;
+        }
+        break;
+    }
+    if (D_L01_001D6740 == 0 && D_L01_001D673C == 0) {
+        vu0_v4 t;
+        s32 mode;
+        t = obj->pos;
+        t.z += 0.5f;
+        obj->pos.z = func_003C3D30(&t, 0, 0, 0.5f);
+        mode = func_003D5630();
+        if (mode > 0 && mode != 10 && mode != 7 && mode != 2 && D_L01_001D6740 == 0) {
+            func_L01_003D42D0(obj);
+        }
+    }
+}
+/* localdecomp:end func_L01_003D3100 */
 
 /* localdecomp:start func_L01_003D3CF8 */
 #include "vu0.h"

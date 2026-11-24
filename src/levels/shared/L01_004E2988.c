@@ -504,7 +504,244 @@ void func_L01_004E35D0(u128_t *v, s32 n, f32 x, f32 y) {
 }
 /* localdecomp:end func_L01_004E35D0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004E3650);
+/* localdecomp:start func_L01_004E3650 */
+#include "vu0.h"
+/* log (best: MATCH):
+ * v1 plain draft, switch of 18 case bodies: 645 diff
+ * phase pointer local before the switch: 508; !(flags & 1) as a value (store-flag xori/andi)
+ * qzero in cases 39/18 (retail's sq $0) + nested ifs for the level tests (no && range fold): 986 -> 57
+ *   with qzero behind an inline vector-zero helper (its pointer param makes the &v pseudo kept in $s0)
+ * callee prototype order (void *, void *, s32, f32, s32, s32, f32, ...) fixes arg-move order: 40
+ * one variable for alpha -> colour: 18; per-arm min temp (no global pseudo): 8
+ * func_L01_00470150 returns u8 * (its epilogue sets $v0; level 05 declares it so): MATCH
+ */
+typedef struct {
+    u8 pad0[0x1200];
+    u8 *attachment;
+    u8 pad1204[0x1220 - 0x1204];
+    s32 charge;
+    u8 pad1224[4];
+    s32 weapon;
+    f32 phase;
+    u8 pad1230[0x25C4 - 0x1230];
+    s32 state;
+    u8 pad25C8[0x25E9 - 0x25C8];
+    u8 b25E9;
+} Hero_004E3650;
+typedef struct {
+    u8 b0;
+    u8 level;
+    u8 pad2[0xF0 - 2];
+} Gun_004E3650;
+typedef struct {
+    u8 pad0[0x34];
+    u8 flags;
+    u8 pad35[0x78 - 0x35];
+    s32 color;
+} Att_004E3650;
+extern f32 func_0038DAB8(f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern u8 *func_L01_00470150(void *, void *, s32, f32, s32, s32, f32, s32, s32, s32, f32, s32, s32);
+
+/* inlined vector zero: the pointer parameter is the &v pseudo retail keeps in $s0 */
+static __inline__ void vzero_004E3650(u128_t *p) {
+    qzero(p);
+}
+
+void func_L01_004E3650(void) {
+    Att_004E3650 *att;
+    s32 color;
+    s32 visible;
+    f32 *phase;
+    union { u128_t q; f32 f[4]; } v;
+
+    att = (Att_004E3650 *)(*(Hero_004E3650 *)&D_001A4BE0).attachment;
+    if (att == 0) return;
+    if ((*(Hero_004E3650 *)&D_001A4BE0).state == 0x65) return;
+    visible = !(att->flags & 1);
+    if (!visible) return;
+    if ((*(Hero_004E3650 *)&D_001A4BE0).charge < 19) return;
+    color = (*(Hero_004E3650 *)&D_001A4BE0).charge - 12;
+    if (color > 64) color = 64;
+    if (color < 0) color = 0;
+    color = (color << 24) | 0xFFFFFF;
+    phase = &(*(Hero_004E3650 *)&D_001A4BE0).phase;
+    switch ((*(Hero_004E3650 *)&D_001A4BE0).weapon) {
+    case 17:
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[17]].level >= 4) {
+            *phase = func_0038DAB8(*phase, 0.0488692224f);
+            att->color = func_0038DBD8(0xFFFF6060, 0xFF804020, func_0038D0B0(*phase) * 0.5f + 0.5f);
+            v.q = 0;
+            v.f[0] = -0.07f;
+            v.f[1] = -0.67f;
+            func_L01_00470150(&v, att, att->color & 0x30FFFFFF, 0.55f * 210000.0f, -1, 1, 0.15f, 2, 0, -1, 1.0f, 0, 0);
+        } else {
+            v.q = 0;
+            v.f[0] = 0.06f;
+            v.f[1] = -0.509f;
+            if ((*(Hero_004E3650 *)&D_001A4BE0).b25E9) {
+                s32 c;
+                *phase = func_0038DAB8(*phase, 0.129154369f);
+                att->color = func_0038DBD8(0xFF00FFFF, 0xFF104080, func_0038D0B0(*phase) * 0.5f + 0.5f);
+                c = 0x28FFFFFF;
+                if (color < c) c = color;
+                func_L01_00470150(&v, att, att->color & c, 0.275f * 210000.0f, -1, 1, 0.1f, 2, 0, -1, 1.0f, 0, 0);
+            } else {
+                s32 c;
+                *phase = func_0038DAB8(*phase, 0.069813177f);
+                att->color = func_0038DBD8(0xFF00FFFF, 0xFF104080, func_0038D0B0(*phase) * 0.5f + 0.5f);
+                c = 0x30FFFFFF;
+                if (color < c) c = color;
+                func_L01_00470150(&v, att, att->color & c, 0.35f * 210000.0f, -1, 1, 0.1f, 2, 0, -1, 1.0f, 0, 0);
+            }
+        }
+        break;
+    case 16:
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[16]].level != 0) {
+            *phase = func_0038DAB8(*phase, 0.0488692224f);
+            att->color = func_0038DBD8(0xFF202020, 0xFFEFEFEF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        } else {
+            *phase = func_0038DAB8(*phase, 0.069813177f);
+            att->color = func_0038DBD8(0xFF202020, 0xFFEFEFEF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        }
+        break;
+    case 21:
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[21]].level != 0) {
+            *phase = func_0038DAB8(*phase, 0.0488692224f);
+            att->color = func_0038DBD8(0xFF505050, 0xFFEFEFEF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        } else {
+            *phase = func_0038DAB8(*phase, 0.059341196f);
+            att->color = func_0038DBD8(0xFF505050, 0xFFEFEFEF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        }
+        break;
+    case 95:
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[95]].level >= 4) {
+            *phase = func_0038DAB8(*phase, 0.0558505394f);
+            att->color = func_0038DBD8(0xFF4F4F4F, 0xFFBFBFBF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+            v.q = 0;
+            v.f[1] = -0.5f;
+            func_L01_00470150(&v, att, att->color & 0x1EFF0040, 0.7f * 210000.0f, -1, 1, 0.15f, 2, 0, -1, 1.0f, 0, 0);
+        } else {
+            *phase = func_0038DAB8(*phase, 0.0488692224f);
+            att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        }
+        break;
+    case 47:
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[47]].level >= 4) {
+            *phase = func_0038DAB8(*phase, 0.0453785658f);
+            att->color = func_0038DBD8(0xFF0028C8, 0xFF10B4B4, func_0038D0B0(*phase) * 0.5f + 0.5f);
+            v.q = 0;
+            v.f[1] = -0.5f;
+            func_L01_00470150(&v, att, att->color & 0x1AFFFFFF, 0.75f * 210000.0f, -1, 1, 0.15f, 2, 0, -1, 1.0f, 0, 0);
+        } else {
+            *phase = func_0038DAB8(*phase, 0.0663225204f);
+            att->color = func_0038DBD8(0xFF0028C8, 0xFF10B4B4, func_0038D0B0(*phase) * 0.5f + 0.5f);
+            v.q = 0;
+            v.f[0] = 0.15f;
+            v.f[1] = -0.2f;
+            func_L01_00470150(&v, att, att->color & 0x1AFFFFFF, 0.5f * 210000.0f, -1, 1, 0.15f, 2, 0, -1, 1.0f, 0, 0);
+        }
+        break;
+    case 55:
+        *phase = func_0038DAB8(*phase, 0.0558505394f);
+        att->color = func_0038DBD8(0xFF2F4F2F, 0xFF8FBF8F, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 119:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 135:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 63:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 151:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 79:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 71:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 103:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 143:
+        *phase = func_0038DAB8(*phase, 0.0488692224f);
+        att->color = func_0038DBD8(0xFF2F2F2F, 0xFFAFAFAF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    case 39:
+        *phase = func_0038DAB8(*phase, 0.0558505394f);
+        att->color = func_0038DBD8(0xFF3F3F3F, -1, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        vzero_004E3650(&v.q);
+        v.f[0] = 0.31f;
+        v.f[1] = 0.12f;
+        func_L01_00470150(&v, att, 0x3F804020, 0.275f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[39]].level != 0) {
+            if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[39]].level < 4) {
+                vzero_004E3650(&v.q);
+                v.f[0] = 0.27f;
+                v.f[1] = -1.1f;
+                v.f[2] = 0.2f;
+                func_L01_00470150(&v, att, 0x2F806020, 0.2f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+                v.f[2] = -0.15f;
+                func_L01_00470150(&v, att, 0x2F806020, 0.2f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+            }
+        }
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[39]].level >= 2) {
+            if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[39]].level < 4) {
+                vzero_004E3650(&v.q);
+                v.f[0] = 0.5f;
+                v.f[1] = -0.4f;
+                func_L01_00470150(&v, att, 0x3F804020, 0.2f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+            }
+        }
+        if (((Gun_004E3650 *)D_L01_002C5600)[D_001425C0[39]].level >= 4) {
+            v.f[0] = 0.27f;
+            v.f[1] = -1.08f;
+            v.f[2] = 0.2f;
+            func_L01_00470150(&v, att, 0x3F806020, 0.2f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+            v.f[2] = -0.15f;
+            func_L01_00470150(&v, att, 0x3F806020, 0.2f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+        }
+        break;
+    case 18:
+        *phase = func_0038DAB8(*phase, 0.0558505394f);
+        att->color = func_0038DBD8(0xFF4F4F4F, 0xFFBFBFBF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        vzero_004E3650(&v.q);
+        v.f[0] = -0.23f;
+        v.f[1] = -0.52f;
+        func_L01_00470150(&v, att, att->color & 0x1E40FF40, 0.3f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+        v.f[0] = 0.23f;
+        v.f[1] = -0.3f;
+        v.f[2] = 0.17f;
+        func_L01_00470150(&v, att, att->color & 0x1E40FF40, 0.1f * 210000.0f, -1, 1, 0.1f, 2, 0, -1, 1.0f, 0, 0);
+        v.f[2] = -v.f[2];
+        func_L01_00470150(&v, att, att->color & 0x1E40FF40, 0.1f * 210000.0f, -1, 1, 0.1f, 2, 0, -1, 1.0f, 0, 0);
+        break;
+    case 35:
+        *phase = func_0038DAB8(*phase, 0.0558505394f);
+        att->color = func_0038DBD8(0xFF4F4F4F, 0xFFBFBFBF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        v.f[0] = 0.42f;
+        v.f[1] = -0.24f;
+        v.f[2] = -0.05f;
+        func_L01_00470150(&v, att, att->color & 0x4F0000FF, 0.075f * 210000.0f, -1, 1, 0.2f, 2, 0, -1, 1.0f, 0, 0);
+        break;
+    case 31:
+        *phase = func_0038DAB8(*phase, 0.0558505394f);
+        att->color = func_0038DBD8(0x4F4F4F4F, 0xFFBFBFBF, func_0038D0B0(*phase) * 0.5f + 0.5f);
+        break;
+    }
+}
+/* localdecomp:end func_L01_004E3650 */
 
 /* localdecomp:start func_L01_004E45C8 */
 extern G_4DD4B0 D_001A4BE0;

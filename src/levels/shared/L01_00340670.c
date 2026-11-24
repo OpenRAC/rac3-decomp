@@ -113,7 +113,57 @@ void func_L01_00340C68(char *obj)
 
 INCLUDE_ASM("asm/levels", func_L01_00340DC0);
 
-INCLUDE_ASM("asm/levels", func_L01_00340FB0);
+/* localdecomp:start func_L01_00340FB0 */
+#include "vu0.h"
+typedef struct { f32 lo, hi; } PairF_00340FB0;
+typedef struct { s32 lo, hi; } PairI_00340FB0;
+__asm__(".extern D_L01_001DD188, 8");
+__asm__(".extern D_L01_001DD190, 8");
+__asm__(".extern D_L01_001DD198, 8");
+__asm__(".extern D_L01_001DD1A0, 8");
+extern PairF_00340FB0 D_L01_001DD188;
+extern PairI_00340FB0 D_L01_001DD190;
+extern PairI_00340FB0 D_L01_001DD198;
+extern PairF_00340FB0 D_L01_001DD1A0;
+extern PairF_00340FB0 D_L01_001DD1A8[];
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_0038DAB8(f32, f32);
+extern s32 func_00382468(s32);
+extern void func_L01_0046C470(void *, void *, s32, s32, u8, s32, s32, s32, f32);
+extern void func_0038CE20(void *, void *, f32);
+void func_L01_00340FB0(char *obj) {
+    vu0_v4 pos;
+    s32 i;
+    s32 lifetime, color;
+    f32 angle = 0.0f;
+    f32 r;
+    pos = *(vu0_v4 *)(obj + 0x10);
+    pos.z += 0.5f;
+    {
+    PairF_00340FB0 radius = { D_L01_001DD188.lo * 0.020000001f, D_L01_001DD188.hi * 0.020000001f };
+    PairF_00340FB0 angleRange = D_L01_001DD1A8[0];
+    vu0_v4 vel;
+    i = 31;
+    do {
+        i--;
+        lifetime = (func_00382498(D_L01_001DD190.lo, D_L01_001DD190.hi) * 5 + 2) / 6;
+        color = func_0038DBD8(D_L01_001DD198.lo, D_L01_001DD198.hi, func_003824E0(0.0f, 1.0f));
+        r = func_003824E0(radius.lo, radius.hi);
+        vel.x = func_0038D098(angle) * r;
+        vel.y = func_0038D0B0(angle) * r;
+        vel.z = 0.0f;
+        angle = func_0038DAB8(angle, func_003824E0(angleRange.lo, angleRange.hi));
+        func_L01_0046C470(&pos, &vel, color, lifetime, func_00382468(255), 0, 64, 0, D_L01_001DD1A0.lo);
+        func_0038CE20(&vel, &vel, 0.8f);
+        func_L01_0046C470(&pos, &vel, color, lifetime, func_00382468(255), 0, 64, 0, D_L01_001DD1A0.hi);
+    } while (i >= 0);
+    }
+}
+/* localdecomp:end func_L01_00340FB0 */
 
 INCLUDE_ASM("asm/levels", func_L01_003411A8);
 
