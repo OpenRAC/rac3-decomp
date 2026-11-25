@@ -560,8 +560,6 @@ void func_L01_0038A0F8(u8 *moby) {
 }
 /* localdecomp:end func_L01_0038A0F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00389C28);
-
 INCLUDE_ASM("asm/levels", func_L01_0038A4B8);
 
 /* localdecomp:start func_L01_0038A708 */
