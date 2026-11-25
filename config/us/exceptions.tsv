@@ -11,3 +11,4 @@ levels	func_L01_004E0580	same code as its NTSC-U twin func_L01_004DC870, but the
 levels	func_L19_003AFB40	same code as its NTSC-U twin func_L19_003ADEF0, but the carried C does not check MATCH there yet (not examined)
 levels	func_L39_0068B2F8	same code as its NTSC-U twin func_L39_00688750, but the carried C does not check MATCH there yet (not examined)
 levels	func_L39_006787B0	same code as its NTSC-U twin func_L39_00675DC8, but the carried C does not check MATCH there yet (not examined)
+levels	func_L01_004A2FC0	same code as its NTSC-U twin func_L01_0049F760, but the carried C does not check MATCH there yet (not examined)
