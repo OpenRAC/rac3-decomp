@@ -165,7 +165,6 @@
 #define func_0038DA80 func_003922B8
 #define func_0038DC08 func_00392440
 #define func_0038DEB0 func_003926E8
-#define func_0038DEC8 func_0038DF80
 #define func_0038E030 func_00392868
 #define func_0038E140 func_0038E1F8
 #define func_0038E200 func_00392A38
