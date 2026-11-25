@@ -509,7 +509,41 @@ P_00474390 *func_L01_00474390(u8 *pos, u8 *dir, f32 width, s32 life, s32 color, 
 }
 /* localdecomp:end func_L01_00474390 */
 
-INCLUDE_ASM("asm/levels", func_L01_004744D0);
+/* localdecomp:start func_L01_004744D0 */
+#include "vu0.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_004744D0;
+void func_L01_004744D0(u8 *p)
+{
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_L01_004CAB30(void *,void *);
+    V_004744D0 v;
+    u8 *s=p+48;
+    u8 *b,*a;
+    f32 t;
+    s32 alpha;
+    if (func_0038CB00(p+10)) {func_003CD250(p);return;}
+    if (*(s16 *)(p+10)<10) *(f32 *)(p+48)-=0.1f;
+    vec_sub_ba(&v, (V_004744D0 *)(p+16), (V_004744D0 *)(p+32));
+    v.w=0;
+    func_0038CF68(&v,&v,*(f32 *)(p+48));
+    a=p+16;
+    vec_add_ba(a, a, &v);
+    func_0038CF68(&v,&v,*(f32 *)(p+48));
+    b=p+32;
+    vec_add_ba(b, b, &v);
+    func_L01_004CAB30(a,a);
+    func_L01_004CAB30(b,b);
+    t=(f32)*(s16 *)(p+10)/(f32)*(s16 *)(s+12);
+    *(f32 *)(p+28)=*(f32 *)(s+4)*(1.0f+(*(f32 *)(s+8)-1.0f)*t);
+    if (*(s16 *)(p+10)<p[8]) {
+        alpha=(s32)(((f32)*(s16 *)(p+10)/(f32)p[8])*127.0f)<<24;
+        *(s32 *)(p+4)=alpha|(*(s32 *)(p+4)&0xFFFFFF);
+        *(s32 *)(p+12)=alpha|(*(s32 *)(p+12)&0xFFFFFF);
+    }
+}
+/* localdecomp:end func_L01_004744D0 */
 
 /* localdecomp:start func_L01_00474680 */
 #include "vu0.h"
@@ -605,7 +639,56 @@ u8 *func_L01_004749C8(Q_004749C8 *pos, Q_004749C8 *vel, s32 life)
 }
 /* localdecomp:end func_L01_004749C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00474B48);
+/* localdecomp:start func_L01_00474B48 */
+#include "vu0.h"
+typedef int Q_00474B48 __attribute__((mode(TI)));
+extern u8 D_001A4C60[];
+extern s32 D_L01_001DFB40;
+extern f32 D_L01_001E2880_00474B48[];
+
+void func_L01_00474B48(u8 *p)
+{
+    extern void func_L01_004CAB30(void *,void *);
+    extern void func_0038CE20(void *,void *,f32);
+    extern f32 func_0038CF00_00474B48(void *,void *);
+    extern f32 func_003824E0(f32,f32);
+    extern void func_0038CF68(void *,void *,f32);
+    extern f32 func_0038DAB8(f32,f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    vu0_v4 delta,hero;
+    u8 *s=p+0x20;
+    u8 *pos=p+0x10;
+    u8 *h;
+    func_L01_004CAB30(pos,pos);
+    func_0038CE20(s,s,0.9f);
+    *(f32 *)(s+8)-=*(f32 *)(s+12);
+    vec_add_ba((vu0_v4 *)(pos), (vu0_v4 *)(pos), (vu0_v4 *)(s));
+    func_L01_004CAB30(pos,pos);
+    if(func_0038CF00_00474B48(pos,D_001A4C60)<1.05f) {
+        h=D_001A4C60-0x80;
+        if(*(f32 *)(h+0x170)!=0.0f) {
+            *(Q_00474B48 *)&hero=*(Q_00474B48 *)D_001A4C60;
+            vec_sub_ab((vu0_v4 *)(&delta), (vu0_v4 *)(pos), (vu0_v4 *)(&hero));
+            func_0038CF68(&delta,&delta,*(f32 *)(h+0x170)*0.2f+func_003824E0(0.1f,2.0f)*0.020000001f*0.15f);
+            p[8]+=(s32)((f32)*(s16 *)(s+0x16)**(f32 *)(h+0x170)*0.5f);
+            vec_add_ba((vu0_v4 *)(pos), (vu0_v4 *)(pos), (vu0_v4 *)(&delta));
+        }
+    }
+    if(D_L01_001DFB40%10==0) {
+        *(f32 *)(s+0x1c)=func_0038DAB8(*(f32 *)(s+0x1c),1.0f);
+        { f32 k=func_0038D0B0(*(f32 *)(s+0x1c))*0.0075f;
+        func_0038CF68(&delta,D_L01_001E2880_00474B48,k); }
+        vec_add_ab((vu0_v4 *)(s), (vu0_v4 *)(s), (vu0_v4 *)(&delta));
+    }
+    if(*(s16 *)(p+0xa)<*(s16 *)(s+0x14))
+        *(s32 *)(p+4)=((s32)((f32)*(s16 *)(p+0xa)/(f32)*(s16 *)(s+0x14)*128.0f)<<24)|0x204040;
+    else *(s32 *)(p+4)=0x4f204040;
+    p[8]+=s[0x16];
+    if(func_0038CB00(p+0xa)) func_003CD250(p);
+}
+/* localdecomp:end func_L01_00474B48 */
 
 LINKER_REMNANT("asm/levels", func_L01_00474DD8);
 
@@ -1341,7 +1424,61 @@ s32 func_L01_00476F10(s32 index, vu0_v4 *src, vu0_v4 *out, f32 radius) {
 }
 /* localdecomp:end func_L01_00476F10 */
 
-INCLUDE_ASM("asm/levels", func_L01_00477190);
+/* localdecomp:start func_L01_00477190 */
+#include "vu0.h"
+typedef int Q_00477190 __attribute__((mode(TI)));
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00477190;
+extern int D_L01_0021F6C0[];
+extern V_00477190 D_001A4EC0;
+s32 func_L01_00477190(s32 index, Q_00477190 *position, Q_00477190 *output, f32 radius) {
+    extern f32 func_0038CE68_00477190(void *,void *);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_0038CE90(void *,void *,void *);
+    extern f32 func_0038CEA8(void *);
+    V_00477190 delta, correction, point, edge, direction, cross, temp;
+    u8 *path=(u8 *)D_L01_0021F6C0[index];
+    s32 hit=0, i, next;
+    f32 height, len, projection;
+    *(Q_00477190 *)&point=*position;
+    height=func_0038CE68_00477190(&point,&D_001A4EC0);
+    for(i=0;i<*(s32 *)path-1;i=next) {
+        u8 *p=path+(i<<4);
+        next=i+1;
+        if (*(f32 *)(p+0x1c)==0.0f && *(f32 *)(path+(next<<4)+0x1c)==0.0f) continue;
+        vec_sub_ab(&delta, &point, (V_00477190 *)(p+16));
+        vec_sub_ba(&edge, (V_00477190 *)(p+32), (V_00477190 *)(p+16));
+        len=func_0038CE68_00477190(&delta,&D_001A4EC0);
+        func_0038CF68(&temp,&D_001A4EC0,len);
+        vec_sub_ba(&delta, &delta, &temp);
+        func_0038CF68(&temp,&D_001A4EC0,func_0038CE68_00477190(&edge,&D_001A4EC0));
+        vec_sub_ab(&edge, &edge, &temp);
+        func_0038CF68(&direction,&edge,1.0f);
+        func_0038CE90(&cross,&delta,&direction);
+        if(radius<__builtin_fabsf(func_0038CE68_00477190(&cross,&D_001A4EC0))) continue;
+        len=func_0038CEA8(&edge);
+        projection=func_0038CE68_00477190(&delta,&direction);
+        if(len<projection || projection<0.0f) {
+            if(func_0038CEA8(&delta)<radius) {
+                func_0038CF68(&correction,&delta,radius);
+                hit=1;
+            } else continue;
+        } else {
+            hit=1;
+            func_0038CF68(&temp,&direction,projection);
+            vec_sub_ab(&correction, &delta, &temp);
+            func_0038CF68(&correction,&correction,radius);
+            vec_add_ba(&correction, &correction, &temp);
+        }
+        vec_add_ba(&point, &correction, (V_00477190 *)(p+16));
+    }
+    if(hit) {
+        len=height-func_0038CE68_00477190(&point,&D_001A4EC0);
+        func_0038CF68(&edge,&D_001A4EC0,len);
+        vec_add_ab((V_00477190 *)output, &point, &edge);
+    }
+    return hit;
+}
+/* localdecomp:end func_L01_00477190 */
 
 INCLUDE_ASM("asm/levels", func_L01_00477488);
 
@@ -1377,7 +1514,61 @@ body:
 
 LINKER_REMNANT("asm/levels", func_L01_00477990);
 
-INCLUDE_ASM("asm/levels", func_L01_00477998);
+/* localdecomp:start func_L01_00477998 */
+#include "vu0.h"
+void func_L01_00477998(s32 *table, s32 wrap, Vec4 *out, Vec4 *angles, s32 flags, f32 frame) {
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32, f32);
+    Vec4 a, b, c, tangent, d, e, extra, tmp;
+    s32 clamped = 0;
+    s32 index = (s32)frame;
+    s32 i;
+    s32 j, k;
+    f32 t;
+    if (!wrap && index >= table[0] - 2) {
+        index = table[0] - 2;
+        clamped = 1;
+    }
+    t = frame - (f32)index;
+    if (clamped && t > 1.0f) t = 1.0f;
+    i = index;
+    j = i + 1;
+    k = i + 2;
+    if (k >= table[0]) {
+        i %= table[0];
+        j %= table[0];
+        k %= table[0];
+    }
+    a.q = ((Vec4 *)(table + 4))[i].q;
+    b.q = ((Vec4 *)(table + 4))[j].q;
+    func_0038CDF8(out, &a, &b, t);
+    if (flags & 1) return;
+    if (clamped) {
+        vec_sub_ab(&tangent, &b, &a);
+    } else {
+        if ((flags & 2) && k < j) {
+            vec_sub_ba(&tmp, &b, &a);
+            c.q = tmp.q;
+            extra.q = c.q;
+            {
+                vu0_q qa, qb, qr;
+                __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(c));
+                __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(b));
+                __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+                __asm__("sqc2 %1, %0" : "=m"(c) : "j"(qr));
+                *(vu0_q *)&extra = qr;
+            }
+        } else c.q = ((Vec4 *)(table + 4))[k].q;
+        vec_sub_ba(&d, &b, &a);
+        vec_sub_ab(&e, &c, &b);
+        func_0038CDF8(&tangent, &d, &e, t);
+    }
+    angles->f[1] = -func_0038D160(func_0038CED8(&tangent), tangent.f[2]);
+    angles->f[2] = func_0038D160(tangent.f[0], tangent.f[1]);
+    angles->f[3] = a.f[3] * (1.0f - t) + b.f[3] * t;
+}
+/* localdecomp:end func_L01_00477998 */
 
 /* localdecomp:start func_L01_00477BC0 */
 extern int D_L01_0021F6C0[];

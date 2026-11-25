@@ -898,7 +898,43 @@ void func_L01_00321710(u8 *gun) {
 }
 /* localdecomp:end func_L01_00321710 */
 
-INCLUDE_ASM("asm/levels", func_L01_003218A8);
+/* localdecomp:start func_L01_003218A8 */
+#include "vu0.h"
+typedef struct { vu0_v4 pos; u8 pad10[0x38]; f32 phase; } Vars_003218A8;
+extern s32 D_L01_001DC940_003218A8;
+extern u8 *D_L01_001E17B8[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E29C0_003218A8[];
+extern s32 D_L01_001DC984, D_L01_001DC97C;
+__asm__(".extern D_L01_001DC940_003218A8, 4");
+__asm__(".extern D_L01_001DC984, 4");
+__asm__(".extern D_L01_001DC97C, 4");
+void func_L01_003218A8(u8 *gun) {
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_L01_004CB128(void *, u8 *, s32);
+    extern void func_0038CF68(f32 *, s32, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_003F6F20(s32, u8 *, s32, Vars_003218A8 *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+    Vars_003218A8 *vars = *(Vars_003218A8 **)(gun + 0x68);
+    s32 i;
+    vu0_v4 delta;
+    f32 ratio;
+    vars->phase = func_0038DAB8(vars->phase, 0.034906585f);
+    for (i = 0; i < D_L01_001DC940_003218A8; i++) {
+        u8 *target = D_L01_001E17B8[i];
+        if (target == 0 || target[0x20] == 0xFE || target[0x20] == 0xFD || (*(u16 *)(target + 0x34) & 2) || !target[0x31]) continue;
+        func_L01_004CB128(vars, target, 0);
+        vec_sub_ab(&delta, (vu0_v4 *)vars, &(D_L01_001E29C0_003218A8[0]));
+        func_0038CF68((f32 *)&delta, (s32)&delta, 1.0f);
+        if (func_0038CE68(D_L01_001E29C0_003218A8 + 2, &delta) > 0.5f) {
+            ratio = func_0038CF00(D_L01_001E29C0_003218A8, vars) / 150.0f;
+            if (i == D_L01_001DC940_003218A8 - 1) D_L01_001DC984 = 0x7F2040FF;
+            func_L01_003F6F20(0, gun, D_L01_001DC984, vars, D_L01_001DC97C, -1, 4,
+                fabs_asm(0.9f - ratio * 0.65f), -vars->phase, 90.0f, 0.5f, 0.5f, 40.0f, 40.0f);
+        }
+    }
+}
+/* localdecomp:end func_L01_003218A8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00321A80);
 
@@ -1203,9 +1239,132 @@ void func_L01_00323300(Moby_00322E00 *m) {
 
 INCLUDE_ASM("asm/levels", func_L01_00323368);
 
-INCLUDE_ASM("asm/levels", func_L01_00323A18);
+/* localdecomp:start func_L01_00323A18 */
+#include "vu0.h"
+typedef int Q_00323A18 __attribute__((mode(TI)));
+typedef union { Q_00323A18 q; f32 f[4]; } V_00323A18;
+typedef struct { u8 pad[0xD4]; u8 *texture; } Textures_00323A18;
+extern Textures_00323A18 D_L01_00221098[];
+extern s32 D_L01_001DCA00_00323A18;
+__asm__(".extern D_L01_001DCA00_00323A18, 4");
+extern s32 D_L01_001DC9E0;
+__asm__(".extern D_L01_001DC9E0, 4");
+extern u8 D_L01_001D66B0[8];
+void func_L01_00323A18(u8 *obj) {
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern s32 func_00382468(s32);
+    extern u8 *func_L01_0046FB40(void *, u8 *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
+    V_00323A18 pos, delta, step, jitter;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    f32 size, spread;
+    s32 i, spin;
+    u8 *p;
+    if (D_L01_001DCA00_00323A18) pos.q = *(Q_00323A18 *)(vars + 0x10);
+    else pos.q = *(Q_00323A18 *)(vars + 0x20);
+    func_0038CE20(&delta, obj + 0xD0, -0.1f);
+    vec_add_ba(&pos, &pos, &delta);
+    func_0038CE20(&step, obj + 0xE0, 0.15f);
+    vec_add_ab(&pos, &pos, &step);
+    func_0038CE20(&step, obj + 0xE0, -0.033333335f);
+    if (D_L01_001DC9E0) { size = 0.2f; spread = 0.15f; }
+    else { size = 0.175f; spread = 0.1f; }
+    for (i = 0; i < 9; i++) {
+        jitter.f[0] = pos.f[0] + func_L01_00443A18(0.0f, spread);
+        jitter.f[1] = pos.f[1] + func_L01_00443A18(0.0f, spread);
+        jitter.f[2] = pos.f[2] + func_L01_00443A18(0.0f, spread);
+        spin = func_00382468(255);
+        func_L01_0046FB40(&jitter, D_L01_001D66B0, 3, 0x808080, spin, 127, 127,
+                          size * 210000.0f, size * 210000.0f, 0.0f, 1);
+        p = func_L01_0046FB40(&pos, D_L01_001D66B0, 3, 0x203080, spin, 16, 16,
+                             262500.0f, 262500.0f, 0.0f, 1);
+        if (p) p[2] = *D_L01_00221098[0].texture;
+        vec_add_ab(&pos, &pos, &step);
+    }
+}
+/* localdecomp:end func_L01_00323A18 */
 
-INCLUDE_ASM("asm/levels", func_L01_00323C68);
+/* localdecomp:start func_L01_00323C68 */
+#include "vu0.h"
+typedef union { vu0_q q; f32 f[4]; } V_00323C68;
+typedef struct {
+    V_00323C68 vertices[4];
+    u32 color[4];
+    s32 x50, x54, x58;
+    f32 x5C, x60;
+    s32 x64;
+    f32 x68, x6C;
+    u8 tail[0x20];
+} Render_00323C68;
+extern s32 D_L01_001DC9E0_00323C68;
+__asm__(".extern D_L01_001DC9E0_00323C68, 4");
+extern s32 D_L01_001DCA00_00323C68;
+__asm__(".extern D_L01_001DCA00_00323C68, 4");
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_00323C68(u8 *object) {
+    extern f32 func_003824E0_00323C68(f32, f32);
+    extern void func_0038CF68(f32 *, s32, f32);
+    extern void func_0038CE90_00323C68(f32 *, f32 *, f32 *);
+    extern void func_0038D000_00323C68(f32 *, f32 *, f32 *);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_003D2DA0(void *, f32 *, s32);
+    V_00323C68 basis[4];
+    Render_00323C68 render;
+    V_00323C68 offset;
+    u8 *state = *(u8 **)(object + 0x68);
+    f32 a, b;
+    s32 i;
+    if (D_L01_001DC9E0_00323C68) {
+        a = func_003824E0_00323C68(0.75f, 0.95f);
+        b = func_003824E0_00323C68(2.0f, 2.5f);
+    } else {
+        a = func_003824E0_00323C68(0.275f, 0.475f);
+        b = func_003824E0_00323C68(1.0f, 1.3f);
+    }
+    func_0038CF68(basis[0].f, (s32)(state + 0x40), -1.0f);
+    vec_sub_ba(&basis[1], &D_L01_001E29C0, object + 0x10);
+    func_0038CE90_00323C68(basis[2].f, basis[1].f, basis[0].f);
+    func_0038CF68(basis[2].f, (s32)&basis[2], a);
+    func_0038CF68(basis[0].f, (s32)&basis[0], b);
+    basis[0].f[3] = 0.0f;
+    basis[1].f[3] = 0.0f;
+    basis[2].f[3] = 0.0f;
+    if (D_L01_001DC9E0_00323C68) func_003D93B0(&render, 63, 1, 128);
+    else func_003D93B0(&render, 62, 1, 128);
+    render.x50 = 0;
+    render.x5C = 1.0f;
+    render.x60 = 1.0f;
+    render.x68 = 1.0f;
+    render.x6C = 1.0f;
+    render.x54 = 0;
+    render.x58 = 0;
+    render.x64 = 0;
+    for (i = 0; i < 4; i++) {
+        qzero(&render.vertices[i]);
+        render.vertices[i].f[0] = i < 2 ? 0.0f : 1.0f;
+        render.vertices[i].f[1] = 0.0f;
+        render.vertices[i].f[2] = (i & 1) ? 1.0f : -1.0f;
+        render.vertices[i].f[3] = 1.0f;
+        render.color[i] = 0x7FFFFFFF;
+    }
+    {
+        f32 y = -1.0f;
+        if (D_L01_001DC9E0_00323C68) y = -2.0f;
+        offset.q = 0;
+        offset.f[1] = y;
+    }
+    func_0038D000_00323C68(basis[3].f, offset.f, (f32 *)(object + 0xC0));
+    if (D_L01_001DCA00_00323C68) vec_add_ba(&basis[3], &basis[3], state + 0x10);
+    else vec_add_ba(&basis[3], &basis[3], state + 0x20);
+    basis[3].f[3] = 1.0f;
+    func_003D2DA0(&render, basis[0].f, 0);
+    func_003D2DA0(&render, basis[0].f, 0);
+    func_003D2DA0(&render, basis[0].f, 0);
+    func_003D2DA0(&render, basis[0].f, 0);
+    func_003D2DA0(&render, basis[0].f, 0);
+    func_003D2DA0(&render, basis[0].f, 0);
+}
+/* localdecomp:end func_L01_00323C68 */
 
 /* localdecomp:start func_L01_00323F38 */
 extern s32 D_L01_001DCA00;

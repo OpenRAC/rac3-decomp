@@ -71,7 +71,65 @@ INCLUDE_ASM("asm/levels", func_L01_00380CE0);
 
 INCLUDE_ASM("asm/levels", func_L01_003812B0);
 
-INCLUDE_ASM("asm/levels", func_L01_00381500);
+/* localdecomp:start func_L01_00381500 */
+#include "vu0.h"
+typedef int Q_00381500 __attribute__((mode(TI)));
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00381500;
+typedef struct { Q_00381500 pos[4]; s32 color[4]; f32 uv[8]; long zero, texture, tex1, alpha; } Quad_00381500;
+extern Q_00381500 D_L01_001DDC80[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DDC80, 4");
+extern f32 D_L01_001DDCC0;
+extern f32 D_L01_001DDCC4;
+extern f32 D_L01_001DDCC8;
+extern s32 D_L01_001DDCCC;
+__asm__(".extern D_L01_001DDCC0, 4");
+__asm__(".extern D_L01_001DDCC4, 4");
+__asm__(".extern D_L01_001DDCC8, 4");
+__asm__(".extern D_L01_001DDCCC, 4");
+extern V_00381500 D_L01_0028F5A0_00381500;
+extern V_00381500 D_L01_001E29C0_00381500;
+extern Q_00381500 D_001A4EC0_00381500;
+void func_L01_00381500(u8 *moby) {
+    extern long func_00389598(s32);
+    extern void func_0038CE20_00381500(Q_00381500 *, Q_00381500 *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_003D2DA0(void *, s32, s32);
+    Quad_00381500 q;
+    Q_00381500 matrix[4];
+    struct { Q_00381500 temp, dir; } v;
+    s32 i;
+    q.texture = func_00389598(11);
+    q.alpha = 0x8000000048L;
+    q.tex1 = 0xFF9000000260L;
+
+    q.zero = 0;
+    q.uv[0] = 0.0f; q.uv[1] = 0.0f;
+    q.uv[2] = 0.0f; q.uv[3] = 1.0f;
+    q.uv[4] = 1.0f; q.uv[5] = 0.0f;
+    q.uv[6] = 1.0f; q.uv[7] = 1.0f;
+    q.color[0] = q.color[1] = q.color[2] = q.color[3] = D_L01_001DDCCC;
+    func_0038CF68(&v.dir, moby + 0xD0, D_L01_001DDCC8);
+    vec_add_ba(&(matrix[3]), &D_L01_0028F5A0_00381500, &(v.dir));
+    vec_sub_ab(&(v.dir), &D_L01_001E29C0_00381500, &(matrix[3]));
+    func_0038CF68(&matrix[0], &v.dir, 1.0f);
+    func_0038CE90(&matrix[1], &matrix[0], &D_001A4EC0_00381500);
+    func_0038CF68(&matrix[1], &matrix[1], -1.0f);
+    func_0038CE90(&matrix[2], &matrix[1], &matrix[0]);
+    for (i = 0; i < 4; i++) {
+        func_0038CE20_00381500(&v.temp, &D_L01_001DDC80[i], D_L01_001DDCC0);
+        func_0038D028(&q.pos[i], &v.temp, matrix);
+    }
+    func_003D2DA0(&q, 0, 0);
+    q.color[0] = q.color[1] = q.color[2] = q.color[3] = -1;
+    for (i = 0; i < 4; i++) {
+        func_0038CE20_00381500(&v.temp, &D_L01_001DDC80[i], D_L01_001DDCC4);
+        func_0038D028(&q.pos[i], &v.temp, matrix);
+    }
+    func_003D2DA0(&q, 0, 0);
+}
+/* localdecomp:end func_L01_00381500 */
 
 INCLUDE_ASM("asm/levels", func_L01_00381720);
 
@@ -457,7 +515,46 @@ INCLUDE_ASM("asm/levels", func_L01_00386148);
 
 INCLUDE_ASM("asm/levels", func_L01_00386410);
 
-INCLUDE_ASM("asm/levels", func_L01_003868A0);
+/* localdecomp:start func_L01_003868A0 */
+#include "vu0.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_003868A0;
+extern Vec_003868A0 D_L01_001E29C0;
+void func_L01_003868A0(u8 *obj, Vec_003868A0 *pos) {
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_00382760(Vec_003868A0 *, f32, f32, f32);
+    extern void func_L01_0046A610(Vec_003868A0 *, Vec_003868A0 *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+    Vec_003868A0 delta, velocity, origin;
+    u8 *state;
+    f32 angle;
+    s32 count;
+    s32 i;
+    state = *(u8 **)(obj + 0x68);
+    vec_sub_ab(&delta, &D_L01_001E29C0, pos);
+    angle = func_0038D160(delta.x, delta.y);
+    count = 2;
+    if (*(s32 *)(state + 0x3C) <= 1) count = 5;
+    for (i = 0; i < count; i++) {
+        f32 speed = func_003824E0(0.5f, 1.0f);
+        s32 type = (s32)func_L01_00443A18(1.0f, 2.0f);
+        f32 spread;
+        f32 yaw;
+        f32 duration;
+        duration = func_003824E0(0.05f, 0.2f) * 210000.0f;
+        spread = func_003824E0(0.0f, 1.39626336f);
+        yaw = func_L01_00443A18(0.0f, 1.39626336f);
+        yaw = func_0038DAB8(angle, yaw);
+        func_00382760(&velocity, speed * 0.0200000014f, yaw, spread);
+        origin.x = pos->x + func_L01_00443A18(0.0f, 0.1f);
+        origin.y = pos->y + func_L01_00443A18(0.0f, 0.1f);
+        origin.z = pos->z + func_L01_00443A18(0.0f, 0.1f);
+        duration = func_003824E0(0.05f, 0.2f) * 210000.0f;
+        func_L01_0046A610(&origin, &velocity, 25, 127, 0x7F7F7F, type, duration, 500.0f, 1.0f, 0.0f, 1.0f);
+    }
+}
+/* localdecomp:end func_L01_003868A0 */
 
 /* localdecomp:start func_L01_00386AD8 */
 extern s32 func_003C4B50(s32);

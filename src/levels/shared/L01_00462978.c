@@ -269,7 +269,50 @@ void func_L01_00462978(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_00463030);
 
-INCLUDE_ASM("asm/levels", func_L01_00463038);
+/* localdecomp:start func_L01_00463038 */
+#include "vu0.h"
+extern s32 D_L01_001D545C;
+__asm__(".extern D_L01_001D545C, 16");
+extern f32 D_L01_001E02A0_00463038;
+__asm__(".extern D_L01_001E02A0_00463038, 16");
+extern f32 D_L01_001E02B0_00463038;
+__asm__(".extern D_L01_001E02B0_00463038, 16");
+extern f32 D_L01_001E02A8_00463038;
+__asm__(".extern D_L01_001E02A8_00463038, 16");
+void func_L01_00463038(u8 *p) {
+    extern void func_003CD250(u8 *);
+    extern f32 func_L01_00451768(void *);
+    u8 *vars=p+0x30;
+    vu0_v4 delta;
+    s32 x,y;
+    f32 oldx,oldy;
+    f32 floor=*(f32 *)(vars+12);
+    if(D_L01_001D545C==15) {
+        if(*(f32 *)(p+24)<floor) {func_003CD250(p);return;}
+    } else if(*(f32 *)(p+24)<floor || *(f32 *)(p+16)<0.0f || *(f32 *)(p+20)<0.0f || *(f32 *)(p+16)>1024.0f || *(f32 *)(p+20)>1024.0f) goto kill;
+    vec_add_ab(&delta, vars, &D_L01_001E02A0_00463038);
+    oldx=*(f32 *)(p+32);
+    oldy=*(f32 *)(p+36);
+    x=(s32)oldx;
+    y=(s32)oldy;
+    vec_add_ab(p+32, p+32, &delta);
+    vec_add_ab(p+16, p+16, &delta);
+    if(*(s16 *)(p+10)!=2 && (x!=(s32)*(f32 *)(p+32) || y!=(s32)*(f32 *)(p+36))) {
+        vu0_v4 first,second;
+        first=*(vu0_v4 *)(p+32);
+        if(func_L01_00451768(&first)<D_L01_001E02B0_00463038) floor=D_L01_001E02B0_00463038;
+        else {second=*(vu0_v4 *)(p+32);floor=func_L01_00451768(&second);}
+        if(*(f32 *)(p+40)<floor) {
+kill:
+            func_003CD250(p);
+            return;
+        }
+    }
+    *(f32 *)(vars+8)-=0.003920000046491623f;
+    *(f32 *)(vars+12)=floor+D_L01_001E02A8_00463038;
+    return;
+}
+/* localdecomp:end func_L01_00463038 */
 
 /* localdecomp:start func_L01_00463218 */
 typedef int Q_463218 __attribute__((mode(TI)));

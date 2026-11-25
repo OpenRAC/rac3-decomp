@@ -1297,7 +1297,58 @@ void func_L01_003190A8(f32 *pos, s32 a1, s32 a2, s32 a3, s32 a4, f32 f1, f32 f2,
 }
 /* localdecomp:end func_L01_003190A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00319258);
+/* localdecomp:start func_L01_00319258 */
+#include "vu0.h"
+typedef struct {
+    u128_t q0, q10, q20, q30, q40;
+    f32 f50, f54, f58, f5C, f60, f64, f68, f6C, f70, f74, f78, f7C, f80, f84, f88, f8C, f90, f94;
+    s32 s98, s9C, sA0, sA4, sA8;
+    u8 padAC[4];
+} P_00319258;
+extern P_00319258 D_L01_00273B80_00319258[];
+extern u128_t D_L01_001A4CC0;
+extern f32 func_003824E0(f32 a, f32 b);
+extern f32 func_L01_00443A18(f32 a, f32 b);
+void func_L01_00319258(void *a, void *bb, s32 c) {
+    s32 i;
+    P_00319258 *tbl = D_L01_00273B80_00319258;
+    u128_t *src = &D_L01_001A4CC0;
+    u128_t *b = bb;
+    for (i = 0; i < 6; i++) {
+        P_00319258 *p = &tbl[i];
+        if (p->s9C == 0) {
+            p->s9C = (s32)a;
+            p->q20 = *src;
+            p->q40 = *b;
+            p->f50 = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f54 = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f58 = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f74 = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f78 = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f7C = func_003824E0(-3.14159274101f, 3.14159274101f);
+            p->f5C = func_L01_00443A18(0.001f, 0.005f);
+            p->f60 = func_L01_00443A18(0.001f, 0.005f);
+            p->f64 = func_L01_00443A18(0.001f, 0.005f);
+            p->f80 = func_L01_00443A18(0.001f, 0.005f);
+            p->f84 = func_L01_00443A18(0.001f, 0.005f);
+            p->f88 = func_L01_00443A18(0.001f, 0.005f);
+            p->f68 = func_003824E0(3.25f, 4.75f);
+            p->f6C = func_003824E0(3.25f, 4.75f);
+            p->f70 = func_003824E0(3.25f, 4.75f);
+            p->f8C = func_003824E0(3.25f, 4.75f);
+            p->f90 = func_003824E0(3.25f, 4.75f);
+            p->f94 = func_003824E0(3.25f, 4.75f);
+            p->sA0 = c;
+            p->s98 = 17;
+            qzero(&p->q0);
+            p->sA4 = c;
+            qzero(&p->q10);
+            p->sA8 = 0;
+            break;
+        }
+    }
+}
+/* localdecomp:end func_L01_00319258 */
 
 /* localdecomp:start func_L01_00319480 */
 #include "vu0.h"

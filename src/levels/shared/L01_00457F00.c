@@ -238,7 +238,7 @@ u8 *func_L01_004592A8(u8 *me, u8 **list, s32 n, s32 *out) {
         o = list[j];
         d = 0.0f;
         d += func_0038CF38(me + 16, o + 16);
-        if (__builtin_fabsf(*(f32 *)(o + 24) - *(f32 *)(me + 24)) > 3.0f) {
+        if (fabs_asm(*(f32 *)(o + 24) - *(f32 *)(me + 24)) > 3.0f) {
             d += 100.0f;
         }
         if (d < bestD) {
@@ -250,7 +250,74 @@ u8 *func_L01_004592A8(u8 *me, u8 **list, s32 n, s32 *out) {
 }
 /* localdecomp:end func_L01_004592A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004593B8);
+/* localdecomp:start func_L01_004593B8 */
+#include "vu0.h"
+typedef int Q_004593B8 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_004593B8;
+extern u8 *D_L01_001E001C;
+extern f32 func_L01_0040E518(void *, void *);
+
+static __inline__ s32 inlist_004593B8(u8 *x, u8 **list, s32 n) {
+    s32 i;
+    s32 found = 0;
+    for (i = 0; i < n; i++) {
+        if (x == list[i]) {
+            found = 1;
+        }
+    }
+    return found;
+}
+
+u8 *func_L01_004593B8(s32 a0, u8 *obj, u8 **list, s32 *n, V_004593B8 *pos) {
+    V_004593B8 p;
+    V_004593B8 *pp;
+    u8 *a;
+    u8 *b;
+    u8 *v;
+    u8 *r;
+    f32 da;
+    f32 db;
+    pp = &p;
+    b = 0;
+    a = 0;
+    r = 0;
+    *(Q_004593B8 *)&p = *(Q_004593B8 *)pos;
+    list[*n] = obj;
+    (*n)++;
+    v = *(u8 **)(obj + 0x68);
+    if (*(s32 *)v != -1) {
+        a = D_L01_001E001C + (*(s32 *)v << 8);
+    }
+    if (*(s32 *)(v + 4) != -1) {
+        b = D_L01_001E001C + (*(s32 *)(v + 4) << 8);
+    }
+    if (a != 0 && b == 0) {
+        if (!inlist_004593B8(a, list, *n)) {
+            r = a;
+        }
+    } else if (b != 0 && a == 0) {
+        if (!inlist_004593B8(b, list, *n)) {
+            r = b;
+        }
+    } else {
+        db = 0.0f;
+        db += func_L01_0040E518(b + 0x10, pp);
+        if (3.0f < fabs_asm(*(f32 *)(b + 0x18) - pp->z)) {
+            db += 100.0f;
+        }
+        da = 0.0f;
+        da += func_L01_0040E518(a + 0x10, pp);
+        if (3.0f < fabs_asm(*(f32 *)(a + 0x18) - pp->z)) {
+            da += 100.0f;
+        }
+        r = b;
+        if (da < db) {
+            r = a;
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L01_004593B8 */
 
 /* localdecomp:start func_L01_00459590 */
 extern u8 D_L01_001E2E20[];
