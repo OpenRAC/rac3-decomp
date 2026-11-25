@@ -87,7 +87,7 @@ extern s32 func_L21_00338D60(void *arg0, u8 *arg1);
 extern void func_L21_00339088(void *arg0);
 extern s32 func_L21_003AA068(void *arg0);
 extern s32 func_L21_003AA090(void *arg0);
-extern void func_L01_003609D0(void *);
+extern void func_L01_003B0F18(void *);
 extern s32 func_0038CB00(void *);
 extern void func_0039EF28(void);
 extern VT_00336EF0 *func_L01_0043B568(s32, s32, s32);
@@ -462,7 +462,7 @@ void func_L21_00336EF0(u8 *arg0) {
         break;
     }
 
-    func_L01_003609D0(arg0);
+    func_L01_003B0F18(arg0);
     if (D_L21_001E0654 == 0) {
         D_L21_001E0654 = 1;
         D_L21_001E0650 = D_L21_001DE9B0;

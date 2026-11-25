@@ -1335,7 +1335,7 @@ extern f32 func_0038CEA8(void *);
 extern void func_0038CE20(void *, void *, f32);
 extern f32 func_0038D160(f32, f32);
 extern void func_L01_0044ABD0(void *a, void *b);
-extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456BD0(void *, s32);
 extern void func_L03_0043BE98(int, void *, int, int, int);
 extern void func_L01_00404808(void *, void *);
 void func_L23_003B3998(u8 *self);
@@ -1399,7 +1399,7 @@ void func_L23_003B34F8(u8 *self)
         self[0xA8] = 0xFF;
     }
     func_L01_0044ABD0(self, v + 0x160);
-    func_L01_00404A10(self, 3);
+    func_L01_00456BD0(self, 3);
     if (self[0x20] != 0xE && *(f32 *)(v + 0x30) < 0.0f) {
         if (*(s32 *)(v + 0x300) == 3) {
             *(f32 *)(v + 0x30) = 1.0f;

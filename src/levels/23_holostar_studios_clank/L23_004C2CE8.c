@@ -318,7 +318,7 @@ extern f32 func_0038DB00(f32, f32);
 extern void func_L01_004E0C18(void);
 extern void func_L01_004E0CB0(void);
 extern void func_L23_004EAE60(void);
-extern void func_L01_004CC698(void);
+extern void func_L01_004E9450(void);
 extern void func_L01_004F5010(void);
 extern void func_L01_004E04A0(void);
 extern void func_L01_004E4770(void);
@@ -377,7 +377,7 @@ void func_L23_004C3330(void)
     }
     D_001A4BE0.w238 = 3;
     func_L23_004EAE60();
-    func_L01_004CC698();
+    func_L01_004E9450();
     if (D_001A4BE0.b25E4 == 0) {
         return;
     }

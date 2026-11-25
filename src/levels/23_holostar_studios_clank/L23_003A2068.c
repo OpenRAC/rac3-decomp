@@ -56,7 +56,7 @@ extern s32 func_L01_00456500(void *, s32);
 extern void func_L23_003A2A08(u8 *);
 extern void func_L23_003A4008(u8 *);
 extern void func_L23_0039B990(u8 *, V4);
-extern void func_L01_003F1740(void *);
+extern void func_L01_005162B0(void *);
 extern void func_L23_003B44E8(void *);
 extern void func_L23_003B6D78(s32);
 extern void func_L01_003F5498(s32, f32);
@@ -281,7 +281,7 @@ void func_L23_003A2068(u8 *o)
         break;
     case 8:
         if (func_L01_004561B8(o))
-            func_L01_003F1740(o);
+            func_L01_005162B0(o);
         if (*(u16 *)(o + 0x96) > 300) {
             if (!(D_00142C60[0] & 1) && func_00392B20(D_L23_001E8540, 0xC0)) {
                 func_00392B20(D_L23_001E8540, 0xC1);
@@ -470,7 +470,7 @@ void func_L23_003A2E78(u8 *a0) {
 
 /* localdecomp:start func_L23_003A2EF0 */
 extern s32 func_L01_0047B3D8(void);
-extern void func_L01_004CB540(u8);
+extern void func_L01_004D8820(u8);
 extern void func_L23_004CF590(s32, s32, void *);
 extern void func_L01_004F50C8(void *, void *, s32, s32);
 extern u8 *D_L23_001DF15C;
@@ -482,7 +482,7 @@ void func_L23_003A2EF0(u8 *self)
     u8 *e;
 
     func_L01_0047B3D8();
-    func_L01_004CB540(1);
+    func_L01_004D8820(1);
     func_L23_004CF590(2, 0x5A, D_L23_001DF15C + (*(s32 *)(s + 4) << 8));
     e = D_L23_001DF15C + (*(s32 *)(s + 4) << 8);
     func_L01_004F50C8(e + 0x10, e + 0xF0, -1, 1);
@@ -760,7 +760,7 @@ __asm__(".extern D_L23_001DE00C, 4");
 extern f32 D_L23_001DE010;
 __asm__(".extern D_L23_001DE010, 4");
 extern char D_L23_001DE018[];
-extern void func_L01_004D4340(s32);
+extern void func_L01_003EDD80(s32);
 extern s32 func_003B5060(s32);
 extern s32 func_003E8630(s32, s32);
 extern s32 func_003E8EF0(s32, s32, s32, f32, f32, f32, f32, f32);
@@ -777,7 +777,7 @@ extern s32 func_003E8348(s32, s32);
 
 void func_L23_003A38C8(u8 *o)
 {
-    func_L01_004D4340(0);
+    func_L01_003EDD80(0);
     func_003B5060(0x730000);
     func_003B5060(0x73000F);
     func_003E8630(0x730000, 0x73000F);

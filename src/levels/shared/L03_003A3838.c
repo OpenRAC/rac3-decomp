@@ -40,7 +40,7 @@ __asm__(".extern D_001D67C8, 16");
 __asm__(".extern D_001D52FC, 16");
 
 extern void func_L01_004AA7E8(void *, s32);
-extern s32 func_L01_004CB548(void);
+extern s32 func_L01_004D8928(void);
 extern void func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
 extern void func_L03_00503EB8(s32);
 extern void func_003B5060(s32);
@@ -69,10 +69,10 @@ void func_L03_003A3838(u8 *a0) {
     s1 = *(s32 **)(a0 + 0x68);
     *(u16 *)(a0 + 0x34) = (*(u16 *)(a0 + 0x34) | 0x41) & 0xEFFF;
     func_L01_004AA7E8(a0, 1);
-    if (func_L01_004CB548() != 0) {
+    if (func_L01_004D8928() != 0) {
         func_L01_00452560(0, 5, 0, 1, 0, 0, 0);
     }
-    if (*(u8 *)(a0 + 0x20) == 0 && D_001D67C8 != 0 && func_L01_004CB548() != 0) {
+    if (*(u8 *)(a0 + 0x20) == 0 && D_001D67C8 != 0 && func_L01_004D8928() != 0) {
         func_L03_00503EB8(0);
         func_003B5060(0xB0000);
         func_003B5060(0xB0001);

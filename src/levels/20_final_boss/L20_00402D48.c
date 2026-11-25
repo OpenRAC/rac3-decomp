@@ -2,7 +2,7 @@
 
 /* localdecomp:start func_L20_00402D48 */
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L01_004028B0(void *);
+extern void func_L01_00480098(void *);
 extern void func_L20_00402AD0(u8 *a0, u8 *a1);
 
 void func_L20_00402D48(u8 *arg0) {
@@ -34,7 +34,7 @@ void func_L20_00402D48(u8 *arg0) {
         }
         break;
     case 3:
-        func_L01_004028B0(arg0);
+        func_L01_00480098(arg0);
         break;
     }
 }

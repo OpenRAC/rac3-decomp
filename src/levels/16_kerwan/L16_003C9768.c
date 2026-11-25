@@ -33,7 +33,7 @@ extern void func_0038D000(void *, void *, void *);
 extern void func_003C2F58(u8 *, s32, void *);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_00456230(u8 *, s32);
-extern s32 func_L01_004028B0(void *);
+extern s32 func_L01_0047FE08(void *);
 extern f32 func_L01_004395E0(void *);
 extern s32 func_L01_004450F0(void *, s32, s32);
 extern s32 func_L01_0044E1B8(void *, f32);
@@ -624,7 +624,7 @@ void func_L16_003C9768(u8 *arg0) {
             pp11 = (void **)(st + 0x1C0);
             for (i11 = 0; i11 < 4; i11++) {
                 if (*pp11 != 0) {
-                    func_L01_004028B0(*pp11);
+                    func_L01_0047FE08(*pp11);
                     *pp11 = 0;
                 }
                 pp11++;
@@ -654,7 +654,7 @@ void func_L16_003C9768(u8 *arg0) {
             pp12 = (void **)(st + 0x1C0);
             for (i12 = 0; i12 < 4; i12++) {
                 if (*pp12 != 0) {
-                    func_L01_004028B0(*pp12);
+                    func_L01_0047FE08(*pp12);
                     *pp12 = 0;
                 }
                 pp12++;
@@ -744,7 +744,7 @@ s32 func_L16_003CB420(void *arg) {
     extern void func_L02_003FB148(s32, s32, f32);
     extern void func_L01_0044ABD0(void *, void *);
     extern void func_L01_0044E820(void *, s32);
-    extern void func_L01_00404A10(void *, s32);
+    extern void func_L01_00456BD0(void *, s32);
     extern u8 *func_003C4D58(void *);
     u8 *a = arg;
     State_003CB420 *st = *(State_003CB420 **)(a+0x68);
@@ -802,7 +802,7 @@ s32 func_L16_003CB420(void *arg) {
     } else if(D_L16_001E2B80.owner==a) D_L16_001E2B80.owner=0;
     func_L01_0044ABD0(a,(u8 *)st+0x30);
     if(!st->f30) func_L01_0044E820(a,st->f20c);
-    func_L01_00404A10(a,3);
+    func_L01_00456BD0(a,3);
     qzero((u8 *)st+0x2D0);qzero((u8 *)st+0x350);
     st->f180=((Hero_003CB420 *)&D_001A4BE0)->clock;
     st->f184=1;

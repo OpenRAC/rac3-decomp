@@ -106,7 +106,7 @@ extern struct Hero D_001A4BE0;
 extern u8 *D_L23_001DE2D0;
 extern f32 func_L01_0040E548(void *, void *);
 extern void func_L01_004472C0(void *);
-extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456BD0(void *, s32);
 extern f32 func_L01_0040E570(void *, void *);
 extern s32 func_L01_00447490(void *, s32, s32);
 extern void func_L01_004450F0(void *, s32, s32);
@@ -122,7 +122,7 @@ void func_L23_003AAD58(u8 *self)
     }
     if (self[0x20] == 0)
         return;
-    func_L01_00404A10(self, 3);
+    func_L01_00456BD0(self, 3);
     if ((fabs_asm(*(f32 *)(self + 0x18) - D_001A4BE0.pos.z) < 1.0f &&
          func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) < 16.0f) ||
         (fabs_asm(*(f32 *)(self + 0x18) - *(f32 *)(D_L23_001DE2D0 + 0x18)) < 1.0f &&
@@ -362,7 +362,7 @@ void func_L23_003AB5F0(u8 *self)
     }
     if (self[0x20] == 0)
         return;
-    func_L01_00404A10(self, 3);
+    func_L01_00456BD0(self, 3);
     if ((fabs_asm(*(f32 *)(self + 0x18) - D_001A4BE0.pos.z) < 1.0f &&
          func_L01_0040E570(self + 0x10, &D_001A4BE0.pos) < 16.0f) ||
         (fabs_asm(*(f32 *)(self + 0x18) - *(f32 *)(D_L23_001DE2D0 + 0x18)) < 1.0f &&

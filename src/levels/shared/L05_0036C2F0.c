@@ -14,7 +14,7 @@ typedef struct {
 
 extern s32 func_00382498(s32, s32);
 extern long func_00389598(s32);
-extern void func_L01_0037C798(vu0_v4 *, s32);
+extern void func_L01_0039C498(vu0_v4 *, s32);
 extern void func_L01_0037C7D8_0036C2F0(Q_0036C2F0 *);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
@@ -55,7 +55,7 @@ void func_L05_0036C2F0(s32 a0, s32 a1, vu0_v4 *pts, s32 n) {
     w0.w = 1.0f;
     w1.z = 0.16f;
     w1.w = 1.0f;
-    func_L01_0037C798(pts, n);
+    func_L01_0039C498(pts, n);
     func_L01_0037C7D8_0036C2F0(&q0);
     func_L01_0037C7D8_0036C2F0(&q1);
     q0.uv[0][0] = 0.0f;

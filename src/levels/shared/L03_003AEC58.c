@@ -20,7 +20,7 @@ void func_L03_003AEC58(u8 *a0) {
 /* localdecomp:start func_L03_003AECB0 */
 typedef struct { f32 x, y, w, h; } Rect_003AECB0;
 
-extern void func_L01_005195E0(s32);
+extern void func_L01_00518D40(s32);
 extern s32 func_003E8EF0(s32, s32, s32, f32, f32, f32, f32, f32);
 extern s32 func_003E8A08(s32, s32, s32);
 extern s32 func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
@@ -40,7 +40,7 @@ extern f32 D_L03_001DE7FC;
 
 void func_L03_003AECB0(void) {
     s32 i;
-    func_L01_005195E0(0x150001);
+    func_L01_00518D40(0x150001);
     func_003E8EF0(0x150002, 0x39, 0x331465B7, D_L03_001DE7F0, D_L03_001DE7F4, 1.0f, 1.0f, 0.0f);
     func_003E8EF0(0x150004, 0x38, 0x332299DE, D_L03_001DE7F0, D_L03_001DE7F4, 1.0f, 1.0f, 0.0f);
     func_003E8A08(0x150001, 0x150002, 0x150004);
