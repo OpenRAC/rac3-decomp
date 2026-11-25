@@ -101,7 +101,7 @@ def flags_for(parts, addr):
     return parts[part_index(parts, addr)][1]
 
 
-_TYPEDEF_NAME_RE = re.compile(r'\btypedef\b[^;{]*?(?:\{(?:[^{}]|\{[^{}]*\})*\})?[^;{]*?\b(\w+)\s*(?:\[[^\]]*\])?\s*;', re.S)
+_TYPEDEF_NAME_RE = re.compile(r'\btypedef\b[^;{]*?(?:\{(?:[^{}]|\{[^{}]*\})*\})?[^;{]*?\b(\w+)\s*(?:\[[^\]]*\])?(?:\s*__attribute__\s*\(\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)\))?\s*;', re.S)
 
 
 def typedef_names(src):
@@ -113,7 +113,7 @@ def drop_repeated_typedefs(context, src):
     """`src` without the typedefs that `context` already defines identically
     (C forbids defining one twice). A typedef with the same name but a
     different body is left in: that is a real conflict."""
-    norm = lambda t: re.sub(r'\s+', ' ', t).strip()
+    norm = lambda t: re.sub(r'\s+', ' ', strip_comments(t)).strip()
     have = {m.group(1): norm(m.group(0)) for m in _TYPEDEF_NAME_RE.finditer(strip_comments(context))}
     return _TYPEDEF_NAME_RE.sub(
         lambda m: '' if have.get(m.group(1)) == norm(m.group(0)) else m.group(0), src)

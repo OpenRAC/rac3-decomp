@@ -436,7 +436,7 @@ extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_L01_00446760(void *, void *, s32, void *, f32);
-extern s32 func_003D4D00(void *, s32, void *, void *, f32);
+extern s32 func_003D4D00_0037DC70(void *, s32, void *, void *, f32);
 extern s32 func_0038CAD0(s32 *);
 extern void func_003C2880(void *);
 extern void func_L01_00404A10_0037DC70(void *, void *);
@@ -480,7 +480,7 @@ void func_L01_0037DC70(M_37DC70 *m) {
                     sB0.b19 = 1;
                     sB0.h1A = m->hAA;
                     sB0.b18 = 0;
-                    func_003D4D00(&v10, 0, m, &sB0, 0.6f);
+                    func_003D4D00_0037DC70(&v10, 0, m, &sB0, 0.6f);
                     if (p[18] != 0) {
                         func_0038CF68((p + 4), (p + 4), -0.2f);
                         vec_add_ab(&v60, &v10, (p + 4));
@@ -514,9 +514,9 @@ void func_L01_0037DC70(M_37DC70 *m) {
                 sB0.b19 = 1;
                 off = D_001425C0[0x6F] * 0xF0;
                 if (((Row_37DC70 *)((u8 *)D_L01_002C5600 + off))->b1 >= 3) {
-                    func_003D4D00(&v10, 0, m, &sB0, 2.5f);
+                    func_003D4D00_0037DC70(&v10, 0, m, &sB0, 2.5f);
                 } else {
-                    func_003D4D00(&v10, 0, m, &sB0, 0.8f);
+                    func_003D4D00_0037DC70(&v10, 0, m, &sB0, 0.8f);
                 }
                 if (p[18] != 0) {
                     func_0038CF68((p + 4), (p + 4), -0.2f);
