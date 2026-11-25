@@ -1845,6 +1845,7 @@ boot_elf	func_003EF638	1	-
 boot_elf	func_003EF640	1	-
 boot_elf	func_003EF658	1	-
 boot_elf	func_003EF998	1	-
+boot_elf	func_003EFBB0	1	-
 boot_elf	func_003EFF68	1	-
 boot_elf	func_003F01C8	1	-
 boot_elf	func_003F0250	1	-
@@ -3286,6 +3287,7 @@ frontbin	func_003EF280	1	-
 frontbin	func_003EF288	1	-
 frontbin	func_003EF2A0	1	-
 frontbin	func_003EF5E0	1	-
+frontbin	func_003EF7F8	1	-
 frontbin	func_003EFBB0	1	-
 frontbin	func_003EFE10	1	-
 frontbin	func_003EFE98	1	-

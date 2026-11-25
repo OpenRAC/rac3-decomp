@@ -7,10 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void *func_003F02D0();
 void func_003F0250(void *, s32);
-extern void func_003F03A0(void *p, f32, f32);
-extern void func_003F0358(u8 *p, u8, s32);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3EE290.c's earlier functions */
@@ -100,8 +97,139 @@ s32 func_003EF998(O_3EA078 *o, f32 *r) {
 }
 /* localdecomp:end func_003EF998 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003EFBB0);
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031CC60);
+/* localdecomp:start func_003EFBB0 */
+typedef struct { u32 c0, c1, c2, c3; } Color_003EFBB0;
+typedef struct VT_003EFBB0 {
+    u8 pad[0x20];
+    void (*fill)(void *o, s32 a1, f32 *rect, s32 one);
+} VT_003EFBB0;
+typedef struct CVT_003EFBB0 {
+    u8 pad[8];
+    void (*fade)(void *c, s32 v);
+} CVT_003EFBB0;
+typedef struct { s32 f0; CVT_003EFBB0 *vt4; } Child_003EFBB0;
+typedef struct {
+    u8 pad0[8];
+    VT_003EFBB0 *vt;
+    u8 padC[0x14];
+    f32 offx, offy;
+    u32 background;
+    u8 pad2C[0xC];
+    u32 col0, col1, col2, col3;
+    u16 count;
+    u8 pad4A[2];
+    u8 max, t, state;
+    u8 pad4F;
+    Child_003EFBB0 *child;
+} Obj_003EFBB0;
+extern f32 D_001D9698;
+extern f32 D_001D969C;
+extern s32 func_003EDEB0(void *, s32);
+extern void func_003EE0A8(void *, f32 *);
+extern s32 func_003EF998();
+extern void func_003EF698();
+extern void func_0038C6F0(s32, s32, s32, s32, s32, Color_003EFBB0);
+
+static __inline__ Color_003EFBB0 colors_003EFBB0(u32 c) {
+    return (Color_003EFBB0){ c, c, c, c };
+}
+
+static __inline__ void fill_003EFBB0(Color_003EFBB0 c, f32 x0, f32 y0, f32 x1, f32 y1) {
+    func_0038C6F0((s32)(x0 * D_001D9698), (s32)(y0 * D_001D969C),
+                  (s32)(x1 * D_001D9698), (s32)(y1 * D_001D969C), 0, c);
+}
+
+void func_003EFBB0(Obj_003EFBB0 *o, s32 a1)
+{
+    f32 rect[4];
+    s32 invisible = 0;
+    u32 c0 = o->col0, c1 = o->col1, c2 = o->col2, c3 = o->col3;
+    u32 al0, al1, al2, al3;
+    s32 diff;
+
+    if (o->child != 0) {
+        al0 = c0 >> 24;
+        al1 = c1 >> 24;
+        al2 = c2 >> 24;
+        al3 = c3 >> 24;
+        switch (o->state) {
+        case 0:
+            o->t = 0;
+            break;
+        case 4:
+            o->t = o->t + 1;
+            if (o->max < o->t) {
+                o->t = o->max;
+                o->state = 2;
+            }
+            goto fade;
+        case 2:
+            o->child->vt4->fade(o->child, o->count - 1);
+            o->state = 3;
+        case 3:
+            o->t = o->max;
+            if ((o->child->f0 ^ 2) == 0) {
+                o->state = 1;
+            }
+            al3 = 0;
+            al2 = 0;
+            al1 = 0;
+            al0 = 0;
+            break;
+        case 1:
+            o->t = o->t - 1;
+            if (o->t == 0) {
+                o->state = 0;
+                o->t = 0;
+            }
+        fade:
+            diff = o->max - o->t;
+            al0 = (u8)((s32)(al0 * diff) / o->max);
+            al1 = (u8)((s32)(al1 * diff) / o->max);
+            al2 = (u8)((s32)(al2 * diff) / o->max);
+            al3 = (u8)((s32)(al3 * diff) / o->max);
+            break;
+        }
+        {
+        s32 inv = al0 == 0 && al1 == 0 && al2 == 0 && al3 == 0;
+        o->col0 = (al0 << 24) | (c0 & 0xFFFFFF);
+        o->col1 = (al1 << 24) | (c1 & 0xFFFFFF);
+        o->col2 = (al2 << 24) | (c2 & 0xFFFFFF);
+        o->col3 = (al3 << 24) | (c3 & 0xFFFFFF);
+        invisible = inv;
+        }
+    }
+
+    o->vt->fill(o, a1, rect, 1);
+    func_003EE0A8(o, rect);
+    if (!invisible) {
+        s32 more = 1;
+
+        if (o->count != 0) {
+            if (o->child != 0) {
+                more = func_003EF998(o, rect);
+            } else {
+                func_003EF698(o, rect);
+                more = 0;
+            }
+        }
+        if (more != 0) {
+            if (func_003EDEB0(o, 0x40)) {
+                fill_003EFBB0(colors_003EFBB0(o->background), rect[0] + o->offx, rect[1] + o->offy,
+                              rect[2] + o->offx, rect[3] + o->offy);
+            }
+            fill_003EFBB0((Color_003EFBB0){ o->col0, o->col1, o->col2, o->col3 },
+                          rect[0], rect[1], rect[2], rect[3]);
+        }
+    }
+    if (o->child != 0) {
+        o->col0 = c0;
+        o->col1 = c1;
+        o->col2 = c2;
+        o->col3 = c3;
+    }
+}
+/* localdecomp:end func_003EFBB0 */
 
 typedef struct { u8 b[16]; } B16_3EA648;
 typedef struct { u8 pad[0x10]; f32 f10, f14, f18, f1C, f20, f24; } O_3EA648;
@@ -198,65 +326,3 @@ void func_003F0250(void *p, s32 v) {
     }
 }
 /* localdecomp:end func_003F0250 */
-
-/* localdecomp:start func_003F0270 */
-extern char D_001D9670[];
-extern s32 func_003F2738();
-void func_003F0270(u8 *p, s32 f) { *(u8 **)(p + 8) = D_001D9670; if (f & 1) func_003F2738(p); }
-/* localdecomp:end func_003F0270 */
-
-LINKER_REMNANT("asm/boot_elf/remnants", func_003F02A0);
-
-/* localdecomp:start func_003F02C8 */
-s32 func_003F02C8(void) {
-    return 2;
-}
-/* localdecomp:end func_003F02C8 */
-
-/* localdecomp:start func_003F02D0 */
-extern void func_003EDD40(void);
-extern u8 D_001D9798[];
-void *func_003F02D0(void *arg0) {
-    func_003EDD40();
-    (*(s32 **)((u8 *)arg0 + 8)) = D_001D9798;
-    (*(s32 *)((u8 *)arg0 + 0x50)) = 0x80808080;
-    (*(s8 *)((u8 *)arg0 + 0x54)) = 0x10;
-    (*(s32 *)((u8 *)arg0 + 0x2C)) = 0;
-    (*(s32 *)((u8 *)arg0 + 0x30)) = 0;
-    (*(s32 *)((u8 *)arg0 + 0x38)) = 0;
-    (*(s32 *)((u8 *)arg0 + 0x3C)) = 0;
-    (*(s32 *)((u8 *)arg0 + 0x40)) = 0;
-    (*(s8 *)((u8 *)arg0 + 0x44)) = 0;
-    (*(s32 *)((u8 *)arg0 + 0x48)) = 0;
-    (*(f32 *)((u8 *)arg0 + 0x4C)) = 1.0f;
-    (*(s32 *)((u8 *)arg0 + 0x34)) = 0;
-    (*(f32 *)((u8 *)arg0 + 0x5C)) = 1.0f;
-    (*(f32 *)((u8 *)arg0 + 0x60)) = 1.0f;
-    (*(s32 *)((u8 *)arg0 + 0x58)) = 2;
-    return arg0;
-}
-/* localdecomp:end func_003F02D0 */
-
-/* localdecomp:start func_003F0358 */
-void func_003F0358(u8 *p, u8 m, s32 set) {
-    if (set != 0) {
-        p[0x44] |= m;
-    } else {
-        p[0x44] &= ~m;
-    }
-}
-/* localdecomp:end func_003F0358 */
-
-/* localdecomp:start func_003F0388 */
-s32 func_003F0388(void *a0, s32 a1) {
-    s32 b = a1 & 0xff;
-    return (*(u8 *)((u8 *)a0 + 0x44) & b) != 0;
-}
-/* localdecomp:end func_003F0388 */
-
-/* localdecomp:start func_003F03A0 */
-void func_003F03A0(void *p, f32 x, f32 y) {
-    *(f32 *)((u8 *)p + 0x48) = x;
-    *(f32 *)((u8 *)p + 0x4C) = y;
-}
-/* localdecomp:end func_003F03A0 */

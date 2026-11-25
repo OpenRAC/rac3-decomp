@@ -571,6 +571,7 @@ src/boot_elf/text/3EE518.c 003EE518
 src/boot_elf/text/3EEBB8.c 003EEBB8
 src/boot_elf/text/3EEBF8.c 003EEBF8
 src/boot_elf/text/3EF658.c 003EF658
+src/boot_elf/text/3F0270.c 003F0270
 src/boot_elf/text/3F03B0.c 003F03B0
 src/boot_elf/text/3F05C8.c 003F05C8
 src/boot_elf/text/3F10A8.c 003F10A8
