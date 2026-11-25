@@ -89,7 +89,7 @@ extern f32 func_L01_004474E8(void *, void *);
 extern s32 func_L01_00455E18(void *, void *, void *);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_0038CF68(void *, void *, f32);
-extern void func_L04_00325460(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, s32, s32, s32, s32);
+extern s32 func_L04_00325460(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, s32, s32, s32, s32);
 extern void func_L04_003E6308(u8 *, s32);
 
 void func_L04_003E6038(Moby_L04_003E6038 *m) {

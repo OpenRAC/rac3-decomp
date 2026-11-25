@@ -1,7 +1,85 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L05_003CA628);
+/* localdecomp:start func_L05_003CA628 */
+extern s32 func_L01_004561B8(void *);
+extern s32 func_0038CAD0(void *);
+extern void func_003C2880(void *);
+extern f32 func_0038CEA8(void *);
+extern f32 func_0038CF00(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern void func_L01_004CB320(void);
+extern void func_L01_004CB358(void);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern void func_L05_003CB090(void *);
+extern void func_L05_003CAE70(void *);
+extern void func_L01_00404A10_003CA628(void *, void *);
+extern void func_L05_003CA8F0(u8 *);
+extern u8 D_L05_001D66B0[8];
+extern u8 *D_L05_001EA6D8[];
+extern vu0_q D_L05_001EA6E0[];
+
+static __inline__ void scale_003CA628(void *d, void *v, f32 s) {
+    func_0038CF68(d, v, s);
+}
+
+void func_L05_003CA628(u8 *obj) {
+    vu0_v4 old;
+    vu0_v4 dest;
+    vu0_q work[3];
+    u8 *sub;
+    u8 *hit;
+    s32 result;
+    f32 len;
+
+    old = *(vu0_v4 *)(obj + 0x10);
+    sub = *(u8 **)(obj + 0x68);
+    if (obj[0x20] == 0) {
+        if (func_L01_004561B8(obj) == 0) {
+            vec_add_ab(obj + 0x10, obj + 0x10, sub);
+        }
+        if (func_0038CAD0(sub + 0x24)) {
+            func_003C2880(obj);
+            return;
+        }
+        if (*(s32 *)(sub + 0x30) == 0) {
+            if (func_0038CEA8(sub) > *(f32 *)(sub + 0x20)) {
+                vec_add_ab(&dest, obj + 0x10, sub);
+            } else {
+                scale_003CA628(&dest, sub, *(f32 *)(sub + 0x20));
+                vec_add_ab(&dest, &dest, obj + 0x10);
+            }
+            func_L01_00446760(work, obj, 0x10001, D_L05_001D66B0, *(f32 *)(sub + 0x34));
+            func_L01_004CB320();
+            result = func_003D3CB0(obj + 0x10, &dest, 16, obj, work);
+            if (result && (hit = D_L05_001EA6D8[0]) && *(s16 *)(hit + 0xAA) == 0x186D && hit[0x20] != 2 && hit[0x20] != 5) {
+                hit[0x20] = 4;
+            }
+            func_L01_004CB358();
+            if (result) {
+                *(s32 *)(sub + 0x30) = 1;
+                *(vu0_q *)(sub + 0x10) = D_L05_001EA6E0[0];
+                len = func_0038CF00(obj + 0x10, sub + 0x10);
+                len = len / func_0038CEA8(sub);
+                *(s32 *)(sub + 0x24) = ((s32)len * 5 + 2) / 6;
+                *(f32 *)(sub + 0x28) = 1.0f / (f32)*(s32 *)(sub + 0x24);
+                if (*(u8 **)((u8 *)D_L05_001EA6E0 - 8) == 0) {
+                    func_L05_003CB090(obj);
+                } else {
+                    func_L05_003CAE70(sub + 0x10);
+                }
+            }
+        }
+        func_L01_00404A10_003CA628(func_L05_003CA8F0, obj);
+    }
+    if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
+        *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||
+        *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) {
+        func_003C2880(obj);
+    }
+}
+/* localdecomp:end func_L05_003CA628 */
 
 /* localdecomp:start func_L05_003CA8F0 */
 __asm__(".extern D_L05_001DEDF8, 4");

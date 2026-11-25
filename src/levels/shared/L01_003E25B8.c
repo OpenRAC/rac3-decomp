@@ -1,21 +1,19 @@
-/* PAL near miss (Codex wave 10): near miss: 239 words differ with the file's flags.
- * Worker's note: 211 instruction diffs, 1564-byte complete sphere/capsule draft: 003E25B8-05.log; contract compiles (003E25B8-contract.log). Fixed flags lack j-form VU register support; contiguous operand/clobber blocks cannot reproduce interleaved EE instructions. Stack ...
- */
 #include "common.h"
-/* localdecomp:start func_L01_003E25B8 */
 #include "vu0.h"
+
+/* localdecomp:start func_L01_003E25B8 */
+typedef struct { f32 x, y, z, radius; f32 x2, y2, z2, kind; } Bound_003E2418;
 extern vu0_v4 D_L01_001E2A40;
-typedef struct { u8 *pad[0x35]; u8 *texture; } Textures_003E25B8;
-extern Textures_003E25B8 D_L01_00221098;
+extern u8 D_L01_00221098[];
 extern f32 D_L01_001DF5D0, D_L01_001DF5D4;
 __asm__(".extern D_L01_001DF5D0, 4");
 __asm__(".extern D_L01_001DF5D4, 4");
 s32 func_L01_003E25B8(u8 *self, u8 *vars, vu0_q *velocity, s32 color1, s32 color2)
 {
-    extern s32 func_003C2B88(M_003E0480 *, s32);
+    extern s32 func_003C2B88(u8 *, s32);
     extern u8 func_0013D3E0(void);
     extern void func_00382580(void *, f32, f32);
-    extern void func_0038CF68(s128_3E0480 *, s128_3E0480 *, f32);
+    extern void func_0038CF68(vu0_q *, vu0_q *, f32);
     extern f32 func_L01_00443A18(f32, f32);
     extern f32 func_003824E0(f32, f32);
     extern s32 func_00382498(s32, s32);
@@ -23,13 +21,12 @@ s32 func_L01_003E25B8(u8 *self, u8 *vars, vu0_q *velocity, s32 color1, s32 color
     extern f32 func_L01_0040E570(void *, void *);
     extern void func_0038CDF8(void *, void *, void *, f32);
     vu0_v4 first, second, position, offset, delta, center;
-    vu0_v4 camera1, camera2;
     Bound_003E2418 *bound;
-    Textures_003E25B8 *textures;
+    u8 *pg;
     f32 max_radius, max_height, radius, pull, size, d, r;
     s32 count, left, special, spin, life;
     u8 *particle;
-    count = func_003C2B88((M_003E0480 *)self, 0);
+    count = func_003C2B88(self, 0);
     if (count) {
     /* The collision query writes its bound records into the EE scratchpad. */
     bound = (Bound_003E2418 *)0x70000000;
@@ -37,7 +34,7 @@ s32 func_L01_003E25B8(u8 *self, u8 *vars, vu0_q *velocity, s32 color1, s32 color
     max_radius = 0.010000000707805f;
     max_height = 0.1f;
     if (count > 0) {
-    textures = &D_L01_00221098;
+    pg = D_L01_00221098;
     left = count;
     do {
         if (color1 && (!color2 || (func_0013D3E0() & 1))) {
@@ -53,43 +50,24 @@ s32 func_L01_003E25B8(u8 *self, u8 *vars, vu0_q *velocity, s32 color1, s32 color
             position = *(vu0_v4 *)bound;
             position.w = 1.0f;
             func_00382580(&offset, 0.0f, radius);
-            __asm__(
-                "lqc2 vf1, %3\n"
-                "lqc2 vf2, %0\n"
-                "vadd.xyz vf2, vf2, vf1\n"
-                "lqc2 vf1, %4\n"
-                "sqc2 vf1, %1\n"
-                "sqc2 vf2, %0\n"
-                "lqc2 vf1, %0\n"
-                "lqc2 vf2, %1\n"
-                "vsub.xyz vf1, vf2, vf1\n"
-                "sqc2 vf1, %2\n"
-                : "+m" (position), "=m" (camera1), "=m" (delta)
-                : "m" (offset), "m" (D_L01_001E2A40)
-                : "vf1", "vf2");
-            func_0038CF68((s128_3E0480 *)&delta, (s128_3E0480 *)&delta, pull);
-            __asm__(
-                "lqc2 vf2, %0\n"
-                "lqc2 vf1, %1\n"
-                "vadd.xyz vf2, vf2, vf1\n"
-                "sqc2 vf2, %0\n"
-                : "+m" (position) : "m" (delta) : "vf1", "vf2");
+            vec_add_ab(&position, &position, &offset);
+            vec_sub_ab(&delta, &D_L01_001E2A40, &position);
+            func_0038CF68((vu0_q *)&delta, (vu0_q *)&delta, pull);
+            vec_add_ab(&position, &position, &delta);
             spin = (s32)func_L01_00443A18(2.0f, 5.0f);
             size = func_003824E0(0.7f, 1.0f) * bound->radius;
             if (special) {
-                life = (func_00382498(10, 15) * 5 + 2) / 6;
-                particle = func_L01_004713C8(&position, velocity, life, color1, spin, 0x30, 0x30, 0,
+                particle = func_L01_004713C8(&position, velocity, (func_00382498(10, 15) * 5 + 2) / 6, color1, spin, 0x30, 0x30, 0,
                     size * 6.0f * 210000.0f, 2100.0f, -0.0012000000569969416f);
                 if (particle) {
                     particle[3] = 0x41;
-                    particle[2] = *textures->texture;
+                    particle[2] = **(u8 **)(pg + 0xD4);
                 }
             } else {
                 spin *= -2;
-                life = (func_00382498(10, 15) * 5 + 2) / 6;
-                particle = func_L01_004713C8(&position, velocity, life, color2, spin, 0x30, 0x30, 0,
+                particle = func_L01_004713C8(&position, velocity, (func_00382498(10, 15) * 5 + 2) / 6, color2, spin, 0x30, 0x30, 0,
                     size * 5.0f * 210000.0f, 4200.0f, 0.0012000000569969416f);
-                if (particle) particle[2] = *textures->texture;
+                if (particle) particle[2] = **(u8 **)(pg + 0xD4);
             }
             d = func_L01_0040E570(bound, &center);
             r = bound->radius;
@@ -103,44 +81,25 @@ s32 func_L01_003E25B8(u8 *self, u8 *vars, vu0_q *velocity, s32 color1, s32 color
             first.w = 1.0f;
             second.w = 1.0f;
             func_0038CDF8(&position, &first, &second, func_003824E0(0.0f, 1.0f));
-            func_00382580(&offset, 0.0f, radius);
-            __asm__(
-                "lqc2 vf1, %3\n"
-                "lqc2 vf2, %0\n"
-                "vadd.xyz vf2, vf2, vf1\n"
-                "lqc2 vf1, %4\n"
-                "sqc2 vf1, %1\n"
-                "sqc2 vf2, %0\n"
-                "lqc2 vf1, %0\n"
-                "lqc2 vf2, %1\n"
-                "vsub.xyz vf1, vf2, vf1\n"
-                "sqc2 vf1, %2\n"
-                : "+m" (position), "=m" (camera2), "=m" (delta)
-                : "m" (offset), "m" (D_L01_001E2A40)
-                : "vf1", "vf2");
-            func_0038CF68((s128_3E0480 *)&delta, (s128_3E0480 *)&delta, pull);
-            __asm__(
-                "lqc2 vf2, %0\n"
-                "lqc2 vf1, %1\n"
-                "vadd.xyz vf2, vf2, vf1\n"
-                "sqc2 vf2, %0\n"
-                : "+m" (position) : "m" (delta) : "vf1", "vf2");
+            func_00382580(&delta, 0.0f, radius);
+            vec_add_ab(&position, &position, &delta);
+            vec_sub_ab(&delta, &D_L01_001E2A40, &position);
+            func_0038CF68((vu0_q *)&delta, (vu0_q *)&delta, pull);
+            vec_add_ab(&position, &position, &delta);
             spin = (s32)func_L01_00443A18(2.0f, 5.0f);
             size = func_003824E0(0.7f, 1.0f) * bound->radius;
             if (special) {
-                life = (func_00382498(10, 15) * 5 + 2) / 6;
-                particle = func_L01_004713C8(&position, velocity, life, color1, spin, 0x30, 0x30, 0,
+                particle = func_L01_004713C8(&position, velocity, (func_00382498(10, 15) * 5 + 2) / 6, color1, spin, 0x30, 0x30, 0,
                     size * 6.0f * 210000.0f, 2100.0f, -0.0012000000569969416f);
                 if (particle) {
                     particle[3] = 0x41;
-                    particle[2] = *textures->texture;
+                    particle[2] = **(u8 **)(pg + 0xD4);
                 }
             } else {
                 spin *= -2;
-                life = (func_00382498(10, 15) * 5 + 2) / 6;
-                particle = func_L01_004713C8(&position, velocity, life, color2, spin, 0x30, 0x30, 0,
+                particle = func_L01_004713C8(&position, velocity, (func_00382498(10, 15) * 5 + 2) / 6, color2, spin, 0x30, 0x30, 0,
                     size * 5.0f * 210000.0f, 4200.0f, 0.0012000000569969416f);
-                if (particle) particle[2] = *textures->texture;
+                if (particle) particle[2] = **(u8 **)(pg + 0xD4);
             }
             d = func_L01_0040E570(bound, &center);
             r = bound->radius;
