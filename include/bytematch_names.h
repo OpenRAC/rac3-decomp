@@ -8830,7 +8830,7 @@
 #define func_L39_0069DDE8 func_L39_006A05F8
 #define func_L39_0069E138 func_L39_006A0948
 #define func_L39_0069E140 func_L39_006A0950
-#define func_L39_0069E188 func_L01_00493FD8
+#define func_L39_0069E188 func_L01_00492CE0
 #define func_L39_0069E2B0 func_L39_006A0AC0
 #define func_L39_0069E3B8 func_L39_006A0BC8
 #define func_L39_0069E658 func_L39_006A0E68

@@ -425,8 +425,9 @@ def copy_groups(per_level, found):
     level, as before; another level's copies go to the rows by what shows which they are:
 
     1. calls: a function whose code is once in each level (the same row everywhere) that calls a
-       copy (a jal) calls the same function in every level at that instruction, so the copies
-       its levels call there are one function;
+       copy (a jal) or takes its address calls the same function in every level at that
+       instruction, so the copies its levels call there are one function (a union-find over
+       places);
     2. neighbours, for copies no call places (a class's type getter, reached through its class's
        table): a copy goes to the row whose first place has the same anchor before it (the nearest
        code that is once in its level and in another, and how many copies lie between) or after it;
@@ -457,6 +458,7 @@ def copy_groups(per_level, found):
     # C expects it (the build links each level's C to the copy of the name's row,
     # tools/level_symbols.py), so it keeps its order
     called = set()
+    refs = {}                                                 # (level, address) -> [(instruction, copy's address)]
     for number, row in keyed.items():
         for a, kk in row:
             hi = {}
@@ -472,6 +474,31 @@ def copy_groups(per_level, found):
                     t = (hi[rs] + (lo - 0x10000 if op == 9 and lo & 0x8000 else lo)) & 0xFFFFFFFF
                 if t is not None and key_of.get((number, t)) in repeated:
                     called.add((number, t))
+                    refs.setdefault((number, a), []).append((i, t))
+
+    # the same call site of the same code is the same function in every level: a caller whose code
+    # is once in each of its levels forms its target at the same instruction, so the copies formed
+    # there are one function (union-find over places)
+    parent = {}
+
+    def find(x):
+        while parent.setdefault(x, x) != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    sites = collections.defaultdict(list)
+    for (number, a), lst in refs.items():
+        kk = key_of[(number, a)]
+        if count[number][kk] == 1 and kk not in repeated:
+            sites[kk].append((number, a))
+    for kk, where in sites.items():
+        where.sort()
+        n0, a0 = where[0]
+        for number, a in where[1:]:
+            for (i, t), (j, u) in zip(refs[(n0, a0)], refs[(number, a)]):
+                if i == j and key_of[(n0, t)] == key_of[(number, u)]:
+                    parent[find((number, u))] = find((n0, t))
 
     def anchors(number, addrs):
         """{address: [before, after]} of one level's copies."""
@@ -501,12 +528,28 @@ def copy_groups(per_level, found):
             n = min(n for n, v in per.items() if len(v) > c)
             first[c] = (n, per[n][c])
         ref = {c: anchors(n, per[n])[a] for c, (n, a) in first.items()}
+        root_row, bad = {}, set()                             # the row each call-site class belongs to
+        for c, p in first.items():
+            r = find(p)
+            if r in root_row:
+                bad.add(r)
+            root_row[r] = c
+        members = collections.defaultdict(collections.Counter)
+        for number, a in e["places"]:
+            members[find((number, a))][number] += 1
+        bad |= {r for r, cnt in members.items() if max(cnt.values()) > 1}
         rows = [[] for _ in range(copies)]
         for number, addrs in sorted(per.items()):
             placed, taken = {}, set()
             for c, p in first.items():                        # the places that name the rows
                 if p[0] == number:
                     placed[p[1]] = c
+                    taken.add(c)
+            for a in addrs:                                   # the same call site as a row's first place
+                r = find((number, a))
+                c = root_row.get(r)
+                if r not in bad and c is not None and a not in placed and c not in taken:
+                    placed[a] = c
                     taken.add(c)
             for c, a in enumerate(addrs):                     # the copies code calls or takes
                 if (number, a) in called and a not in placed and c not in taken:
