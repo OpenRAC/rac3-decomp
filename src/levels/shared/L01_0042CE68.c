@@ -279,6 +279,12 @@ typedef struct {
     s16 palette;
     s16 unusedE;
 } Record_0042D3A8;
+typedef struct {
+    u8 pad[0x20];
+    s32 f20;
+} Image_0042D3A8;
+extern Image_0042D3A8 D_001A1ED0_0042D3A8;
+extern s32 func_0012CCC8_0042D3A8(void *, void *);
 extern Queue_0042D3A8 D_L01_0021F5E0_0042D3A8;
 extern s32 D_L01_001E0000;
 extern s32 D_L01_001E000C;
@@ -348,16 +354,16 @@ void func_L01_0042D3A8(s32 id, s32 *arg, s32 *data) {
             }
             func_0012C9A0(packet, D_001D4BB4 >> 8, 1, 0, 0, 0, 16, 16);
             func_0011F0A0(0);
-            func_0012CCC8(packet, tex->clut);
+            func_0012CCC8_0042D3A8(packet, tex->clut);
             func_0012A9F0(0, 0);
-            row->base = (D_001D4BB4 - D_001A1ED0.f20) >> 8;
+            row->base = (D_001D4BB4 - D_001A1ED0_0042D3A8.f20) >> 8;
             D_001D4BB4 += 0x400;
             if (tex->format >= 3) {
                 func_0012C9A0(packet, D_001D4BB4 >> 8, 1, 19, 0, 0, tex->width >> 2, tex->height >> 2);
                 func_0011F0A0(0);
-                func_0012CCC8(packet, tex->data + ((tex->width * tex->height * 5) >> 2));
+                func_0012CCC8_0042D3A8(packet, tex->data + ((tex->width * tex->height * 5) >> 2));
                 func_0012A9F0(0, 0);
-                row->palette = (D_001D4BB4 - D_001A1ED0.f20) >> 8;
+                row->palette = (D_001D4BB4 - D_001A1ED0_0042D3A8.f20) >> 8;
                 row->unusedE = 0;
                 amount = (tex->width * tex->height) >> 4;
                 if (amount < 256) {
