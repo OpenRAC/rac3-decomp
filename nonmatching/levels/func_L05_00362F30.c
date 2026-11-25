@@ -1,3 +1,4 @@
+/* Round 27 W5: 31 differing words (was 32, W3) with -mvu0-use-vf0-vf2 added to the file's line. Changes over W3's draft: the loop is `for (i = 0; i < 4; i++)` (retail's count-down bgez loop comes out; `!= 4` kept an up-counting bne) and the arg/p/f/g order is arg, f, g, p (p loaded after the two copies), found by a search of all 231+231 dependency-respecting orders of the pre-call statements (arg,p,f,g,c,a,b). Left: store order of the c words against the pointer-setup insns before the loop, and the loop registers (retail $a1/$a3/$v0/$a0/$v1, here $a0/$v0/$a1/$v1/$a2; the 0x48 constant takes $a2 here and $a0 in retail). Local declaration order cannot change (it fixes the stack offsets). */
 /* func_L05_00362F30 (PAL): 76 differences, measured with -mvu0-use-vf0-vf2 added (check.py --flags), which its
  * file (src/levels/shared/L05_003629B8.c, `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) does not have:
  * without it no j-constraint VU0 code compiles. The file's line would need the flag first, and its three
@@ -31,6 +32,11 @@
  * line; spot checks give byte-identical listings, so the helper's lqc2 order does not reach the code here.
  * Retail's c and b have the first-loaded operand in $vf1 and the result in $vf2 (vsub.xyz $vf2, $vf2, $vf1); a
  * already matches. The swap did not move the count, so #47975 and #47941 were not tried (the task's bound). */
+/* Round 27 W3: 32 differing words with the file's @ps2as flags plus `-mvu0-use-vf0-vf2` at levels 05 and 10.
+ * Explicit VU0 operands and the loop bound reduce the differences. The prologue's VU0 copies still
+ * interleave differently, and the packet loop uses different GPRs.
+ * Tried VU0 operands with explicit vf1/vf2 clobbers, packet store orders and copy-loop forms.
+ */
 #include "common.h"
 
 /* localdecomp:start func_L05_00362F30 */
@@ -74,12 +80,20 @@ void func_L05_00362F30(u8 *a0, u128_361BA8 *a1) {
     s32 i;
 
     arg = *(vu0_v4 *)a1;
-    p = *(u8 **)(a0 + 0x68);
     vec_copy(&f, &D_L05_001E2680);
     vec_copy(&g, &D_L05_001E2680);
-    vec_sub_ba(&c, p, p + 0x10);
+    p = *(u8 **)(a0 + 0x68);
+    __asm__("lqc2 $vf1, %1\n\t"
+            "lqc2 $vf2, %2\n\t"
+            "vsub.xyz $vf2, $vf2, $vf1\n\t"
+            "sqc2 $vf2, %0"
+            : "=m"(c) : "m"(*(vu0_v4 *)(p + 0x10)), "m"(*(vu0_v4 *)p) : "vf1", "vf2");
     vec_sub_ba(&a, p, &f);
-    vec_sub_ba(&b, p + 0x10, &g);
+    __asm__("lqc2 $vf1, %1\n\t"
+            "lqc2 $vf2, %2\n\t"
+            "vsub.xyz $vf2, $vf2, $vf1\n\t"
+            "sqc2 $vf2, %0"
+            : "=m"(b) : "m"(g), "m"(*(vu0_v4 *)(p + 0x10)) : "vf1", "vf2");
     func_0038CE90(&a, &a, &c);
     func_0038CF68(&a, &a, D_L05_001DDA64);
     func_0038CE90(&b, &b, &c);

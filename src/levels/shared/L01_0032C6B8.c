@@ -204,7 +204,116 @@ void func_L01_0032CAA0(S_32CAA0 *a0, s128 *a1) {
 }
 /* localdecomp:end func_L01_0032CAA0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032CB38);
+/* localdecomp:start func_L01_0032CB38 */
+typedef struct {
+    vu0_q pos;
+    vu0_q step;
+    f32 timer;
+    s32 owner;
+    u8 pad28[8];
+} Entry_32CB38;
+typedef struct {
+    u8 pad0[1];
+    u8 tier;
+    u8 pad2[0x6A];
+    f32 damage;
+    u8 pad70[0x80];
+} Weapon_32CB38;
+typedef struct {
+    u8 pad0[0x18];
+    u8 *hit;
+    u8 pad1C[4];
+    u8 point[16];
+} Hit_32CB38;
+typedef struct {
+    vu0_q direction;
+    u8 pad10[8];
+    u8 type;
+    u8 mode;
+    u16 source;
+    u8 pad1C[0x14];
+} Damage_32CB38;
+
+extern Entry_32CB38 D_L01_00277090_0032CB38[];
+extern Weapon_32CB38 D_L01_002C5600_0032CB38[];
+extern Hit_32CB38 D_L01_001EAA00_0032CB38;
+extern u8 D_L01_001EAA20_0032CB38[];
+extern u8 D_001425C0[];
+extern struct { u8 pad[0x25C0]; u8 *moby; } D_001A4BE0;
+extern s32 func_L01_0040E050(void *);
+extern s32 func_L01_004CB2D8(void);
+extern void func_L01_004CAB30(void *, void *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00446760(void *, void *, s32, void *, f32);
+extern void func_L01_00446978(void *, void *);
+extern void func_L01_0034C9F0(void *, s32, void *);
+extern void func_L01_0032DED0(u8 *, s32);
+
+void func_L01_0032CB38(u8 *moby) {
+    struct { vu0_q previous, direction; Damage_32CB38 damage; } frame;
+    s32 i;
+    u8 *vars = *(u8 **)(moby + 0x68);
+
+    for (i = 0; i < 100; i++) {
+        Entry_32CB38 *e;
+        f32 *pos;
+        u8 *hit;
+        Weapon_32CB38 *weapon;
+        f32 dmg;
+
+        if (D_L01_00277090_0032CB38[i].owner != (s32)moby)
+            continue;
+        e = &D_L01_00277090_0032CB38[i];
+        pos = (f32 *)&e->pos;
+        if (func_L01_0040E050(&e->timer) ||
+            pos[0] < 2.0f || pos[0] > 1021.0f ||
+            pos[1] < 2.0f || pos[1] > 1021.0f ||
+            pos[2] < 2.0f || pos[2] > 1021.0f) {
+            e->owner = 0;
+            (*(u16 *)(vars + 0x66))--;
+            continue;
+        }
+        frame.previous = e->pos;
+        vec_add_ab(&e->pos, &e->pos, &e->step);
+        if (func_L01_004CB2D8())
+            func_L01_004CAB30(e, e);
+        if (!func_003D3CB0(&frame.previous, e, 0, moby, 0))
+            continue;
+        hit = D_L01_001EAA00_0032CB38.hit;
+        if (hit != 0) {
+        if ((*(u16 *)(hit + 0x34) & 0x1000) ||
+            (*(u8 **)(hit + 0x24))[0x46] == 5) {
+            if (hit != D_001A4BE0.moby && *(s16 *)(hit + 0xAA) != 0x1366) {
+                func_0038CF68(&frame.direction, &e->step, 1.0f);
+                weapon = &D_L01_002C5600_0032CB38[D_001425C0[0x15]];
+                dmg = weapon->damage;
+                if (weapon->tier >= 2)
+                    func_L01_00446760(&frame.damage, moby, 0x10010000, &frame.direction, dmg);
+                else
+                    func_L01_00446760(&frame.damage, moby, 0x10000, &frame.direction, dmg);
+                frame.damage.type = 1;
+                frame.damage.mode = 3;
+                frame.damage.source = *(u16 *)(moby + 0xAA);
+                func_L01_00446978(hit, &frame.damage);
+                func_L01_0034C9F0(hit, 0x15, *(void **)(moby + 0xB8));
+                e->owner = 0;
+                (*(u16 *)(vars + 0x66))--;
+                func_L01_0032DED0(D_L01_001EAA20_0032CB38, 6);
+                continue;
+            }
+        }
+        e->owner = 0;
+        (*(u16 *)(vars + 0x66))--;
+        func_L01_0032DED0(D_L01_001EAA20_0032CB38, 3);
+        } else {
+            e->owner = 0;
+            (*(u16 *)(vars + 0x66))--;
+            func_L01_0032DED0(D_L01_001EAA00_0032CB38.point, 3);
+        }
+    }
+}
+/* localdecomp:end func_L01_0032CB38 */
 
 /* localdecomp:start func_L01_0032CE18 */
 extern void func_0038CF68(void *, void *, f32);

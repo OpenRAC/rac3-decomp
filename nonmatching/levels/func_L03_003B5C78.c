@@ -1,3 +1,35 @@
+/* Round 27 W25 (allowed-construct hunt, 9 -> 9, nothing found). Mechanism (sched1 trace, tools/sched_explain.py copy): the
+ * first-call block has idle slots t=1/t=2 (arg move, then the call); the independent const insn and `&m->pos` fill them, so
+ * they land above the call. With a barrier insn after the call (asm volatile or ANY operand-less asm: ASM_INPUT counts as a
+ * barrier in sched_analyze_2) every later insn depends on it, so the loads (p=44) outrank the const (p=23) and it falls to
+ * t>=4/6. A loop note (`while (0) {}`) only turns the FIRST INSN AFTER it into that barrier: that insn is the `$4=[s+0x2c]`
+ * load (arg expansion order a0, a1, a2), which therefore issues first; retail has a1, a2, a0 (sched2 order after a real
+ * barrier). Tested here (all with the base draft, check.py level 03): `for (;;) { ...rest of case 0...; break; }` and the
+ * `while (1)` form 100; `switch (0) { default: rest }` 9; a loop around only the two func_003C2F58 calls 59; the same loop
+ * empty after them 13; `for (i = 0; i < 1; i++)` around the rest 175; a forced label (`void *lp = &&L; L:;`) 9 (the label
+ * does not split the block); a conditional computed goto to the label 172; the loop note followed by temps for the a1 / a2
+ * / a0 argument values (b = s->x30; c = &s->x10; a = s->x2C, before or after the note, with `while (0) {}` or `for (;;)
+ * { break; }`) 6 or 9 (cse folds the single-use temps back into the argument expansion, a0 first). The only compiler
+ * flags other files of the build use (-fno-sched-interblock, -fno-strict-aliasing, -fno-gcse) 9; --all-modes: ps2as/S 9
+ * is the best. Not found: an allowed plain-C construct that makes the first insn after the note a1's load, or that puts a
+ * dependence-on-everything insn after the call. */
+/* Round 27 W20 -- cause found, no allowed fix yet. The 9 differences below are ONE thing: retail has a scheduling barrier right
+ * after the first call. With `__asm__ volatile("");` on the line after `func_L01_004561B8(m);` the function MATCHES (0 diffs at
+ * levels 03 and 05, the file's flags); that is a forbidden barrier, so this draft keeps the 9-diff form. Evidence and numbers:
+ * - sched1 trace (tools/sched_explain.py copy for level snippets): the constant insn (r135, `movsf`, memory unit) and `&m->pos`
+ *   (r129 = m + 0x10) have no dependences, so they issue at t=1 / t=2 beside the call's argument move; retail has them at t>=4
+ *   (the free slots before the first func_003C2F58), and reorg then fills that call's delay slot with the `addiu $s0`
+ *   (the 3-instruction li.s is not eligible): exactly retail's text. A barrier insn after the first call produces that order.
+ * - `while (0) {}`, `for (;;) { break; }`, `do { } while (0);`, `for (x = x; 0;) {}` right after the call (loop notes act as a
+ *   barrier on the next call): 6 diffs (the constant lands right but the argument loads come in the order a0, a1, a2 instead of
+ *   a1, a2, a0). `if (0) {}`, `goto L; L:`, `switch (0) {}`, the same notes BEFORE the call: 9. A call inside a one-iteration
+ *   loop: 169. `__asm__ volatile("" ::: "memory")`: MATCH like the plain one.
+ * - a callee named setjmp (asm label func_L01_004561B8): 169 (calls_setjmp keeps everything on the stack); the returns_twice
+ *   attribute is accepted but has no effect (9); unprototyped, varargs or volatile declaration: 9; noreturn: 154.
+ * - 36 variants of the callee's return type (s32 void u8 u32 s16 long), of using or ignoring its result and of the constant's
+ *   spelling (0.034906585f, (f32)(2.0 * 0.017453292519943295), 0.017453292f * 2.0f): all 9.
+ * So the original had something invisible and volatile (or a returns-twice-like callee) between the first call and the first
+ * func_003C2F58; no C construct of the allowed set found so far does that. */
 /* PAL draft (2026-11-21, Promises): written from level 3's assembly. Its file,
  * src/levels/shared/L03_003B5C78.c, is cut at 0x3B6180 (2026-11-22) and has
  * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as (split addresses and the
