@@ -534,7 +534,69 @@ void func_L01_003E5E50(Update_3E5E50 *update) {
 
 INCLUDE_ASM("asm/levels", func_L01_003E6120);
 
-INCLUDE_ASM("asm/levels", func_L01_003E6DA0);
+/* localdecomp:start func_L01_003E6DA0 */
+#include "vu0.h"
+extern s32 D_L01_001DF810[2];
+extern vu0_v4 D_L01_001EAA20_003E6DA0;
+extern void func_0038D590_003E6DA0(f32 *, u8 *);
+extern void func_0038D000_003E6DA0(f32 *, f32 *, u8 *);
+extern void func_0038CE20_003E6DA0(f32 *, f32 *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_0038CEA8_003E6DA0(f32 *);
+extern void func_0038CF68_003E6DA0(f32 *, f32 *, f32);
+extern void func_0038CE90_003E6DA0(f32 *, f32 *, f32 *);
+
+void func_L01_003E6DA0(s32 player, s32 collision) {
+    vu0_v4 up, scaled, direction, target, offset, angles;
+    f32 matrix[12] __attribute__((aligned(16)));
+    vu0_v4 delta;
+    Entry_3E6C58 *entry = &D_L01_001E2A40[player];
+    u8 *cam = entry->p50;
+    u8 *follow = *(u8 **)(cam + 0x70);
+    u8 *hero = (u8 *)entry + 0x150;
+    u8 *springs = follow + 0x180;
+    u8 *look = follow + 0x60;
+    f32 distance;
+    s32 mask;
+    f32 *from, *copy;
+    if (collision) {
+        angles.x = -*(f32 *)(springs + 0x2C);
+        angles.y = 0.0f;
+        angles.z = *(f32 *)(springs + 0x30);
+        angles.w = 0.0f;
+        func_0038D590_003E6DA0(matrix, hero);
+        func_0038D000_003E6DA0(&offset.x, &angles.x, *(u8 **)(look + 0xE0) + 0xC0);
+        vec_add_ba(cam + 0x30, follow + 0x60, &offset);
+        func_0038CE20_003E6DA0(&scaled.x, (f32 *)(*(u8 **)(look + 0xE0) + 0xE0), *(f32 *)(look + 0xD0));
+        vec_add_ab(&target, follow + 0x60, &scaled);
+        if (func_003D3CB0(&target, cam + 0x30, D_L01_001DF810[player], *(void **)(hero + 0xF0), 0)) {
+            vec_sub_ba(&delta, &D_L01_001EAA20_003E6DA0, &target);
+            distance = func_0038CEA8_003E6DA0(&delta.x);
+            if (distance == 0.0f) {
+                *(vu0_q *)(cam + 0x30) = *(vu0_q *)&target;
+            } else {
+                func_0038CE20_003E6DA0(&delta.x, &delta.x, (distance - 0.5f) / distance);
+                vec_add_ab(cam + 0x30, &target, &delta);
+            }
+        }
+    }
+    from = (f32 *)(cam + 0x30);
+    copy = (f32 *)(cam + 0x64);
+    copy[0] = from[0];
+    copy[1] = from[1];
+    copy[2] = from[2];
+    *(vu0_q *)&up = *(vu0_q *)((u8 *)entry + 0x90);
+    func_0038CF68_003E6DA0(&scaled.x, &up.x, *(f32 *)(look + 0xD0));
+    vec_add_ab(&target, &scaled, look);
+    vec_sub_ba(&direction, &target, cam + 0x30);
+    func_0038CF68_003E6DA0((f32 *)cam, &direction.x, 1.0f);
+    *(vu0_q *)(cam + 0x20) = *(vu0_q *)&up;
+    func_0038CE90_003E6DA0((f32 *)(cam + 0x10), (f32 *)cam, (f32 *)(cam + 0x20));
+    func_0038CF68_003E6DA0((f32 *)(cam + 0x10), (f32 *)(cam + 0x10), 1.0f);
+    func_0038CE90_003E6DA0((f32 *)(cam + 0x20), (f32 *)(cam + 0x10), (f32 *)cam);
+    *(vu0_q *)(cam + 0x40) = *(vu0_q *)cam;
+}
+/* localdecomp:end func_L01_003E6DA0 */
 
 /* localdecomp:start func_L01_003E7000 */
 #include "vu0.h"
@@ -647,7 +709,73 @@ s32 func_L01_003E75A8(u8 *a0, void *a1, s32 a2, s32 a3) {
 }
 /* localdecomp:end func_L01_003E75A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E77B0);
+/* localdecomp:start func_L01_003E77B0 */
+#include "vu0.h"
+extern u8 D_L01_001E2AA0[];
+extern vu0_q D_L01_001EAA20_003E77B0[];
+extern vu0_q D_L01_001EAA30_003E77B0[];
+extern f32 func_0038CE68(f32 *, f32 *);
+extern void func_0038CF68(f32 *, f32 *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern s32 func_L01_003E4050(void *, f32);
+extern s32 func_L01_003FB640_003E77B0(void *, f32, s32, u8 *);
+extern s32 func_L01_003FE1D8_003E77B0(void *, f32, s32);
+extern s32 func_L01_003E75A8_003E77B0(u8 *, void *, s32, s32);
+
+s32 func_L01_003E77B0(u8 *obj) {
+    vu0_v4 pos, delta, normal;
+    u8 *follow = *(u8 **)(obj + 0x70);
+    u8 *motion = follow + 0x60;
+    u8 *spring = follow + 0x180;
+    u8 *steer = follow + 0x210;
+    s32 idx = *(s32 *)(obj + 0x94);
+    u8 *entry = D_L01_001E2AA0 + idx * 1120;
+    u8 *hero;
+    u8 *hero_follow;
+    s32 mask;
+    f32 radius;
+    s32 collided = 0, changed = 0, i, again, result;
+
+    vec_add_ab(&pos, follow + 0xB0, follow + 0x180);
+    *(s16 *)(steer + 0x38) = 2;
+    hero = *(u8 **)(D_L01_001E2AA0 + idx * 1120 - 0x10);
+    mask = *(s32 *)(steer + 0x48);
+    hero_follow = *(u8 **)(hero + 0x70);
+    radius = *(f32 *)(hero_follow + 0x254) * *(f32 *)(hero_follow + 0x24C) * (*(f32 *)(hero_follow + 0x250) - 1.0f) + 0.35f;
+    vec_sub_ab(&delta, obj + 0x30, &pos);
+    if (func_0038CE68(&delta.x, &delta.x) > radius * radius && func_003D3CB0(obj + 0x30, &pos, mask, 0, 0)) {
+        *(vu0_q *)&pos = D_L01_001EAA20_003E77B0[0];
+        func_0038CF68(&delta.x, (f32 *)(D_L01_001EAA20_003E77B0 + 2), 0.005f);
+        vec_add_ab(&pos, &pos, &delta);
+    }
+    for (i = 0; i < 3; i++) {
+        if (func_L01_003E4050(&pos, radius)) collided = 1;
+        again = 0;
+        if (func_L01_003FB640_003E77B0(&pos, radius, mask, *(u8 **)(entry + 0xC4))) {
+            *(vu0_q *)&pos = D_L01_001EAA30_003E77B0[0];
+            again = 1; changed = 1;
+        }
+        if (func_L01_003FE1D8_003E77B0(&pos, radius, 0)) {
+            *(vu0_q *)&pos = D_L01_001EAA30_003E77B0[0];
+            again = 1; changed = 1;
+        }
+        if (!again) break;
+        if (*(s16 *)(steer + 0x38) != 0) {
+            f32 dot;
+            vec_sub_ba(&normal, D_L01_001EAA20_003E77B0, &pos);
+            func_0038CF68(&normal.x, &normal.x, 1.0f);
+            dot = func_0038CE68((f32 *)(entry + 0x30), &normal.x);
+            if (dot > 0.75f) *(s16 *)(steer + 0x38) = 1;
+            else if (dot < -0.5f) *(s16 *)(steer + 0x38) = -1;
+            else *(s16 *)(steer + 0x38) = 0;
+        }
+    }
+    result = func_L01_003E75A8_003E77B0(obj, &pos, collided, changed);
+    vec_add_ab(steer + 0x20, motion + 0x50, spring);
+    if (*(s16 *)(steer + 0x38) == 2) *(s16 *)(steer + 0x38) = 0;
+    return result;
+}
+/* localdecomp:end func_L01_003E77B0 */
 
 /* localdecomp:start func_L01_003E7AA0 */
 s32 func_L01_003E7AA0(void) {

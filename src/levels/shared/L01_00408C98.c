@@ -76,5 +76,3 @@ void func_L01_00408C98(Q_00408C98 *vertices, s32 count, Q_00408C98 *positions,
 /* localdecomp:end func_L01_00408C98 */
 
 LINKER_REMNANT("asm/levels", func_L01_00409058);
-
-INCLUDE_ASM("asm/levels", func_L01_00409070);

@@ -891,7 +891,107 @@ void func_L01_0039DB90(u8 *obj) {
 }
 /* localdecomp:end func_L01_0039DB90 */
 
-INCLUDE_ASM("asm/levels", func_L01_0039DCB8);
+/* localdecomp:start func_L01_0039DCB8 */
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec4_0039DCB8;
+#include "vu0.h"
+extern vu0_v4 D_L01_001E29C0;
+extern f32 D_L01_001DE1D8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DE1D8, 4");
+extern f32 D_L01_001DE1E8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DE1E8, 4");
+extern f32 D_L01_001DE1F8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DE1F8, 4");
+extern s32 D_L01_001DE1BC, D_L01_001DE1C0;
+extern s32 D_L01_001DE1C4, D_L01_001DE1C8;
+extern s32 D_L01_001DE1CC, D_L01_001DE1D0;
+extern s32 D_L01_001DE16C;
+extern u8 *D_L01_00221098_0039DCB8[];
+__asm__(".extern D_L01_001DE1BC, 4");
+__asm__(".extern D_L01_001DE1C0, 4");
+__asm__(".extern D_L01_001DE1C4, 4");
+__asm__(".extern D_L01_001DE1C8, 4");
+__asm__(".extern D_L01_001DE1CC, 4");
+__asm__(".extern D_L01_001DE1D0, 4");
+__asm__(".extern D_L01_001DE16C, 4");
+typedef struct {
+    u8 pad[0x47];
+    u8 flag;
+    s16 time[4];
+    f32 angle[4];
+} State_0039DCB8;
+
+s32 func_L01_0039DCB8(u8 *obj) {
+    extern void func_0038CF68_0039DCB8(void *, void *, f32);
+    extern s32 func_0038CB00(void *);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern u8 *func_L01_0046C2E8(void *, s32, s32, s32, s32, s32, s32, s32, f32);
+    Vec4_0039DCB8 va;
+    Vec4_0039DCB8 vb;
+    s32 found;
+    State_0039DCB8 *st;
+    s32 i;
+    s32 x;
+    s32 col;
+    s32 al;
+    s32 ah;
+    f32 f1;
+    f32 z;
+    f32 d;
+    f32 t;
+    f32 keep;
+    u8 *r;
+
+    st = *(State_0039DCB8 **)(obj + 0x68);
+    vec_sub_ab(&va, &D_L01_001E29C0, obj + 0x10);
+    func_0038CF68_0039DCB8(&va, &va, -0.3f);
+    found = 0;
+    func_0038CF68_0039DCB8(&vb, &va, 0.1f);
+    vec_add_ba(&va, &va, obj + 0x10);
+    z = va.v[2];
+    for (i = 0; i < 4; i++) {
+        if (func_0038CB00(&st->time[i]) != 0) {
+            continue;
+        }
+        f1 = st->angle[i] + D_L01_001DE1D8[i];
+        if (st->time[i] >= 0x29) {
+            found = 1;
+        }
+        st->angle[i] = f1;
+        if (255.0f <= f1) {
+            st->angle[i] = f1 - 255.0f;
+        } else if (f1 <= 0.0f) {
+            st->angle[i] = f1 + 255.0f;
+        }
+        keep = fabs_asm(0.5f - (f32)(0xD4 - st->time[i]) / 212.0f);
+        if (st->flag != 0) {
+            col = func_0038DBD8(D_L01_001DE1C4, D_L01_001DE1C8, keep);
+        } else {
+            col = func_0038DBD8(D_L01_001DE1BC, D_L01_001DE1C0, keep);
+        }
+        x = D_L01_001DE1D0;
+        d = 1.0f - (f32)st->time[i] / (f32)((D_L01_001DE16C * 5 + 2) / 6);
+        al = col >> 24;
+        va.v[2] = z + D_L01_001DE1F8[i];
+        t = 1.0f - d;
+        al = (s32)((f32)al * t);
+        ah = al << 24;
+        r = func_L01_0046C2E8(&va, ah | (col & 0xFFFFFF),
+                              (u8)(s32)st->angle[i], x, 0, 2, 1, 0,
+                              D_L01_001DE1E8[i] * d);
+        if (r != 0) {
+            r[2] = *D_L01_00221098_0039DCB8[0xF8 / 4];
+        }
+        r = func_L01_0046C2E8(&va, ah | 0xFFFFFF,
+                              (u8)(s32)st->angle[i], D_L01_001DE1D0, D_L01_001DE1CC, 2, 1, 0,
+                              D_L01_001DE1E8[i] * (d * 0.7f));
+        if (r != 0) {
+            r[2] = *D_L01_00221098_0039DCB8[0xF8 / 4];
+        }
+        vec_add_ab(&va, &va, &vb);
+    }
+    return found;
+}
+/* localdecomp:end func_L01_0039DCB8 */
 
 /* localdecomp:start func_L01_0039E018 */
 extern void func_0038D890_0039E018(void *, void *, void *, f32);

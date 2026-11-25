@@ -1605,8 +1605,8 @@ extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D0B0(f32);
 extern f32 func_0038D098(f32);
 extern void func_003873C0(void);
-extern void func_L01_004CA088(void *);
-extern void func_L01_004CA478(void *);
+extern void func_L01_004CA088_004C99F8(void *);
+extern void func_L01_004CA478_004C99F8(void *);
 extern u8 *func_L01_004CA270(u8 *);
 extern void func_L01_004CB388(u8 *, s32, s32);
 extern void func_L01_004C99A0(void);
@@ -1660,7 +1660,7 @@ void func_L01_004C99F8(void) {
         func_L01_00404AD8(func_L01_004CA3F0, 0);
         break;
     case 1:
-        func_L01_004CA088(D_L01_001E1100.moby);
+        func_L01_004CA088_004C99F8(D_L01_001E1100.moby);
         if (func_0038CB00(&D_L01_001E1100.timer)) {
             D_L01_001E1100.state = 2;
             D_L01_001E1100.flag34 = 0;
@@ -1670,8 +1670,8 @@ void func_L01_004C99F8(void) {
         break;
     case 2: {
         u8 *m2 = D_L01_001E1100.moby;
-        func_L01_004CA088(m2);
-        func_L01_004CA478(m2);
+        func_L01_004CA088_004C99F8(m2);
+        func_L01_004CA478_004C99F8(m2);
         if (func_0038CB00(&D_L01_001E1100.timer)) {
             D_L01_001E1100.timer = 2;
             D_L01_001E1100.state = 3;
@@ -1692,7 +1692,7 @@ void func_L01_004C99F8(void) {
         break;
     }
     case 4:
-        if (D_L01_001E1100.moby) func_L01_004CA088(D_L01_001E1100.moby);
+        if (D_L01_001E1100.moby) func_L01_004CA088_004C99F8(D_L01_001E1100.moby);
         func_L01_00404AD8(func_L01_004CA6A8, 0);
         D_L01_001E1100.fade = (f32)D_L01_001E1100.timer / 12.0f * 128.0f;
         if (func_0038CB00(&D_L01_001E1100.timer)) {
@@ -1702,14 +1702,14 @@ void func_L01_004C99F8(void) {
         }
         break;
     case 5:
-        if (D_L01_001E1100.moby) func_L01_004CA088(D_L01_001E1100.moby);
+        if (D_L01_001E1100.moby) func_L01_004CA088_004C99F8(D_L01_001E1100.moby);
         if (func_0038CB00(&D_L01_001E1100.timer)) {
             D_L01_001E1100.timer = 2;
             D_L01_001E1100.state = 6;
         }
         break;
     case 6:
-        if (D_L01_001E1100.moby) func_L01_004CA088(D_L01_001E1100.moby);
+        if (D_L01_001E1100.moby) func_L01_004CA088_004C99F8(D_L01_001E1100.moby);
         func_L01_00404AD8(func_L01_004CA3F0, 0);
         if (func_0038CB00(&D_L01_001E1100.timer)) {
             Stream_004C99F8 *s6;
@@ -1742,7 +1742,66 @@ void func_L01_004C99F8(void) {
 }
 /* localdecomp:end func_L01_004C99F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CA088);
+/* localdecomp:start func_L01_004CA088 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x10];
+    Vec4_004C4AD8 position;
+    u8 pad20[0x8A];
+    s16 class_id;
+    u8 padAC[0x44];
+    Vec4_004C4AD8 rotation;
+} Moby_004CA088;
+extern Vec4_004C4AD8 D_L01_001E29E0;
+extern Vec4_004C4AD8 D_L01_001E29C0[];
+extern u8 D_L01_001E1135;
+extern f32 D_L01_001DB014, D_L01_001DB018, D_L01_001DB01C, D_L01_001DB020, D_L01_001DB024;
+__asm__(".extern D_L01_001DB014, 4");
+__asm__(".extern D_L01_001DB018, 4");
+__asm__(".extern D_L01_001DB01C, 4");
+__asm__(".extern D_L01_001DB020, 4");
+__asm__(".extern D_L01_001DB024, 4");
+void func_L01_004CA088(void *arg) {
+    extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_0038D308(Vec4_004C4AD8 *, Vec4_004C4AD8 *);
+    extern void func_003C7C38(void *);
+    extern void func_L01_004CA710_004CA088();
+    Moby_004CA088 *moby = arg;
+    Vec4_004C4AD8 offset;
+    Vec4_004C4AD8 matrix[3];
+    Vec4_004C4AD8 temp;
+    s32 special = 0, big;
+    if (moby->class_id == 0xC5A || moby->class_id == 0xA65) special = 1;
+    big = 0;
+    if (moby->class_id == 0x879 || moby->class_id == 0xAF6 || moby->class_id == 0x907 || moby->class_id == 0xE7A || special) big = 1;
+    if (special) func_0038CE20(&offset, &D_L01_001E29E0, 2.5f);
+    else if (big) func_0038CE20(&offset, &D_L01_001E29E0, 2.0f);
+    else func_0038CE20(&offset, &D_L01_001E29E0, 3.0f);
+    vec_add_ba(&moby->position, &D_L01_001E29C0[0], &offset);
+    if (D_L01_001E1135) moby->rotation.x = func_0038DAB8(moby->rotation.x, 0.03490658476948738f);
+    else moby->rotation.z = func_0038DAB8(moby->rotation.z, 0.03490658476948738f);
+    func_0038D308(matrix, &moby->rotation);
+    if (D_L01_001E1135) {
+        if (big) {
+            func_0038CE20(&temp, &matrix[1], D_L01_001DB024);
+            vec_add_ab(&moby->position, &moby->position, &temp);
+            func_0038CE20(&temp, &matrix[0], D_L01_001DB020);
+            vec_add_ab(&moby->position, &moby->position, &temp);
+        } else {
+            func_0038CE20(&temp, &matrix[1], D_L01_001DB018);
+            vec_add_ab(&moby->position, &moby->position, &temp);
+            func_0038CE20(&temp, &matrix[0], D_L01_001DB014);
+            vec_add_ab(&moby->position, &moby->position, &temp);
+        }
+    } else {
+        func_0038CE20(&temp, &matrix[2], D_L01_001DB01C);
+        vec_add_ab(&moby->position, &moby->position, &temp);
+    }
+    func_003C7C38(moby);
+    func_L01_004CA710_004CA088(moby);
+}
+/* localdecomp:end func_L01_004CA088 */
 
 /* localdecomp:start func_L01_004CA270 */
 typedef int Q_004CA270 __attribute__((mode(TI)));
@@ -1820,7 +1879,56 @@ void func_L01_004CA3F0(void)
 }
 /* localdecomp:end func_L01_004CA3F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_004CA478);
+/* localdecomp:start func_L01_004CA478 */
+#include "vu0.h"
+extern Vec4_004C4AD8 D_L01_001E29C0[];
+extern f32 D_L01_001DB028;
+__asm__(".extern D_L01_001DB028, 4");
+extern u8 D_L01_001D66B0[8];
+extern u8 *D_L01_0022116C[];
+extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+void func_L01_004CA478(void *arg) {
+    extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    extern void func_0038CDF8(Vec4_004C4AD8 *, Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    Vec4_004C4AD8 temp, far, near, pos;
+    u8 *p;
+    s32 phase = D_L01_001E1100.flag34;
+    f32 scale;
+    func_0038CE20(&temp, &D_L01_001E29C0[2], 9.0f);
+    vec_add_ba(&far, &D_L01_001E29C0[0], &temp);
+    func_0038CE20(&temp, &D_L01_001E29C0[2], 0.1f);
+    vec_add_ab(&near, &D_L01_001E29C0[0], &temp);
+    func_0038CDF8(&pos, &near, &far, (f32)D_L01_001E1100.timer * D_L01_001E1100.step);
+    scale = D_L01_001DB028 * 210000.0f;
+    p = func_L01_0046FB40(&pos, D_L01_001D66B0, 3, 0x804020, phase, 127, 127, scale, scale, 0.0f, 0);
+    if (p != 0) {
+        u8 type;
+        p[0] = 255;
+        type = *D_L01_0022116C[0];
+        p[9] = 64;
+        p[2] = type;
+    }
+    phase = (phase + 128) % 255;
+    p = func_L01_0046FB40(&pos, D_L01_001D66B0, 3, 0x804020, phase, 127, 127, scale, scale, 0.0f, 0);
+    if (p != 0) {
+        u8 type;
+        p[0] = 255;
+        type = *D_L01_0022116C[0];
+        p[9] = 64;
+        p[2] = type;
+    }
+    scale *= 0.5f;
+    p = func_L01_0046FB40(&pos, D_L01_001D66B0, 3, 0xBFBFBF, phase, 127, 127, scale, scale, 0.0f, 0);
+    if (p != 0) {
+        u8 type;
+        p[0] = 255;
+        type = *D_L01_0022116C[0];
+        p[9] = 64;
+        p[2] = type;
+    }
+    D_L01_001E1100.flag34++;
+}
+/* localdecomp:end func_L01_004CA478 */
 
 /* localdecomp:start func_L01_004CA6A8 */
 extern void func_0038AF30(s32, s32, s32, s32, long);
@@ -1888,7 +1996,8 @@ void func_L01_004CA8C8(void) {
 /* localdecomp:end func_L01_004CA8C8 */
 
 /* localdecomp:start func_L01_004CA928 */
-extern s32 D_L01_001D6694;
+extern s32 D_L01_001D6694_004CA928;
+__asm__(".extern D_L01_001D6694_004CA928, 16");
 extern s32 D_001D4CEC_sda;
 __asm__(".extern D_001D4CEC_sda, 4");
 extern u8 D_L01_001E002C[] __attribute__((section(".sdata")));
@@ -1915,7 +2024,7 @@ void func_L01_004CA928(void) {
     u8 *p;
     s32 i;
     func_00392260(0, 0, 0);
-    if (D_L01_001D6694 == 0 && (D_001D4CEC_sda & 1)) {
+    if (D_L01_001D6694_004CA928 == 0 && (D_001D4CEC_sda & 1)) {
         if (func_003A0EC0(4, 1, 1, 0, 0) == 0) return;
     }
     if (func_L01_004B8EC8_004CA928() != 0) return;

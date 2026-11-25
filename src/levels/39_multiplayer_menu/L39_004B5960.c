@@ -109,13 +109,120 @@ u32 func_L39_004B59D8(u32 size)
 }
 /* localdecomp:end func_L39_004B59D8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B5BE8);
+/* localdecomp:start func_L39_004B5BE8 */
+typedef struct P_004B5BE8 {
+    struct P_004B5BE8 *next;
+    u32 base;
+    u32 size : 16;
+    u32 shift : 16;
+    u32 free : 16;
+    u32 total : 16;
+    u32 bitmap[1];
+} P_004B5BE8;
+
+extern void *func_L39_004B5F68_004B5BE8(u32);
+
+static inline s32 grow_004B5BE8(s32 shift)
+{
+    P_004B5BE8 *p;
+    u32 page;
+    s32 hdr;
+    s32 i;
+    s32 cnt;
+
+    page = func_L39_004B59D8(D_L39_003E438C);
+    if (page == 0) {
+        return 0;
+    }
+    D_L39_003E43FC -= D_L39_003E438C;
+    hdr = ((((D_L39_003E438C >> shift) + 31) >> 5) << 2) + 16;
+    if ((1 << shift) <= hdr + hdr) {
+        p = (P_004B5BE8 *)page;
+    } else {
+        p = func_L39_004B5F68_004B5BE8(hdr);
+        if (p == 0) {
+            func_L39_004B6808((S_004B59D8 *)page);
+            return 0;
+        }
+    }
+    p->shift = shift;
+    p->size = 1 << shift;
+    i = 0;
+    p->total = p->free = D_L39_003E438C >> shift;
+    p->base = page;
+    cnt = p->total;
+    while ((u32)(cnt - i) >= 32) {
+        p->bitmap[(u32)i >> 5] = -1;
+        i += 32;
+    }
+    for (; i < cnt; i++) {
+        p->bitmap[(u32)i >> 5] |= 1 << (i & 31);
+    }
+    if ((u32)p == p->base) {
+        for (i = 0; hdr > 0; i++) {
+            hdr -= 1 << shift;
+            p->bitmap[(u32)i >> 5] &= ~(1 << (i & 31));
+            p->free--;
+            p->total--;
+        }
+    }
+    ((P_004B5BE8 **)D_L39_003E43AC)[((page + D_L39_003E43A0[0]) >> D_L39_003E4390[0]) - D_L39_003E43A4[0]] = p;
+    *(P_004B5BE8 **)p = ((P_004B5BE8 **)D_L39_003E43AC)[shift];
+    ((P_004B5BE8 **)D_L39_003E43AC)[shift] = p;
+    return 1;
+}
+
+void *func_L39_004B5BE8(u32 size)
+{
+    P_004B5BE8 *p;
+    u32 *w;
+    u32 bit;
+    u32 n;
+    s32 shift;
+    u32 j;
+
+    if (size < 16) {
+        size = 16;
+    }
+    shift = 1;
+    n = size - 1;
+    while (n >>= 1) {
+        shift++;
+    }
+    if (((P_004B5BE8 **)D_L39_003E43AC)[shift] == 0 && !grow_004B5BE8(shift)) {
+        return 0;
+    }
+    p = ((P_004B5BE8 **)D_L39_003E43AC)[shift];
+    w = p->bitmap;
+    while (*w == 0) {
+        w++;
+    }
+    bit = 1;
+    j = 0;
+    while ((*w & bit) == 0) {
+        bit <<= 1;
+        j++;
+    }
+    *w ^= bit;
+    if (--p->free == 0) {
+        ((P_004B5BE8 **)D_L39_003E43AC)[shift] = p->next;
+        p->next = 0;
+    }
+    j += (w - p->bitmap) * 32;
+    j <<= p->shift;
+    if (D_L39_003E43E4 != 0) {
+        func_0011D534((void *)(p->base + j), 0xD0, p->size);
+    }
+    D_L39_003E43FC += p->size;
+    return (void *)(((u32 *)p)[1] + j);
+}
+/* localdecomp:end func_L39_004B5BE8 */
 
 /* localdecomp:start func_L39_004B5F68 */
 extern s32 D_L39_003E43D0;
 extern s32 D_L39_003E43CC;
 extern s32 D_L39_003E43E0;
-extern void *func_L39_004B5BE8(u32);
+extern void *func_L39_004B5BE8_004B5F68(u32);
 extern void func_L39_004B5950(char *);
 
 void *func_L39_004B5F68(u32 size) {
@@ -128,7 +235,7 @@ void *func_L39_004B5F68(u32 size) {
     if (size + D_L39_003E438C < size) {
         r = 0;
     } else if (size <= D_L39_003E438C >> 1) {
-        r = func_L39_004B5BE8(size);
+        r = func_L39_004B5BE8_004B5F68(size);
     } else {
         r = (void *)func_L39_004B59D8(size);
     }

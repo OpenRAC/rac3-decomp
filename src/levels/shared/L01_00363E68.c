@@ -890,7 +890,7 @@ typedef struct {
 } Moby_003691D8;
 extern s128 D_L01_001E2A40[];
 void func_L01_003691D8(Moby_003691D8 *m) {
- extern void func_L01_003693F8(void *);
+ extern void func_L01_003693F8_003691D8(void *);
  extern s32 func_0038DC20(void *,f32);
  extern f32 func_0038DAB8(f32,f32);
  extern void func_0038D308(void *,void *);
@@ -908,7 +908,7 @@ void func_L01_003691D8(Moby_003691D8 *m) {
   if(func_0038DC20(&v,40.0f)==-1) return;
   m->angles[2]=func_0038DAB8(m->angles[2],0.03141593f);
   func_0038D308(m->rot,m->angles);
-  func_L01_00404A10_003691D8(func_L01_003693F8,m);
+  func_L01_00404A10_003691D8(func_L01_003693F8_003691D8,m);
   break;
  case 2:
   if(func_L01_0040E548(D_L01_001E2A40,&m->pos)<1600.0f) {
@@ -926,7 +926,50 @@ void func_L01_003691D8(Moby_003691D8 *m) {
 
 LINKER_REMNANT("asm/levels", func_L01_003693E8);
 
-INCLUDE_ASM("asm/levels", func_L01_003693F8);
+/* localdecomp:start func_L01_003693F8 */
+#include "vu0.h"
+void func_L01_003693F8(Moby_003691D8 *m) {
+    extern f32 func_L01_0040E548(void *, void *);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern void func_00382580(void *, f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
+    vu0_v4 point;
+    vu0_v4 velocity;
+    s128 *position;
+    f32 distance, fade, scale, size;
+    s32 count, life;
+    u32 color;
+    distance = func_L01_0040E548(D_L01_001E2A40, &m->pos);
+    if (distance > 1600.0f) return;
+    if (distance > 1024.0f) { distance = sqrt_asm(distance) - 32.0f; fade = distance * 0.125f; }
+    else fade = 0.0f;
+    func_003A9440(0x47, 0x53001);
+    scale = m->scale / m->cls->scale / 1.5f * 1.4f;
+    color = func_0038DBD8(0x7FFF2020, 0x7F000000, fade);
+    size = scale * 1.25f;
+    position = &m->pos;
+    func_003D9508(position, 0x39, color, 1, size, 0.05f, func_00382538());
+    color = func_0038DBD8(0x4FFF2020, 0x7F000000, fade);
+    func_003D9508(position, 0x39, color, 1, size, 0.05f, func_00382538());
+    color = func_0038DBD8(0x7F503040, 0x7F000000, fade);
+    func_003D9508(position, 0x31, color, 1, size, 0.05f, func_00382538());
+    count = func_L01_00443A18(2.0f, 5.0f);
+    func_00382580(&point, scale * 0.8f, scale);
+    vec_add_ab(&point, &point, &m->pos);
+    vec_sub_ab(&velocity, &m->pos, &point);
+    func_0038CF68(&velocity, &velocity, 0.0150000006f);
+    color = func_0038DBD8(0x00FF2020, 0xFF000000, fade);
+    life = (func_00382498(55, 70) * 5 + 2) / 6;
+    func_L01_004713C8(&point, &velocity, life, color, count, 0, 95, 6,
+        func_003824E0(0.025f, 0.04f) * 210000.0f, 25200.0f, 0.0f);
+}
+/* localdecomp:end func_L01_003693F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00369700);
 

@@ -257,4 +257,71 @@ void func_L01_00409E70(V_00409E70 *start, V_00409E70 *pts, u32 color, s32 n, f32
 }
 /* localdecomp:end func_L01_00409E70 */
 
-INCLUDE_ASM("asm/levels", func_L01_0040A4A0);
+/* localdecomp:start func_L01_0040A4A0 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 pos[4];
+    s32 color[4];
+    f32 uv[4][2];
+    u8 data[32]; /* +0x70..+0x8F: func_003D93B0 stores 64-bit words at +0x70/+0x78/+0x80/+0x88 */
+} Packet_0040A4A0;
+typedef struct {
+    vu0_v4 m[4];
+    Packet_0040A4A0 pkt;
+} Frame_0040A4A0;
+extern V_00409E70 D_L01_001E29C0;
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_003D2DA0(void *, void *, s32);
+void func_L01_0040A4A0(u8 *obj, vu0_v4 *pts, f32 lenC, f32 lenA, f32 scroll, s32 n, s32 colA, s32 colB, s32 tex) {
+    Frame_0040A4A0 f;
+    f32 lo, hi;
+    s32 i, j;
+    vu0_v4 *v;
+    func_0038CE20(&f.m[0], obj + 0xC0, -1.0f);
+    vec_sub_ba(&f.m[1], &D_L01_001E29C0, obj + 0x10);
+    func_0038CE90(&f.m[2], &f.m[1], &f.m[0]);
+    func_0038CF68(&f.m[2], &f.m[2], lenC);
+    func_0038CF68(&f.m[0], &f.m[0], lenA);
+    f.m[0].w = 0.0f;
+    f.m[1].w = 0.0f;
+    f.m[2].w = 0.0f;
+    func_003D93B0(&f.pkt, tex, 1, 128);
+    lo = scroll + 0.0f;
+    hi = scroll + 1.0f;
+    f.pkt.uv[0][0] = lo;
+    f.pkt.uv[0][1] = 0.0f;
+    f.pkt.uv[1][0] = lo;
+    f.pkt.uv[1][1] = 1.0f;
+    f.pkt.uv[2][0] = hi;
+    f.pkt.uv[2][1] = 0.0f;
+    f.pkt.uv[3][0] = hi;
+    f.pkt.uv[3][1] = 1.0f;
+    v = f.pkt.pos;
+    for (i = 0; i < 4; i++) {
+        qzero(&f.pkt.pos[i]);
+        if (i < 2) {
+            v[i].x = 0.0f;
+        } else {
+            v[i].x = 1.0f;
+        }
+        v[i].y = 0.0f;
+        if (i & 1) {
+            v[i].z = 1.0f;
+        } else {
+            v[i].z = -1.0f;
+        }
+        v[i].w = 1.0f;
+        f.pkt.color[i] = (i < 2) ? colA : colB;
+    }
+    for (j = 0; j < n; j++) {
+        func_0038D000(&f.m[3], &pts[j], obj + 0xC0);
+        vec_add_ab(&f.m[3], &f.m[3], obj + 0x10);
+        f.m[3].w = 1.0f;
+        func_003D2DA0(&f.pkt, &f.m[0], 0);
+    }
+}
+/* localdecomp:end func_L01_0040A4A0 */
