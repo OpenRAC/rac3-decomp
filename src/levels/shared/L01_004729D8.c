@@ -1338,7 +1338,65 @@ s32 func_L01_00476440(const s32 *count, s32 index, s32 delta, s32 wrap) {
 }
 /* localdecomp:end func_L01_00476440 */
 
-INCLUDE_ASM("asm/levels", func_L01_00476498);
+/* localdecomp:start func_L01_00476498 */
+#include "vu0.h"
+typedef struct { s32 count; s32 pad[3]; V_004734A8 nodes[1]; } Path_00476498;
+s32 func_L01_00476498(u8 *path, s128_00470258 *out, s32 *index, f32 *offset, s32 wrap, f32 distance) {
+    extern void func_0038CF68(void *, void *, f32);
+    s32 direction = 1;
+    s32 crossed = 0;
+    s32 next;
+    s32 n;
+    f32 old;
+    s32 beyond;
+    s32 following;
+    V_004734A8 delta;
+    if (distance < 0.0f) {
+        distance = -distance;
+        direction = -1;
+    }
+    next = *index;
+    while (distance != 0.0f) {
+        if (next == *(s32 *)path - 1 && !wrap) break;
+        beyond = direction == 1 ? ((Path_00476498 *)path)->nodes[next].w < *offset + distance : *offset < distance;
+        old = *offset;
+        next += direction;
+        if (beyond) {
+            if (next >= *(s32 *)path || next < 0) next = (next + *(s32 *)path) % *(s32 *)path;
+            if (direction == 1) {
+                distance -= ((Path_00476498 *)path)->nodes[*index].w - old;
+                *offset = 0.0f;
+                if (distance < *offset) distance = *offset;
+            } else {
+                distance -= old;
+                *offset = ((Path_00476498 *)path)->nodes[next].w;
+            }
+            if ((direction == 1 && *index == *(s32 *)path - 1) || (direction == -1 && *index == 0)) crossed = 1;
+            *index = next;
+        } else {
+            *offset = direction == 1 ? old + distance : old - distance;
+            distance = 0.0f;
+        }
+        next = *index;
+    }
+    *out = *(s128_00470258 *)(path + next * 16 + 0x10);
+    if (*index == *(s32 *)path - 1 && !wrap) {
+        if (direction == -1) {
+            *index = 0;
+            *out = *(s128_00470258 *)(path + 0x10);
+            *offset = 0.0f;
+        }
+        return 1;
+    }
+    n = *(s32 *)path;
+    following = *index + 1;
+    if (following >= n) following %= n;
+    vec_sub_ab(&delta, path + following * 16 + 0x10, path + *index * 16 + 0x10);
+    func_0038CF68(&delta, &delta, *offset);
+    vec_add_ab(out, out, &delta);
+    return crossed;
+}
+/* localdecomp:end func_L01_00476498 */
 
 /* localdecomp:start func_L01_004766E0 */
 typedef int u128_t __attribute__((mode(TI)));
@@ -1556,7 +1614,53 @@ s32 func_L01_00477488(s32 index, Vec4 *start, Vec4 *end) {
 }
 /* localdecomp:end func_L01_00477488 */
 
-INCLUDE_ASM("asm/levels", func_L01_00477668);
+/* localdecomp:start func_L01_00477668 */
+#include "vu0.h"
+extern int D_L01_0021F6C0[];
+s32 func_L01_00477668(s32 index, Vec4 *start, Vec4 *end, Vec4 *out) {
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    Vec4 basis[3];
+    Vec4 prev;
+    Vec4 current;
+    s32 i;
+    s32 hit = 0;
+    f32 x;
+    f32 one = 1.0f;
+    f32 closest;
+    vec_sub_ab(&(basis[0]), end, start);
+    basis[0].f[2] = 0;
+    func_0038CF68(&basis[0], &basis[0], one / func_0038CEA8(&basis[0]));
+    qzero(&basis[1]);
+    qzero(&basis[2]);
+    basis[1].f[0] = basis[0].f[1];
+    basis[1].f[1] = -basis[0].f[0];
+    basis[2].f[2] = one;
+    vec_sub_ba(&(prev), (Vec4 *)(D_L01_0021F6C0[index] + 16), start);
+    func_0038D000(&prev, &prev, basis);
+    closest = one;
+    for (i = 1; i < *(s32 *)D_L01_0021F6C0[index]; i++) {
+        vec_sub_ba(&(current), (Vec4 *)(D_L01_0021F6C0[index] + i * 16 + 16), start);
+        func_0038D000(&current, &current, basis);
+        if (prev.f[3] == 0.0f && current.f[3] == 0.0f) {
+            prev.q = current.q;
+            continue;
+        }
+        if (current.f[1] * prev.f[1] < 0.0f) {
+            x = ((prev.f[0] - current.f[0]) / (prev.f[1] - current.f[1])) * -current.f[1] + current.f[0];
+            if (x > 0.0f && x < closest) {
+                closest = x;
+                hit = 1;
+            }
+        }
+        prev.q = current.q;
+    }
+    func_0038CDF8(out, start, end, closest);
+    return hit;
+}
+/* localdecomp:end func_L01_00477668 */
 
 /* localdecomp:start func_L01_00477890 */
 #include "vu0.h"

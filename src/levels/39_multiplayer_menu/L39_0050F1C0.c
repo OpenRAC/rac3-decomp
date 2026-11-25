@@ -90,4 +90,68 @@ s32 func_L39_0050F1C0(void *arg)
 }
 /* localdecomp:end func_L39_0050F1C0 */
 
-INCLUDE_ASM("asm/levels", func_L39_0050F358);
+/* localdecomp:start func_L39_0050F358 */
+typedef struct Out_0050F358 {
+    char pad0[8];
+    u16 f8;
+    u16 fA;
+    s32 fC;
+} Out_0050F358;
+
+s32 func_L39_0050F358(Out_0050F358 *out, u8 *str, u32 len, u32 *pos, u32 mode) {
+    u32 i;
+    u32 start;
+    u32 val;
+    s32 ret;
+    u32 n;
+
+    i = *pos;
+    val = 0;
+    start = i;
+    ret = 0;
+
+    if (i < len) {
+        do {
+            if ((u8)(str[i] - '0') < 10) {
+                val = val * 10 + (str[i] - '0');
+            } else {
+                if (str[i] == '+' || str[i] == '-' || str[i] == 'Z') {
+                    break;
+                }
+                return 0x804;
+            }
+            i++;
+        } while (i < len);
+    }
+    n = i - start;
+    if (n >= 7) {
+        return 0x804;
+    }
+    if (n < 6) {
+        do {
+            val *= 10;
+            n++;
+        } while (n < 6);
+    }
+    *pos = i;
+    switch (mode) {
+    case 1:
+        val = (s32)((u64)(val % 1000000) * 3600);
+        out->f8 = val / 60;
+        out->fA = val % 60;
+        break;
+    case 2:
+        val = (s32)((u64)(val % 1000000) * 60);
+        out->fA = val / 60;
+        out->fC = val % 60;
+        break;
+    case 3:
+        out->fC = val;
+        break;
+    default:
+        ret = 0x804;
+        break;
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_0050F358 */

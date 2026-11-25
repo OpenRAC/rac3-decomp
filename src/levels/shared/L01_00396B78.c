@@ -468,7 +468,46 @@ void func_L01_0039B9F0(u8 *a0) {
 }
 /* localdecomp:end func_L01_0039B9F0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0039BD08);
+/* localdecomp:start func_L01_0039BD08 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 start, end, sdir, edir;
+    u8 pad40[0x58];
+    s32 level;
+} Arc_0039BD08;
+extern s32 D_L01_001DE0F4_0039BD08;
+__asm__(".extern D_L01_001DE0F4_0039BD08, 4");
+void func_L01_0039BD08(u8 *owner, Arc_0039BD08 *state) {
+    extern void func_L01_00445208(void *, void *, void *, void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68_0039BD08(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_0039C560(u8 *, s32, void *, s32);
+    vu0_v4 points[D_L01_001DE0F4_0039BD08 + 1];
+    vu0_v4 start, end, jitter;
+    s32 i;
+    f32 t;
+    for (i = 0; i < D_L01_001DE0F4_0039BD08; i++) {
+        t = (f32)i / (D_L01_001DE0F4_0039BD08 - 1);
+        start = state->start;
+        end = state->end;
+        vec_add_ba(&start, &start, &state->sdir);
+        vec_add_ba(&end, &end, &state->edir);
+        func_L01_00445208(&points[i], &state->sdir, &state->edir, &start, &end, t);
+        jitter.w = 0.0f;
+        jitter.x = func_003824E0(-1.0f, 1.0f);
+        jitter.y = func_003824E0(-1.0f, 1.0f);
+        jitter.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68_0039BD08(&jitter, &jitter, 0.075f);
+        vec_add_ba(&points[i], &points[i], &jitter);
+    }
+    if (state->level >= 8) {
+        func_L01_0039C560(owner, func_00382498(64, 128), points, D_L01_001DE0F4_0039BD08 + 1);
+    } else {
+        func_L01_0039C560(owner, func_00382498(0, 64), points, D_L01_001DE0F4_0039BD08 + 1);
+    }
+}
+/* localdecomp:end func_L01_0039BD08 */
 
 /* localdecomp:start func_L01_0039BEF8 */
 #include "vu0.h"

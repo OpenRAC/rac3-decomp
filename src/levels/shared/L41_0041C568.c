@@ -1,8 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L41_0041C568);
-
-/* localdecomp:start func_L41_0041C778 */
 typedef struct { u8 bytes[8]; } __attribute__((packed)) B8_0041C778;
 typedef struct { f32 v[8]; } __attribute__((aligned(16))) B32_0041C778;
 
@@ -61,6 +58,86 @@ typedef struct {
    is at 0x24855C) and with %hi/%lo (D_L41_0024865C) */
 extern M_0041C778 *D_L41_0024865C_0041C778;
 __asm__(".extern D_L41_0024865C_0041C778, 4");
+
+/* localdecomp:start func_L41_0041C568 */
+#include "vu0.h"
+
+extern s32 D_002412DC_0041C568;
+__asm__(".extern D_002412DC_0041C568, 16");
+extern u8 D_L41_00242930[] __attribute__((section(".sdata")));
+extern s32 D_L41_002477BC;
+__asm__(".extern D_L41_002477BC, 4");
+extern f32 D_L41_002477C4;
+__asm__(".extern D_L41_002477C4, 4");
+extern f32 D_L41_002477C8;
+__asm__(".extern D_L41_002477C8, 4");
+extern f32 D_L41_002477CC;
+__asm__(".extern D_L41_002477CC, 4");
+extern f32 D_L41_002477D0;
+__asm__(".extern D_L41_002477D0, 4");
+extern f32 D_L41_002477D4;
+__asm__(".extern D_L41_002477D4, 4");
+extern f32 D_L41_002477D8;
+__asm__(".extern D_L41_002477D8, 4");
+extern f32 D_L41_002477DC;
+__asm__(".extern D_L41_002477DC, 4");
+
+extern s32 func_L41_0041C2E8(f32 *, f32);
+extern f32 func_L39_005B4410(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_L41_0041B350(void *, s32, f32, f32, f32, f32, f32, f32, f32);
+extern void func_L41_0041C430(void *);
+extern void func_L41_0041B858(M_0041C778 *);
+
+void func_L41_0041C568(M_0041C778 *m) {
+    u8 *vars = (u8 *)m->vars;
+    f32 z;
+    f32 rangeA;
+    f32 rangeB;
+    s32 i;
+    s32 id;
+    M_0041C778 *other;
+
+    if (func_L41_0041C2E8(m->pos, 64.0f) != 0) {
+        if (D_002412DC_0041C568 == 0x2D) {
+            z = 1.9f;
+            rangeA = 3.0f;
+            rangeB = 7.5f;
+        } else {
+            z = D_L41_002477DC;
+            rangeA = 2.8f;
+            rangeB = 8.5f;
+        }
+        for (i = 0; i < D_L41_002477BC; i++) {
+            vu0_v4 out;
+            vu0_v4 off;
+            vu0_v4 tmp;
+
+            func_0038CE20(&tmp, (u8 *)m + 0xC0, func_L39_005B4410(-rangeA, rangeA));
+            vec_add_ba(&off, &tmp, D_L41_00242930);
+            func_0038CE20(&tmp, (u8 *)m + 0xD0, func_L39_005B4410(-rangeB, rangeB));
+            vec_add_ab(&off, &tmp, &off);
+            off.z = z;
+            vec_add_ba(&out, m->pos, &off);
+            func_L41_0041B350(&out, 3, 16.0f, D_L41_002477C4, D_L41_002477C8, D_L41_002477CC,
+                              D_L41_002477D0, D_L41_002477D4, D_L41_002477D8);
+            func_L41_0041C430(&out);
+        }
+        id = *(s32 *)(vars + 8);
+        other = id < 0 ? 0 : &D_L41_0024865C_0041C778[id];
+        if (other != 0 && 0.0f < *(f32 *)((u8 *)other->vars + 4)) {
+            func_L41_0041B858(other);
+        }
+        id = *(s32 *)(vars + 0xC);
+        other = id < 0 ? 0 : &D_L41_0024865C_0041C778[id];
+        if (other != 0 && 0.0f < *(f32 *)((u8 *)other->vars + 4)) {
+            func_L41_0041B858(other);
+        }
+    }
+}
+/* localdecomp:end func_L41_0041C568 */
+
+/* localdecomp:start func_L41_0041C778 */
 extern M_0041C778 *D_L41_0024865C;
 extern u8 D_L41_00242930[] __attribute__((section(".sdata")));
 extern B8_0041C778 D_L41_002477E8[];
@@ -75,7 +152,6 @@ extern void func_L41_0048B4B8(M_0041C778 *, s32);
 extern void func_L40_004897A8(M_0041C778 *, s32);
 extern H_0041C778 *func_L41_0041C1E8(M_0041C778 *);
 extern s32 func_L03_003FB6C8(void *, void *, s32);
-extern void func_L41_0041C568(M_0041C778 *);
 extern void func_L41_0041BAF8(void *, s32, u32, f32);
 extern void func_L41_0041C328(M_0041C778 *, s32);
 extern void func_L41_0041C170(M_0041C778 *, s32);

@@ -1113,4 +1113,35 @@ void func_L01_0036B078(u8 *m) {
 }
 /* localdecomp:end func_L01_0036B078 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036B440);
+/* localdecomp:start func_L01_0036B440 */
+#include "vu0.h"
+extern f32 func_0038D160(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+
+void func_L01_0036B440(V4_365E28 *origin) {
+    V4_365E28 delta, velocity, position;
+    f32 angle, speed, tilt, yaw;
+    f32 life;
+    s32 type, i;
+
+    vec_sub_ab(&delta, &D_L01_001E29C0, origin);
+    angle = func_0038D160(delta.x, delta.y);
+    for (i = 14; i >= 0; i--) {
+        speed = func_003824E0(0.5f, 1.0f);
+        type = func_L01_00443A18(1.0f, 2.0f);
+        func_003824E0(0.05f, 0.2f);
+        life = 210000.0f;
+        tilt = func_003824E0(0.0f, 1.3962634f);
+        yaw = func_0038DAB8(angle, func_L01_00443A18(0.0f, 1.3962634f));
+        func_00382760(&velocity, speed * 0.020000001415610313f, yaw, tilt);
+        position.x = origin->x + func_L01_00443A18(0.0f, 0.1f);
+        position.y = origin->y + func_L01_00443A18(0.0f, 0.1f);
+        position.z = origin->z + func_L01_00443A18(0.0f, 0.1f);
+        func_L01_0046A610(&position, &velocity, 25, 127, 0x7F7F7F, type,
+            func_003824E0(0.05f, 0.2f) * life, 500.0f, 1.0f, 0.0f, 2.0f);
+    }
+}
+/* localdecomp:end func_L01_0036B440 */

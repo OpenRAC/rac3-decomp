@@ -1110,7 +1110,52 @@ void func_L01_003E8F90(s32 player, s32 axes) {
 }
 /* localdecomp:end func_L01_003E8F90 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E8FE8);
+/* localdecomp:start func_L01_003E8FE8 */
+#include "vu0.h"
+typedef struct { u8 pad[0x20]; f32 up[4]; u8 pad2[1120 - 0x30]; } Ent_3E8FE8;
+extern Ent_3E8FE8 D_L01_001E2AA0_3E8FE8[];
+extern f32 func_0038CE68(f32 *, f32 *);
+extern void func_0038CE20(f32 *, f32 *, f32);
+extern f32 func_0038CEA8(f32 *);
+extern void func_0038CE90(f32 *, f32 *, f32 *);
+extern f32 func_0038D0C8(f32);
+extern f32 func_0038DB00(f32, f32);
+extern f32 func_L01_004451D0(f32, f32, f32, f32, f32);
+f32 func_L01_003E8FE8(u8 *obj, f32 *vec, f32 limit) {
+    f32 proj[4] __attribute__((aligned(16)));
+    f32 a[4] __attribute__((aligned(16)));
+    f32 b[4] __attribute__((aligned(16)));
+    f32 c[4] __attribute__((aligned(16)));
+    u8 *follow = *(u8 **)(obj + 0x70);
+    u8 *springs = follow + 0x180;
+    u8 *stick = follow + 0x1E0;
+    Ent_3E8FE8 *ent = &D_L01_001E2AA0_3E8FE8[*(s32 *)(obj + 0x94)];
+    f32 *up;
+    f32 dot, len_a, len_b, angle, sign, s;
+    f32 turn = 0.0f;
+    up = ent->up;
+    func_0038CE20(proj, up, func_0038CE68(vec, up));
+    vec_sub_ba((vu0_v4 *)a, (vu0_v4 *)vec, (vu0_v4 *)proj);
+    func_0038CE20(proj, up, func_0038CE68((f32 *)springs, up));
+    vec_sub_ba((vu0_v4 *)b, (vu0_v4 *)springs, (vu0_v4 *)proj);
+    dot = func_0038CE68(a, b);
+    len_a = func_0038CEA8(a);
+    if (len_a == 0.0f) return turn;
+    len_b = func_0038CEA8(b);
+    len_a = len_a * len_b;
+    if (len_a == 0.0f) return turn;
+    angle = 1.5707964f - func_0038D0C8(dot / len_a);
+    sign = -1.0f;
+    func_0038CE90(c, a, up);
+    if (0.0f <= func_0038CE68(c, b)) sign = 1.0f;
+    turn = func_0038DB00(3.1415927f, angle);
+    if (limit != 0.0f && limit < __builtin_fabsf(turn)) return turn;
+    s = func_L01_004451D0(-1.0f, 0.0f, 1.0f, 0.0f, turn / 1.5707964f);
+    if (1.0f < s) s = 1.0f;
+    *(f32 *)(stick + 0x1C) = s * sign;
+    return turn;
+}
+/* localdecomp:end func_L01_003E8FE8 */
 
 /* localdecomp:start func_L01_003E9218 */
 #include "vu0.h"
@@ -1124,12 +1169,12 @@ void func_L01_003E9218(u8 *camera, vu0_v4 *position) {
 
 /* localdecomp:start func_L01_003E9250 */
 extern Entry_3E6C58 D_L01_001E2A40[];
-extern void func_L01_003E8FE8(u8 *a0, f32 f12);
+extern void func_L01_003E8FE8_003E9250(u8 *a0, f32 f12);
 void func_L01_003E9250(s32 a0, f32 a, f32 b) {
     u8 *e = ((u8 *)&D_L01_001E2A40) + a0 * 1120; u8 *o = *(u8 **)(e + 80);
     if (*(s16 *)(o + 134) == 0 && a != 0.0f) {
         *(f32 *)(*(u8 **)(o + 112) + 500) = a;
-        func_L01_003E8FE8(o, b);
+        func_L01_003E8FE8_003E9250(o, b);
     }
 }
 /* localdecomp:end func_L01_003E9250 */

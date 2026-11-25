@@ -230,7 +230,39 @@ void func_L01_003837A8(u8 *a) {
 }
 /* localdecomp:end func_L01_003837A8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003837B8);
+/* localdecomp:start func_L01_003837B8 */
+#include "vu0.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_003837B8;
+extern Vec_003837B8 D_L01_001E29C0_003837B8;
+void func_L01_003837B8(f32 *position) {
+    extern f32 func_0038D160(f32,f32);
+    extern f32 func_003824E0(f32,f32);
+    extern f32 func_L01_00443A18(f32,f32);
+    extern f32 func_0038DAB8(f32,f32);
+    extern void func_00382760_003837B8(void *,f32,f32,f32);
+    extern void func_L01_0046A610_003837B8(void *,void *,s32,s32,s32,s32,f32,f32,f32,f32,f32);
+    Vec_003837B8 delta,velocity,spawn;
+    f32 angle;
+    s32 i;
+    vec_sub_ab(&delta, &D_L01_001E29C0_003837B8, (Vec_003837B8 *)position);
+    angle=func_0038D160(delta.x,delta.y);
+    for(i=19;i>=0;i--) {
+        f32 speed=func_003824E0(0.5f,1.0f);
+        s32 kind=(s32)func_L01_00443A18(1.0f,2.0f);
+        f32 pitch, yaw;
+        f32 scale=210000.0f;
+        func_003824E0(0.1f,0.3f);
+        pitch=func_003824E0(0.0f,1.3962634f);
+        yaw=func_L01_00443A18(0.0f,1.3962634f);
+        yaw=func_0038DAB8(angle,yaw);
+        func_00382760_003837B8(&velocity,speed*0.020000001f,yaw,pitch);
+        spawn.x=position[0]+func_L01_00443A18(0.0f,0.2f);
+        spawn.y=position[1]+func_L01_00443A18(0.0f,0.2f);
+        spawn.z=position[2]+func_L01_00443A18(0.0f,0.2f);
+        func_L01_0046A610_003837B8(&spawn,&velocity,25,127,0x7f7f7f,kind,func_003824E0(0.05f,0.2f)*scale,500.0f,1.0f,0.0f,1.0f);
+    }
+}
+/* localdecomp:end func_L01_003837B8 */
 
 /* localdecomp:start func_L01_003839C8 */
 #include "structs/weapon.h"
@@ -375,7 +407,56 @@ void func_L01_00384E68(Moby_384E68 *missile, u128_384E68 *dir, void *hit) {
 
 LINKER_REMNANT("asm/levels", func_L01_00384F40);
 
-INCLUDE_ASM("asm/levels", func_L01_00384F48);
+/* localdecomp:start func_L01_00384F48 */
+#include "vu0.h"
+extern u8 *D_L01_00221098[];
+extern u8 D_001A4EC0[];
+extern s32 D_L01_001DDD80;
+extern s32 D_L01_001DDD84;
+__asm__(".extern D_L01_001DDD80, 4");
+__asm__(".extern D_L01_001DDD84, 4");
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern s32 func_00382498(s32, s32);
+extern s32 func_0013D3E0(void);
+extern u8 *func_L01_0046A610_00384F48(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+
+void func_L01_00384F48(u8 *m, u128_384E68 *input) {
+    u128_384E68 v[4];
+    f32 distance;
+    s32 count, i, spin, life, color, alpha;
+    f32 size, speed;
+    u8 *particle;
+
+    v[0] = *input;
+    distance = *(f32 *)(*(u8 **)(m + 0x68) + 0x18);
+    v[2] = v[0];
+    count = (s32)(distance / 0.1f) / 4;
+    vec_sub_ab(&v[3], m + 0x10, &v[0]);
+    func_0038CF68(&v[3], &v[3], distance / count);
+    for (i = 0; i < count; i++) {
+        spin = func_L01_00443A18(1.0f, 3.0f);
+        speed = func_003824E0(0.2f, 1.0f) * 0.020000001f;
+        func_0038CE20(&v[1], (u128_384E68 *)D_001A4EC0, -speed);
+        life = func_00382498(30, 50);
+        size = func_003824E0(200.0f, 1000.0f);
+        if (func_0013D3E0() & 2) {
+            alpha = 0x50;
+            color = 0x404040;
+        } else {
+            alpha = 0x50;
+            color = 0x7F7F7F;
+        }
+        particle = func_L01_0046A610_00384F48(&v[2], &v[1], (life * 5 + 2) / 6, alpha, color, spin, 21000.0f, size, 1.0f, 0.0f, 1.0f);
+        vec_add_ab(&v[2], &v[2], &v[3]);
+        if (particle) {
+            particle[2] = D_L01_00221098[D_L01_001DDD80][D_L01_001DDD84];
+            particle[3] = alpha == 0x40 ? 0x48 : 0x44;
+        }
+    }
+}
+/* localdecomp:end func_L01_00384F48 */
 
 /* localdecomp:start func_L01_00385188 */
 #include "vu0.h"
