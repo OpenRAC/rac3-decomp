@@ -57,6 +57,9 @@ import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
 BOUNDARIES = version.cfg("levels", "boundaries.tsv")
 EDITS = ("start", "split", "join", "size", "variant", "cut")
+# the multiplayer menu (39) shares code with the story levels but is its own program: its callers are
+# not the story levels' functions, whatever their code looks like (copy_groups())
+NOT_SITES = (39,)
 SPLITS = version.cfg("levels", "split_places.tsv")
 
 
@@ -490,7 +493,7 @@ def copy_groups(per_level, found):
     sites = collections.defaultdict(list)
     for (number, a), lst in refs.items():
         kk = key_of[(number, a)]
-        if count[number][kk] == 1 and kk not in repeated:
+        if count[number][kk] == 1 and kk not in repeated and number not in NOT_SITES:
             sites[kk].append((number, a))
     for kk, where in sites.items():
         where.sort()
