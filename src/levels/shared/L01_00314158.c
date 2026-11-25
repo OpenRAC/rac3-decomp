@@ -1575,7 +1575,7 @@ void func_L01_0031A560(u8 *self) {
 /* localdecomp:end func_L01_0031A560 */
 
 /* localdecomp:start func_L01_0031A7D8 */
-extern u8 func_L01_0031A820[];
+extern u8 func_L01_0031A820_0031A7D8[];
 extern void func_L01_00404A10_0031A7D8(void *a0, u8 *a1);
 void func_L01_0031A7D8(u8 *a0) {
     if (a0[32] == 0) {
@@ -1584,14 +1584,76 @@ void func_L01_0031A7D8(u8 *a0) {
         *(f32 *)(a0 + 212) = 1.0f;
         *(f32 *)(a0 + 232) = 1.0f;
     }
-    func_L01_00404A10_0031A7D8(func_L01_0031A820, a0);
+    func_L01_00404A10_0031A7D8(func_L01_0031A820_0031A7D8, a0);
 }
 /* localdecomp:end func_L01_0031A7D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031A820);
+/* localdecomp:start func_L01_0031A820 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 vert[4];
+    u32 color[4];
+    f32 uv[4][2];
+    unsigned long zero, texture, prim, flags;
+} Packet_0031A820;
+extern vu0_v4 D_L01_002AD250[];
+typedef struct { s16 a, b; } Index_0031A820;
+extern Index_0031A820 D_L01_002AC8E0[][4];
+extern vu0_v4 D_L01_001E29C0;
+extern vu0_v4 D_L01_002ACF30[];
+extern vu0_v4 D_L01_002AC2A0[];
+extern f32 D_L01_002ACC00[][2];
+extern f32 D_L01_002ACC04[][2];
+void func_L01_0031A820(u8 *obj) {
+    extern unsigned long func_00389598(s32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CE68_0031A820(void *, void *);
+    extern void func_003D2DA0(S_003190A8 *, f32 *, s32);
+    Packet_0031A820 packet;
+    vu0_v4 mat[4];
+    vu0_v4 dir, pos;
+    vu0_v4 *m;
+    s32 i,j;
+    s32 *vars=*(s32 **)(obj+0x68);
+    packet.texture=func_00389598(5);
+    packet.prim=0xFF9000000260;
+    packet.flags=0x8000000048;
+    *(vu0_q *)&mat[0]=*(vu0_q *)(obj+0xC0);
+    *(vu0_q *)&mat[1]=*(vu0_q *)(obj+0xD0);
+    *(vu0_q *)&mat[2]=*(vu0_q *)(obj+0xE0);
+    mat[3].x=*(f32 *)(obj+0x10);
+    mat[3].y=*(f32 *)(obj+0x14);
+    mat[3].z=*(f32 *)(obj+0x18);
+    packet.zero=0;
+    mat[3].w=1.0f;
+    packet.color[0]=packet.color[1]=packet.color[2]=packet.color[3]=(*vars<<24)|0xFF0000;
+    m=mat;
+    for(i=0;i<50;i++) {
+        func_0038CE20((f32 *)&pos,(f32 *)&D_L01_002AD250[i],1.0f);
+        func_0038D028(&pos,&pos,mat);
+        vec_sub_ab(&dir,&pos,&D_L01_001E29C0);
+        func_0038CF68((f32 *)&dir,(f32 *)&dir,1.0f);
+        func_0038D000(&pos,&D_L01_002ACF30[i],m);
+        func_0038CE68_0031A820(&dir,&pos);
+        for(j=0;j<4;j++) {
+            s32 a=D_L01_002AC8E0[i][j].a;
+            s32 b=D_L01_002AC8E0[i][j].b;
+            vu0_v4 *v=&D_L01_002AC2A0[a];
+            func_0038CE20((f32 *)&packet.vert[j],(f32 *)v,1.0f);
+            packet.uv[j][0]=D_L01_002ACC00[b][0];
+            packet.uv[j][1]=D_L01_002ACC04[b][0];
+            if(v->z==-0.002112f) packet.color[j]=0xFF0000;
+        }
+        func_003D2DA0((S_003190A8 *)&packet,(f32 *)mat,0);
+    }
+}
+/* localdecomp:end func_L01_0031A820 */
 
 /* localdecomp:start func_L01_0031AAA8 */
-extern u8 func_L01_0031AAF0[];
+extern u8 func_L01_0031AAF0_0031AAA8[];
 extern void func_L01_00404A10_0031AAA8(void *a0, u8 *a1);
 void func_L01_0031AAA8(u8 *a0) {
     if (a0[32] == 0) {
@@ -1600,11 +1662,73 @@ void func_L01_0031AAA8(u8 *a0) {
         *(f32 *)(a0 + 212) = 1.0f;
         *(f32 *)(a0 + 232) = 1.0f;
     }
-    func_L01_00404A10_0031AAA8(func_L01_0031AAF0, a0);
+    func_L01_00404A10_0031AAA8(func_L01_0031AAF0_0031AAA8, a0);
 }
 /* localdecomp:end func_L01_0031AAA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031AAF0);
+/* localdecomp:start func_L01_0031AAF0 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 vert[4];
+    u32 color[4];
+    f32 uv[4][2];
+    unsigned long zero, texture, prim, flags;
+} Packet_0031AAF0;
+extern vu0_v4 D_L01_002AE520[];
+typedef struct { s16 a, b; } Index_0031AAF0;
+extern Index_0031AAF0 D_L01_002ADBB0[][4];
+extern vu0_v4 D_L01_001E29C0;
+extern vu0_v4 D_L01_002AE200[];
+extern vu0_v4 D_L01_002AD570[];
+extern f32 D_L01_002ADED0[][2];
+extern f32 D_L01_002ADED4[][2];
+void func_L01_0031AAF0(u8 *obj) {
+    extern unsigned long func_00389598(s32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CE68_0031AAF0(void *, void *);
+    extern void func_003D2DA0(S_003190A8 *, f32 *, s32);
+    Packet_0031AAF0 packet;
+    vu0_v4 mat[4];
+    vu0_v4 dir, pos;
+    vu0_v4 *m;
+    s32 i,j;
+    s32 *vars=*(s32 **)(obj+0x68);
+    packet.texture=func_00389598(5);
+    packet.prim=0xFF9000000260;
+    packet.flags=0x8000000048;
+    *(vu0_q *)&mat[0]=*(vu0_q *)(obj+0xC0);
+    *(vu0_q *)&mat[1]=*(vu0_q *)(obj+0xD0);
+    *(vu0_q *)&mat[2]=*(vu0_q *)(obj+0xE0);
+    mat[3].x=*(f32 *)(obj+0x10);
+    mat[3].y=*(f32 *)(obj+0x14);
+    mat[3].z=*(f32 *)(obj+0x18);
+    packet.zero=0;
+    mat[3].w=1.0f;
+    packet.color[0]=packet.color[1]=packet.color[2]=packet.color[3]=(*vars<<24)|0xFF0000;
+    m=mat;
+    for(i=0;i<50;i++) {
+        func_0038CE20((f32 *)&pos,(f32 *)&D_L01_002AE520[i],1.0f);
+        func_0038D028(&pos,&pos,mat);
+        vec_sub_ab(&dir,&pos,&D_L01_001E29C0);
+        func_0038CF68((f32 *)&dir,(f32 *)&dir,1.0f);
+        func_0038D000(&pos,&D_L01_002AE200[i],m);
+        func_0038CE68_0031AAF0(&dir,&pos);
+        for(j=0;j<4;j++) {
+            s32 a=D_L01_002ADBB0[i][j].a;
+            s32 b=D_L01_002ADBB0[i][j].b;
+            vu0_v4 *v=&D_L01_002AD570[a];
+            func_0038CE20((f32 *)&packet.vert[j],(f32 *)v,1.0f);
+            packet.uv[j][0]=D_L01_002ADED0[b][0];
+            packet.uv[j][1]=D_L01_002ADED4[b][0];
+            if(v->z==0.0014319999609142542f) packet.color[j]=0xFF0000;
+        }
+        func_003D2DA0((S_003190A8 *)&packet,(f32 *)mat,0);
+    }
+}
+/* localdecomp:end func_L01_0031AAF0 */
 
 /* localdecomp:start func_L01_0031AD78 */
 typedef struct {

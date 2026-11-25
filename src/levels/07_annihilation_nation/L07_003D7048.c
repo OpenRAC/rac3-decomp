@@ -22,7 +22,7 @@ void func_L07_003D7048(u8 *obj) {
     extern void func_L07_003D7628(void *);
     extern s32 func_00382468(s32);
     extern void func_L07_003D7520(void *, void *, s32);
-    extern void func_L03_003A1EB0(void *);
+    extern void func_L07_003D7AD0(void *);
     extern f32 func_L01_0040E570(void *, void *);
     extern s32 func_L01_0041A4F0(void);
     extern void func_L01_00446A70(void *, void *, s32, void *, void *, f32);
@@ -45,7 +45,7 @@ void func_L07_003D7048(u8 *obj) {
             func_L01_00404808(func_L07_003D7628, obj);
             if (func_00382468(10) == 0) {
                 func_L07_003D7520(obj, &position, func_00382468(12));
-                func_L03_003A1EB0(&position);
+                func_L07_003D7AD0(&position);
             }
         }
         if (func_L01_0040E570(obj + 0x10, &D_001A4BE0.pos) < 9.0f) {

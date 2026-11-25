@@ -875,7 +875,99 @@ void func_L01_00368478(u8 *data) {
 }
 /* localdecomp:end func_L01_00368478 */
 
-INCLUDE_ASM("asm/levels", func_L01_003687C8);
+/* localdecomp:start func_L01_003687C8 */
+#include "vu0.h"
+typedef struct {
+    s32 mode;
+    f32 width;
+    u32 color0, color1;
+    s32 count;
+    u8 pad[12];
+    vu0_v4 origin, target;
+} Params_003687C8;
+extern s32 D_L01_001E1B80_003687C8[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E1C10_003687C8[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E1B90_003687C8[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E1BD0_003687C8[] __attribute__((section(".sdata")));
+extern f32 D_L01_001E1C28_003687C8;
+extern f32 D_L01_001E1C64;
+__asm__(".extern D_L01_001E1C28_003687C8, 4");
+void func_L01_003687C8(s32 unused, vu0_v4 *origin) {
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern void func_L01_00368478_003687C8(Params_003687C8 *);
+    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_L01_00446630_003687C8(vu0_v4 *, vu0_v4 *, vu0_v4 *, vu0_v4 *);
+    vu0_v4 a, b, c;
+    Params_003687C8 p;
+    s32 i;
+    s32 *flags = D_L01_001E1B80_003687C8;
+    s32 *colors = D_L01_001E1C10_003687C8;
+    p.origin = *origin;
+    for (i = 0; i < 4; i++) {
+        if (flags[i] == 0) continue;
+        switch (flags[i]) {
+        case 1: case 2: case 3:
+            p.mode = 23;
+            p.width = 0.25f;
+            if (colors[i] != -1) {
+                p.color0 = colors[i];
+                p.color1 = func_0038DBD8(colors[i] & 0xFFFFFF, 0, 0.25f) + (colors[i] & 0xFF000000);
+            } else {
+                p.color0 = 0x306020FF;
+                p.color1 = 0x304820E0;
+            }
+            if (D_L01_001E1C64 > 0.0f) {
+                p.color0 -= (s32)(D_L01_001E1C64 * 16.0f) << 24;
+                p.color1 = (p.color1 & 0xFFFFFF) + (p.color0 & 0xFF000000);
+            }
+            p.count = 6;
+            break;
+        case 4: case 5: case 6:
+            p.mode = 47;
+            p.width = 0.3f;
+            if (colors[i] != -1) {
+                p.color0 = colors[i];
+                p.color1 = func_0038DBD8(colors[i] & 0xFFFFFF, 0, 0.25f) + (colors[i] & 0xFF000000);
+            } else {
+                p.color0 = 0x68F02060;
+                p.color1 = 0x68802040;
+            }
+            if (D_L01_001E1C64 > 0.0f) {
+                p.color0 -= (s32)(D_L01_001E1C64 * 32.0f) << 24;
+                p.color1 = (p.color1 & 0xFFFFFF) + (p.color0 & 0xFF000000);
+            }
+            p.count = 4;
+            break;
+        }
+        p.target = D_L01_001E1B90_003687C8[i];
+        if (flags[i] != 3 && flags[i] != 6) {
+            func_L01_00368478_003687C8(&p);
+        }
+        switch (flags[i]) {
+        case 2: case 3:
+            p.count -= 3;
+            break;
+        case 5: case 6:
+            p.count -= 1;
+            break;
+        default:
+            continue;
+        }
+        if (flags[i] != 3 && flags[i] != 6) {
+            vu0_v4 *pos = &D_L01_001E1B90_003687C8[i];
+            func_0038CE20((s128 *)&a, (s128 *)&D_L01_001E1BD0_003687C8[i], D_L01_001E1C28_003687C8);
+            vec_add_ba(&a, &a, pos);
+            func_L01_00446630_003687C8(&b, pos, &a, origin);
+            vec_sub_ab(&c, &b, pos);
+            vec_add_ab(&p.target, &b, &c);
+        }
+        p.color0 += 0x20000000;
+        p.width = -p.width;
+        p.color1 += 0x20000000;
+        func_L01_00368478_003687C8(&p);
+    }
+}
+/* localdecomp:end func_L01_003687C8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00368B30);
 

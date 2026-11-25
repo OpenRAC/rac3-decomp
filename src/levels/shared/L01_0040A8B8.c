@@ -7,131 +7,71 @@ typedef struct {
 
 LINKER_REMNANT("asm/levels", func_L01_0040A8B8);
 
-INCLUDE_ASM("asm/levels", func_L01_0040A8C0);
+/* localdecomp:start func_L01_0040A8C0 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 pos[4];
+    s32 color[4];
+    f32 uv[4][2];
+    u8 data[32];
+} Packet_0040A8C0;
+typedef struct {
+    vu0_v4 p0;
+    vu0_v4 p1;
+    Packet_0040A8C0 pkt;
+    vu0_v4 dir;
+    vu0_v4 view;
+    vu0_v4 side;
+} Frame_0040A8C0;
+extern vu0_v4 D_L01_001E29C0;
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_003D2DA0(void *, void *, s32);
+void func_L01_0040A8C0(vu0_v4 *a, vu0_v4 *b, s32 tex, s32 arg, f32 w0, f32 ratio, f32 scroll, s32 c0, s32 c1, s32 c2, s32 c3) {
+    Frame_0040A8C0 f;
+    f32 w1, one, zero, u0, u1;
+    one = 1.0f;
+    f.p0 = *a;
+    f.p1 = *b;
+    func_003D93B0(&f.pkt, tex, arg, 128);
+    vec_sub_ba(&f.dir, &f.p1, &f.p0);
+    vec_sub_ab(&f.view, &D_L01_001E29C0, &f.p0);
+    func_0038CF68(&f.view, &f.view, one);
+    func_0038CE90(&f.side, &f.dir, &f.view);
+    func_0038CF68(&f.side, &f.side, w0);
+    vec_add_ba(&f.pkt.pos[0], &f.side, &f.p0);
+    func_0038CF68(&f.side, &f.side, -w0);
+    vec_add_ba(&f.pkt.pos[1], &f.side, &f.p0);
+    func_0038CE90(&f.side, &f.dir, &f.view);
+    w1 = w0 * ratio;
+    func_0038CF68(&f.side, &f.side, w1);
+    vec_add_ba(&f.pkt.pos[2], &f.side, &f.p1);
+    func_0038CF68(&f.side, &f.side, -w1);
+    vec_add_ab(&f.pkt.pos[3], &f.side, &f.p1);
+    zero = 0.0f;
+    u0 = scroll + zero;
+    u1 = scroll + one;
+    f.pkt.pos[3].w = one;
+    f.pkt.pos[2].w = one;
+    f.pkt.pos[1].w = one;
+    f.pkt.pos[0].w = one;
+    f.pkt.uv[0][0] = u0;
+    f.pkt.uv[0][1] = zero;
+    f.pkt.uv[1][0] = u0;
+    f.pkt.uv[1][1] = one;
+    f.pkt.uv[2][0] = u1;
+    f.pkt.uv[2][1] = zero;
+    f.pkt.uv[3][0] = u1;
+    f.pkt.uv[3][1] = one;
+    f.pkt.color[0] = c0;
+    f.pkt.color[1] = c1;
+    f.pkt.color[2] = c2;
+    f.pkt.color[3] = c3;
+    func_003D2DA0(&f.pkt, 0, 0);
+}
+/* localdecomp:end func_L01_0040A8C0 */
 
 INCLUDE_ASM("asm/levels", func_L01_0040AAC8);
 
 LINKER_REMNANT("asm/levels", func_L01_0040AF50);
-
-/* localdecomp:start func_L01_0040AF60 */
-extern s32 D_L01_001D6694[];
-
-s32 func_L01_0040AF60(void) {
-    return D_L01_001D6694[0] == 0;
-}
-/* localdecomp:end func_L01_0040AF60 */
-
-/* localdecomp:start func_L01_0040AF70 */
-extern void func_0038CDF8(f32 *, f32 *, f32 *, f32);
-extern void func_0038CE20(f32 *, f32 *, f32);
-extern f32 D_L01_001DFA60[];
-extern f32 D_L01_001DFA64[];
-extern f32 D_L01_001DFA68[];
-
-void func_L01_0040AF70(f32 *dir, f32 *a, f32 *b, f32 *p, f32 lo, f32 hi) {
-    s32 i;
-    f32 va[4];
-    f32 vb[4];
-    f32 t;
-
-    for (i = 0; i < 4; i++) {
-        func_0038CDF8(va, a, b, p[i * 2]);
-        t = p[i * 2 + 1] - 0.5f;
-        func_0038CE20(vb, dir, (lo + (hi - lo) * p[i * 2]) * (t + t));
-        D_L01_001DFA60[i * 3] = va[0] + vb[0];
-        D_L01_001DFA64[i * 3] = va[1] + vb[1];
-        D_L01_001DFA68[i * 3] = va[2] + vb[2];
-    }
-}
-/* localdecomp:end func_L01_0040AF70 */
-
-/* localdecomp:start func_L01_0040B0B0 */
-extern u8 D_L01_001DFAA0[];
-extern u8 D_L01_001DFAA4[];
-
-f32 func_L01_0040B0B0(s32 a0, f32 s, f32 *a, s32 a2) {
-    u8 *o = (u8 *)a0;
-    f32 *b = (f32 *)a2;
-    f32 t = *a - s * (1.0f / *(f32 *)(o + 0x30));
-    f32 *q = (f32 *)D_L01_001DFAA4;
-    f32 *p = (f32 *)D_L01_001DFAA0;
-    s32 i;
-
-    for (i = 3; i >= 0; i--) {
-        *p = *a + (t - *a) * b[0];
-        p += 2;
-        *q = b[1];
-        b += 2;
-        q += 2;
-    }
-    return t - (f32)(s32)t;
-}
-/* localdecomp:end func_L01_0040B0B0 */
-
-/* localdecomp:start func_L01_0040B138 */
-
-extern u32 D_L01_001DBCA0;
-extern s32 D_L01_001DFA90[];
-
-extern s32 func_0038DBD8(u32 a, u32 b, f32 f);
-
-void func_L01_0040B138(u32 a, u32 b, Item_408D28 *items) {
-    s32 i;
-    if ((a & 0xFF000000) > 0x80000000 || (b & 0xFF000000) > 0x80000000) {
-        D_L01_001DBCA0 |= 1;
-    }
-    for (i = 0; i < 4; i++) {
-        D_L01_001DFA90[i] = func_0038DBD8(a, b, items[i].value);
-    }
-}
-/* localdecomp:end func_L01_0040B138 */
-
-/* localdecomp:start func_L01_0040B1F0 */
-extern u8 D_L01_001DFA60_0040B1F0;
-extern u8 D_L01_001DFA90_0040B1F0;
-extern u8 D_L01_001DFAA0_0040B1F0;
-__asm__(".extern D_L01_001DFA60_0040B1F0, 48");
-__asm__(".extern D_L01_001DFA90_0040B1F0, 16");
-__asm__(".extern D_L01_001DFAA0_0040B1F0, 32");
-extern f32 func_L01_0040B0B0(s32 a0, f32 f12, f32 *a1, s32 a2);
-extern void func_003A9440(s32 a0, long a1);
-extern void func_003D3A24(s32 a0, u8 *a1, u8 *a2, u8 *a3, s32 t0);
-
-void func_L01_0040B1F0(s32 a0, f32 *a1, f32 *a2, f32 f12, s32 a3, s32 t0, s32 t1) {
-    f32 f;
-    func_003A9440(66, 0x800000006AUL);
-    f = ((f32 (*)(s32, f32 *, f32, s32))func_L01_0040B0B0)(a0, a1, f12, t0);
-    if (a3 != 0) {
-        *a1 = f;
-    }
-    func_003D3A24(4, &D_L01_001DFA60_0040B1F0, &D_L01_001DFA90_0040B1F0, &D_L01_001DFAA0_0040B1F0, 1);
-    func_003A9440(66, 0x8000000058UL);
-    f = ((f32 (*)(s32, f32 *, f32, s32))func_L01_0040B0B0)(a0, a2, f12, t1);
-    if (a3 != 0) {
-        *a2 = f;
-    }
-    func_003D3A24(4, &D_L01_001DFA60_0040B1F0, &D_L01_001DFA90_0040B1F0, &D_L01_001DFAA0_0040B1F0, 1);
-}
-/* localdecomp:end func_L01_0040B1F0 */
-
-/* localdecomp:start func_L01_0040B300 */
-extern s32 D_L01_001DFA90[];
-extern f32 D_L01_001DFA60[];
-extern u8 D_L01_001DFAA0[];
-extern f32 func_L01_0040B0B0(s32 a0, f32 f12, f32 *a1, s32 a2);
-extern void func_003A9440(s32 a0, long a1);
-extern void func_003D3A24(s32 a0, u8 *a1, u8 *a2, u8 *a3, s32 t0);
-void func_L01_0040B300(s32 a0, f32 *a1, f32 *a2, s32 a3, s32 t0, s32 t1, f32 f12) {
-    f32 f;
-    f = func_L01_0040B0B0(a0, f12, a1, t0);
-    if (a3 != 0) {
-        *a1 = f;
-    }
-    func_003A9440(66, 0x8000000048UL);
-    f = func_L01_0040B0B0(a0, f12, a2, t1);
-    if (a3 != 0) {
-        *a2 = f;
-    }
-    func_003D3A24(4, ((u8 *)&D_L01_001DFA60), ((u8 *)&D_L01_001DFA90), D_L01_001DFAA0, 1);
-}
-/* localdecomp:end func_L01_0040B300 */

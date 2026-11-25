@@ -490,7 +490,136 @@ void func_L01_003851F8(s32 a0) {
 }
 /* localdecomp:end func_L01_003851F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00385228);
+/* localdecomp:start func_L01_00385228 */
+#include "vu0.h"
+#include "structs/weapon.h"
+typedef int Q_00385228 __attribute__((mode(TI)));
+typedef struct {
+    s32 index;          /* 0x00 */
+    u8 pad_4[0xC];
+    s32 unk_10;
+    s32 a14;
+    s32 a18;
+    void *target;       /* 0x1C */
+    f32 vel[3];         /* 0x20 */
+    f32 speed;          /* 0x2C */
+    s32 shadow;         /* 0x30 */
+    s32 ticks;          /* 0x34 */
+    f32 inv_ticks;      /* 0x38 */
+    s32 unk_3C;
+    f32 unk_40;
+} Vars_00385228;
+typedef struct {
+    u8 pad_0[0x10];
+    Q_00385228 position;
+    u8 state;
+    u8 pad_21[3];
+    u8 *pclass;
+    u8 pad_28[4];
+    f32 scale;
+    u8 b30;
+    u8 b31;
+    s16 draw_dist;
+    u16 h34;
+    u8 pad_36[0x68 - 0x36];
+    u8 *pvar;
+    u8 pad_6C[0xAA - 0x6C];
+    s16 oclass;
+    u8 pad_AC[0xB8 - 0xAC];
+    void *owner;
+    u8 pad_BC[0xD0 - 0xBC];
+    Q_00385228 d0;
+} Moby_00385228;
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+extern Q_00385228 D_001A4C60;
+extern f32 D_L01_001DDD98;
+extern s32 D_L01_001DDD90, D_L01_001DDD94_00385228;
+__asm__(".extern D_L01_001DDD90, 4");
+__asm__(".extern D_L01_001DDD94_00385228, 4");
+__asm__(".extern D_L01_001DDD98, 4");
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_004CB128(void *, void *, s32);
+extern void func_L01_004CAC78(void *, void *, f32, f32, f32);
+extern u8 *func_00382348_00385228(void *);
+extern s32 func_L01_00457458(s32, s32);
+extern void func_003C2880(void *);
+extern s32 func_L01_004C85C8_00385228(void *, f32, f32, f32, s32);
+extern void func_L01_00385EE0_00385228(void *);
+extern void func_L01_00404A10(void *, void *);
+extern void func_003C7C38(void *);
+Moby_00385228 *func_L01_00385228(Q_00385228 *position, Moby_00385228 *owner, Moby_00385228 *target)
+{
+    Q_00385228 temp;
+    Moby_00385228 *moby = (Moby_00385228 *)func_003C24B0(0x1881, 0x80);
+    Vars_00385228 *vars;
+    f32 speed;
+    s32 ticks;
+    Hw_3839C8 *h;
+    u8 *hit;
+    if (moby) {
+        vars = (Vars_00385228 *)moby->pvar;
+        moby->b30 = 255;
+        moby->h34 = 0x100;
+        moby->draw_dist = 255;
+        moby->b31 = 1;
+        moby->owner = owner;
+        moby->state = 0;
+        vars->unk_3C = 0;
+        h = &D_001A4BE0;
+        speed = (D_L01_002C5600 + D_001425C0[0x2F])->shot_speed * 0.020000001f;
+        if (((s16 *)h->w)[0x2874 / 2] == 1) {
+            func_0038CF68(vars->vel, &owner->d0, -speed);
+            moby->position = *position;
+        } else if (target) {
+            func_L01_004CB128(&temp, target, 0);
+            vec_sub_ab(vars->vel, &temp, position);
+            func_0038CF68(vars->vel, vars->vel, speed);
+            moby->position = *position;
+        } else {
+            if (h->w[0x16B0 / 4]) {
+                func_L01_004CAC78(vars->vel, position, speed, 35.0f, 1.3962634f);
+            } else {
+                func_0038CF68(vars->vel, &h->w[0x6F0 / 4], speed);
+            }
+            moby->position = *position;
+        }
+        ticks = (s32)(30.0f / speed) + 30;
+        vars->speed = speed;
+        vars->ticks = ticks;
+        vars->inv_ticks = 1.0f / ticks;
+        moby->scale = *(f32 *)(moby->pclass + 0x24) * D_L01_001DDD98;
+        moby->state = 0;
+        vars->target = target;
+        if (target) {
+            hit = func_00382348_00385228(target);
+            if (hit) *(u16 *)(hit + 0x1E) |= 0x80;
+        }
+        vars->unk_40 = 1.0f;
+        vars->a14 = *(s16 *)(owner->pvar + 0x5A);
+        vars->a18 = owner->oclass;
+        if (!func_L01_00457458(vars->a18, vars->a14)) {
+            func_003C2880(moby);
+            return 0;
+        }
+        vars->unk_10 = 0;
+        D_L01_001DDD94_00385228 = 0;
+        if ((u32)D_L01_001DDD90 >= 16) D_L01_001DDD90 = 0;
+        vars->index = D_L01_001DDD90;
+        D_L01_001DDD90 = D_L01_001DDD90 + 1;
+        if (D_L01_001DDD90 >= 16) D_L01_001DDD90 = 0;
+        temp = moby->position;
+        moby->position = D_001A4C60;
+        vars->shadow = func_L01_004C85C8_00385228(moby, 1.0f, 1.0f, 1.0f, 0);
+        moby->position = temp;
+        func_L01_00404A10(func_L01_00385EE0_00385228, moby);
+        func_003C7C38(moby);
+    }
+    return moby;
+}
+/* localdecomp:end func_L01_00385228 */
 
 INCLUDE_ASM("asm/levels", func_L01_003854F8);
 
