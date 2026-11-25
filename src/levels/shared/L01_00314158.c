@@ -420,7 +420,38 @@ void func_L01_00316F50(s32 a0, f32 *e, s32 n)
 }
 /* localdecomp:end func_L01_00316F50 */
 
-INCLUDE_ASM("asm/levels", func_L01_00317070);
+/* localdecomp:start func_L01_00317070 */
+#include "vu0.h"
+/* An arc of 10 points along the Bezier curve from start to end (controls+0x50 and controls+0x60,
+   each relative to its end), each jittered by up to 0.04 u, drawn as an 11-point strip at alpha 0x80. */
+void func_L01_00317070(s32 owner, vu0_v4 *start, vu0_v4 *end, u8 *controls) {
+    extern void func_L01_00316DA0_00317070(void *, void *, void *, f32);
+    extern void func_L01_00316E38_00317070(f32 *, f32 *, f32 *, f32 *, f32 *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_L01_00317440_00317070(s32, s32, void *, s32);
+    vu0_v4 points[11];
+    vu0_v4 control0, control1, jitter;
+    s32 i;
+    f32 t;
+    for (i = 0; i < 10; i++) {
+        t = (f32)i / 9.0f;
+        func_L01_00316DA0_00317070(&points[i], start, end, t);
+        *(vu0_q *)&control0 = *(vu0_q *)(controls + 0x50);
+        *(vu0_q *)&control1 = *(vu0_q *)(controls + 0x60);
+        vec_add_ba(&control0, &control0, start);
+        vec_add_ba(&control1, &control1, end);
+        func_L01_00316E38_00317070((f32 *)&points[i], (f32 *)start, (f32 *)end, (f32 *)&control0, (f32 *)&control1, t);
+        jitter.w = 0.0f;
+        jitter.x = func_003824E0(-1.0f, 1.0f);
+        jitter.y = func_003824E0(-1.0f, 1.0f);
+        jitter.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68((f32 *)&jitter, (f32 *)&jitter, 0.04f);
+        vec_add_ab(&points[i], &points[i], &jitter);
+    }
+    func_L01_00317440_00317070(owner, 0x80, points, 11);
+}
+/* localdecomp:end func_L01_00317070 */
 
 LINKER_REMNANT("asm/levels", func_L01_00317230);
 
@@ -1208,7 +1239,63 @@ void func_L01_00319040(f32 *m, f32 s) {
 }
 /* localdecomp:end func_L01_00319040 */
 
-INCLUDE_ASM("asm/levels", func_L01_003190A8);
+/* localdecomp:start func_L01_003190A8 */
+#include "vu0.h"
+typedef struct {
+    f32 m[16];
+    s32 c[4];
+    u8 pad50[0x70 - 0x50];
+    long q70;
+    long q78;
+    long q80;
+    long q88;
+} S_003190A8;
+typedef struct {
+    u8 pad0[0x140];
+    f32 v[3];
+} G_003190A8;
+extern G_003190A8 D_L01_001E2880_003190A8;
+extern void func_L01_00319040_003190A8(f32 *, f32);
+extern void func_L01_00318FB8_003190A8(S_003190A8 *);
+extern unsigned long func_00389598(s32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038CF38(void *, void *);
+extern void func_0038CF68(f32 *, f32 *, f32);
+extern void func_0038D328(f32 *, f32 *);
+extern void func_003D2DA0(S_003190A8 *, f32 *, s32);
+void func_L01_003190A8(f32 *pos, s32 a1, s32 a2, s32 a3, s32 a4, f32 f1, f32 f2, f32 f3) {
+    S_003190A8 s;
+    f32 m90[16];
+    f32 vD0[4];
+    f32 vE0[4];
+    s32 color;
+    f32 d;
+    func_L01_00318FB8_003190A8(&s);
+    s.q78 = func_00389598(a3);
+    color = a1 + (a2 << 24);
+    s.q88 = ((long)a4 << 2) | 0x8000000040UL;
+    s.q80 = 0xFF9000000260UL;
+    s.c[3] = color;
+    s.c[2] = color;
+    s.c[1] = color;
+    s.c[0] = color;
+    s.q70 = 0;
+    vD0[3] = 0.0f;
+    vD0[2] = func_0038D160(D_L01_001E2880_003190A8.v[0] - pos[0], D_L01_001E2880_003190A8.v[1] - pos[1]);
+    d = func_0038CF38(pos, D_L01_001E2880_003190A8.v);
+    vD0[1] = -func_0038D160(d, D_L01_001E2880_003190A8.v[2] - pos[2]);
+    vD0[0] = f2;
+    func_0038D328(m90, vD0);
+    vec_sub_ba(vE0, D_L01_001E2880_003190A8.v, pos);
+    func_0038CF68(vE0, vE0, f3);
+    m90[12] = pos[0] + vE0[0];
+    m90[13] = pos[1] + vE0[1];
+    m90[14] = pos[2] + vE0[2];
+    m90[15] = 1.0f;
+    func_L01_00319040_003190A8((f32 *)&s, f1);
+    func_003D2DA0(&s, m90, 0);
+}
+/* localdecomp:end func_L01_003190A8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00319258);
 
@@ -1290,7 +1377,55 @@ void func_L01_00319718(void *owner) {
 }
 /* localdecomp:end func_L01_00319718 */
 
-INCLUDE_ASM("asm/levels", func_L01_00319880);
+/* localdecomp:start func_L01_00319880 */
+typedef struct {
+    f32 pos[4], second[4], origin[4], attached[4];
+    f32 angle[3], velocity[3], scale[3];
+    f32 angle2[3], velocity2[3], scale2[3];
+    s32 timer, kind;
+    u8 *owner;
+    s32 remaining, duration, finished;
+} Effect_00319880;
+#include "vu0.h"
+void func_L01_00319880(void *owner_, Arc_00319480 *in_) {
+    u8 *owner = (u8 *)owner_;
+    void *in = in_;
+    extern void func_L01_00445208_0033E0C8(void *, void *, void *, void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_00319A88_00319880(void *, s32, void *, s32);
+    Effect_00319880 *input = (Effect_00319880 *)in;
+    vu0_q points[13];
+    vu0_v4 a, b, random;
+    vu0_q *out = points;
+    s32 i;
+    for (i = 0; i < 12; i++, out++) {
+        /* both ends go into VU0 registers first; the "j" class has only vf1 and vf2, so the second
+           is spilled to the stack around the first sum (retail's sqc2/lqc2 at sp+0x1C0) */
+        vu0_q qo, qe, qa, qb;
+        __asm__("lqc2 %0, %1" : "=j"(qo) : "m"(*(vu0_v4 *)input->origin));
+        __asm__("lqc2 %0, %1" : "=j"(qe) : "m"(*(vu0_v4 *)input->attached));
+        *(vu0_q *)&a = *(vu0_q *)input->pos;
+        *(vu0_q *)&b = *(vu0_q *)input->second;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)&a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qo));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&a) : "j"(qa));
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)&b));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qe));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&b) : "j"(qb));
+        func_L01_00445208_0033E0C8(out, input->origin, input->attached, &a, &b, (f32)i / 11.0f);
+        random.w = 0.0f;
+        random.x = func_003824E0(-1.0f, 1.0f);
+        random.y = func_003824E0(-1.0f, 1.0f);
+        random.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68((f32 *)&random, (f32 *)&random, 0.075f);
+        vec_add_ab(out, out, &random);
+    }
+    if (*(s32 *)((u8 *)input + 0x98) >= 8) func_L01_00319A88_00319880(owner, func_00382498(64, 128), points, 13);
+    else func_L01_00319A88_00319880(owner, func_00382498(0, 64), points, 13);
+}
+/* localdecomp:end func_L01_00319880 */
 
 /* localdecomp:start func_L01_00319A48 */
 void func_L01_00319A48(vu0_v4 *base, s32 i) {

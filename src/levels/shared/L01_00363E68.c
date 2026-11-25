@@ -1,6 +1,83 @@
 #include "common.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00363E68);
+/* localdecomp:start func_L01_00363E68 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 v[4]; u32 color[4]; f32 uv[4][2];
+    u8 pad70[0x18]; unsigned long tag;
+} Draw_00363E68;
+typedef struct {
+    Draw_00363E68 draw;
+    vu0_v4 basis[3]; vu0_v4 pos; vu0_v4 delta; vu0_v4 matrix[3];
+} Work_00363E68;
+typedef int u128_00363E68 __attribute__((mode(TI)));
+extern u128_00363E68 D_L01_001E2A40_00363E68[];
+extern vu0_v4 D_001A4EC0;
+extern vu0_v4 D_L01_001D7C50[];
+extern void func_003D93B0(void *, s32, s32, s32);
+extern void func_0038CF68_00376178(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_0038CE20_00363E68(u128_00363E68 *, u128_00363E68 *, f32);
+extern void func_0038D028(void *, void *, void *);
+extern s32 func_003A9440(s32, unsigned long);
+extern void func_003D2DA0(void *, s32, s32);
+extern void func_00389478(void *, f32 *, f32 *);
+
+void func_L01_00363E68(void *position, s32 texture, f32 size, f32 offset, f32 angle, f32 stretch) {
+    Work_00363E68 w;
+    s32 i;
+    func_003D93B0(&w.draw, texture, 1, 0x80);
+    w.draw.tag = 0x800000004A;
+    w.draw.color[3] = 0x80808080;
+    w.draw.color[2] = 0x80808080;
+    w.draw.color[1] = 0x80808080;
+    w.draw.color[0] = 0x80808080;
+    *(u128_00363E68 *)&w.pos = *(u128_00363E68 *)position;
+    w.draw.uv[0][0] = 0; w.draw.uv[0][1] = 0;
+    w.draw.uv[1][0] = 0; w.draw.uv[1][1] = 1;
+    w.draw.uv[2][0] = 1; w.draw.uv[2][1] = 0;
+    w.draw.uv[3][0] = 1; w.draw.uv[3][1] = 1;
+    vec_sub_ab(&w.basis[0], D_L01_001E2A40_00363E68, &w.pos);
+    func_0038CF68_00376178(&w.basis[0], &w.basis[0], 1.0f);
+    func_0038CE90(&w.basis[1], &w.basis[0], &D_001A4EC0);
+    func_0038CF68_00376178(&w.basis[1], &w.basis[1], 1.0f);
+    func_0038CE90(&w.basis[2], &w.basis[1], &w.basis[0]);
+    if (angle != 0.0f) {
+        *(u128_00363E68 *)&w.delta = 0;
+        w.delta.x = angle;
+        func_0038D308(w.matrix, &w.delta);
+        func_0038D5F0(w.basis, w.basis, w.matrix);
+    }
+    func_0038CE20_00363E68((u128_00363E68 *)&w.delta, (u128_00363E68 *)w.basis, offset);
+    vec_add_ab(&w.pos, &w.pos, &w.delta);
+    for (i = 0; i < 4; i++) {
+        func_0038CE20_00363E68((u128_00363E68 *)&w.draw.v[i], (u128_00363E68 *)&D_L01_001D7C50[i], size);
+        func_0038D028(&w.draw.v[i], &w.draw.v[i], w.basis);
+    }
+    func_003A9440(0x47, 0x31001);
+    func_003D2DA0(&w.draw, 0, 0);
+    {
+        s32 k;
+        s32 j;
+        *(u128_00363E68 *)&w.matrix[0] = *(u128_00363E68 *)&w.draw.v[0];
+        for (k = 1; k < 4; k++) vec_add_ba(&w.matrix[0], &w.matrix[0], &w.draw.v[k]);
+        func_0038CE20_00363E68((u128_00363E68 *)&w.matrix[0], (u128_00363E68 *)&w.matrix[0], 0.25f);
+        for (j = 0; j < 4; j++) {
+            vec_sub_ab(&w.matrix[1], &w.draw.v[j], &w.matrix[0]);
+            func_0038CE20_00363E68((u128_00363E68 *)&w.matrix[1], (u128_00363E68 *)&w.matrix[1], stretch);
+            vec_add_ab(&w.matrix[1], &w.matrix[0], &w.matrix[1]);
+            func_00389478(&w.matrix[1], &w.draw.uv[j][0], &w.draw.uv[j][1]);
+        }
+    }
+    func_003D93B0(&w.draw, -1, 1, 0x80);
+    w.draw.tag = 0x2000000054;
+    func_003A9440(0x47, 0x53001);
+    func_003D2DA0(&w.draw, 0, 0);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L01_00363E68 */
 
 INCLUDE_ASM("asm/levels", func_L01_00364180);
 
@@ -277,7 +354,51 @@ s32 func_L01_00367018(s128 *out, f32 *value) {
 
 LINKER_REMNANT("asm/levels", func_L01_00367078);
 
-INCLUDE_ASM("asm/levels", func_L01_00367080);
+/* localdecomp:start func_L01_00367080 */
+#include "vu0.h"
+static __inline__ void sub_00367080(s128 *d, s128 *a, s128 *b) {
+    vec_sub_ba(d, a, b);
+}
+static __inline__ void add_00367080(s128 *d, s128 *a, s128 *b) {
+    vec_add_ab(d, a, b);
+}
+s32 func_L01_00367080(s128 *a0, s128 *a1, s128 *out0, s128 *out1) {
+    extern s32 func_L01_00367018(s128 *, f32 *);
+    extern void func_L01_00446630(s128 *, s128 *, s128 *, s128 *);
+    extern f32 func_L01_0040E548_00367080(s128 *, s128 *);
+    extern f32 func_0038D0C8(f32);
+    extern f32 func_0038D098(f32);
+    extern void func_0038CF68_00367080(s128 *, s128 *, f32);
+    extern f32 func_0038CE68(s128 *, s128 *);
+    struct { s128 plane, direction, center; f32 radius; } local;
+    f32 distance, half, lo, hi, middle;
+    s32 flags;
+    if (!func_L01_00367018(&local.plane, &local.radius)) return 0;
+    local.radius += -0.07f;
+    func_L01_00446630(&local.center, a0, a1, &local.plane);
+    distance = func_L01_0040E548_00367080(&local.center, &local.plane);
+    if (distance > local.radius) return 0;
+    half = func_0038D098(func_0038D0C8(distance / local.radius)) * local.radius;
+    flags = 0;
+    sub_00367080(&local.direction, a1, a0);
+    func_0038CF68_00367080(&local.direction, &local.direction, 1.0f);
+    lo = func_0038CE68(&local.direction, a0);
+    hi = func_0038CE68(&local.direction, a1);
+    middle = func_0038CE68(&local.direction, &local.center);
+    if (lo < middle - half) {
+        func_0038CE20(out0, &local.direction, -half);
+        flags = 1;
+        add_00367080(out0, out0, &local.center);
+    }
+    if (middle + half < hi) {
+        func_0038CE20(out1, &local.direction, half);
+        add_00367080(out1, out1, &local.center);
+        if ((flags ^ 1) & 1) *out0 = *out1;
+        flags |= 2;
+    }
+    return flags;
+}
+/* localdecomp:end func_L01_00367080 */
 
 INCLUDE_ASM("asm/levels", func_L01_00367260);
 

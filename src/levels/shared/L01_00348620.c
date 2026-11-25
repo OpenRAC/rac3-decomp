@@ -497,7 +497,55 @@ void func_L01_0034D8C8(f32 *dst, f32 *a, f32 *b, f32 *c, f32 *d, f32 t)
 }
 /* localdecomp:end func_L01_0034D8C8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034D9E0);
+/* localdecomp:start func_L01_0034D9E0 */
+typedef struct {
+    f32 pos[4], second[4], origin[4], attached[4];
+    f32 angle[3], velocity[3], scale[3];
+    f32 angle2[3], velocity2[3], scale2[3];
+    s32 timer, kind;
+    u8 *owner;
+    s32 remaining, duration, finished;
+} Effect_0034D9E0;
+#include "vu0.h"
+void func_L01_0034D9E0(s32 owner_, Entry_0034CC80 *in_) {
+    u8 *owner = (u8 *)owner_;
+    void *in = in_;
+    extern void func_L01_0034D8C8_0034D9E0(void *, void *, void *, void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_0034DBE8_0034D9E0(void *, s32, void *, s32);
+    Effect_0034D9E0 *input = (Effect_0034D9E0 *)in;
+    vu0_q points[25];
+    vu0_v4 a, b, random;
+    vu0_q *out = points;
+    s32 i;
+    for (i = 0; i < 24; i++, out++) {
+        /* both ends go into VU0 registers first; the "j" class has only vf1 and vf2, so the second
+           is spilled to the stack around the first sum (retail's sqc2/lqc2 at sp+0x1C0) */
+        vu0_q qo, qe, qa, qb;
+        __asm__("lqc2 %0, %1" : "=j"(qo) : "m"(*(vu0_v4 *)input->origin));
+        __asm__("lqc2 %0, %1" : "=j"(qe) : "m"(*(vu0_v4 *)input->attached));
+        *(vu0_q *)&a = *(vu0_q *)input->pos;
+        *(vu0_q *)&b = *(vu0_q *)input->second;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)&a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qo));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&a) : "j"(qa));
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)&b));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qe));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&b) : "j"(qb));
+        func_L01_0034D8C8_0034D9E0(out, input->origin, input->attached, &a, &b, (f32)i / 23.0f);
+        random.w = 0.0f;
+        random.x = func_003824E0(-1.0f, 1.0f);
+        random.y = func_003824E0(-1.0f, 1.0f);
+        random.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68(&random, &random, 0.075f);
+        vec_add_ab(out, out, &random);
+    }
+    if (*(s32 *)((u8 *)input + 0xA8) >= 8) func_L01_0034DBE8_0034D9E0(owner, func_00382498(64, 128), points, 25);
+    else func_L01_0034DBE8_0034D9E0(owner, func_00382498(0, 64), points, 25);
+}
+/* localdecomp:end func_L01_0034D9E0 */
 
 /* localdecomp:start func_L01_0034DBA8 */
 #include "vu0.h"
@@ -514,7 +562,80 @@ INCLUDE_ASM("asm/levels", func_L01_0034DBE8);
 
 INCLUDE_ASM("asm/levels", func_L01_0034E080);
 
-INCLUDE_ASM("asm/levels", func_L01_0034E558);
+/* localdecomp:start func_L01_0034E558 */
+#include "vu0.h"
+#include "structs/hero.h"
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_0034E558;
+extern struct Hero D_001A4BE0;
+extern f32 D_001A4C70[];
+extern s32 D_L01_001DD44C;
+extern s32 D_L01_001DD3F8;
+extern s32 D_L01_001DD3FC;
+extern u8 D_L01_00283BA0[][160];
+extern u8 D_L01_00283E20[][320];
+extern V_0034E558 D_L01_001EAA20;
+__asm__(".extern D_L01_001DD44C, 4");
+__asm__(".extern D_L01_001DD3F8, 4");
+__asm__(".extern D_L01_001DD3FC, 4");
+u8 *func_L01_0034E558(u8 *owner,s32 unused,s128 *direction,u8 *parent,s32 joint)
+{
+    extern u8 *func_003C24B0(s32,s32);
+    extern void func_0038D308(void *,void *);
+    extern void func_003C2F58(void *,s32,void *);
+    extern void func_0038CE20(f32 *,f32 *,f32);
+    extern s32 func_003D3CB0(void *,void *,s32,void *,s32);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_L01_0034E9E0(char *);
+    V_0034E558 saved;
+    V_0034E558 *savedp=&saved;
+    s32 slot;
+    V_0034E558 v;
+    u8 *m,*p;
+    *(s128 *)savedp=*direction;
+    m=func_003C24B0(4501,128);
+    if(m) {
+        m[0x20]=1;
+        m[0x30]=255;
+        p=(u8 *)((Moby *)m)->vars;
+        *(s16 *)(p+0x1E)=(D_L01_001DD44C*5+2)/6;
+        *(s32 *)(p+0x18)=-1;
+        func_0038D308(m+0xC0,D_001A4C70);
+        slot=D_L01_001DD3F8;
+        { u8 *a=D_L01_00283BA0[slot];
+          u8 *b=D_L01_00283E20[slot];
+          *(u8 **)(p+0)=a;
+          *(u8 **)(p+4)=b; }
+        if((u32)slot>=4)D_L01_001DD3F8=0;
+        D_L01_001DD3F8=(D_L01_001DD3F8+1)%4;
+        *(u8 **)(p+0x20)=owner;
+        if(parent) {
+            if(*(s16 *)(parent+0xAA)==6251) *(s32 *)(p+0x24)=0x800530;
+            else *(s32 *)(p+0x24)=D_L01_001DD3FC;
+        } else *(s32 *)(p+0x24)=D_L01_001DD3FC;
+        *(s128 *)(p+0x30)=*(s128 *)savedp;
+        if(parent && (*(s16 *)(parent+0xAA)==6222 || *(s16 *)(parent+0xAA)==6253)) {
+            *(u8 **)(p+0x40)=parent;
+            *(s32 *)(p+0x44)=joint;
+            func_003C2F58(parent,joint,m+16);
+        } else if(parent && *(s16 *)(parent+0xAA)==6251) {
+            *(u8 **)(p+0x40)=parent;
+            *(s128 *)(m+16)=*(s128 *)(parent+16);
+        } else {
+            func_0038CE20((f32 *)&v,(f32 *)((u8 *)D_001A4BE0.hero_moby+0xE0),0.75f);
+            vec_add_ab((V_0034E558 *)(m+16), &(D_001A4BE0.pos), &v);
+        }
+        if(*(f32 *)(p+0x30)==0 && *(f32 *)(p+0x34)==0 && *(f32 *)(p+0x38)==0)
+            *(s128 *)(p+0x30)=*(s128 *)(*(u8 **)(p+0x20)+16);
+        if(func_003D3CB0(m+16,p+0x30,16,D_001A4BE0.hero_moby,0)) {
+            vec_sub_ab(&v, (V_0034E558 *)(m+16), &D_L01_001EAA20);
+            func_0038CF68(&v,&v,0.2f);
+            vec_add_ab((V_0034E558 *)(p+0x30), &D_L01_001EAA20, &v);
+        }
+        func_L01_0034E9E0((char *)m);
+    }
+    return m;
+}
+/* localdecomp:end func_L01_0034E558 */
 
 INCLUDE_ASM("asm/levels", func_L01_0034E808);
 

@@ -623,7 +623,96 @@ void func_L01_00464558(u8 *p)
 }
 /* localdecomp:end func_L01_00464558 */
 
-INCLUDE_ASM("asm/levels", func_L01_00464690);
+/* localdecomp:start func_L01_00464690 */
+#include "vu0.h"
+
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_005C6E90;
+
+typedef struct {
+    V_005C6E90 v;
+    s32 color;
+    s32 endcolor;
+    u8 a;
+    u8 c;
+    u8 b;
+    u8 life;
+    f32 size;
+} Q_005C6E90;
+
+typedef struct {
+    u8 f0;
+    u8 f1;
+    u8 f2;
+    u8 f3;
+    s32 color;
+    u8 f8;
+    u8 f9;
+    s16 life;
+    f32 fC;
+    V_005C6E90 pos;
+    Q_005C6E90 q;
+} P_005C6E90;
+
+extern f32 D_L01_001DFB4C_00464690;
+extern f32 D_L01_001DFB50_00464690;
+extern u8 *D_L01_002210C4_00464690[];
+extern s32 func_00382468_00464690(s32);
+extern void *func_L01_004618E0_00464690(s32);
+extern s32 func_0013D3E0_00464690(void);
+extern f32 func_003824E0_00464690(f32, f32);
+extern void func_0038CF68_00464690(void *, void *, f32);
+
+/* from rac2-decomp's func_002BBCB0 */
+void *func_L01_00464690(V_005C6E90 *pos, V_005C6E90 *vel, s32 color, s32 endcolor, s32 life, s32 a,
+                        s32 b, f32 size, f32 jitter, s32 c) {
+    P_005C6E90 *p;
+    Q_005C6E90 *q;
+    V_005C6E90 u;
+    V_005C6E90 t;
+
+    if (life == 0) {
+        return 0;
+    }
+    if ((0.85f < D_L01_001DFB4C_00464690 || 0.85f < D_L01_001DFB50_00464690) && func_00382468_00464690(3) == 0) {
+        return 0;
+    }
+    if ((0.9f < D_L01_001DFB4C_00464690 || 0.9f < D_L01_001DFB50_00464690) && func_00382468_00464690(2) == 0) {
+        return 0;
+    }
+    if ((1.0f < D_L01_001DFB4C_00464690 || 1.0f < D_L01_001DFB50_00464690) && func_00382468_00464690(1) == 0) {
+        return 0;
+    }
+    p = func_L01_004618E0_00464690(0xB);
+    if (p != 0) {
+        p->pos = *pos;
+        p->color = color;
+        p->f9 = 0xA4;
+        p->f3 = func_00382468_00464690(100) < 20 ? 0x44 : 0x48;
+        p->f1 = 0;
+        p->fC = 0;
+        p->f8 = func_0013D3E0_00464690();
+        p->f2 = *D_L01_002210C4_00464690[0];
+        q = &p->q;
+        t = (V_005C6E90){0};
+        t.x = func_003824E0_00464690(-1.0f, 1.0f);
+        t.y = func_003824E0_00464690(-1.0f, 1.0f);
+        t.z = func_003824E0_00464690(-1.0f, 1.0f);
+        u = t;
+        func_0038CF68_00464690(&u, &u, jitter);
+        vec_add_ab(&q->v, vel, &u);
+        q->v.w = jitter * 0.75f;
+        p->life = life;
+        q->life = life;
+        q->a = a;
+        q->size = size;
+        q->color = color;
+        q->endcolor = endcolor;
+        q->b = b;
+        q->c = c;
+    }
+    return p;
+}
+/* localdecomp:end func_L01_00464690 */
 
 /* localdecomp:start func_L01_00464910 */
 typedef struct {
@@ -648,7 +737,7 @@ void func_L01_00464910(u8 *self) {
     extern void func_0038CE20(void *, void *, f32);
     extern f32 func_003824E0(f32, f32);
     extern s32 func_00382498(s32, s32);
-    extern void func_L01_00464690(void *, void *, u32, u32, s32, s32, s32, f32, s32, f32);
+    extern void func_L01_00464690_00464910(void *, void *, u32, u32, s32, s32, s32, f32, s32, f32);
     extern f32 func_0038CF00(void *, void *);
     extern u32 func_0038DBD8(u32, u32, f32);
     extern void func_L01_0040E020(void *);
@@ -678,7 +767,7 @@ void func_L01_00464910(u8 *self) {
                 scale = func_003824E0(0.85f, 1.0f);
                 size = s->endsize;
                 flags = s->flags;
-                func_L01_00464690(position, s, s->color0, s->color1, life, spin,
+                func_L01_00464690_00464910(position, s, s->color0, s->color1, life, spin,
                     s->generation + 1, size, flags, s->velocity.w * scale);
             }
         }

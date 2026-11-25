@@ -1291,7 +1291,55 @@ INCLUDE_ASM("asm/levels", func_L01_00476920);
 
 INCLUDE_ASM("asm/levels", func_L01_00476B98);
 
-INCLUDE_ASM("asm/levels", func_L01_00476F10);
+/* localdecomp:start func_L01_00476F10 */
+#include "vu0.h"
+extern int D_L01_0021F6C0[];
+s32 func_L01_00476F10(s32 index, vu0_v4 *src, vu0_v4 *out, f32 radius) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern f32 func_0038CEA8(void *);
+    extern f32 func_0038CE68_00476F10(void *, void *);
+    vu0_v4 delta, temp, pos, dir, norm, cross, closest;
+    s32 changed=0;
+    s32 i;
+    u8 *point;
+    f32 len, projection;
+    *(vu0_q *)&pos=*(vu0_q *)src;
+    for(i=0;i<*(s32 *)D_L01_0021F6C0[index]-1;i++) {
+        point=(u8 *)D_L01_0021F6C0[index]+(i<<4);
+        if(*(f32 *)(point+0x1C)!=0.0f) {
+            vec_sub_ab(&delta,&pos,point+0x10);
+            delta.z=0.0f;
+            vec_sub_ab(&dir,point+0x20,point+0x10);
+            dir.z=0.0f;
+            func_0038CF68(&norm,&dir,1.0f);
+            func_0038CE90(&cross,&delta,&norm);
+            if(!(radius<fabs_asm(cross.z))) {
+                len=func_0038CEA8(&dir);
+                projection=func_0038CE68_00476F10(&delta,&norm);
+                if(projection>len || projection<0.0f) {
+                    if(func_0038CEA8(&delta)<radius) {
+                        func_0038CF68(&temp,&delta,radius);
+                        changed=1;
+                        vec_add_ab(&pos,&temp,(u8 *)D_L01_0021F6C0[index]+((i<<4)+0x10));
+                        pos.z=src->z;
+                    }
+                } else {
+                    func_0038CF68(&closest,&norm,projection);
+                    changed=1;
+                    vec_sub_ab(&temp,&delta,&closest);
+                    func_0038CF68(&temp,&temp,radius);
+                    vec_add_ba(&temp,&temp,&closest);
+                    vec_add_ba(&pos,&temp,(u8 *)D_L01_0021F6C0[index]+((i<<4)+0x10));
+                    pos.z=src->z;
+                }
+            }
+        }
+    }
+    if(changed) *(vu0_q *)out=*(vu0_q *)&pos;
+    return changed;
+}
+/* localdecomp:end func_L01_00476F10 */
 
 INCLUDE_ASM("asm/levels", func_L01_00477190);
 
@@ -1396,21 +1444,99 @@ int func_L01_00477C80(int first, int second, int *firstIndex, int *secondIndex) 
 
 /* localdecomp:start func_L01_00477ED0 */
 extern int D_L01_0021F6C0[];
-extern float func_L01_00477F20(int a);
+extern float func_L01_00477F20(f32 *s, s32 dir, f32 x, f32 pos, f32 limit);
 
-float func_L01_00477ED0(int a0)
+float func_L01_00477ED0(int a0, s32 dir, f32 x, f32 pos, f32 limit)
 {
     if (a0 != -1) {
         int v = D_L01_0021F6C0[a0];
         if (v != 0) {
-            return func_L01_00477F20(v);
+            return func_L01_00477F20((f32 *)v, dir, x, pos, limit);
         }
     }
     return -1.0f;
 }
 /* localdecomp:end func_L01_00477ED0 */
 
-INCLUDE_ASM("asm/levels", func_L01_00477F20);
+/* localdecomp:start func_L01_00477F20 */
+float func_L01_00477F20(f32 *s, s32 dir, f32 x, f32 pos, f32 limit)
+{
+    f32 sum = 0.0f;
+    f32 frac;
+    s32 i;
+
+    if (dir > 0) {
+        if (pos < 0.0f) {
+            if (0.0f < x) {
+                frac = -pos;
+                sum += x * frac;
+                if (limit <= sum) {
+                    return limit;
+                }
+            }
+            i = (s32)pos;
+        } else {
+            i = (s32)pos;
+            if (0.0f < *(f32 *)((u8 *)s + (i << 4) + 0x1C)) {
+                frac = pos - (f32)i;
+                if (1.0f <= frac) {
+                    frac -= 1.0f;
+                    i++;
+                }
+                frac = 1.0f - frac;
+                sum += *(f32 *)((u8 *)s + (i << 4) + 0x1C) * frac;
+                if (limit <= sum) {
+                    return limit;
+                }
+            }
+        }
+        while (++i < *(s32 *)s) {
+            if (0.0f < s[i * 4 + 7]) {
+                sum += s[i * 4 + 7];
+                if (limit <= sum) {
+                    return limit;
+                }
+            }
+        }
+    } else if (pos < 0.0f) {
+        if (0.0f < x) {
+            frac = -pos;
+            sum += x * (1.0f - frac);
+            if (limit <= sum) {
+                return limit;
+            }
+        }
+    } else {
+        i = (s32)pos;
+        if (0.0f < *(f32 *)((u8 *)s + (i << 4) + 0x1C)) {
+            frac = pos - (f32)i;
+            if (1.0f <= frac) {
+                frac -= 1.0f;
+                i++;
+            }
+            sum += *(f32 *)((u8 *)s + (i << 4) + 0x1C) * frac;
+            if (limit <= sum) {
+                return limit;
+            }
+        }
+        while (--i >= 0) {
+            if (0.0f < s[i * 4 + 7]) {
+                sum += s[i * 4 + 7];
+                if (limit <= sum) {
+                    return limit;
+                }
+            }
+        }
+        if (0.0f < x) {
+            sum += x;
+            if (limit <= sum) {
+                return limit;
+            }
+        }
+    }
+    return sum;
+}
+/* localdecomp:end func_L01_00477F20 */
 
 LINKER_REMNANT("asm/levels", func_L01_004781A0);
 

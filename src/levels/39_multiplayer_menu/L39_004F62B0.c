@@ -70,7 +70,7 @@ S_004F62B0 *func_L39_004F6368(void *a0, void *a1)
 
 /* localdecomp:start func_L39_004F63B8 */
 typedef struct { s32 a; s32 b; } S_004F63B8;
-extern void func_L39_004F6420(void *);
+extern void func_L39_004F6420();
 
 void func_L39_004F63B8(S_004F63B8 *lo)
 {
@@ -85,7 +85,61 @@ void func_L39_004F63B8(S_004F63B8 *lo)
 }
 /* localdecomp:end func_L39_004F63B8 */
 
-INCLUDE_ASM("asm/levels", func_L39_004F6420);
+/* localdecomp:start func_L39_004F6420 */
+/* libdes des_set_key: D_L39_0046E998 = shifts2, D_L39_0046E198 = des_skb */
+extern signed char D_L39_0046E998[16];
+extern u32 D_L39_0046E198[8][64];
+
+#define PERM_OP(a,b,t,n,m) ((t)=((((a)>>(n))^(b))&(m)),\
+	(b)^=(t),\
+	(a)^=((t)<<(n)))
+
+#define HPERM_OP(a,t,n,m) ((t)=((((a)<<(16-(n)))^(a))&(m)),\
+	(a)=(a)^(t)^(t>>(16-(n))))
+
+void func_L39_004F6420(void *ks, void *key)
+{
+    u32 *k = ks;
+    u32 *in = key;
+    u32 c, d, t, s;
+    s32 i;
+
+    c = in[0];
+    d = in[1];
+
+    PERM_OP(d, c, t, 4, 0x0f0f0f0fL);
+    HPERM_OP(c, t, -2, 0xcccc0000L);
+    HPERM_OP(d, t, -2, 0xcccc0000L);
+    PERM_OP(d, c, t, 1, 0x55555555L);
+    PERM_OP(c, d, t, 8, 0x00ff00ffL);
+    PERM_OP(d, c, t, 1, 0x55555555L);
+    d = (((d & 0x000000ffL) << 16L) | (d & 0x0000ff00L) |
+         ((d & 0x00ff0000L) >> 16L) | ((c & 0xf0000000L) >> 4L));
+    c &= 0x0fffffffL;
+
+    for (i = 0; i < 16; i++) {
+        if (D_L39_0046E998[i]) {
+            c = ((c >> 2) | (c << 26)); d = ((d >> 2) | (d << 26));
+        } else {
+            c = ((c >> 1) | (c << 27)); d = ((d >> 1) | (d << 27));
+        }
+        c &= 0x0fffffff;
+        d &= 0x0fffffff;
+        s = D_L39_0046E198[0][(c) & 0x3f] |
+            D_L39_0046E198[1][((c >> 6) & 0x03) | ((c >> 7) & 0x3c)] |
+            D_L39_0046E198[2][((c >> 13) & 0x0f) | ((c >> 14) & 0x30)] |
+            D_L39_0046E198[3][((c >> 20) & 0x01) | ((c >> 21) & 0x06) | ((c >> 22) & 0x38)];
+        t = D_L39_0046E198[4][(d) & 0x3f] |
+            D_L39_0046E198[5][((d >> 7) & 0x03) | ((d >> 8) & 0x3c)] |
+            D_L39_0046E198[6][(d >> 15) & 0x3f] |
+            D_L39_0046E198[7][((d >> 21) & 0x0f) | ((d >> 22) & 0x30)];
+        *(k++) = (t << 16) | (s & 0x0000ffff);
+        s = (s >> 16) | (t & 0xffff0000);
+        s = (s << 4) | (s >> 28);
+        *(k++) = s;
+    }
+}
+/* localdecomp:end func_L39_004F6420 */
 
 /* localdecomp:start func_L39_004F66E8 */
 extern u32 D_L39_0046D998[8][64];

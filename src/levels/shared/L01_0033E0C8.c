@@ -8,7 +8,53 @@ typedef struct {
 typedef void (*Fn_33CA98)(u8 *);
 
 
-INCLUDE_ASM("asm/levels", func_L01_0033E0C8);
+/* localdecomp:start func_L01_0033E0C8 */
+typedef struct {
+    f32 pos[4], second[4], origin[4], attached[4];
+    f32 angle[3], velocity[3], scale[3];
+    f32 angle2[3], velocity2[3], scale2[3];
+    s32 timer, kind;
+    u8 *owner;
+    s32 remaining, duration, finished;
+} Effect_0033E0C8;
+#include "vu0.h"
+void func_L01_0033E0C8(u8 *owner, void *in) {
+    extern void func_L01_00445208_0033E0C8(void *, void *, void *, void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68_0033E0C8(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_0033E2D0_0033E0C8(void *, s32, void *, s32);
+    Effect_0033E0C8 *input = (Effect_0033E0C8 *)in;
+    vu0_q points[25];
+    vu0_v4 a, b, random;
+    vu0_q *out = points;
+    s32 i;
+    for (i = 0; i < 24; i++, out++) {
+        /* both ends go into VU0 registers first; the "j" class has only vf1 and vf2, so the second
+           is spilled to the stack around the first sum (retail's sqc2/lqc2 at sp+0x1C0) */
+        vu0_q qo, qe, qa, qb;
+        __asm__("lqc2 %0, %1" : "=j"(qo) : "m"(*(vu0_v4 *)input->origin));
+        __asm__("lqc2 %0, %1" : "=j"(qe) : "m"(*(vu0_v4 *)input->attached));
+        *(vu0_q *)&a = *(vu0_q *)input->pos;
+        *(vu0_q *)&b = *(vu0_q *)input->second;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)&a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qo));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&a) : "j"(qa));
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)&b));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qe));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&b) : "j"(qb));
+        func_L01_00445208_0033E0C8(out, input->origin, input->attached, &a, &b, (f32)i / 23.0f);
+        random.w = 0.0f;
+        random.x = func_003824E0(-1.0f, 1.0f);
+        random.y = func_003824E0(-1.0f, 1.0f);
+        random.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68_0033E0C8(&random, &random, 0.075f);
+        vec_add_ab(out, out, &random);
+    }
+    if (input->timer >= 6) func_L01_0033E2D0_0033E0C8(owner, func_00382498(64, 128), points, 25);
+    else func_L01_0033E2D0_0033E0C8(owner, func_00382498(0, 64), points, 25);
+}
+/* localdecomp:end func_L01_0033E0C8 */
 
 /* localdecomp:start func_L01_0033E290 */
 void func_L01_0033E290(vu0_v4 *a0, s32 a1) {
