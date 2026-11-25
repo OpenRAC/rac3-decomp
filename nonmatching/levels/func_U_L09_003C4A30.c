@@ -1,10 +1,8 @@
-/* NTSC-U draft (Codex wave 3): C of func_L09_003C4A30, the NTSC-U twin of func_L09_003C6388, with NTSC-U names and addresses (the two versions' code differs).
- * near miss: 32 words differ on NTSC-U with "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (the file's line: "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2") (NTSC-U twin "func_L09_003C4A30", whose code is not the PAL one).
- * Worker's note: 32 diff improved from 185; 10 checks; s3/s4 allocation, VU0 sequence interleaving and float operand allocation remain; j helper under allowed flags fails fixed or forbidden vf17 spill (check-08); three pointer variants plateau at 288; best log ...
- */
+/* Unlinked NTSC-U draft. 32 to 25 differences at the canonical level 09 placement after correcting the second VU subtraction. Saved-register assignments and argument and float scheduling remain. */
 #include "common.h"
+#include "vu0.h"
 
-/* localdecomp:start func_L09_003C4A30 */
+/* localdecomp:start func_U_L09_003C4A30 */
 typedef int Q_4A30 __attribute__((mode(TI)));
 typedef union { Q_4A30 q; f32 f[4]; } V_4A30;
 typedef struct { V_4A30 pos; u8 pad[0x24D4]; s32 state; } G_4A30;
@@ -37,7 +35,7 @@ static __inline__ void sub_4A30(V_4A30 *d, V_4A30 *a, V_4A30 *b) {
         : "=m"(*d) : "m"(*a), "m"(*b) : "vf1", "vf2");
 }
 
-void func_L09_003C4A30(u8 *m) {
+void func_U_L09_003C4A30(u8 *m) {
     V_4A30 temp, direction, origin, target;
     u8 *p = *(u8 **)(m + 0x68);
     u8 *a, *b, *extra, *extra2;
@@ -76,7 +74,7 @@ void func_L09_003C4A30(u8 *m) {
             extra2 = func_0037E0B8(*(u8 **)(p+0x75C));
             target.q = ((V_4A30 *)(*(u8 **)(p+0x75C)+0x10))->q;
             if (extra2) target.f[2] += *(f32 *)(extra2+0x10);
-            sub_4A30(&direction, &target, op);
+            vec_sub_ab(&direction, &target, &origin);
             func_00388830(&direction, &direction, 0.5f);
             shot=10.0f;
             if (func_L01_00417EA0()) {
@@ -109,4 +107,4 @@ void func_L09_003C4A30(u8 *m) {
     yaw=func_003893C8(*(f32 *)(p+0x724), *(f32 *)(m+0xF8));
     func_00389018(p+0x570, 2, yaw);
 }
-/* localdecomp:end func_L09_003C4A30 */
+/* localdecomp:end func_U_L09_003C4A30 */
