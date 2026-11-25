@@ -7,7 +7,7 @@
  * neither the VU0 flag nor @ps2as yet; it has no other function). The file's own line does not compile it
  * (VU0 "vf17 spilled"). -fopt-stack stays: retail saves with sd in a 0xF0 frame.
  *
- * Task 3055 (381 -> 21). Each step is plain C; the counts are check.py at level 04:
+ * Closeout attempt 1 (381 -> 21). Each step is plain C; the counts are check.py at level 04:
  * - q10's tail through its own pointer `sub = q10 + 0x20` (retail: addiu $s0, $s1, 0x20). q10 and sub
  *   both conflict with vars, so vars drops from $s1 to $s2 and the 6 takes $s1 (381 -> 259);
  * - three loop counters: j for the two opening loops (retail $s0), i for the bursts ($s4), k for the
@@ -32,7 +32,7 @@
  * - func_L01_0044AF78 declared (void *, void *, void *, f32, f32, s32, s32, s32, f32 x5, s32 x6), an
  *   EABI-equivalent order upstream uses at other call sites; it changes the argument schedule (24 -> 21).
  *
- * Task 3060 (21 -> 3): D_001D66B0 through a local `tbl`, assigned in the first opening block and passed
+ * Closeout attempt 2 (21 -> 3): D_001D66B0 through a local `tbl`, assigned in the first opening block and passed
  * to func_L01_0044AF78. tbl gets no hard register and reload rematerialises it at the call as one insn,
  * (set $a1 (symbol_ref D_001D66B0)) in the -dR dump, which prints as retail's adjacent lui/addiu; sgn = 1
  * and k = 0 fall back to retail's places (21 -> 3). Where the assignment goes only
@@ -50,8 +50,8 @@
  * callee, with tbl (3 for four of them, 6-8 for the rest), and the assignment at 108 statement positions
  * (3 at best).
  *
- * Task 3065, CLOSEOUT extra attempt (final): 3 -> 3; DONE. Measured on upstream 5eb0ce11 with the flag line
- * above: 3 at levels 04, 18 and 35. The -fsched-verbose-5 trace of sched1 for the call block ranks the
+ * CLOSEOUT extra attempt (final): 3 -> 3; DONE. Measured on upstream 5eb0ce11 with the flag line
+ * above: 3 at all 15 placements. The -fsched-verbose-5 trace of sched1 for the call block ranks the
  * ready insns by priority (all 18 here), then register weight, then luid. The weights: [$sp+8]=r580,
  * [$sp+0x18]=r581, $a1=tbl and $a2=r681 weigh -1 (each source dies there), [$sp]=0, [$sp+0x10]=0 and
  * $a0=m weigh 0 (setting a hard register adds nothing). Each group comes out in luid order, and the
@@ -66,7 +66,7 @@
  *
  * STUDY AID ONLY (never a candidate): the test store `D_L04_0021FD88[0] = tbl;` placed
  * before the last loop keeps tbl live past the call and gives retail's order in this block, at the cost
- * of 174 other differences. It is an extra store retail does not have, a barrier.
+ * of 155 other differences (at the placement that gives that order; 174 right after the call). It is an extra store retail does not have, a barrier.
  */
 #include "common.h"
 #include "vu0.h"

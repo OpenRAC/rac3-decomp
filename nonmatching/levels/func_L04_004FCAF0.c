@@ -10,7 +10,7 @@
  * hero.F0 (lqc2 vec, lqc2 F0, sqc2 tmp, vadd, sqc2 F0, then the F110 add); the vu0.h helpers load it twice. A j-form
  * block in the function (one asm per instruction) gets the sharing but makes gcc keep &D_001A4BE0 in a register in
  * every switch case (196 diff), and the else branch's `addiu $v1` placement.
- * Task 2796: retail's encodings give vec in vf1, F0 in vf2 and the first sum in vf2, with the `lqc2` of vec first and
+ * 2026-11-21: retail's encodings give vec in vf1, F0 in vf2 and the first sum in vf2, with the `lqc2` of vec first and
  * the `sqc2` to tmp before the vadd. A file-local j-form helper that loads vec once, stores it to tmp and adds it
  * (in all 34 statement orders the dependences allow, with the sum in a fresh variable, in a's or in b's, and
  * vec_add_ab or vec_add_ba for the second add) gives 196 or 197 diff: gcc always puts vec in vf2, and the

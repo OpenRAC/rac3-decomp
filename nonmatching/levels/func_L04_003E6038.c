@@ -11,7 +11,7 @@
  * sqc2; here it comes first. Tried: four prototype orders for func_L04_00325460 (including L20_003F1A78.c's
  * EABI-equivalent one), u8/s16 types for the stack arguments, &pos or pp at each use, one temporary for both scaled
  * vectors, vec_add_ab/ba swapped: no gain.
- * Task 2796: the sched2 dump (-fsched-verbose-5) shows a tie. When the vadd issues, the `li $v0, 1` and the two float
+ * 2026-11-21: the sched2 dump (-fsched-verbose-5) shows a tie. When the vadd issues, the `li $v0, 1` and the two float
  * constant loads are all ready at priority 8; the li wins on dependents (4: its `sw` and the three later calls,
  * against 3 for each constant), so it goes first. All 182 positions of the two f32 parameters in
  * func_L04_00325460's prototype give 6 diff; so do separate or block-local variables for the constants (the
