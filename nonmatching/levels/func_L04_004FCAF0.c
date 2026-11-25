@@ -1,4 +1,4 @@
-/* Level 4 (Marcadia), file L04_004FCAF0.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (tasks 2784, 2796).
+/* Level 4 (Marcadia), file L04_004FCAF0.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21.
  * Needs -mvu0-use-vf0-vf2 and @ps2as on that one-function file (VU0 adds, inline float constants, the lui form of
  * D_001D6694) and the divs_nops line `func_L04_004FCAF0 1` (retail has one nop before its div.s). Measured with
  * `check.py --as ps2as --flags=-mvu0-use-vf0-vf2` and that line added: 52 diff (12 aligned; the 2026-11-20 draft:
@@ -16,20 +16,20 @@
  * vec_add_ab or vec_add_ba for the second add) gives 196 or 197 diff: gcc always puts vec in vf2, and the
  * `lui $v0, 0x1a` of &D_001A4BE0 is scheduled first in the block, so reorg copies it into the switch cases' branch
  * delay slots. Stopped per AGENTS.md.
- * Task #2882 (2026-11-22): re-measured 52 differences (tools/check.py) at level 04 with --as ps2as,
+ * 2026-11-22: re-measured 52 differences (tools/check.py) at level 04 with --as ps2as,
  * --flags=-mvu0-use-vf0-vf2 and the divs_nops line. Retail's `tmp` looks like a reload spill slot of one shared
  * vec value rather than a written copy: vec is loaded once into vf1, stored to sp+0x10 right after, and reloaded
  * into vf2 for the F110 add. Two vec_add_ba calls with vec as the second source (no vec_copy, no tmp) do share one
  * load: gcc's CSE merges the two equal `lqc2` asms from the same helper line. But the value then stays in vf2 for
  * both adds, nothing is spilled, and the frame loses 0x10 (193 differences, mostly the frame offsets; ab/ab 193,
  * ab/ba and ba/ab 195). An unused `tmp` local does not size the frame back. *
- * Task #2998 (2026-11-23): 2 differences (tools/check.py, --as ps2as --flags=-mvu0-use-vf0-vf2, the divs_nops
+ * 2026-11-23: 2 differences (tools/check.py, --as ps2as --flags=-mvu0-use-vf0-vf2, the divs_nops
  * line; also with --no-context) at levels 04, 08 and 27. Two changes:
  * 1. The vec value is one TI variable loaded once and used by both adds, with no tmp. With only vf1/vf2 to
  *    allocate, reload spills it: the lqc2 into vf1, the sqc2 to the spill slot at sp+0x10 and the reload into vf2
  *    for the F110 add are retail's `tmp`. F110 is p[2] of p = &D_001A4BE0.fF0, which gives retail's fresh
  *    `lui $v0`, the %lo access of F0 and `addiu $v1, $v0, 0x4cd0` with F110 at 0x20($v1). That block is inline
- *    VU0 j-form (one asm per instruction; PROVISIONAL, r3-34).
+ *    VU0 j-form (one asm per instruction; PROVISIONAL).
  * 2. One `return 1` after the if/else instead of one at the end of each branch. The VU0 block then branches to
  *    the shared `addiu $v0, 1` (retail's `b` with that addiu in its delay slot), so sched1 no longer hoists the
  *    return value and the lui gets $v0, as in retail.
@@ -40,7 +40,7 @@
  * tmp store instead of the spill gives 196 (the lui goes first again); plain C loads of vec or F0 give 53-204.
  * NTSC-U (--version us): 15 differences, real ones (the 0x40/0xF timers and the float constants differ), plus
  * the same pair.
- * CLOSEOUT attempt 1 of 2 (task #3020, 2026-11-24, upstream 9f380a0a): still 2 differences at levels 04, 08 and
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, upstream 9f380a0a): still 2 differences at levels 04, 08 and
  * 27 (check.py --no-context, recipe line and divs row in the working tree). What decides the tie: SN's cc1 takes
  * `-fsched-verbose-5` (dash; the `=` form is ignored), whose "Region Dependences" table shows the spill store
  * and the F0 lqc2 equal on priority (7 and 7) and dependent count (4 and 4), and neither depends on the last

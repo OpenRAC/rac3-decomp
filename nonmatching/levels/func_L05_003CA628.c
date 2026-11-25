@@ -1,26 +1,26 @@
 /* func_L05_003CA628 (levels 05, 11, 17): near miss. PAL port (2026-11-20) of the NTSC-U draft of func_L05_003C8498, reworked
- * 2026-11-21 (task 2785), 2026-11-22 (task 2834) and 2026-11-22 (task 2935). 18 differences (tools/check.py) at level 05, 19 at level 11,
+ * 2026-11-21, 2026-11-22 and 2026-11-22. 18 differences (tools/check.py) at level 05, 19 at level 11,
  * 18 at level 17, with the file's committed line (`-mvu0-use-vf0-vf2 ... @ps2as`) and a divs_nops.txt row `func_L05_003CA628 2 2`
  * (not committed: 95 differences at levels 05, 11 and 17 without it).
- * Form (task 2935, r3-44): only include/vu0.h helpers, no inline VU0 asm, so no VU0 value crosses between asm blocks. Retail's
+ * Form: only include/vu0.h helpers, no inline VU0 asm, so no VU0 value crosses between asm blocks. Retail's
  * single vadd.xyz + sqc2 after the branch is gcc's cross-jumping of the two arms' identical tails: both arms call vec_add_ab
  * (`vec_add_ab(&dest, obj + 0x10, sub)` and, after func_0038CF68, `vec_add_ab(&dest, &dest, obj + 0x10)`), and an inline
  * function's asm statements carry the header's line, so the two vadd/sqc2 pairs are equal insns and become one tail. The
  * scheduler swaps the then-arm's two lqc2 (sub into vf2 first), as retail has it. Both arms with vec_add_ba also cross-jump, but
  * from the obj+0x10 load on (140); vec_add_ba then vec_add_ab do not cross-jump (134). Because the arms end in their own blocks,
  * sched1 no longer moves the &work setup above the sqc2.
- * The previous draft (task 2834: one inline j-form vadd/sqc2 after the branch, fed by "j" variables loaded in each arm) was 16
- * with the same row, but #2918 Q5 read its j values living across the branch as VU0 state between asm blocks (r3-44).
+ * The previous draft (one inline j-form vadd/sqc2 after the branch, fed by "j" variables loaded in each arm) was 16
+ * with the same row, but a review read its j values living across the branch as VU0 state between asm blocks.
  * Still differs (18 words at level 05):
  *  (1) The layout of `old` and `dest` (6 words): `dest` has to be the first local declared, so it is at sp+0 and `old` at
  *      sp+0x10 (retail: old at sp+0, a dead store, dest at sp+0x10): the sq of `old`, `move $a0/$a1, $sp` for retail's
  *      `addiu $a0/$a1, $sp, 0x10`, and the lqc2/sqc2 offsets of dest. With retail's order (old first) gcse makes &dest at
- *      sp+0x10 partially redundant and keeps it in a saved register: 168 (frame 0xa0, $s5 saved), also in this form (fact #46726).
+ *      sp+0x10 partially redundant and keeps it in a saved register: 168 (frame 0xa0, $s5 saved), also in this form.
  *  (2) The func_L01_00446760 call (12 words): retail has `addiu $s1, $sp, 0x20` (&work), `lwc1 $f12`, `lui $a2`, the moves,
  *      `ori $a2`, then `lui`/`addiu $a3` and `addiu $s0, $s2, 0x10` in the jal's delay slot; ours puts `lui $a3` first and
  *      `ori $a2` in the slot, and swaps $s0/$s1 (&work / obj+0x10). Unchanged (18) with a named f32 local for the sub+0x34
  *      argument, `&work[0]` / `&D_L05_001D66B0[0]`, a `(u8 *)obj + 0x10` cast, and `work` declared vu0_v4[3].
- * 2026-11-23 retry (task 2984, upstream 59c6db4f): still 18 at level 05 (19 at 11, 18 at 17, 18 with --no-context) with the row.
+ * 2026-11-23 retry (upstream 59c6db4f): still 18 at level 05 (19 at 11, 18 at 17, 18 with --no-context) with the row.
  *  (1) gcc's gcse dump (`--flags "-dG"`) shows where the 168 comes from: with `old` first, the address of `dest` (`at` + 16)
  *      is computed into a pseudo for the else arm's func_0038CF68 call and for func_003D3CB0, and PRE copies it to a new
  *      register at the end of both arms ("PRE/HOIST: end of bb 7 / bb 8 ... expression 11"), which then lives across the calls
@@ -31,7 +31,7 @@
  *      func_L01_00446760 call and passed to func_003D3CB0 gives the same 18 (sched1 moves it back below the call); `pos`
  *      also passed to func_0038CF00 gives 151; `pos` set at the top of the block gives 159. The prototype
  *      `(void *, void *, s32, f32, void *)` used by other files (EABI-equivalent) gives the same 18 (168 with `old` first).
- * CLOSEOUT attempt 1 of 2 (2026-11-24, task 3031, upstream 626eebd0): still 18 at level 05 (19 at 11, 18 at 17) with the row.
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, upstream 626eebd0): still 18 at level 05 (19 at 11, 18 at 17) with the row.
  *  - The func_L01_00446760 / func_003D3CB0 calls in a nested block with named locals (`vu0_q *w = work;` and `u8 *p` set to
  *    `obj + 0x10` before or after the first call): 18, the same code.
  *  - `old` and `dest` as members of one local struct (old first): 168, as with `old` declared first.

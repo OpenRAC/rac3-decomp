@@ -1,4 +1,4 @@
-/* Level 4 (Marcadia), file L04_003E6018.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21 (tasks 2784, 2796).
+/* Level 4 (Marcadia), file L04_003E6018.c. Promises fleet near miss (2026-11-20), reworked 2026-11-21.
  * Needs -mvu0-use-vf0-vf2 and @ps2as on that file (VU0 vector adds via include/vu0.h's j-form helpers, inline float
  * constants); with them func_L04_003E6018 needs `__asm__(".extern D_L04_001DF2A0, 4");` to keep its $gp address
  * (checked in the level 04 build on 2026-11-20). check.py --as ps2as --flags=-mvu0-use-vf0-vf2: 6 diff (4 aligned;
@@ -16,7 +16,7 @@
  * against 3 for each constant), so it goes first. All 182 positions of the two f32 parameters in
  * func_L04_00325460's prototype give 6 diff; so do separate or block-local variables for the constants (the
  * constant-1 locals hoisted to the top give 25), and floats in locals. Stopped per AGENTS.md.
- * LV-R2 retry (2026-11-22): 6 differences (tools/check.py) at level 04 with -mvu0-use-vf0-vf2 @ps2as (the 'aligned' figures above are older wording; r3-46 counts are tools/check.py's).
+ * LV-R2 retry (2026-11-22): 6 differences (tools/check.py) at level 04 with -mvu0-use-vf0-vf2 @ps2as (the 'aligned' figures above are older wording; the counts are tools/check.py's).
  */
 /* RT-B retry (2026-11-22, rac3-w1, upstream b7be60ac): the whole-file line this needs cannot ship. With
  * `-mvu0-use-vf0-vf2 @ps2as` on L04_003E6018.c, Clank700's matched func_L04_003E6018 gives 4 differences at all five

@@ -13,13 +13,13 @@
 /* NM-R22 retry (2026-11-23, rac3-w1, upstream 1dbb16a7): still 38 differences (tools/check.py) at levels 05 and 10
  * with -mvu0-use-vf0-vf2 added. The inline j-form block for c (lqc2 p + 0x10, lqc2 p, vsub, sqc2) is replaced by
  * vu0.h's vec_sub_ba(&c, p, p + 0x10), which gives the same bytes (check.py's listing is identical), so the draft
- * no longer needs the j-form (r3-34). */
-/* P10 retry (2026-11-23, rac3-w1, upstream c162f99b): the vec_sub_ab/vec_sub_ba swap (FACT #47976, which matched
+ * no longer needs the j-form. */
+/* P10 retry (2026-11-23, rac3-w1, upstream c162f99b): the vec_sub_ab/vec_sub_ba swap (which matched
  * func_L05_0035DA38) at all seven helper sites (c, a, b and the four e sites, vec_add included), all 128
  * combinations: 38 differences (tools/check.py) at levels 05 and 10 in every one, with -mvu0-use-vf0-vf2 on the file's
  * line; spot checks give byte-identical listings, so the helper's lqc2 order does not reach the code here.
  * Retail's c and b have the first-loaded operand in $vf1 and the result in $vf2 (vsub.xyz $vf2, $vf2, $vf1); a
- * already matches. The swap did not move the count, so #47975 and #47941 were not tried (the task's bound). */
+ * already matches. The swap did not move the count, so the nested-local and reused-local levers were not tried. */
 /* CLOSEOUT attempt 1 of 2 (2026-11-24, rac3-w2, upstream 3e4df279): 36 differences (tools/check.py --no-context) at
  * levels 05 and 10 with -mvu0-use-vf0-vf2 on L05_003629B8.c's line (was 38): the load of p after the two vec_copy
  * calls, as in func_L05_00362F30, where the other wordings tried are listed. Left: the same three problems as

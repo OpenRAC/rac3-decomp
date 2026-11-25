@@ -1,6 +1,6 @@
-/* func_L04_00325C08: Promises (task 2790, 2026-11-21; retried in tasks 2907, 2026-11-22, and 3013,
- * 2026-11-23; closeout attempt 1 of 2 in task 3055 and attempt 2 of 2 in task 3060, 2026-11-24), from
- * upstream's nonmatching/functional/func_L04_00325C08.c. CLOSEOUT attempt 2 of 2: 21 -> 3. CLOSEOUT extra attempt (final), task 3065
+/* func_L04_00325C08: Promises (2026-11-21; retried 2026-11-22 and
+ * 2026-11-23; closeout attempts 1 and 2 of 2, 2026-11-24), from
+ * upstream's nonmatching/functional/func_L04_00325C08.c. CLOSEOUT attempt 2 of 2: 21 -> 3. CLOSEOUT extra attempt (final)
  * (2026-11-24): 3 -> 3; DONE.
  * Near miss: 3 differences (tools/check.py --no-context), level 04, with
  * -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as on L04_00325C08.c (the file has
@@ -64,7 +64,7 @@
  *   the call: 865. Either way tbl gets a register and the one-insn la is lost.
  * "Give the store an extra dependent" cannot help: the dependents count is compared only after weight.
  *
- * STUDY AID ONLY (r3-10, r3-61; never a candidate): the test store `D_L04_0021FD88[0] = tbl;` placed
+ * STUDY AID ONLY (never a candidate): the test store `D_L04_0021FD88[0] = tbl;` placed
  * before the last loop keeps tbl live past the call and gives retail's order in this block, at the cost
  * of 174 other differences. It is an extra store retail does not have, a barrier.
  */

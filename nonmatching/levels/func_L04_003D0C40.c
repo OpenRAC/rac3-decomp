@@ -1,6 +1,6 @@
 /* Level 4 (Marcadia), file L04_003D0968.c (its line: -O2 -G8 -fopt-stack -mno-check-zero-division
  * -mvu0-use-vf0-vf2 @ps2as). 20 differences (tools/check.py --no-context, with the file's typedefs) at
- * levels 04 and 18 and on NTSC-U (2026-11-24, task #3048); the history follows.
+ * levels 04 and 18 and on NTSC-U (2026-11-24); the history follows.
  * - The prototype is the file's own (`M_003D0968 *, V_003D0968 *`, from func_L04_003D0968's block), cast to
  *   byte pointers inside; the earlier `(u8 *, u8 *)` draft no longer compiled in the file's context.
  * - 264 -> 89: the second search compares against `*(s32 *)(v + 0x90) + 1` read in place instead of an
@@ -13,15 +13,15 @@
  *   first loop, which shifts every branch. Retail also keeps the else-branch value of +0x90 in $t2 for loop 2
  *   (`addiu $a0, $t2, 1`); this C reloads it in the loop. Also the loop-setup register choice and the order of
  *   the child-vars stores (+0x60/+0x6C, +0x40).
- * - Tried (task #2809): `goto` exits to a common label (264); `n` assigned inside a nested
+ * - Tried: `goto` exits to a common label (264); `n` assigned inside a nested
  *   else (264); `n` assigned after the else-if test (264); `vv->w90`/`vv->p94` struct fields (264);
  *   `*(s32 *)(v + 0x90) + 1 == 0` for the first test (75, but it
  *   compiles to addiu/bnez where retail compares with $s0 = -1, so it is not retail's form).
  * Stopped per AGENTS.md.
- * Task #2882 (2026-11-22): re-measured 89 differences (tools/check.py) at level 04 with the file's line. One more
+ * 2026-11-22: re-measured 89 differences (tools/check.py) at level 04 with the file's line. One more
  * wording: the three searches as one `static __inline__` helper returning the found moby (or 0), with the
  * `+0x94` store in the caller under `if (e != 0)`: 276 differences.
- * Task #2940 (2026-11-22, upstream 70e001ab): re-measured 89 differences (tools/check.py) at levels 04 and 18. The
+ * Retry (2026-11-22, upstream 70e001ab): re-measured 89 differences (tools/check.py) at levels 04 and 18. The
  * placement comes from loop.c (find_and_verify_loops): each found-exit block (`p94 = e; break;`) moves to the
  * nearest BARRIER before its jump target at the target's loop depth. Here the BARRIER after arm 1's `else` jump
  * (outside any loop) is the nearest, so the blocks land after loop 1; in retail they sit after the early
@@ -35,7 +35,7 @@
  * 263, `if (!(v->w90 == -1))` 265, `w90 != -1 && w90 >= -1` in one test 262 (merged into `bltz`), `else if
  * (w90 != -1)` 89 (the else jump is back). The file's own struct types (`M_003D0968`/`V_003D0968` fields)
  * instead of byte offsets: 89, and `for (;;)` with the test as a leading `break`: 89 (same RTL after rotation).
- * Task #3002 (2026-11-23, upstream 1dbb16a7): 89 -> 32 differences (tools/check.py --no-context) at levels 04 and 18
+ * Retry (2026-11-23, upstream 1dbb16a7): 89 -> 32 differences (tools/check.py --no-context) at levels 04 and 18
  * (by difflib alignment of the instruction columns: 56 -> 23 rows). What moved it:
  * - The found-exits are written as plain `goto`s to two labelled blocks placed after the early `return 0`
  *   (`found2: p94 = e; goto test3;` then `found13: p94 = e; goto join;`), so loop.c has no block to move and they land
@@ -46,14 +46,14 @@
  * Still open (the blocker): retail reloads +0x90 at arm 2's head and keeps it in $t2 (`lw $v0; move $t2, $v0; slti`),
  * then compares `$t2 + 1` in loop 2; here cse follows the first test's `bne` into arm 2 (its label sits after arm 1's
  * `else` jump and BARRIER) and reuses the first load, so loop 2 reloads +0x90 itself. -fno-cse-follow-jumps (a study
- * flag only, not the file's) gives the reload. The #2940 form (`if (w90 != -1) { if (w90 >= -1) ... } }` after arm 1)
+ * flag only, not the file's) gives the reload. The 2026-11-22 form (`if (w90 != -1) { if (w90 >= -1) ... } }` after arm 1)
  * with the gotos gives retail's arm-2 head exactly, but arm 1 then ends in `lw; addiu; beql` instead of `b`. Tried
  * without gain: `n` assigned in the else-if test or as an else-block statement (233), `goto join` at the end of arm 1
  * plus a plain `if` (47), a `switch` with `case -1` / `default` (47), `vv->w90` / `mm->vars->w90` for one of the tests
  * (32 / 211), the `+0x94 = 0` store moved into each arm (60). Also open: the two copies of m[0x21] for the loop tests
  * (retail `move $t0, $v1` and `move $a3, $v1`; here `$a3` then `move $t0, $a3`, from gcse), unchanged by
  * `(s32)`, `(u8)0xFF`, `< 0xFF` (38), `D >= m[0x21]` or a `for` form.
- * CLOSEOUT attempt 1 of 2 (task #3039, 2026-11-24, upstream 3e4df279): 32 -> 24 differences at levels 04 and 18.
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, upstream 3e4df279): 32 -> 24 differences at levels 04 and 18.
  * - Mechanism of the +0x90 reload (gcc dumps, -dj -ds -dG): cse follows the first test's `bne` into arm 2 only when
  *   the code just before arm 2's label ends in a BARRIER; a NOTE_INSN_LOOP_END there stops it (cse.c's backward scan).
  *   With loop 1 as a `while`, arm 1 ends in the if's `b join` after the loop's LOOP_END, so cse follows.
@@ -71,8 +71,8 @@
  *   (230), loop 1 as `for (;;)` with the tests at the top, with n (261: arm 2 reloads, but loop 1 is not rotated),
  *   `&& p94 == 0` on the first test (32), a `u8 k = m[0x21]` for the list heads (34 on this form, 44 on the old one),
  *   `D_L04_0021C9A0[m[0x21]]` for the heads (28).
- * CLOSEOUT attempt 2 of 2 (task #3048, 2026-11-24, upstream 3e4df279): 24 -> 20 differences at levels 04 and 18 and on
- * NTSC-U. Result: still a near miss; DONE (r3-64 budget spent).
+ * CLOSEOUT attempt 2 of 2 (2026-11-24, upstream 3e4df279): 24 -> 20 differences at levels 04 and 18 and on
+ * NTSC-U. Result: still a near miss; DONE (attempts used up).
  * - Loop 1's tail polarity is fixed: the back edge is an explicit `if (cond) goto top1; goto join;` with `top1:` at the
  *   head of the `for (;;)` body (the goto-into-a-loop form of upstream's func_L39_0068BAD8). The conditional jump now
  *   goes straight back to the body, so jump.c has no jump around a jump to invert: `beql p == head -> body; b join`,

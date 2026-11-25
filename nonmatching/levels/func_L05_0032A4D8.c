@@ -1,4 +1,4 @@
-/* func_L05_0032A4D8: Promises (task 2790, 2026-11-21), written from the PAL asm (upstream also has a
+/* func_L05_0032A4D8: Promises (2026-11-21), written from the PAL asm (upstream also has a
  * nonmatching/functional/ draft of it, not used here).
  * Near miss: 408 differences (tools/check.py), level 05, with -mvu0-use-vf0-vf2 @ps2as (the count is large
  * because the prologue is one word short and every later row shifts). Needs on the file: -mvu0-use-vf0-vf2 (its
@@ -28,7 +28,7 @@
  * (397: three saved float registers). `k` for the call and the formula reproduces 390 ($f22, frame 0xC0).
  * Retail reads $f20 nowhere between the call and its 1.0 load, so a 20.0 variable that lives past the call
  * always overlaps the 1.0 and takes a third saved register.
- * CLOSEOUT attempt 1 of 2 (task 3057, 2026-11-24, upstream 5eb0ce11; same recipe): no change. 408 differences
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, upstream 5eb0ce11; same recipe): no change. 408 differences
  * (tools/check.py, level 05; 407 at levels 16 and 19), the same with --no-context; compared one row off from row 30,
  * 2 rows differ at level 05 (both in the prologue) and 8 at levels 16 and 19 (the same 2, plus 6 $gp loads that
  * check.py shows at offset 0 there for the D_L05_ names). Tried: `k = 20.0f` for the call plus a test that is

@@ -1,4 +1,4 @@
-/* 2026-11-24 (task 3037, CLOSEOUT attempt 1 of 2, rac3-w1), upstream 242c17bd: still 32 differences (tools/check.py)
+/* 2026-11-24 (CLOSEOUT attempt 1 of 2, rac3-w1), upstream 242c17bd: still 32 differences (tools/check.py)
  * at levels 04, 16, 18, 22 and 29 and with --no-context, with the recipe below (file line plus
  * `@ps2as -mvu0-use-vf0-vf2`, divs_nops row `func_L04_00313DD0 0 2`, both in the working tree only). The count did not
  * improve. Change: case 3's 0x1A0 block takes D_001A4C78 in a local `a` and sets `h = a - 0x98`; the reload is now
@@ -13,7 +13,7 @@
  * forwards the stored 0x1A0 value and drops the reload); the ternary's angle put in `t` before the func_0038DAB8
  * call (255).
  */
-/* 2026-11-23 (task 3008, PASS-P7, rac3-w2), upstream c162f99b: plain C now. The F32/S32/U32/U16/S16/U8/PTR
+/* 2026-11-23 (PASS-P7, rac3-w2), upstream c162f99b: plain C now. The F32/S32/U32/U16/S16/U8/PTR
  * `#define` accessors are written out as casts (`*(f32 *)(p + 0x40)`, `(*(u8 **)(p + 0x68))`) and the four GNU
  * statement expressions as block-scoped pointer locals; that rewrite alone compiles to the same code (236, unchanged at
  * levels 04, 16, 18, 22 and 29 and with --no-context).
@@ -39,14 +39,14 @@
  * 0x1A0 block (328); h = D_001A4C78 - 0x98 assigned after the call (32); h = D_001A4C78, arg h, load h - 0x98 + 0x1A0
  * (36); the clamp's result in `t` compared as t > hero.88 (236), in `d` (236), and hero.88 - 2 in z (236).
  */
-/* 2026-11-22 (task 2893, NM-R10, rac3-w3): re-measured on upstream 6de86dfe, still 236 differences (tools/check.py) at
+/* 2026-11-22 (NM-R10, rac3-w3): re-measured on upstream 6de86dfe, still 236 differences (tools/check.py) at
  * level 04 with `--as ps2as --flags=-mvu0-use-vf0-vf2` (without the vf2 flag it still does not compile: vf17 spilled).
  * Tried for case 3's hero.0x1A0 reload: the call's first argument as `D_001A4BE0 + 0x98` (one symbol with the hero, so
  * that CSE could derive the hero as $s0 - 0x98 as retail does) with h = D_001A4BE0 or h = D_001A4BE0 + 0x98 - 0x98:
  * 302, because CSE then reuses the previous block's hero register and forwards the stored 0x1A0 value instead of
  * reloading it; `D_001A4BE0 + 0x98` with h = D_001A4C78 - 0x98: 251. No gain, so the draft is unchanged below.
  */
-/* 2026-11-21 (task 2813, Promises fleet rac3-w1): 236 differences (tools/check.py) at level 04 with
+/* 2026-11-21 (Promises fleet rac3-w1): 236 differences (tools/check.py) at level 04 with
  * `--as ps2as --flags=-mvu0-use-vf0-vf2`, with or without the divs_nops line `func_L04_00313DD0 0 2`. Most follow from
  * case 3 being one instruction short (see "case 3 after hero.1A0" below). Declaring `u8 *h = D_001A4C78 - 0x98;` before
  * the func_L01_00448690 call gives 252, and `u8 *h = D_001A4BE0;` gives 251. (The GNU statement expressions and
