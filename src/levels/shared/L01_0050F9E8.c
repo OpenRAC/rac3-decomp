@@ -412,9 +412,300 @@ void func_L01_0050FEE8(s32 a0) {
 }
 /* localdecomp:end func_L01_0050FEE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0050FF00);
+/* localdecomp:start func_L01_0050FF00 */
+typedef struct {
+    u8 pad0[0x10];
+    u8 frames;
+    u8 sound;
+    u8 triggers;
+    u8 pad13[0x1C - 0x13];
+} Seq_50FF00;
+typedef struct {
+    u8 pad0[0x48];
+    Seq_50FF00 *anims[1];
+} Cls_50FF00;
+typedef struct M_50FF00 {
+    u8 pad0[0x24];
+    Cls_50FF00 *cls;
+    u8 pad28[0x40 - 0x28];
+    u8 key;
+    u8 key_next;
+    u8 seq;
+    u8 seq_want;
+    f32 key_time;
+    u8 pad48[0x58 - 0x48];
+    Buf *pose_cur;
+    s32 pose_next;
+    u8 pad60[0x6C - 0x60];
+    u8 slot_last;
+    u8 slot;
+    u8 triggers;
+} M_50FF00;
+typedef struct {
+    u8 pad0[0xC00];
+    f32 anim_rate;
+    f32 anim_key_rate;
+    s32 anim_flags;
+    s32 anim_changing;
+    s32 blend_count;
+    s32 blend_index;
+    f32 anim_frame;
+    f32 anim_step;
+    union { s32 w; u8 b; } c20;
+    union { s32 w; u8 b; } c24;
+    s32 c28;
+    u8 pad_C2C[0x1228 - 0xC2C];
+    s32 held_item;
+    u8 pad122C[0x25C0 - 0x122C];
+    M_50FF00 *hero_moby;
+    s32 state;
+} H_50FF00;
 
-INCLUDE_ASM("asm/levels", func_L01_00510478);
+extern D_001A4BE0_t D_001A4BE0;
+extern H_50FF00 D_001A4BE0_0050FF00;
+extern Buf D_L01_00252880[];
+extern Buf D_L01_00252E80[];
+extern u8 D_001A30B0[];
+extern const f32 D_L01_001DC02C[];
+extern f32 D_L01_002F6460[][25];
+extern void func_0038CC88(void *, void *, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern void func_003A4F28(s32);
+extern void func_L01_0050F7E0(void);
+extern void func_L01_0050FED0(void);
+extern s32 func_L01_004DFCC8(Moby *, s32, s32, Buf *);
+extern void func_L01_0050F758(void);
+extern void func_L01_0050F8F0(void);
+extern void func_L01_0050F950(void);
+extern f32 func_L01_004395E0(void *);
+
+void func_L01_0050FF00(void) {
+    M_50FF00 *m = (*(H_50FF00 *)&D_001A4BE0).hero_moby;
+    s32 prev_key;
+    s32 same;
+    f32 entry_time;
+    f32 step;
+
+    func_L01_0050F7E0();
+    (*(H_50FF00 *)&D_001A4BE0).anim_flags &= ~3;
+    prev_key = m->key;
+    same = m->seq == m->seq_want;
+    entry_time = m->key_time;
+
+    if (m->seq == m->seq_want) {
+        m->key_time = entry_time + (*(H_50FF00 *)&D_001A4BE0).anim_rate * ((*(H_50FF00 *)&D_001A4BE0).anim_key_rate * 1.2f);
+    } else if ((*(H_50FF00 *)&D_001A4BE0).blend_count >= 0) {
+        s32 bi = (*(H_50FF00 *)&D_001A4BE0).blend_index;
+
+        m->key_time = D_L01_002F6460[(*(H_50FF00 *)&D_001A4BE0).blend_count][bi];
+        (*(H_50FF00 *)&D_001A4BE0).blend_index = bi + 1;
+    } else {
+        m->key_time = entry_time + (*(H_50FF00 *)&D_001A4BE0).anim_key_rate * 1.2f;
+    }
+
+    if (0.99f < m->key_time && m->key_time < 1.01f) {
+        m->key_time = 1.0f;
+    }
+    if (-0.01f < m->key_time && m->key_time < 0.01f) {
+        m->key_time = 0.0f;
+    }
+    step = m->key_time - entry_time;
+
+    if (1.0f <= m->key_time) {
+        f32 rate_kf = D_L01_001DC02C[0];
+        Buf *b0 = &D_L01_00252880[0];
+        H_50FF00 *h;
+        f32 zero;
+        do {
+            s32 izero = 0;
+            h = &D_001A4BE0_0050FF00;
+            zero = *(f32 *)&izero;
+        } while (0);
+
+        do {
+            if (m->seq != m->seq_want) {
+                m->seq = m->seq_want;
+                m->triggers = m->cls->anims[m->seq]->triggers;
+            }
+            (*(H_50FF00 *)&D_001A4BE0).blend_count = -1;
+            (*(H_50FF00 *)&D_001A4BE0).anim_flags |= 1;
+            m->pose_cur = b0;
+            m->key = m->key_next;
+            func_0038CC88(b0, b0 + 1, 0x600);
+            m->key_next++;
+
+            if ((*(H_50FF00 *)&D_001A4BE0).c28 != 0) {
+                (*(H_50FF00 *)&D_001A4BE0).c28 = 0;
+                (*(H_50FF00 *)&D_001A4BE0).anim_key_rate = rate_kf;
+                m->key_time = zero;
+                m->key_next = (*(H_50FF00 *)&D_001A4BE0).c24.b;
+                m->pose_next = func_L01_004DFCC8((Moby *)m, m->seq_want, m->key_next, b0 + 1);
+                func_L01_0050FED0();
+                func_L01_0050F950();
+            } else if ((*(H_50FF00 *)&D_001A4BE0).c20.w != -1 && (*(H_50FF00 *)&D_001A4BE0).c24.w < m->key_next) {
+                (*(H_50FF00 *)&D_001A4BE0).anim_key_rate = 0.33333334f;
+                m->key_time = 0.0f;
+                m->key_next = (*(H_50FF00 *)&D_001A4BE0).c20.b;
+                m->pose_next = func_L01_004DFCC8((Moby *)m, m->seq_want, m->key_next, b0 + 1);
+                func_L01_0050F950();
+            } else {
+                Seq_50FF00 *anim = m->cls->anims[m->seq_want];
+
+                if (m->key_next >= anim->frames) {
+                    m->key_next = 0;
+                    h->anim_flags |= 2;
+                }
+                m->pose_next = func_L01_004DFCC8((Moby *)m, m->seq_want, m->key_next, &D_L01_00252E80[0]);
+                m->key_time = m->key_time - 1.0f;
+                m->key_time = m->key_time / h->anim_key_rate;
+                h->anim_key_rate = ((f32 *)m->pose_cur)[0];
+                m->key_time = m->key_time * h->anim_key_rate;
+            }
+        } while (1.0f <= m->key_time);
+    }
+
+    if (same && m->triggers != 0) {
+        Seq_50FF00 *anim = m->cls->anims[m->seq];
+        s32 new_frame = ((s32)m->key << 4) + (s32)(m->key_time * 16.0f);
+        s32 old_frame = (prev_key << 4) + (s32)(entry_time * 16.0f);
+        s32 *trig = (s32 *)((u8 *)anim + 0x1C + anim->frames * 4);
+        s32 i;
+
+        for (i = 0; i < anim->triggers; i++, trig++) {
+            s32 entry = *trig;
+            s32 stamp = entry >> 16;
+
+            if (old_frame < stamp && stamp <= new_frame) {
+                if ((*(H_50FF00 *)&D_001A4BE0).held_item != 0x7F || (u32)((*(H_50FF00 *)&D_001A4BE0).state - 19) >= 2) {
+                    func_003A52A0((u16)entry, 0, m);
+                }
+                break;
+            }
+        }
+    }
+
+    if (m->slot != 0xFF) {
+        u8 *row = D_001A30B0 + (m->slot << 7);
+
+        if (*(M_50FF00 **)(row + 0xDC) != m) {
+            m->slot = 0xFF;
+        } else if (*(s16 *)(row + 0xCA) != m->slot_last) {
+            func_003A4F28(m->slot);
+            m->slot = 0xFF;
+        }
+    } else if (m->slot_last != 0xFF) {
+        m->slot = func_003A52A0(m->slot_last, 4, m);
+    }
+
+    func_L01_0050F758();
+    func_L01_0050F8F0();
+    {
+        f32 frame_old = (*(H_50FF00 *)&D_001A4BE0).anim_frame;
+        f32 frame_new = func_L01_004395E0(m);
+
+        (*(H_50FF00 *)&D_001A4BE0).anim_frame = frame_new;
+        if (frame_old <= frame_new) {
+            (*(H_50FF00 *)&D_001A4BE0).anim_step = frame_new - frame_old;
+        } else {
+            (*(H_50FF00 *)&D_001A4BE0).anim_step = step;
+        }
+    }
+    (*(H_50FF00 *)&D_001A4BE0).anim_changing = m->seq != m->seq_want;
+}
+/* localdecomp:end func_L01_0050FF00 */
+
+/* localdecomp:start func_L01_00510478 */
+#include "vu0.h"
+extern D_001A4BE0_t D_001A4BE0;
+extern Vec4 D_L01_001EAA40;
+extern f32 D_L01_001EAA20[];
+
+f32 func_L01_00510478(f32 time, f32 gravity, f32 height)
+{
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_0044A850(void *, void *);
+    extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+    extern f32 func_L01_00511848(Vec4 *);
+    extern f32 func_L01_005114B0(f32 *);
+    extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+    Vec4 delta, direction, curve, start;
+    f32 root0, root1, root2, root3, root4, root5;
+    u8 *hero = (u8 *)&D_001A4BE0;
+
+    switch (hero[0x25F4]) {
+    case 0:
+        if (height < 0.0f) {
+            func_0038CE20(&delta, hero + 0xF0, time);
+            delta.f[2] -= (time * time + time) * 0.5f * gravity;
+            vec_add_ba(&delta, &delta, hero + 0x80);
+            direction = *(Vec4 *)(hero + 0x80);
+            func_L01_0044A850(&direction, &delta);
+            direction = *(Vec4 *)(hero + 0x80);
+            if (func_003D3CB0(&direction, &delta, 0x22, 0, 0)) {
+                if (func_L01_00511848(&D_L01_001EAA40) <= 0.87266463f) {
+                    height = *((f32 *)&D_L01_001EAA40 - 6);
+                }
+            }
+        }
+        if (height > 0.0f) {
+            u8 *g = (u8 *)&D_001A4BE0;
+            f32 half = gravity * -0.5f;
+            if (func_L01_004461B8(half, *(f32 *)(g + 0xF8) - half,
+                    *(f32 *)(g + 0x88) - height, &root0, &root1) > 0 && root0 > 0.0f) {
+                return root0;
+            }
+        }
+        break;
+    case 1:
+        direction = *(Vec4 *)(hero + 0x2C0);
+        func_0038CF68(&direction, &direction, gravity);
+        func_0038CE20(&direction, &direction, -1.0f);
+        func_0038CE20(&delta, hero + 0xF0, time);
+        func_0038CE20(&curve, &direction, (time * time + time) * 0.5f * gravity);
+        vec_add_ba(&delta, &curve, &delta);
+        vec_add_ab(&delta, hero + 0x80, &delta);
+        start = *(Vec4 *)(hero + 0x80);
+        func_L01_0044A850(&start, &delta);
+        if (func_003D3CB0(hero + 0x80, &delta, 0x22, 0, 0)) {
+            f32 half, b, c;
+            half = gravity * -0.5f;
+            b = func_L01_005114B0((f32 *)(hero + 0xF0)) - half;
+            c = func_L01_005114B0((f32 *)(hero + 0x80));
+            c -= func_L01_005114B0(D_L01_001EAA20);
+            if (func_L01_004461B8(half, b, c, &root2, &root3) > 0 && root2 > 0.0f) {
+                return root2;
+            }
+        }
+        break;
+    case 2:
+        curve.f[2] = 100.0f;
+        curve.f[1] = 100.0f;
+        curve.f[0] = 100.0f;
+        vec_sub_ab(&direction, hero + 0x80, &curve);
+        func_0038CF68(&direction, &direction, gravity);
+        func_0038CE20(&direction, &direction, -1.0f);
+        func_0038CE20(&delta, hero + 0xF0, time);
+        func_0038CE20(&curve, &direction, (time * time + time) * 0.5f * gravity);
+        vec_add_ba(&delta, &curve, &delta);
+        vec_add_ab(&delta, hero + 0x80, &delta);
+        start = *(Vec4 *)(hero + 0x80);
+        func_L01_0044A850(&start, &delta);
+        if (func_003D3CB0(hero + 0x80, &delta, 0x22, 0, 0)) {
+            f32 half, b, c;
+            half = gravity * -0.5f;
+            b = func_L01_005114B0((f32 *)(hero + 0xF0)) - half;
+            c = func_L01_005114B0((f32 *)(hero + 0x80));
+            c -= func_L01_005114B0(D_L01_001EAA20);
+            if (func_L01_004461B8(half, b, c, &root4, &root5) > 0 && root4 > 0.0f) {
+                return root4;
+            }
+        }
+        break;
+    }
+    return time;
+}
+/* localdecomp:end func_L01_00510478 */
 
 /* localdecomp:start func_L01_005108C0 */
 extern D_001A4BE0_t D_001A4BE0;

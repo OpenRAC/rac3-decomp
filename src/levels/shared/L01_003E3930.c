@@ -132,7 +132,151 @@ typedef struct {
 
 LINKER_REMNANT("asm/levels", func_L01_003E3930);
 
-INCLUDE_ASM("asm/levels", func_L01_003E3938);
+/* localdecomp:start func_L01_003E3938 */
+#include "vu0.h"
+typedef struct { vu0_v4 velocity, anchor; s32 timer; u8 pad24[8]; s32 x2C; u8 *owner; } Vars_003E3938;
+typedef struct { u8 pad[0x18]; u8 *hit; u8 pad1C[4]; vu0_v4 position; vu0_v4 spare; vu0_v4 normal; } Collision_003E3938;
+typedef struct { u8 pad[0xD4]; u8 *pD4; } Table_003E3938;
+extern Collision_003E3938 D_L01_001EAA00[1];
+extern Table_003E3938 D_L01_00221098[1];
+typedef struct { u8 pad[0x25C0]; u8 *hero; } G_003E3938;
+extern G_003E3938 D_001A4BE0;
+__asm__(".extern D_001A4BE0, 16");
+extern f32 D_L01_001DF648;
+extern u32 D_L01_001DF64C, D_L01_001DF650;
+__asm__(".extern D_L01_001DF648, 4");
+__asm__(".extern D_L01_001DF64C, 4");
+__asm__(".extern D_L01_001DF650, 4");
+void func_L01_003E3938(u8 *m) {
+    extern s32 func_0038CAD0(void *);
+    extern void func_003C3938(void *, s32, s32);
+    extern void func_L01_004C8688(s32, void *, s32);
+    extern void func_L01_004C7D40(void *, void *, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern s32 func_L01_003FB640(void *, s32, void *, f32);
+    extern s32 func_003D5630(void);
+    extern u8 *func_L01_003016B0(void *, s32, f32, f32);
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_00382468(s32);
+    extern void func_L01_00468A68(void *, void *, s32, s32);
+    extern void func_L01_003506B8(void);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_0038CE90(f32 *, f32 *, f32 *);
+    extern void func_003C48A8(void *, void *);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern void func_003C2F58(void *, s32, void *);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern void func_L01_00404A10_003E3938(void (*)(u8 *), void *);
+    extern void func_L01_003E3F08(u8 *);
+    vu0_v4 temp, vector, a, b, c, normal;
+    Vars_003E3938 *v = *(Vars_003E3938 **)(m + 0x68);
+    u8 *hero, *p;
+    s32 state, i, j, life, angleStep, joint, next, size;
+    f32 angle, speed;
+    if (m[0x20] == 0) {
+        if (func_0038CAD0(&v->timer)) {
+            func_L01_003506B8();
+            return;
+        }
+        func_003C3938(m, 0, 0);
+        *(u128_t *)&temp = *(u128_t *)(m + 0x10);
+        func_L01_004C8688(v->x2C, v, 0);
+        func_L01_004C7D40(m + 0x10, v, 0.0044f);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(m + 0x10)));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(v)));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(m + 0x10)) : "j"(qa));
+        }
+        *(f32 *)(m + 0xF8) = func_0038DAB8(*(f32 *)(m + 0xF8), D_L01_001DF648 * 0.017453292f);
+        *(s32 *)(D_001A4BE0.hero + 0x98) = 0;
+
+        if (func_L01_003FB640(m + 0x10, 0, m, 0.2f)) {
+            u8 *h = D_001A4BE0.hero;
+            *(s32 *)(h + 0x98) = *(s32 *)(*(u8 **)(h + 0x24) + 0x10);
+            state = func_003D5630();
+            if (((u32)state < 2 || state == 11) && v->velocity.z < 0.0f) {
+                qzero(&v->velocity);
+                v->velocity.z = -0.030000001f;
+                vector.x = *(f32 *)(m + 0x10);
+                vector.y = *(f32 *)(m + 0x14);
+                vector.z = D_L01_001EAA00[0].position.z;
+                {
+                    u8 *q = func_L01_003016B0(&vector, 3, 2.0f, 1.025f);
+                    if (q != 0) q[0x23] = 0x70;
+                }
+                for (i = 0; i < 16; i++) {
+                    angle = func_00382538();
+                    speed = func_003824E0(0.0f, 0.060000002f);
+                    a.x = func_0038D098(angle) * speed;
+                    a.y = func_0038D0B0(angle) * speed;
+                    a.z = func_003824E0(0.060000002f, 0.13000001f);
+                    life = func_00382498(90, 120);
+                    func_L01_00468A68(&vector, &a, func_00382468(2), life);
+                }
+                func_L01_003506B8();
+                return;
+            }
+            if (D_L01_001EAA00[0].hit != 0) {
+                v->owner = D_L01_001EAA00[0].hit;
+                *(u128_t *)&v->anchor = *(u128_t *)(v->owner + 0x10);
+            }
+            {
+            f32 *pn = (f32 *)&normal;
+            f32 *pb = (f32 *)&b;
+            *(u128_t *)(m + 0x10) = *(u128_t *)&D_L01_001EAA00[0].position;
+            func_0038CE20(pn, (f32 *)&D_L01_001EAA00[0].normal, 0.0009765625f);
+            func_0038CF68(pn, pn, 1.0f);
+            func_0038CE90((f32 *)&c, (f32 *)(m + 0xC0), pn);
+            func_0038CF68((f32 *)&c, (f32 *)&c, 1.0f);
+            func_0038CE90(pb, pn, (f32 *)&c);
+            func_003C48A8(pb, m + 0xF0);
+            }
+            m[0x20] = 1;
+        }
+        hero = D_001A4BE0.hero;
+        *(s32 *)(hero + 0x98) = *(s32 *)(*(u8 **)(hero + 0x24) + 0x10);
+    }
+    for (j = 0; j < 1; j++) {
+        angleStep = func_L01_00443A18(2.0f, 5.0f);
+        joint = func_00382498(1, 3);
+        next = joint + 1;
+        if (joint == 3) next = 1;
+        func_003C2F58(m, joint, &a);
+        func_003C2F58(m, next, &b);
+        func_0038CDF8(&temp, &a, &b, func_003824E0(0.0f, 1.0f));
+        *(u128_t *)&c = *(u128_t *)&temp;
+        c.z += 1.0f;
+        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&vector)) : "m"(*(vu0_v4 *)(&c)), "m"(*(vu0_v4 *)(&temp)) : "vf1", "vf2");
+        func_0038CF68((f32 *)&vector, (f32 *)&vector, func_003824E0(1.5f, 2.0f) * 0.020000001415610313f);
+        size = (func_00382498(10, 15) * 5 + 2) / 6;
+        func_L01_004713C8(&temp, &vector, size, D_L01_001DF64C, angleStep, 0x7F, 0x7F, 46200.0f, 4200.0f, -0.0012f, 1);
+        angleStep = -(angleStep * 2);
+        size = (func_00382498(10, 15) * 5 + 2) / 6;
+        p = func_L01_004713C8(&temp, &vector, size, D_L01_001DF650, angleStep, 0x30, 0x30, 184800.0f, 8400.0f, -0.0012f, 0);
+        if (p != 0) p[2] = D_L01_00221098[0].pD4[0];
+    }
+    if (m[0x20] == 1) {
+        *(f32 *)(m + 0x2C) = *(f32 *)(*(u8 **)(m + 0x24) + 0x24) * 1.6f;
+        if (m[0x43] != 0) func_003C3A10(m, 0, 0, 8);
+        if (m[0x60] & 2) *(s32 *)(m + 0x48) = 0;
+        if (v->owner != 0) {
+            __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(&temp)) : "m"(*(vu0_v4 *)(v->owner + 0x10)), "m"(*(vu0_v4 *)(&v->anchor)) : "vf1", "vf2");
+            *(u128_t *)&v->anchor = *(u128_t *)(v->owner + 0x10);
+            __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(vu0_v4 *)(m + 0x10)) : "m"(*(vu0_v4 *)(m + 0x10)), "m"(*(vu0_v4 *)(&temp)) : "vf1", "vf2");
+        }
+        func_L01_00404A10_003E3938(func_L01_003E3F08, m);
+    }
+}
+/* localdecomp:end func_L01_003E3938 */
 
 /* localdecomp:start func_L01_003E3F08 */
 #include "vu0.h"
@@ -367,7 +511,77 @@ f32 func_L01_003E4428(u8 *self, f32 dist) {
 }
 /* localdecomp:end func_L01_003E4428 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E4580);
+/* localdecomp:start func_L01_003E4580 */
+#include "vu0.h"
+typedef union { u128_t q; f32 f[4]; } V_003E4580;
+typedef struct { u8 bytes[0xC0]; } Memory_003E4580;
+typedef struct { u8 p0[0x30]; V_003E4580 pos; u8 p40[0x30]; u8 *follow; u8 p74[0x20]; s32 player; } O_003E4580;
+
+extern Entry_3E6C58 D_L01_001E2A40[];
+extern s32 D_L01_001D673C;
+void func_L01_003E4580(O_003E4580 *o,V_003E4580 *movement) {
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_0038CE20(void *,void *,f32);
+    V_003E4580 delta,projection,adjusted,residual,old,duplicate;
+    u8 *d,*hero,*entry,*motion,*follow,*ground;
+    f32 dz, dot;
+    V_003E4580 *dv=&delta;
+    *dv=*movement;
+    entry=(u8 *)&D_L01_001E2A40[o->player];
+    follow=o->follow;
+    d=follow+0x60;
+    hero=entry+0x150;
+    motion=entry+0x60;
+    ground=*(u8 **)(hero+0xF8);
+    if(ground && !D_L01_001D673C) {
+        s16 busy;
+        do { busy=*(s16 *)(hero+0x124); } while(0);
+        if(!busy) {
+            if(ground==*(u8 **)(d+0x118)) {
+                dz=*(f32 *)(ground+0x18)-*(f32 *)(d+0x11C);
+                if(0.0f<dz) {
+                    if(dv->f[2]<dz) dv->f[2]=dz;
+                }
+            } else *(u8 **)(d+0x118)=ground;
+            *(f32 *)(d+0x11C)=*(f32 *)(*(u8 **)(hero+0xF8)+0x18);
+        } else *(s32 *)(d+0x118)=0;
+    } else *(s32 *)(d+0x118)=0;
+    {
+        vu0_q a, b, c, t;
+        __asm__("lqc2 %0, %1" : "=j"(a) : "m"(o->pos));
+        __asm__("lqc2 %0, %1" : "=j"(b) : "m"(*dv));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(b) : "j"(b), "j"(a));
+        __asm__("lqc2 %0, %1" : "=j"(c) : "m"(*dv));
+        __asm__("sqc2 %1, %0" : "=m"(o->pos) : "j"(b));
+        __asm__("lqc2 %0, %1" : "=j"(t) : "m"(*(V_003E4580 *)(d + 0x60)));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(c) : "j"(c), "j"(t));
+        __asm__("sqc2 %1, %0" : "=m"(*(V_003E4580 *)(d + 0x60)) : "j"(c));
+    }
+    __asm__("lqc2 $vf2,%0\n\tlqc2 $vf1,%1\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(d)) : "m"(*dv) : "vf1","vf2");
+    __asm__("lqc2 $vf1,%0\n\tlqc2 $vf2,%1\n\tvadd.xyz $vf2,$vf2,$vf1\n\tsqc2 $vf2,%0" : "+m"(*(V_003E4580 *)(d+0xB0)) : "m"(*dv) : "vf1","vf2");
+    __asm__("lqc2 $vf2,%0\n\tlqc2 $vf1,%1\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(d+0x30)) : "m"(*dv) : "vf1","vf2");
+    __asm__("lqc2 $vf1,%0\n\tlqc2 $vf2,%1\n\tvadd.xyz $vf2,$vf2,$vf1\n\tsqc2 $vf2,%0" : "+m"(*(V_003E4580 *)(follow)) : "m"(*dv) : "vf1","vf2");
+    dot=func_0038CE68(dv->f,(f32 *)(motion+0x30));
+    func_0038CE20(&projection,motion+0x30,dot);
+    __asm__("lqc2 $vf1,%0\n\tlqc2 $vf2,%1\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(d+0x10)) : "m"(projection) : "vf1","vf2");
+    if(!*(s16 *)(hero+0x124) && (!*(u8 **)(hero+0xF8) || *(s16 *)(*(u8 **)(hero+0xF8)+0xAA)!=0x22D || *(s32 *)(entry+0x454)>=26))
+        *(f32 *)(o->follow+0x200)=dv->f[3];
+    if((u32)(*(s32 *)(hero+0x100)-11)<2) {
+        u8 *later=o->follow;
+        *(s16 *)(later+0x10)=0;
+        func_0038CE20(&adjusted,motion+0x80,*(f32 *)(motion+0xA4));
+        dot=func_0038CE68((f32 *)(motion+0x30),dv->f);
+        func_0038CE20(&residual,motion+0x30,dot);
+        __asm__("lqc2 $vf1,%0\n\tlqc2 $vf2,%2\n\tvsub.xyz $vf2,$vf2,$vf1\n\tlqc2 $vf1,%3\n\tsqc2 $vf1,%1\n\tsqc2 $vf2,%0" : "+m"(residual),"=m"(old) : "m"(*dv),"m"(o->pos) : "vf1","vf2");
+        __asm__("lqc2 $vf2,%1\n\tlqc2 $vf1,%0\n\tvsub.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(adjusted) : "m"(residual) : "vf1","vf2");
+        __asm__("lqc2 $vf1,%2\n\tlqc2 $vf2,%2\n\tsqc2 $vf1,%0\n\tlqc2 $vf1,%3\n\tvadd.xyz $vf2,$vf2,$vf1\n\tsqc2 $vf2,%1" : "=m"(duplicate),"=m"(o->pos) : "m"(adjusted),"m"(old) : "vf1","vf2");
+        __asm__("lqc2 $vf2,%1\n\tlqc2 $vf1,%0\n\tvadd.xyz $vf1,$vf2,$vf1\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(d+0x60)) : "m"(duplicate) : "vf1","vf2");
+        __asm__("lqc2 $vf2,%0\n\tlqc2 $vf1,%1\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(d)) : "m"(adjusted) : "vf1","vf2");
+        __asm__("lqc2 $vf1,%0\n\tlqc2 $vf2,%1\n\tvadd.xyz $vf2,$vf2,$vf1\n\tsqc2 $vf2,%0" : "+m"(*(V_003E4580 *)(d+0xB0)) : "m"(adjusted) : "vf1","vf2");
+        __asm__("lqc2 $vf1,%1\n\tlqc2 $vf2,%0\n\tvadd.xyz $vf1,$vf1,$vf2\n\tsqc2 $vf1,%0" : "+m"(*(V_003E4580 *)(later)) : "m"(adjusted) : "vf1","vf2");
+    }
+}
+/* localdecomp:end func_L01_003E4580 */
 
 /* localdecomp:start func_L01_003E4828 */
 #include "vu0.h"
@@ -649,7 +863,211 @@ void func_L01_003E48D8(Cam_3E48D8 *cam) {
 }
 /* localdecomp:end func_L01_003E48D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E4F20);
+/* localdecomp:start func_L01_003E4F20 */
+#include "vu0.h"
+extern s32 D_L01_001DF658, D_L01_001DF660;
+__asm__(".extern D_L01_001DF658, 4");
+__asm__(".extern D_L01_001DF660, 4");
+static __inline__ void vsubst_3E4F20(void *d, vu0_q a, vu0_q b) {
+    __asm__("vsub.xyz %0, %1, %2" : "=j"(a) : "j"(a), "j"(b));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(a));
+}
+extern s32 D_L01_001D673C;
+extern Entry_3E6C58 D_L01_001E2A40[];
+/* camera vertical follow step: per-frame update of the follow point's vertical motion
+   (cam->follow + 0x60, mode byte +0xE4) from the hero's state; writes the follow point to *out */
+void func_L01_003E4F20(u8 *cam, u128_t *out) {
+    extern s32 func_L01_003E4198(u8 *, void *, s32);
+    extern void func_L01_003E4028(u8 *, u128_t *);
+    extern f32 func_L01_003E4428(u8 *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern s32 func_L01_003FB640(void *, s32, void *, f32);
+    vu0_v4 target, scratch;
+    u8 *entry = (u8 *)&D_L01_001E2A40[*(s32 *)(cam + 0x94)];
+    u8 *v = *(u8 **)(cam + 0x70) + 0x60;
+    u8 *hero = entry + 0x150;
+    u8 *motion = entry + 0x60;
+    u8 *axis;
+    s32 mode, flag, lim, n;
+    f32 dot, a, b, ang;
+
+    if (func_0038CE68(entry + 0x80, entry + 0x90) < 0.99900001f || D_L01_001D673C != 0) {
+        v[0x10E] = 1;
+        if (D_L01_001D673C != 0) {
+            v[0x10F] = (D_L01_001DF660 * 5 + 2) / 6;
+        } else {
+            n = v[0x10F];
+            if ((s8)v[0x10F] <= 0) {
+                v[0x10F] = (D_L01_001DF658 * 5 + 2) / 6;
+            } else {
+                n += 2;
+                v[0x10F] = n;
+                lim = (D_L01_001DF658 * 5 + 2) / 6;
+                if (lim < (s8)n) v[0x10F] = lim;
+            }
+        }
+    }
+    if (*(s16 *)(hero + 0x124) != 0 || D_L01_001D673C != 0 ||
+        (v[0x10E] != 0 && *(s16 *)(hero + 0x122) != 0)) {
+        dot = func_0038CE68(v, motion + 0x30);
+        func_0038CE20(v + 0x10, motion + 0x30, dot);
+        *(u128_t *)(v + 0x20) = *(u128_t *)(v + 0x10);
+        *out = *(u128_t *)(v + 0x10);
+        mode = v[0xE4];
+        if ((u32)(mode - 5) < 3 || mode == 3)
+            func_L01_003E4828((Entry_3E6C58 *)entry, (void *)(v + 0x30), 1.5f, 1);
+    }
+    axis = motion + 0x30;
+    func_L01_003E4028(cam, (u128_t *)&target);
+
+    if (*(s32 *)(hero + 0x100) == 0x79) {
+        dot = func_0038CE68(v, axis);
+        func_0038CE20(out, axis, dot);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(out)));
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(v)));
+            vsubst_3E4F20(v, qa, qb);
+        }
+        dot = func_0038CE68(axis, v + 0x60);
+        func_0038CE20(out, axis, dot);
+        *(u128_t *)(v + 0x10) = *out;
+        if (v[0xE4] != 0xB) {
+            u8 *follow;
+            v[0xE4] = 0xB;
+            *(u128_t *)(cam + 0x40) = *(u128_t *)cam;
+            follow = *(u8 **)(cam + 0x70);
+            *(s16 *)(follow + 0x20) = 0x4B;
+            *(f32 *)(follow + 0x44) = 0.013333334f;
+        }
+        return;
+    }
+    switch (v[0xE4]) {
+    case 2:
+        if (*(s32 *)(hero + 0x100) == 17 ||
+            (hero[0x12A] != 0 && 0.2f < *(f32 *)(hero + 0x114) &&
+             ((ang = func_L01_003E4428(cam, *(f32 *)(v + 0xD0))) < -0.01f || 1.57079637f < ang))) {
+            v[0xE4] = 1;
+            *(s16 *)(v + 0xE6) = 10;
+            *(f32 *)(v + 0xE8) = 0.1f;
+        }
+        flag = 0;
+        if (*(s16 *)(hero + 0x120) != 0 && (hero[0x12A] == 0 || *(s16 *)(hero + 0x128) >= 16)) {
+            flag = 1;
+        } else {
+            if (func_L01_003E4198(entry, &scratch, 1) != 1) {
+                flag = 1;
+            } else {
+                a = func_0038CE68(&scratch, axis);
+                b = func_0038CEA8(v + 0x10);
+                if (a < b) flag = 1;
+            }
+        }
+        if (flag) {
+            *out = *(u128_t *)(v + 0x10);
+            dot = func_0038CE68(&target, axis);
+            func_0038CE20(&scratch, axis, dot);
+            {
+                vu0_q qa, qb;
+                __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&target)));
+                __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(&scratch)));
+                vsubst_3E4F20(v, qa, qb);
+            }
+        } else {
+            func_L01_003E4198(entry, &scratch, 1);
+            dot = func_0038CE68(&scratch, axis);
+            func_0038CE20(out, axis, dot);
+            {
+                vu0_q qa, qb;
+                __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(out)));
+                __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&scratch)));
+                vsubst_3E4F20(v, qa, qb);
+            }
+        }
+        break;
+    case 3: case 5: case 6: case 7:
+        func_0038CDF8(v + 0x10, v + 0x30, v + 0x20, (f32)*(s16 *)(v + 0xF4) * *(f32 *)(v + 0xEC));
+        if (v[0xF7] == 0) {
+            if (func_L01_003FB640(cam + 0x30, 18, 0, 0.2f)) {
+                v[0xF7] = 1;
+                *(u128_t *)(v + 0x30) = *(u128_t *)(v + 0x10);
+            }
+        }
+        *out = *(u128_t *)(v + 0x10);
+        dot = func_0038CE68(&target, axis);
+        func_0038CE20(&scratch, axis, dot);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&target)));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(&scratch)));
+            vsubst_3E4F20(v, qa, qb);
+        }
+        if (func_0038CB00(v + 0xF4)) {
+            mode = v[0xE4];
+            if (mode == 9) {
+                u128_t q = *(u128_t *)(v + 0x10);
+                v[0xE4] = 10;
+                *(s16 *)(v + 0xF4) = 0x19;
+                *(u128_t *)(v + 0x20) = q;
+                func_0038CE20(&scratch, axis, *(f32 *)(v + 0xF0));
+                {
+                    vu0_q qa, qb;
+                    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(v + 0x20)));
+                    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(&scratch)));
+                    vsubst_3E4F20(v + 0x30, qa, qb);
+                }
+            } else if (mode == 6) {
+                u128_t old20 = *(u128_t *)(v + 0x20);
+                u128_t cur10 = *(u128_t *)(v + 0x10);
+                v[0xE4] = 7;
+                *(s16 *)(v + 0xF4) = 0x1D;
+                *(u128_t *)(v + 0x30) = old20;
+                *(u128_t *)(v + 0x20) = cur10;
+            } else {
+                v[0xE4] = 4;
+                *(s16 *)(v + 0xE6) = 20;
+                *(f32 *)(v + 0xE8) = 0.05f;
+            }
+        }
+        break;
+    case 8:
+        *out = *(u128_t *)(v + 0x10);
+        dot = func_0038CE68(&target, axis);
+        func_0038CE20(&scratch, axis, dot);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&target)));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(&scratch)));
+            vsubst_3E4F20(v, qa, qb);
+        }
+        break;
+    case 9: case 10:
+        dot = func_0038CE68(&target, axis);
+        func_0038CE20(out, axis, dot);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&target)));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(out)));
+            vsubst_3E4F20(v, qa, qb);
+        }
+        func_0038CDF8(out, out, v + 0x20, 0.5f);
+        break;
+    default:
+        dot = func_0038CE68(&target, axis);
+        func_0038CE20(out, axis, dot);
+        {
+            vu0_q qa, qb;
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)(out)));
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)(&target)));
+            vsubst_3E4F20(v, qa, qb);
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_003E4F20 */
 
 /* localdecomp:start func_L01_003E5578 */
 extern f32 func_00382BC8(f32 *, f32, f32, f32, f32, f32);
