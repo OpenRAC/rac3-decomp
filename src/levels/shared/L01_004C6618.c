@@ -2291,7 +2291,7 @@ LINKER_REMNANT("asm/levels", func_L01_004CB120);
 #include "vu0.h"
 s32 func_L01_004CB128(Vec4_004C4AD8 *out, u8 *moby, s32 joint) {
     extern void func_003C2F58(void *, s32, void *);
-    extern u8 *func_00382348(void);
+    extern u8 *func_00382348(u8 *moby);
     extern void func_0038CE20(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
     u8 *state;
     if (moby != 0) {
@@ -2300,7 +2300,7 @@ s32 func_L01_004CB128(Vec4_004C4AD8 *out, u8 *moby, s32 joint) {
             return 1;
         }
         *(vu0_q *)out = *(vu0_q *)(moby + 16);
-        state = func_00382348();
+        state = func_00382348(moby);
         if (state != 0) {
             func_0038CE20(out, (Vec4_004C4AD8 *)(moby + 224), *(f32 *)(state + 16));
             vec_add_ab(out, out, moby + 16);
