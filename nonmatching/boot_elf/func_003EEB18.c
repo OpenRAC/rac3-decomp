@@ -4,7 +4,10 @@
    15 differences with its file's line and 6 with `--as ps2as` (tools/check.py, see
    nonmatching/README.md). The US draft's form, which reaches
    MATCH only with register pins and empty asm barriers (not allowed here), is kept as a study
-   aid in the comment at the end of this file. */
+   aid in the comment at the end of this file.
+   CLOSEOUT attempt 1 of 2 (2026-11-24): still 15 / 6 (`--as ps2as`); six more plain wordings
+   (inline helpers, a `register` local, an `int` parameter, a comma return, a result local) give
+   the same 6 wrong words. See nonmatching/README.md. */
 
 /* localdecomp:start func_003EEB18 */
 extern void func_003EDD40(void);

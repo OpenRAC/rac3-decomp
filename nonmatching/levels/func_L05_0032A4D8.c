@@ -1,5 +1,7 @@
-/* func_L05_0032A4D8: Promises (task 2790, 2026-11-21), written from the PAL asm (upstream also has a
+/* func_L05_0032A4D8: Promises (2026-11-21), written from the PAL asm (upstream also has a
  * nonmatching/functional/ draft of it, not used here).
+ * NTSC-U also differs in 10 float constants (for example 0.02 on PAL, about 1/60 on NTSC-U), so a match
+ * there needs its own src/us/ C.
  * Near miss: 408 differences (tools/check.py), level 05, with -mvu0-use-vf0-vf2 @ps2as (the count is large
  * because the prologue is one word short and every later row shifts). Needs on the file: -mvu0-use-vf0-vf2 (its
  * neighbour func_L05_0032AB50 still matches with it) and the existing @ps2as, plus the divs_nops row
@@ -8,19 +10,19 @@
  * top, mov.s $f14,$f20 before the call); ours loads it straight into $f14, which also moves the D_L05_0021ED80
  * address into $a2 instead of $a1. Tried: a local holding 20.0 (used for the call only, for the call and the
  * speed formula, reused for the 1.0 later), an inline wrapper for the call: none puts it in $f20.
- * Task 2812 (2026-11-22) also tried: the call first, before `pos = o->pos`; the call's arguments in
+ * Also tried 2026-11-22: the call first, before `pos = o->pos`; the call's arguments in
  * temporaries; the call right after `path = ...`; 20.0 assigned to sp, lim, dot or h just before the call
  * (all 403-408). A local `k = 20.0f` used by the call and the speed formula gives 390: the prologue then
  * has retail's mtc1/mov.s shape and $a1 address, but k lives to the formula in a third saved register
  * ($f22, frame 0xC0 instead of 0xB0), where retail reloads 20.0 into $f0.
- * Task 2895 (2026-11-22) re-measured 408 (with and without --no-context) and read the RTL dumps (-da). Retail
+ * 2026-11-22: re-measured 408 (with and without --no-context) and read the RTL dumps (-da). Retail
  * reuses $f20 for 20.0, then for the 1.0 of the normalise call and the clamp, then 0.10471976 and 0.01, so the
  * 20.0 is most likely the same variable as the 1.0 (only that phase crosses calls, which explains $f20). But a
  * variable set to 20.0, passed to the call and then set to 1.0 (`one = 20.0f; ... one = 1.0f;`, also used by the
  * clamp) still gives 408: CSE keeps the pseudo for the argument, then combine folds the 20.0 into the $f14 move,
  * because the variable dies at the call. In retail it survived combine, so in the original it was still live
  * after the call, although retail's code shows no later read of it before the 1.0.
- * Task 2978 (2026-11-23, upstream bbf261a1; same recipe: -mvu0-use-vf0-vf2 @ps2as and the divs_nops row,
+ * 2026-11-23 (upstream bbf261a1; same recipe: -mvu0-use-vf0-vf2 @ps2as and the divs_nops row,
  * level 05) also tried: a scoped `{ f32 hi = 20.0f; ... }` for the call, `f32 k = 20.0f` initialised at the top,
  * `k = 20.0f` before `pos = o->pos`, an inline helper whose parameter is reassigned, and one variable set to 20.0
  * for the call and to 1.0 for the normalise, the clamp and the later `1.0f <= u` (all 408: combine folds the
@@ -28,6 +30,16 @@
  * (397: three saved float registers). `k` for the call and the formula reproduces 390 ($f22, frame 0xC0).
  * Retail reads $f20 nowhere between the call and its 1.0 load, so a 20.0 variable that lives past the call
  * always overlaps the 1.0 and takes a third saved register.
+ * CLOSEOUT attempt 1 of 2 (2026-11-24, upstream 5eb0ce11; same recipe): no change. 408 differences
+ * (tools/check.py, level 05; 407 at levels 16 and 19), the same with --no-context; compared one row off from row 30,
+ * 2 rows differ at level 05 (both in the prologue) and 8 at levels 16 and 19 (the same 2, plus 6 $gp loads that
+ * check.py shows at offset 0 there for the D_L05_ names). Tried: `k = 20.0f` for the call plus a test that is
+ * always false right after it (`k < 0.0f || s->f164 < 0.0f`, and `s->f164 < 0.0f || k <= 0.0f`), to keep k live
+ * across the call so that it takes a saved register while the test folds away later: both compile to exactly
+ * the draft's bytes (cse folds the test first, so k still dies at the call). `k` for the call and the formula
+ * reproduces 390: the prologue is then retail's except that k is in $f22 (f in $f21, the 1.0 in $f20) and the
+ * frame is 0xC0. Retail's 20.0 must cross the call and die before the 1.0 is set, with no read in between that
+ * survives to the output; no plain C form for that was found.
  * The $gp floats are level data (gp+0x4..0x18 in level 05, gp+0x24.. in level 16, gp+0x54.. in level 19), so
  * they are D_L05_ names with `.extern X, 4` hints (the build derives them per level).
  * The three path-segment cases are vec_sub_ba() each (gcc cross-jumps their vsub/sqc2 tail as retail has it).

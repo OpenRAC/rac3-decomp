@@ -1,7 +1,7 @@
 /* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3): func_L04_00355740
  * (1204 B; levels 04 24 26 39-53), written from retail. check.py with its file's line
  * (-mvu0-use-vf0-vf2 ... @ps2as): 2 diff at every placement (04, 24, 26, 39-53; also NTSC-U and --no-context),
- * re-measured 2026-11-23 (task #2996). The history below gives the earlier counts (233 -> 136 -> 2). Calls,
+ * re-measured 2026-11-23. The history below gives the earlier counts (233 -> 136 -> 2). Calls,
  * constants and the order of the vector operations follow retail. The colour fields are s32 (u32 gives `lui/ori 0xFFFF` for -1, retail has `addiu -1`: 247 -> 233).
  * The 2026-11-22 retry, each step measured on top of the one before:
  *  - vec_copy(&e, &D_001E27C0) before the func_0038CF68(&a, t, -0.17f) call: the scheduler no longer keeps three
@@ -23,8 +23,8 @@
  * the frame stays 0x170 in all 15. Retail's order is lqc2 o + 0x10 for the vsub, sqc2 q.v[0], lqc2 o + 0x10,
  * sqc2 g, lqc2 f, vsub: the copy's store comes before f's load, where this C's sched1 puts it after the vsub's
  * store and reload spills the copied value to 0x100($sp).
- * 2026-11-23 (RT-I, rac3-w1, task #2976): 136 -> 2 differences, in the PROVISIONAL VU0 j-constraint form
- * (docs/wiki/Matching-Patterns.md, "VU0 j-form") for three sequences, with RT-H2's levers (#2971):
+ * 2026-11-23 (RT-I, rac3-w1): 136 -> 2 differences, in the PROVISIONAL VU0 j-constraint form
+ * (docs/wiki/Matching-Patterns.md, "VU0 j-form") for three sequences, with RT-H2's levers:
  *  - the 0.2f block's copy of o + 0x10 into g loads into r, the add's result register, right after r is
  *    stored to q.v[0]: the copy no longer spills, frame 0x170 -> 0x160 (136 -> 62);
  *  - the same for the first block (a = o + a, e = D_001E27C0, b = o - e), back at its retail place after the
@@ -39,7 +39,7 @@
  * longer than the o load, and as a store it also lowers register pressure, so it always wins. TImode casts on any
  * of the block's operands, other register-variable choices (244) and the 22 valid statement orders did not change
  * it (47 at that stage) or spilled.
- * 2026-11-23 (RT-I2, rac3-w1, task #2982): still 2 (also 2 with --no-context; 2 at level 26, 3 at 24 and 4 at
+ * 2026-11-23 (RT-I2, rac3-w1): still 2 (also 2 with --no-context; 2 at level 26, 3 at 24 and 4 at
  * 39-53, where the extra words are only D_001E27C0's relocation; NTSC-U 2, the same pair). sched1's dump: the o
  * load (lqc2 o + 0x10) and the a store issue in the same cycle (issue rate 2); the e load's only link to the a store
  * is the anti dependence of reusing x, so the two have equal priority and the store wins on register weight. After
@@ -52,7 +52,7 @@
  *    true memory dependence on the a store (the store gains priority); with TImode a/e the a store loses its output
  *    dependence on the e store and issues before the D load; with C loads the e load takes the memory unit ahead of
  *    the o load (it depends on the last insn issued).
- * 2026-11-23 (PASS-P1, rac3-w1, task #2996): D_001E27C0 is level 04's .bss (0x1DF580 + 0xC5600), so it is named
+ * 2026-11-23 (PASS-P1, rac3-w1): D_001E27C0 is level 04's .bss (0x1DF580 + 0xC5600), so it is named
  * D_L04_001E27C0 (docs/build/levels.md, "C in level code"): levels 24 and 39-53 go from 3 and 4 to 2, the same
  * pair as level 04. Still 2: sched1's dump (block 6) has the o load (231) and the a store (233) ready at t = 8
  * with no memory dependence between them (o is the incoming a3, an argument base, which alias analysis keeps
@@ -67,6 +67,16 @@
  *    of two blocks (230, 0x170), the vsub's result into x (9), and vu0.h helpers for all three (233, 0x170);
  *  - the second o load as a compiler TImode load (y = *(vu0_q *)(o + 0x10)), alone or with the first: the load
  *    gets the memory unit but is still ready at t = 8 with the store, which is issued first.
+ * 2026-11-24 (Promises, CLOSEOUT): study aid only, comment-only. NOT a candidate: a cross-sequence
+ * multi-instruction j-form block (an lqc2 for the next vsub paired with the previous sequence's sqc2) is a barrier
+ * as a scheduling barrier. In the first VU0 block, the two statements `lqc2 y, o + 0x10` and `sqc2 x, a` written as one:
+ *
+ *     __asm__("lqc2 %0, %2\n\tsqc2 %3, %1" : "=&j"(y), "=m"(a) : "m"(*(vu0_v4 *)(o + 0x10)), "j"(x));
+ *
+ * Measured on a second machine: with this block, check.py gives MATCH at all 18 placements (04, 24, 26,
+ * 39-53), with and without --no-context, and MATCH with --version us. Split into two statements it gives 2
+ * differences in both orders (sqc2 first and lqc2 first). The seeded control (0x60804020 -> 0x60804021) gives 1.
+ * The C below keeps the plain per-instruction form, at 2 differences.
  */
 #include "common.h"
 #include "vu0.h"

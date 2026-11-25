@@ -7,10 +7,10 @@
    its copy differs (not carried).
    Shape: the manager at 0x1A30B0 as one struct (channels at +0xC0 = D_1A3170); VU0 code through
    include/vu0.h's helpers where retail's lqc2/sqc2 order is theirs, plus ONE j-form block
-   (PROVISIONAL, r3-34): retail's 0x2C0/0x2F0 stack words are reload spills of VU0 values, and
+   (PROVISIONAL): retail's 0x2C0/0x2F0 stack words are reload spills of VU0 values, and
    with that block the frame is 0x370 as retail. func_003A41C8 is declared void in the file but
-   retail uses the s32 it leaves in $v0: an s32 per-function alias (r3-55 1); D_1A30B0 and
-   D_00222400 have per-function aliases because the file declares them with other types (r3-39).
+   retail uses the s32 it leaves in $v0: an s32 per-function alias; D_1A30B0 and
+   D_00222400 have per-function aliases because the file declares them with other types.
    What the retry fixed: D_2228D0 and D_1A4F30 as unsized arrays (gcc splits the address itself,
    so the lui of D_2228D0 goes before the frame allocation and D_1A4F30 loads through $v0);
    separate locals for values that one variable used to carry (the flag byte at 0x43, the channel

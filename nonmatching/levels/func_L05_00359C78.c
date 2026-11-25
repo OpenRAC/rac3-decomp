@@ -265,12 +265,12 @@ configured:
 }
 /* localdecomp:end func_L05_00358B60 */
 
-/* PAL port (Promises, 2026-11-21, task #2810) of the NTSC-U draft above: 19 differences (tools/check.py, level 05)
+/* PAL port (Promises, 2026-11-21) of the NTSC-U draft above: 19 differences (tools/check.py, level 05)
  * with its file's flags and context (395 for the plain port). Callees moved to PAL by call order (func_L01_0045BD78,
  * func_003C24B0, func_003C2880, func_003C7C38, func_0038D308, func_L05_0035AEC8, func_L01_004450F0,
  * func_L05_0035AA68, func_L01_004AA7E8, func_003C3A10; table D_L05_001DF7CC), PAL's 50 Hz constants, and one
  * statement NTSC-U does not have: s->f3C0 = (s->f3C0 * 5 + 2) / 6. A statement-order hill-climb over the 34
- * initialising stores took it from 60 to 36 (2026-11-21). 2026-11-22 (task #2933, on 45baf7e5): the declarations
+ * initialising stores took it from 60 to 36 (2026-11-21). 2026-11-22 (on 45baf7e5): the declarations
  * that PR #132's func_L05_003560C8 block gives the file (D_L05_001DF7CC as u8 *, func_L01_0045BD78,
  * func_L01_004AA7E8 and func_L05_0035AEC8 with Mo_60C8 *, func_L05_0035AA68 K&R) are used here, so the block
  * compiles in its file (casts to Mo_60C8 * at the four calls); a further climb over the same statements, now with
@@ -279,10 +279,16 @@ configured:
  * and the argument-setup order before three calls (9: retail sets $a2 = 4 in the beqz delay slot for both of the
  * first two func_L01_004450F0 calls, and $a2/$a3 before $a0/$a1 for func_L05_0035AA68(m, 2, 0, 0)), which the
  * NTSC-U draft also has; a named-constant local for the 4, locals for the zeros and the a0 parameter in place of
- * m give the same 19 bytes. 2026-11-23 (task #2966, upstream bbf261a1): still 19. gcc's -da dumps: the moves are
+ * m give the same 19 bytes. 2026-11-23 (upstream bbf261a1): still 19. gcc's -da dumps: the moves are
  * expanded in parameter order and keep it through sched1 and sched2 (they tie), so reorg puts `move $a0` into the
  * beqz delay slot where retail has `addiu $a2, $zero, 4`; a prototype for func_L05_0035AA68, a block-local
- * prototype for func_L01_004450F0, (s32)0 casts and a call through a function pointer all give 19. */
+ * prototype for func_L01_004450F0, (s32)0 casts and a call through a function pointer all give 19.
+ * CLOSEOUT attempt 1 of 2 (upstream 242c17bd): still 19 at levels 05, 10, 14 and 17. -fsched-verbose-5
+ * shows the three argument moves before the f3B8 call tie in sched1 and sched2 (prio 3, one dependent, the call),
+ * so LUID decides and they keep the expand order a0, a1, a2; retail's order (a2 first, then a2/a3 before a0/a1 for
+ * func_L05_0035AA68) needs the a2/a3 moves created first. These give the same bytes (19): a static inline wrapper
+ * (m, st) for each of the two callees, a local for the 4 in the f3B8 block, an alias local for m in that block, and
+ * both callees declared s32 under suffix aliases with the result kept in a local. */
 /* localdecomp:start func_L05_00359C78 */
 typedef struct { float x,y,z,w; } __attribute__((aligned(16))) V4_359C78;
 typedef int Pair_359C78 __attribute__((mode(DI)));
