@@ -47,6 +47,16 @@ A name is given to one symbol only. Held back as candidates for now:
   function by name, as the update / think / create triples do); candidate when only the notes or a
   `nonmatching/` draft back it, because the function is still assembly here. The layouts are in
   `include/structs/guber.h`.
+- **UYA campaign research** (this project's own notes on the PAL campaign, 2026-10 and 2026-11):
+  the hero's body switch (the Tyhrra-Guise), hits and damage masks, the enemies' targeting and the
+  Infector's infection, the moby update loop, and the AI of the campaign's enemy classes, from
+  tests in the running PAL game (PCSX2) and reads of its code. Each row's evidence starts with the
+  level and address the notes use (Veldin, level 1, unless the class lives elsewhere), says
+  "Live:" for what was seen in the running game, and was checked against the retail code at that
+  place: the calls, the class ids and the offsets it states. Tiers: descriptive when this
+  repository's matched C was read too ("Read in FILE.c"), or for a class's update function, which
+  the running game showed at the moby's +0x64 and which retail only names in data; candidate for
+  a function that is still assembly here.
 - **rac1-decomp and rac2-decomp** ([OpenRAC](https://github.com/OpenRAC)): the same engine and
   libraries, so many functions have a twin there. A name comes from rac1's `config/names.tsv`
   (PAL v2.00, `SCES-50916`; its recovered and descriptive rows) or rac2's `include/names.h` and
