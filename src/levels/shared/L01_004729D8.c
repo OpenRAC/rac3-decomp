@@ -1464,7 +1464,56 @@ f32 func_L01_00476750(Vec4 *out, Vec4 *point, Vec4 *a, Vec4 *b) {
 }
 /* localdecomp:end func_L01_00476750 */
 
-INCLUDE_ASM("asm/levels", func_L01_00476920);
+/* localdecomp:start func_L01_00476920 */
+#include "vu0.h"
+f32 func_L01_00476920(Vec4 *out, Vec4 *point, Vec4 *a, Vec4 *b, f32 height) {
+    extern void func_L01_004766E0_00476920(Vec4 *, Vec4 *, f32);
+    extern f32 func_L01_00476750_00476920(Vec4 *, Vec4 *, Vec4 *, Vec4 *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003C4098(Vec4 *, Vec4 *, Vec4 *, f32);
+    extern f32 func_0038CE68(Vec4 *, Vec4 *);
+    extern void func_0038CF38(Vec4 *, Vec4 *);
+    extern f32 func_0038CF00_00476920(Vec4 *, Vec4 *);
+    Vec4 direction, start, normal, first, second;
+    f32 result, length, projection, distance;
+    f32 *op, *ap, *bp;
+    s32 i;
+    if (height > 0.0f && fabs_asm(point->f[2] - a->f[2]) < height &&
+        fabs_asm(point->f[2] - b->f[2]) < height) {
+        f32 along;
+        result = func_L01_00476750_00476920(out, point, a, b);
+        along = ((f32 (*)(Vec4 *, Vec4 *))func_0038CF38)(a, out);
+        length = ((f32 (*)(Vec4 *, Vec4 *))func_0038CF38)(a, b);
+        direction.q = a->q;
+        start.q = b->q;
+        func_003C4098(out, &direction, &start, along / length);
+        return result;
+    }
+    vec_sub_ba(&direction, b, a);
+    start.q = a->q;
+    func_0038CF68(&direction, &direction, 1.0f);
+    normal.q = direction.q;
+    projection = -func_0038CE68(point, &direction);
+    distance = func_0038CE68(&start, &normal);
+    func_0038CE20(out, &direction, -(projection + distance) / func_0038CE68(&direction, &normal));
+    vec_add_ab(out, out, &start);
+    i = 0; bp = b->f; ap = a->f; op = out->f;
+    do {
+        if (*op > *ap && *op > *bp) break;
+        if (*op < *ap && *op < *bp) break;
+        i++; bp++; ap++; op++;
+    } while (i < 3);
+    if (i < 3) {
+        f32 near = func_0038CF00_00476920(out, a);
+        if (near < func_0038CF00_00476920(out, b)) out->q = a->q;
+        else out->q = b->q;
+    }
+    first.q = point->q;
+    second.q = out->q;
+    return ((f32 (*)(Vec4 *, Vec4 *, f32))func_L01_004766E0_00476920)(&first, &second, 0.0f);
+}
+/* localdecomp:end func_L01_00476920 */
 
 INCLUDE_ASM("asm/levels", func_L01_00476B98);
 

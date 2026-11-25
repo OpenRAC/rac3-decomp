@@ -278,4 +278,82 @@ void func_L07_003C9D88(u8 *obj, s32 index) {
 }
 /* localdecomp:end func_L07_003C9D88 */
 
-INCLUDE_ASM("asm/levels", func_L07_003C9E88);
+/* localdecomp:start func_L07_003C9E88 */
+#include "vu0.h"
+extern vu0_v4 D_L07_001E1EC0;
+typedef struct { vu0_v4 pos[4]; s32 color[4]; f32 uv[8]; u8 rest[32]; } Draw_003C9E88;
+void func_L07_003C9E88(vu0_v4 *start, vu0_v4 *end, f32 fraction, f32 offset) {
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_003D2DA0(void *, s32, s32);
+    extern f32 func_0038CF38(void *, void *);
+    extern f32 func_00382538(void);
+    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
+    vu0_v4 side0;
+    vu0_v4 side1;
+    vu0_v4 direction;
+    Draw_003C9E88 quad;
+    f32 width;
+    f32 width2;
+    f32 length;
+    f32 random;
+    vec_sub_ab(&direction, end, start);
+    vec_sub_ab(&side0, start, &D_L07_001E1EC0);
+    width = fraction * 0.25f;
+    func_0038CE90(&side0, &side0, &direction);
+    func_0038CF68(&side0, &side0, width);
+    vec_sub_ba(&side1, end, &D_L07_001E1EC0);
+    func_0038CE90(&side1, &side1, &direction);
+    func_0038CF68(&side1, &side1, width);
+    func_003D93B0(&quad, 0x2B, 1, 0x80);
+    quad.color[3] = 0x40802020;
+    quad.color[2] = 0x40802020;
+    quad.color[1] = 0x40802020;
+    quad.color[0] = 0x40802020;
+    vec_add_ab(&quad.pos[0], start, &side0);
+    vec_sub_ba(&quad.pos[1], start, &side0);
+    vec_add_ba(&quad.pos[2], end, &side1);
+    vec_sub_ba(&quad.pos[3], end, &side1);
+    quad.uv[0] = 0.0f;
+    quad.uv[1] = 0.0f;
+    quad.uv[2] = 0.0f;
+    quad.uv[3] = 1.0f;
+    quad.uv[4] = 1.0f;
+    quad.uv[5] = 0.0f;
+    quad.uv[6] = 1.0f;
+    quad.uv[7] = 1.0f;
+    func_003D2DA0(&quad, 0, 0);
+    func_003D93B0(&quad, 0x27, 1, 0x80);
+    quad.color[1] = -256;
+    quad.color[3] = 0x80FF0000;
+    quad.color[0] = -256;
+    quad.color[2] = 0x80FF0000;
+    width2 = fraction * 0.35f;
+    func_0038CF68(&side0, &side0, width2);
+    func_0038CF68(&side1, &side1, width2);
+    vec_add_ba(&quad.pos[0], start, &side0);
+    vec_sub_ba(&quad.pos[1], start, &side0);
+    vec_add_ba(&quad.pos[2], end, &side1);
+    vec_sub_ba(&quad.pos[3], end, &side1);
+    length = func_0038CF38(start, end) * 0.6f;
+    if (length > 14.0f) length = 14.0f;
+    quad.uv[0] = -7.0f - offset;
+    quad.uv[1] = 0.0f;
+    quad.uv[2] = -7.0f - offset;
+    quad.uv[3] = 1.0f;
+    quad.uv[4] = (length + -7.0f) - offset;
+    quad.uv[5] = 0.0f;
+    quad.uv[6] = (length + -7.0f) - offset;
+    quad.uv[7] = 1.0f;
+    func_003D2DA0(&quad, 0, 0);
+    random = func_00382538();
+    func_003D9508(start, 0x47, 0x60606020, 1, 0.9f, 0.4f, random);
+    random = func_00382538();
+    func_003D9508(start, 0x47, 0x80FFFFFF, 1, 0.25f, 0.4f, random);
+    random = func_00382538();
+    func_003D9508(end, 0x47, 0x60604020, 0, 0.75f, 0.0f, random);
+    random = func_00382538();
+    func_003D9508(end, 0x47, 0x80FFFFFF, 0, 0.5f, 0.0f, random);
+}
+/* localdecomp:end func_L07_003C9E88 */

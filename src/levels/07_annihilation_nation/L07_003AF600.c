@@ -730,7 +730,84 @@ void func_L07_003B0FC0(void *arg0) {
 }
 /* localdecomp:end func_L07_003B0FC0 */
 
-INCLUDE_ASM("asm/levels", func_L07_003B0FE0);
+/* localdecomp:start func_L07_003B0FE0 */
+#include "vu0.h"
+extern u8 *D_L07_001DF41C;
+extern s32 D_L07_001DF458;
+extern s16 *D_L07_0021C020[];
+typedef struct { void *owner; u8 pad[8]; u8 counts[7]; u8 pad13[13]; u8 *group[4]; u8 *special[4]; } Vars_003B0FE0;
+void func_L07_003B0FE0(u8 *self) {
+    extern void func_003C2F58(void *, s32, void *);
+    extern s32 func_L07_00333CE0(void *, s32);
+    extern u8 *func_L07_00333918(void *);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_L07_003343E8(s32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_L07_00333D40(void *, void *);
+    extern f32 func_0038D160(f32, f32);
+    Vars_003B0FE0 *vars=*(Vars_003B0FE0 **)(self+0x68);
+    vu0_v4 pos, delta;
+    f32 angle0, angle1;
+    u8 **group=vars->group;
+    u8 **out;
+    s32 n;
+    s32 clear=3;
+    s32 *slot=(s32 *)(group+3);
+    s16 *list;
+    u8 *m, *state;
+    f32 *angle;
+    s32 i;
+    do { *slot=0; clear--; slot--; } while(clear>=0);
+    func_003C2F58(self,1,&pos);
+    out=group;
+    n=0;
+    pos.z += -2.5f;
+    angle0=angle1=*(f32 *)(self+0xF8);
+    for(i=0;i<7;i++) {
+        if (vars->counts[i]) {
+            list=D_L07_0021C020[func_L07_00333CE0(vars->owner,i)];
+            goto test;
+            do {
+body:
+                m=D_L07_001DF41C+((*(u16 *)list & 0x7FFF)<<8);
+                if (!m) break;
+                if(m[0x20]==1) {
+                    state=func_L07_00333918(m);
+                    angle=0;
+                    *(s16 *)(state+0xE)=((func_00382498(-10,10)+20)*5+2)/6;
+                    state[0x1E]=0;
+                    state[0x1D]=i;
+                    qzero(&delta);
+                    if(func_L07_003343E8(i)==1) {
+                        vars->special[n]=m;
+                        n++;
+                        delta.z=3.0f;
+                        angle=&angle0;
+                    } else if(func_L07_003343E8(i)==0) {
+                        *out++=m;
+                        angle=&angle1;
+                    }
+                    delta.x=func_0038D098(*angle)*2.0f;
+                    delta.y=func_0038D0B0(*angle)*2.0f;
+                    *angle=func_0038DAB8(*angle,1.5707963705062866f);
+                    vec_add_ab(m+0x10,&pos,&delta);
+                    func_L07_00333D40(*(void **)(state+4),m);
+                    *(f32 *)(m+0xF8)=func_0038D160(*(f32 *)(*(u8 **)vars+0x10)-*(f32 *)(m+0x10),*(f32 *)(*(u8 **)vars+0x14)-*(f32 *)(m+0x14));
+                    if(--vars->counts[i]==0) break;
+                }
+                list++;
+test:
+                if ((u8)func_L07_00333CE0(vars->owner,i)==255) break;
+                if (func_L07_00333CE0(vars->owner,i)>D_L07_001DF458) break;
+                if (!list) break;
+                if (list[-1]>=0) goto body;
+            } while (list==D_L07_0021C020[func_L07_00333CE0(vars->owner,i)]);
+        }
+    }
+}
+/* localdecomp:end func_L07_003B0FE0 */
 
 /* localdecomp:start func_L07_003B12D8 */
 extern s32 D_001A4F3C[];

@@ -1288,13 +1288,57 @@ void func_L01_003D4EE0(void *dst, u8 *obj) {
 }
 /* localdecomp:end func_L01_003D4EE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D4F30);
+/* localdecomp:start func_L01_003D4F30 */
+#include "vu0.h"
+typedef struct { u8 pad[0x20]; u32 color0; u8 pad24[4]; u32 color1; u8 pad2c[0x84]; vu0_v4 position; s32 timer; s32 delay; s32 target; u8 padcc[4]; u8 *parent; u8 tail[0xC]; } Row_003D4F30;
+extern vu0_v4 D_L01_001EAA20[];
+void func_L01_003D4F30(u8 *self, s32 index)
+{
+    extern void func_L01_003D4EE0_003D4F30(void *, u8 *);
+    extern s32 func_L01_003FB640(void *, f32, s32, u8 *);
+    extern f32 func_0038CF00(void *, void *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68_003D4F30(void *, void *, f32);
+    extern void func_00382580(void *, f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_00474078(void *, void *, s32, f32, f32, f32, f32, s32, s32, s32, s32);
+    extern void func_L01_0040C8A0(void *, s32);
+    extern s32 func_0038CAD0(s32 *);
+    vu0_v4 previous, direction, velocity;
+    Row_003D4F30 *rows = *(Row_003D4F30 **)(self + 0x68);
+    s32 i;
+    func_L01_003D4EE0_003D4F30(&rows[index], rows[index].parent);
+    if (rows[index].timer <= 0) {
+        if (func_L01_003FB640(&rows[index], 4.0f, 0, rows[index].parent)) {
+            previous = rows[index].position;
+            rows[index].position = D_L01_001EAA20[0];
+            rows[index].target = 0;
+            rows[index].timer = rows[index].delay;
+            if (func_0038CF00(&previous, &rows[index].position) > 1.6f) {
+                func_0038CF68_003D4F30(&direction, &D_L01_001EAA20[2], func_003824E0(1.5f, 1.7f) * 0.020000001f);
+                for (i = 0; i < 5; i++) {
+                    func_00382580(&velocity, 0.03f, 0.045f);
+                    vec_add_ab(&velocity, &velocity, &direction);
+                    func_L01_00474078(&rows[index].position, &velocity, (func_00382498(20, 30) * 5 + 2) / 6,
+                        0.07f, 0.25f, 0.6f, 0.5f, rows[index].color0, rows[index].color1, 0, 0);
+                }
+            }
+        }
+    }
+    if (rows[index].target == 0) *(vu0_v4 *)((u8 *)&rows[index] + 0x10) = rows[index].position;
+    else func_L01_003D4EE0_003D4F30((u8 *)&rows[index] + 0x10, (u8 *)rows[index].target);
+    if (func_0038CF00(&rows[index], (u8 *)&rows[index] + 0x10) > 2.8f) rows[index].timer = 0;
+    else rows[index].timer = rows[index].delay;
+    func_L01_0040C8A0(&rows[index], *(s32 *)((u8 *)rows + 0x2A0));
+    if (rows[index].timer > 0) func_0038CAD0(&rows[index].timer);
+}
+/* localdecomp:end func_L01_003D4F30 */
 
 /* localdecomp:start func_L01_003D5198 */
 extern void func_L01_00404A10_003D5198(void *, s32);
 extern void func_003C2880(u8 *);
 extern void func_L01_004450F0(u8 *, int, int);
-extern void func_L01_003D4F30(u8 *, int);
+extern void func_L01_003D4F30_003D5198(u8 *, int);
 extern void func_L01_003D4E70(u8 *);
 
 void func_L01_003D5198(u8 *m) {
@@ -1336,7 +1380,7 @@ void func_L01_003D5198(u8 *m) {
             func_L01_004450F0(m, 1, -1);
             continue;
         ok:
-            func_L01_003D4F30(m, i);
+            func_L01_003D4F30_003D5198(m, i);
             ((void (*)(void (*)(u8 *), u8 *))func_L01_00404A10_003D5198)(func_L01_003D4E70, m);
         }
     } else {

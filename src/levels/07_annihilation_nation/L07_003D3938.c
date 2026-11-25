@@ -49,4 +49,80 @@ u8 *func_L07_003D41D8(void *owner, V4_003D41D8 *pos, f32 *dir, u8 kind, f32 spee
 }
 /* localdecomp:end func_L07_003D41D8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003D4330);
+/* localdecomp:start func_L07_003D4330 */
+#include "vu0.h"
+typedef struct { u8 pad[0xC]; vu0_v4 *owner; } Link_003D4330;
+typedef struct { u8 pad[0x68]; Link_003D4330 *link; } State_003D4330;
+typedef struct { u8 pad[0xB8]; State_003D4330 *state; } Obj_003D4330;
+typedef struct { u8 pad[0xC]; u8 flags; u8 padD[0x13]; vu0_v4 pos; } Out_003D4330;
+extern vu0_v4 D_L07_001E8C20;
+extern f32 func_L01_0040E570(void *, void *);
+extern f32 func_L04_00455AF8(void *);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_00382538(void);
+extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+s32 func_L07_003D4330(Obj_003D4330 *obj, Out_003D4330 *out) {
+    vu0_v4 pos, delta, best, offset;
+    vu0_v4 *origin;
+    u8 *target;
+    s32 i;
+    f32 height;
+    origin = obj->state->link->owner;
+    if (out->flags & 1) {
+        pos = *origin;
+        if (func_L01_0040E570((u8 *)obj->state + 0x10, &pos) > 4.0f) {
+            pos.z += 0.5f;
+            if (func_L04_00455AF8(&pos) >= origin->z + 64.0f) {
+                pos.z = func_003C3D30(&pos, 0, 0, 0.0f);
+                out->pos = pos;
+                out->pos.z += 0.1f;
+                return 1;
+            }
+        }
+    }
+    best.z = -1.0f;
+    i = 0; do {
+        target = *(u8 **)((u8 *)origin + 0x10);
+        if (target) {
+            f32 distance, angle;
+            func_0038CF68(&offset, target + 0xC0, -4.0f);
+            distance = func_003824E0(0.0f, 15.0f);
+            angle = func_0038DAB8(*(f32 *)(target + 0xF8), func_003824E0(-0.7853981853f, 0.7853981853f));
+            pos.x = func_0038D098(angle) * distance;
+            pos.y = func_0038D0B0(angle) * distance;
+            pos.z = 0.0f;
+            vec_add_ba(&pos, &offset, &pos);
+            vec_add_ab(&pos, origin, &pos);
+        } else {
+            f32 angle = func_00382538();
+            pos.x = func_0038D098(angle) * 5.0f;
+            pos.y = func_0038D0B0(angle) * 5.0f;
+            pos.z = 0.0f;
+            vec_add_ab(&pos, &pos, origin);
+        }
+        if (func_L01_0040E570((u8 *)obj->state + 0x10, &pos) < 4.0f) continue;
+        if (func_003D3CB0(origin, &pos, 2, 0, 0)) {
+            vec_sub_ab(&delta, &pos, origin);
+            func_0038CF68(&pos, &delta, -0.8f);
+            vec_add_ab(&pos, &pos, &D_L07_001E8C20);
+        }
+        height = func_003C3D30(&pos, 0, 0, 0.0f);
+        pos.z = height;
+        if (origin->z - height > 2.5f && best.z < height) best = pos;
+        out->pos = pos;
+        out->pos.z += 0.1f;
+        return 1;
+    } while (++i < 8);
+    if (best.z >= 0.0f) {
+        out->pos = best;
+        out->pos.z += 0.1f;
+        return 1;
+    }
+    return 0;
+}
+/* localdecomp:end func_L07_003D4330 */

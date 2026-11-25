@@ -147,7 +147,89 @@ void func_L01_0035CFC8(u8 *m, s128 *from, s128 *to) {
 }
 /* localdecomp:end func_L01_0035CFC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0035D358);
+/* localdecomp:start func_L01_0035D358 */
+void func_L01_0035D358(u8 *m, s128 *from, s128 *to) {
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *,void *,f32);
+    extern f32 func_L01_00443A18(f32,f32);
+    extern f32 func_003824E0(f32,f32);
+    extern void func_0038CE20(void *,void *,f32);
+    extern s32 func_00382498(s32,s32);
+    extern s32 func_0013D3E0(void);
+    extern void func_L01_004CAB30(void *,void *);
+    extern u8 *func_L01_0046A610(void *,void *,s32,s32,u32,s32,f32,f32,f32,f32,f32);
+    extern s32 func_00382468(s32);
+    extern void func_003C4C18(void *,f32);
+    extern u8 *func_L01_00465738(void *,void *,u32,s32,s32,s32,s32,s32,s32,f32);
+    S_38C110v a,b,vel,pos,step,last;
+    void *vars;
+    f32 speed;
+    f32 scale;
+    s32 pieces;
+    s32 i,tex,life,mode;
+    u32 c,colour;
+    s32 type;
+    s32 off;
+    u8 *p;
+    u8 *q;
+    S_38C110v *v;
+    *(s128 *)&a=*from;
+    vars=*(void **)(m+0x68);
+    *(s128 *)&b=*to;
+    if (!vars) return;
+    speed=func_0038CEA8(vars);
+    pieces=(s32)(speed/0.1f);
+    *(s128 *)&pos=*(s128 *)&b;
+    vec_sub_ab(&step, &a, &b);
+    func_0038CF68(&step,&step,speed/(f32)pieces);
+    for (i=0;i<pieces;i++) {
+        tex=(s32)func_L01_00443A18(1.0f,3.0f);
+        scale=func_003824E0(0.1f,0.3f);
+        func_0038CE20(&vel,D_001A4EC0,-(scale*0.020000001415610313f));
+        life=func_00382498(3,6);
+        if (func_0013D3E0()&2) {
+            mode=64;
+            c=0x407fff;
+        } else {
+            c=0x4040ff;
+            mode=96;
+        }
+        off=D_001425C0.player*sizeof(Row_0035CFC8);
+        type=((Row_0035CFC8 *)(off+(s32)D_L01_002C5600_0035CFC8))->active;
+        if (!type) c=0x107f7f;
+        switch (type) {
+        case 2: c=0x1010af; break;
+        case 3: c=0x1010af; break;
+        }
+        v=&vel;
+        func_L01_004CAB30(v,v);
+        p=func_L01_0046A610(&pos,v,(life*5+2)/6,mode,c,tex,42000.0f,1000.0f,1.0f,0.0f,0.0f);
+        vec_add_ab(&pos, &pos, &step);
+        if (p) {
+            if (func_00382468(2)) p[2]=D_L01_00221098.textures[4]; else p[2]=D_L01_00221098.textures[5];
+            if (mode==64) p[3]=72; else p[3]=68;
+        }
+    }
+    if (((Row_0035CFC8 *)(D_001425C0.player*sizeof(Row_0035CFC8)+(s32)D_L01_002C5600_0035CFC8))->active) {
+        func_0038CE20(&last,vars,-0.040000002831220627f);
+        colour=0x7f80dfff;
+        func_003C4C18(&last,0.12000000476837158f);
+        last.z+=0.06000000238418579f;
+        if (func_00382468(2)) colour=0x7f407fff;
+        switch (((Row_0035CFC8 *)(D_001425C0.player*sizeof(Row_0035CFC8)+(s32)D_L01_002C5600_0035CFC8))->active) {
+        case 2: colour=0x7f1010af; break;
+        case 3: colour=0x7f1010af; break;
+        }
+        func_L01_004CAB30(&last,&last);
+        life=func_00382498(8,17);
+        q=func_L01_00465738(m+0x10,&last,colour,255,life,0,-1,-1,0,94500.0f);
+        if (q) {
+            *(f32 *)(q+0x2c)=0.002400000113993883f;
+            q[2]=D_L01_00221098.id[0];
+        }
+    }
+}
+/* localdecomp:end func_L01_0035D358 */
 
 /* localdecomp:start func_L01_0035D738 */
 typedef struct {

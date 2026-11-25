@@ -710,7 +710,70 @@ void func_L01_003E7AB0(u8 *obj, vu0_v4 *out, vu0_v4 *position, vu0_v4 *target, v
 }
 /* localdecomp:end func_L01_003E7AB0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E7B80);
+/* localdecomp:start func_L01_003E7B80 */
+#include "vu0.h"
+extern u8 D_L01_001E2B90[];
+extern vu0_v4 D_L01_001EAA20_003E7B80[];
+extern s32 D_L01_001DF818[] __attribute__((section(".sdata")));
+extern f32 func_L01_00476920(void *, void *, void *, void *, f32);
+extern f32 func_0038CF00(void *, void *);
+extern void func_L01_003E7AB0_003E7B80(u8 *, vu0_v4 *, vu0_v4 *, vu0_v4 *, vu0_v4 *, f32, f32);
+extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
+
+s32 func_L01_003E7B80(u8 *cam, vu0_v4 *position, s32 index, f32 damping, f32 radius) {
+    vu0_v4 total, delta, old, origin, result, target, closest, extra;
+    u8 *entry = (u8 *)((Ent1120 *)D_L01_001E2B90 + *(s32 *)(cam + 0x94));
+    u8 *hero = *(u8 **)(*(u8 **)(D_L01_001E2B90 + *(s32 *)(cam + 0x94) * 1120 - 0x100) + 0x70);
+    u8 *follow = *(u8 **)(cam + 0x70);
+    u8 *look = follow + 0xB0;
+    u8 *springs = follow + 0x180;
+    u8 *steer = follow + 0x210;
+    f32 base, limit, t, distance, threshold;
+    s32 changed;
+
+    base = *(f32 *)(hero + 0x254) * *(f32 *)(hero + 0x24C) * (*(f32 *)(hero + 0x250) - 1.0f) + 0.35f;
+    old = *position;
+    origin = D_L01_001EAA20_003E7B80[0];
+    result = D_L01_001EAA20_003E7B80[1];
+    qzero(&total);
+    vec_add_ab(&target, look, springs);
+    t = func_L01_00476920(&closest, &origin, look, &target, 0.0f);
+    limit = base - 0.35f;
+    distance = func_0038CF00(look, &closest);
+    changed = 0;
+    threshold = (limit * (distance / (*(f32 *)(springs + 0x2C) - *(f32 *)(steer + 0x30))) + 0.35f) * 0.75f;
+    if (t < threshold) {
+        func_L01_003E7AB0_003E7B80(cam, &total, &closest, &origin, &old, threshold - t, damping);
+        changed = 1;
+        *position = result;
+        if (func_L01_003FB640(position, D_L01_001DF818[*(s32 *)(cam + 0x94)], *(u8 **)(entry + 0xF0), radius) != 0) {
+            vec_sub_ab(&delta, &old, position);
+            vec_add_ba(&origin, D_L01_001EAA20_003E7B80, &delta);
+            t = func_L01_00476920(&closest, &origin, look, &target, 0.0f);
+            distance = func_0038CF00(look, &closest);
+            threshold = (limit * (distance / (*(f32 *)(springs + 0x2C) - *(f32 *)(steer + 0x30))) + 0.35f) * 0.75f;
+            if (t < threshold) {
+                func_L01_003E7AB0_003E7B80(cam, &extra, &closest, &origin, &old, threshold - t, damping);
+                vec_add_ab(&total, &total, &extra);
+                *position = D_L01_001EAA20_003E7B80[1];
+                if (func_L01_003FB640(position, D_L01_001DF818[*(s32 *)(cam + 0x94)], *(u8 **)(entry + 0xF0), radius) != 0) {
+                    vec_sub_ab(&delta, &old, position);
+                    vec_add_ba(&origin, D_L01_001EAA20_003E7B80, &delta);
+                    t = func_L01_00476920(&closest, &origin, look, &target, 0.0f);
+                    distance = func_0038CF00(look, &closest);
+                    threshold = (limit * (distance / (*(f32 *)(springs + 0x2C) - *(f32 *)(steer + 0x30))) + 0.35f) * 0.75f;
+                    if (t < threshold) {
+                        func_L01_003E7AB0_003E7B80(cam, &extra, &closest, &origin, &old, threshold - t, damping);
+                        vec_add_ab(&total, &total, &extra);
+                    }
+                }
+            }
+        }
+    }
+    vec_add_ab(position, &old, &total);
+    return changed;
+}
+/* localdecomp:end func_L01_003E7B80 */
 
 /* localdecomp:start func_L01_003E7F48 */
 #include "vu0.h"
@@ -749,7 +812,7 @@ extern void func_0038CE20_003E7FA8(void *, void *, f32);
 extern s32 func_L01_003E4168(void *);
 extern s32 func_L01_003FB640(void *, s32, u8 *, f32);
 extern s32 func_L01_003E7F48_003E7FA8(void *, s32, void *, f32);
-extern s32 func_L01_003E7B80(void *, void *, s32, f32, f32);
+extern s32 func_L01_003E7B80_003E7FA8(void *, void *, s32, f32, f32);
 
 s32 func_L01_003E7FA8(u8 *a0) {
     vu0_v4 dir0;
@@ -796,7 +859,7 @@ s32 func_L01_003E7FA8(u8 *a0) {
             && func_L01_003E7F48_003E7FA8(a0, i, &pos, sp) == 0) {
             *(u128_003E7FA8 *)&step = *(u128_003E7FA8 *)&D_L01_001EAA20_003E7FA8;
             *(u128_003E7FA8 *)&old = *(u128_003E7FA8 *)&pos;
-            if (func_L01_003E7B80(a0, &pos, i, dist, sp) != 0) {
+            if (func_L01_003E7B80_003E7FA8(a0, &pos, i, dist, sp) != 0) {
                 ret = 1;
                 if (pls[0x12B] != 2 && fabs_asm(*(f32 *)(*(u8 **)(pls + 0x134) + 0x100)) > 0.05f) {
                     {

@@ -255,7 +255,54 @@ void func_L01_00392A80(void) {
 }
 /* localdecomp:end func_L01_00392A80 */
 
-INCLUDE_ASM("asm/levels", func_L01_00392A90);
+/* localdecomp:start func_L01_00392A90 */
+#include "vu0.h"
+extern vu0_v4 D_L01_001E2A40;
+void func_L01_00392A90(u8 *obj, vu0_v4 *position) {
+    extern f32 func_0038CEA8_00392A90(void *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_0040E6B8(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_003298C8(void *, void *, s32, s32, s32, u32, s32, s32, s32, s32, f32, f32);
+    extern f32 func_00382538(void);
+    extern void func_00382760(void *, f32, f32, f32);
+    extern s32 func_0013D3E0(void);
+    extern void func_0038D000(void *, void *, void *);
+    vu0_v4 direction, velocity, random;
+    f32 distance;
+    s32 i;
+    s32 kind;
+    f32 a, b;
+    vu0_v4 *d = &direction;
+    vec_sub_ab(&direction, &D_L01_001E2A40, position);
+    distance = func_0038CEA8_00392A90(d);
+    *(vu0_q *)&random = 0;
+    random.x = func_003824E0(-1.0f, 1.0f);
+    random.y = func_003824E0(-1.0f, 1.0f);
+    random.z = func_003824E0(-1.0f, 1.0f);
+    direction.z += distance * 0.5f;
+    velocity = random;
+    func_0038CF68(&velocity, &velocity, distance / 5.0f * 0.020000001415610313f);
+    func_0038CF68(d, d, distance * 2.0f * 0.020000001415610313f);
+    vec_add_ab(&velocity, &velocity, &direction);
+    func_L01_0040E6B8(&velocity, &velocity, 0.20000001788139343f);
+    func_L01_003298C8(position, &velocity, func_00382498(50,75), 3, 0, 0x80808080, 0, 1, 50, 120, 1.6f, 14.6f);
+    for (i = 6; i >= 0; --i) {
+        a = func_003824E0(0.2617993950843811f, 1.3089969158172607f);
+        b = func_00382538();
+        func_00382760(&random, func_003824E0(8.0f, 12.0f) * 0.020000001415610313f, b, a);
+        random.z += 0.06000000238418579f;
+        if (func_0013D3E0() % 3 == 0) {
+            kind = 1;
+        } else {
+            kind = 0;
+        }
+        func_0038D000(&random, &random, obj + 0xC0);
+        func_L01_003298C8(position, &random, func_00382498(50,75), kind, 0, 0x80808080, 0, 1, 50, 120, 1.6f, 14.6f);
+    }
+}
+/* localdecomp:end func_L01_00392A90 */
 
 /* localdecomp:start func_L01_00392D80 */
 

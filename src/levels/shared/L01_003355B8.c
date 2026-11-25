@@ -934,7 +934,60 @@ void func_L01_00337F38(f32 *position, s32 count)
 }
 /* localdecomp:end func_L01_00337F38 */
 
-INCLUDE_ASM("asm/levels", func_L01_00338230);
+/* localdecomp:start func_L01_00338230 */
+#include "vu0.h"
+typedef struct { u8 pad[0x20]; Vec_337F38 pos; } State_00338230;
+extern State_00338230 D_L01_001EAA00;
+extern Vec_337F38 D_L01_001EAA20;
+extern Vec_337F38 D_L01_001E29C0;
+extern f32 func_0038CED8(void *);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern s32 func_00382498(s32, s32);
+extern void func_L01_004660F8(void *, void *);
+extern void func_L01_00466588(void *, void *, u32, u32, s32, s32, f32);
+void func_L01_00338230(u8 *m)
+{
+    Vec_337F38 velocity;
+    Vec_337F38 at;
+    f32 angle, pitch, yaw;
+    s32 i;
+    f32 zero;
+    f32 zero2;
+    f32 spread;
+    f32 jitter;
+    State_00338230 *state;
+
+    vec_sub_ab(&velocity, &D_L01_001E29C0, &D_L01_001EAA20);
+    angle = -func_0038D160(func_0038CED8(&velocity), velocity.z);
+    func_0038D160(velocity.x, velocity.y);
+    for (i = 0; i < 20; i++) {
+        zero = 0.0f;
+        spread = 3.1415927f;
+        pitch = func_0038DAB8(func_L01_00443A18(zero, spread), angle);
+        yaw = func_0038DAB8(func_L01_00443A18(zero, spread), angle);
+        func_00382760(&velocity, 0.2f, yaw, pitch);
+        func_0038CE20(&at, &velocity, func_003824E0(1.0f, 3.0f));
+        vec_add_ab(&at, &at, &D_L01_001EAA20);
+        func_L01_004660F8(&at, &velocity);
+    }
+    state = &D_L01_001EAA00;
+    for (i = 0; i < 10; i++) {
+        zero2 = 0.0f;
+        jitter = 0.1f;
+        spread = 3.1415927f;
+        at.x = state->pos.x + func_L01_00443A18(zero2, jitter);
+        at.y = state->pos.y + func_L01_00443A18(zero2, jitter);
+        at.z = state->pos.z + func_L01_00443A18(zero2, jitter);
+        pitch = func_0038DAB8(func_L01_00443A18(zero2, spread), angle);
+        yaw = func_0038DAB8(func_L01_00443A18(zero2, spread), angle);
+        func_00382760(&velocity, 0.05f, yaw, pitch);
+        func_L01_00466588(&at, &velocity, 0x4F007FFF, 0x1FFFFFFF, func_00382498(8, 17), 1, 20000.0f);
+    }
+    if (*(s16 *)(*(u8 **)(m + 0x68) + 0x78) == 40) func_L01_00337F38((f32 *)&D_L01_001EAA20, 10);
+}
+/* localdecomp:end func_L01_00338230 */
 
 /* localdecomp:start func_L01_003384B0 */
 extern u8 D_00142CBA[];
