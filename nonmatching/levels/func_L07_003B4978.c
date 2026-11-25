@@ -1,6 +1,5 @@
-/* PAL near miss (Codex wave 10): near miss: 21 words differ with the file's flags.
- * Worker's note: 21 diff vs 123 retail words (one extra instruction), second-09.log/second-ordinary.log; residual particle argument scheduling and loop decrement copy. Fixed flags; retained complete best draft after ten attempts.
- */
+/* Unlinked regional matching draft. PAL: 21 to 10 words; velocity/counter and palette registers are exchanged. NTSC-U diagnostic: 16. */
+/* P06 unlinked draft: PAL 10 differences, NTSC-U 16, exact PAL length. The decrement merges into the particle-null branch delay slot. */
 #include "common.h"
 /* localdecomp:start func_L07_003B4978 */
 typedef struct { u8 pad[0x16C]; u8 *p; } Data_003B4978;
@@ -15,7 +14,6 @@ void func_L07_003B4978(void *obj, u8 side) {
     extern u8 *func_L01_0046FB40(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
     struct { vu0_q matrix[4]; vu0_q position, direction, jitter, velocity; } v;
     s32 i;
-    s32 next;
     s32 life;
     f32 a,b;
     u8 *p;
@@ -34,9 +32,12 @@ void func_L07_003B4978(void *obj, u8 side) {
         a = func_003824E0(52500.0f,105000.0f);
         b = func_003824E0(315000.0f,525000.0f);
         p = func_L01_0046FB40(&v.position,&v.velocity,life,0x808080,func_00382468(2) ? 3 : -3,127,0,0,a,b,0.0f);
-        next = i - 1;
-        if (p) p[2] = *D_L07_0021EC98_003B4978.p;
-        i = next;
+        if (p) {
+            --i;
+            p[2] = *D_L07_0021EC98_003B4978.p;
+        } else {
+            --i;
+        }
     } while (i >= 0);
 }
 /* localdecomp:end func_L07_003B4978 */

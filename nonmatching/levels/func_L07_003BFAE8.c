@@ -1,12 +1,11 @@
-/* PAL near miss, reserved50 P01 (2026-11-23): 8 differing words with
- * -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
- * The flag-only full PAL level-07 build matches with all seven existing C siblings.
- * The colour table now uses an incomplete .sdata declaration rather than an
- * unproven two-word extent; this preserves the same eight preheader differences.
- * Vertex/UV .sdata declarations, indexed pointer derivation, and moving the
- * second colour store worsened the check (19, 178, and 17). Explicitly naming
- * the edge colour left the original eight differences. Search parked.
- * Existing position/self/counter fixes are retained. No source promotion.
+/* Unlinked regional matching draft. PAL and NTSC-U: 8 to 4 words; edge-colour address ordering and split-address scratch registers remain. */
+/* PAL and NTSC-U near miss, 2026-11-24: 4 differing words on each disc
+ * with the owning file's existing vf2 / @ps2as flags.
+ * Explicit matrix and edge-colour locals and colour/UV/vertex buffer setup
+ * restore the low-half edge-colour and matrix scheduling (previous draft: 8).
+ * The remaining preheader differences are the order of the edge-colour
+ * high half and the two split buffer addresses' scratch registers.
+ * The loop body and tail are unchanged in the checker. Not promoted.
  */
 #include "common.h"
 
@@ -37,8 +36,9 @@ void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
     u8 *self;
     f32 blend, height, r0, r1, a0, a1, f0, f1, position, sign, negh, phase, x;
     f32 s, radius, angle, fade, u;
-    u32 color;
+    u32 color, edge;
     s32 i;
+    vu0_v4 *matrix;
     f32 *vertices;
     f32 *uv;
     u32 *colors;
@@ -65,12 +65,14 @@ void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
     negh = -height;
     self = original;
     i = 0;
-    vertices = D_L07_002A2A90;
-    uv = D_L07_002A2B50;
+    matrix = mat;
+    edge = 0x808080;
     colors = D_L07_001E16C8;
+    uv = D_L07_002A2B50;
+    vertices = D_L07_002A2A90;
     for (; i < 8; i++) {
         func_0038D750(&rot, 2, *(f32 *)(self + 0xF8));
-        func_0038D810(&rot, mat);
+        func_0038D810(&rot, matrix);
         s = (1.0f - func_0038D098(position * 3.1415927f)) * 0.5f;
         radius = func_003C4088(r0, r1, s);
         angle = func_003C4088(a0, a1, s);
@@ -78,12 +80,12 @@ void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
         *(vu0_q *)&offset = 0;
         offset.x = negh * position;
         offset.y = sign * fade;
-        func_0038D000(&offset, &offset, mat);
+        func_0038D000(&offset, &offset, matrix);
         *(vu0_q *)&temp = 0;
         temp.y = sign * radius * func_0038D098(angle);
         temp.z = radius * func_0038D0B0(angle);
         radial = temp;
-        func_0038D000(&radial, &radial, mat);
+        func_0038D000(&radial, &radial, matrix);
         vec_add_ba(&temp, original + 0x10, &offset);
         u = s * 2.3f - phase;
         uv[1] = 1.0f;
@@ -98,11 +100,11 @@ void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
         uv[2] = u;
         uv[3] = 0.0f;
         if (i == 0 || i == 7) {
-            colors[0] = 0x808080;
+            colors[0] = edge;
         } else {
             colors[0] = color;
         }
-        colors[1] = 0x808080;
+        colors[1] = edge;
         if (**(u8 ***)(self + 0x68) != 0) {
             self = **(u8 ***)(self + 0x68);
             position = 0.0f;

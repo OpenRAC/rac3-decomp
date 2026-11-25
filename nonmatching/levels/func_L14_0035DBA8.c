@@ -1,4 +1,5 @@
-/* PAL near miss: 36 differing words with PROPOSED whole-file
+/* Unlinked regional matching draft. PAL: 36 to 35 words with diagnostic vf2 and divide row 2; prelude and threshold walk remain. */
+/* PAL near miss: 35 differing words with PROPOSED whole-file
  * -mvu0-use-vf0-vf2 flags and required divs_nops row
  * "func_L14_0035DBA8 2", not the centrally retained owning configuration.
  * Future integration requires the real two-argument declaration
@@ -14,6 +15,8 @@
  * Original-source full level-14 baseline MATCHES with complete --setup.
  * Earlier failures without --setup were incomplete/stale setup artifacts,
  * not an upstream defect. This draft has not passed a full linked build.
+ * P05: a typed local table pointer changes the table-index allocation
+ * without changing the copied data or selected entry.
  * Remaining: pointer-table store ordering, search-loop strength reduction,
  * and d/mask/selection register choice. No new C promotion.
  */
@@ -53,7 +56,8 @@ void func_L14_0035DBA8(void *arg0, void *target) {
     S_35DBA8_b l1 = D_L14_001DD740[0];
     S_35DBA8_b l2 = D_L14_001DD748[0];
     S_35DBA8_b l3 = D_L14_001DD750[0];
-    S_35DBA8_p tab = { { l0.b, l1.b, l2.b, l3.b } };
+    S_35DBA8_p table = { { l0.b, l1.b, l2.b, l3.b } };
+    S_35DBA8_p *tab = &table;
     vu0_v4 v;
     u8 *s;
     u8 *sel;
@@ -78,7 +82,7 @@ void func_L14_0035DBA8(void *arg0, void *target) {
     i = 0;
     while (i < 4) {
         if (thr.v[i++] < f && f <= thr.v[i]) {
-            sel = tab.p[i - 1];
+            sel = tab->p[i - 1];
             break;
         }
     }

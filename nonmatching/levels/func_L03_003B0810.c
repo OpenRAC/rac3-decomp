@@ -1,4 +1,9 @@
-/* near miss (level 3, Starship Phoenix), wave 12 retry r02: 125 differences with the file's own line (@ps2as is on
+/* Unlinked regional matching draft. PAL: 125 to 123 words; the enabled-mask register and comparison now agree. */
+/* near miss (level 3, Starship Phoenix), Nov 24 retry: 123 differences with the file's
+ * existing flags. Give the enabled-mask expression its own signed locals: the mask and
+ * comparison now use retail's $v1 rather than borrowing $s0. The remaining differences
+ * below are unchanged.
+ * Previous wave 12 retry r02: 125 differences with the file's own line (@ps2as is on
  * L03_003B0810.c now); the draft it replaces: 140. Changed against it: (1) the else-branch g = 0 < (D & 2), the head's
  * own form (andi + sltu as retail; != 0 became sra/andi); (2) the first selection loop reads D_L03_002BE328[g][i]
  * directly instead of a row pointer computed before it, so loop.c builds the row giv with its own lui (retail's fresh
@@ -49,7 +54,11 @@ s32 func_L03_003B0810(A_003B0810 *a) {
     s32 mask, lo, hi, A, o;
     s32 fp = 0;
 
-    v = (D_001DE858_sda & 1) + (0 < (D_001DE858_sda & 2));
+    {
+        s32 enabled = D_001DE858_sda;
+        s32 pair = enabled & 2;
+        v = (enabled & 1) + (pair > 0);
+    }
     if (v == 1 && func_003824E0(0.0f, 1.0f) < 0.3f || v == 2 && func_003824E0(0.0f, 1.0f) < 0.6f) {
         if (v == 2) {
             g = D_L03_001E1D90 == 0;
