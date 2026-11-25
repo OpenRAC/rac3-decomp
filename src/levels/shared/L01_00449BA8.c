@@ -85,7 +85,3 @@ void func_L01_00449BA8(void *obj, vu0_v4 *pos, void *arg2, s32 arg3, s32 lo, s32
     }
 }
 /* localdecomp:end func_L01_00449BA8 */
-
-INCLUDE_ASM("asm/levels", func_L01_0044A030);
-
-LINKER_REMNANT("asm/levels", func_L01_0044A530);

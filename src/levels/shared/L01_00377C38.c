@@ -1,6 +1,19 @@
-/* W29 (r27, 61 aligned / 59 check.py positional, flags -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as): new vs W26: `s32 col` (sra not srl in the tail colour split) with the three channels computed in order b, g, r; prologue wt via `.level` (retail's lui/0x5600 + lbu 1) and case 4's first row via the raw `+ 1` spelling (the .level/.level pair makes gcse share the prologue lui 0x2c as a saved $s1: confirmed with -fno-gcse, which gives case 4 its own lui); case 4's hero pointer assigned per arm (before each func_003D4D00) and the loops' compare through a separate pointer hl assigned before each loop: both loops' lui/temps then match retail's loop 1 exactly when hero lives in a saved reg. Tried without gain (this round): zp = v + 0x30 pointer local for all/one uses (103/61), polarity of the wt flags (`wt < 2` else-forms: +25), idx as u8/u32/ptr row, tail operand/order forms (locals, reordered conditions), per-arm hero in two variables, hero via D+0x25C0 direct (+15..+47). Remaining: spill-slot order is global-alloc PRIORITY order (Z = v+0x30 must outrank the wt<4 / wt<2 flags: retail Z 0x90, wt<4 0x8c, wt<2 0x88; ours reversed), hero in $s1 in retail (live across the call, ours $v0), prologue idx $a1 / 0xf0 $a2, case 4 xp consts a3/t0 order, tail load order. */
-/* PAL draft (Sonnet W9 r27 392 aligned diffs of 1483 words; W15 204; W26 62): NOT a near miss. Needs a FILE CUT of 0x377C38..0x379368 with -mvu0-use-vf0-vf2 on the @ps2as line (text_parts: new line for L01_00377C38.c, tail L01_00379368.c on the old flags; head L01_003778D0.c keeps the old line), and has a 6-way jump table (jtcheck). Measured with check.py --no-context, aligned diffs via difflib (check.py's own count is positional). W26 levers (204 -> 62; also: life_c3 of the first light loop of case 3 split from the j loop's life_c3, 71 -> 62: the same block-local-pseudo effect as r1/k/rr/rr2): (1) NO initialiser on the function-wide hero pointer (`u8 *hero = &D_001A4BE0;` put a lui of the hero symbol in the prologue that cse then shared with every later hero la as a saved register: 204 -> 158); hero is assigned only in case 4 and the per-case/per-site pointers h0 (case 0, gives retail's $s0), h2/h3 (loops of cases 2/3) are separate locals, the tail reads D_001A4BE0 + 0x2850 directly; (2) r1/k/rr/rr2 of case 3's j loop split from case 4's (a loop body that is one basic block with movz makes block-local pseudos that local-alloc takes first: 158 -> 129); (3) the two light/spark loops of cases 2 and 3 counted UP (i_c2 < 4, i_c3 < 2): loop.c reverses them and emits the counter init after the hoisted address sets like retail (129 -> 123); (4) case 4's weapon row index spelled `*((u8 *)&D_L01_002C5600[idx] + 1) + 0x67` in the prologue only and `.level + 0x67` in case 4 (stops gcse sharing the lui 0x2c; shared idx in the prologue read); (5) D_00142DE0 reached through a pointer local pd (0x2de0 base kept, 204 -> 200); (6) callee prototype of func_L01_004713C8 with its last int parameter after the three floats (..., s32 x5, f32, f32, f32, s32): argument-move order (114 -> 108); (7) n of cases 3/4 split into a first-use local (n_c3a/n_c4a) from the loop bound (108 -> 102); (8) tail: rr = *(f32 *)(v + 0x18) read BEFORE a = *(f32 *)(obj + 0x2C) fills the join block's delay slot like retail (102 -> 81); (9) callees read off retail's call sites: func_L01_004AA710 takes the handle as a second argument (lw $a1,0x5c($s3) before the call, as L02_0039C730.c declares it), and case 2's out-of-bounds cleanup has NO func_L01_004C8598 call (retail's b jumps past it; the extra word shifted the loop alignment so the assembler added a nop in case 3: 81 -> 71). W15 levers kept: inline cleanup in cases 0/2/5 with block-scoped ci/co, block-scoped light-row pointer lo, struct D_L01_001EAA00, one-ulp float literals (checked against retail's lui/ori constants in W26: all 33 patterns equal), per-case and per-brace-block renames (assignment before use verified in W26). Left (about 62 words): prologue (idx in $v0 and 0xf0 in $a1 where retail has $a1/$a2, base 0x5601 vs 0x5600), spill-slot order of the wt flags (0x88/0x8c/0x90 permuted, 8 words), case 4 weapon-row/xp block (register choice and lui placement, 15 words), case 4 loop temps ($a1/$v1 swaps, hero base kept in $s1 in retail), the hero/D_00142668 load order in the tail, the jump table address (relocation, masked). */
 #include "common.h"
+
+/* declared by functions of L01_003778D0.c, which this file was cut from */
+typedef struct { s32 w[0x2900 / 4]; } Hw_374790;
+typedef struct S_3738B0 S_3738B0;
+typedef struct {
+    u8 pad0[0x54];
+    S_3738B0 *w54;
+} S_3738B0m;
+struct S_3738B0 {
+    u8 pad0[0x10];
+    f32 pos[4];
+    u8 pad20[0x68 - 0x20];
+    S_3738B0m *p68;
+};
+extern S_3738B0 *D_L01_001E10E0;
 
 /* localdecomp:start func_L01_00377C38 */
 typedef int q128_77C38 __attribute__((mode(TI)));
@@ -25,7 +38,7 @@ extern u8 D_001A4C60[];
 extern u8 D_00142DE0[];
 extern u8 *D_L01_00221098[];
 extern s32 D_L01_001D673C;
-extern s32 D_00142668;
+extern s32 D_00142668[4];
 extern s32 D_L01_001EEA80[];
 void func_L01_00377C38(u8 *obj) {
     extern void func_L01_004471A8(f32);
@@ -38,7 +51,7 @@ void func_L01_00377C38(u8 *obj) {
     extern void func_L01_004C7D40(void *, void *, f32);
     extern void func_L01_00424D88(s32);
     extern void func_003A4F28(s32);
-    extern s32 func_L01_0037C758(s32);
+    extern s32 func_L01_0037C758_00377C38(s32);
     extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
     extern s32 func_003D4D00(void *, s32, void *, void *, f32);
     extern void func_L01_004450F0(void *, s32, s32);
@@ -48,10 +61,10 @@ void func_L01_00377C38(u8 *obj) {
     extern void func_L01_00446760(void *, void *, s32, void *, f32);
     extern s32 func_L01_00424CB0(void *, f32, f32, f32, f32, f32);
     extern s32 func_0038DC20(void *, f32);
-    extern void func_L01_00404A10(void *, void *);
+    extern void func_L01_00404A10_00377C38(void *, void *);
     extern void func_L01_0037C3C8(void *, void *, void *);
-    extern s32 func_L01_0037C720(void);
-    extern void func_L01_0037C6E8(s32);
+    extern s32 func_L01_0037C720_00377C38(void);
+    extern void func_L01_0037C6E8_00377C38(s32);
     extern s32 func_003A52A0(s32, s32, void *);
     extern s32 func_L01_004AA710(void *, s32);
     extern f32 func_0038D160(f32, f32);
@@ -87,6 +100,7 @@ void func_L01_00377C38(u8 *obj) {
     extern void func_L01_0037B6C0(void);
     extern void func_L01_0037CC30(void *);
     extern void func_L01_0037CEC8(void);
+    s32 wt;
     V4_77C38 old_pos, p10, p20, p30, p40, hit[3];
     u8 *o;
     f32 *hp;
@@ -104,9 +118,12 @@ void func_L01_00377C38(u8 *obj) {
     u8 *cls;
     u8 *prt;
     f32 x, y, z, a, rr, rr2;
-    s32 wt, n, i, j, k, idx, life, rint, r1, r2, count, skip_8598;
+    s32 n, i, j, k, idx, life, rint, r1, r2, count, skip_8598;
     s32 col;
     u8 *hl;
+    u8 *hx;
+    u8 *pp, *pq;
+    s32 idx_c4, idx_d;
     u32 col_c3;
     u32 col_c4;
     u8 *o_b11;
@@ -157,7 +174,7 @@ void func_L01_00377C38(u8 *obj) {
                 if (*(u8 **)(co + 0xDC) == obj && co[0xD0] != 0) func_003A4F28(ci);
             }
             *(s32 *)(v + 0x5C) = -1;
-            func_L01_0037C758((s32)obj);
+            func_L01_0037C758_00377C38((s32)obj);
             if (wt >= 4) func_L01_004C8598(obj);
             func_L01_004C8668(*(void **)(v + 0x60));
             func_003C2880(obj);
@@ -221,12 +238,12 @@ void func_L01_00377C38(u8 *obj) {
         *(q128_77C38 *)&p10 = *(q128_77C38 *)(obj + 0x10);
         p10.w = 4.0f;
         if (func_0038DC20(&p10, 80.0f) < 0) goto tail;
-        func_L01_00404A10(func_L01_0037C208, obj);
+        func_L01_00404A10_00377C38(func_L01_0037C208, obj);
         *(q128_77C38 *)&p20 = *(q128_77C38 *)(obj + 0x10);
         func_L01_0037C3C8(obj, &p20, &old_pos);
         goto tail;
     case 1:
-        if (func_L01_0037C720() == 0) func_L01_0037C6E8((s32)obj);
+        if (func_L01_0037C720_00377C38() == 0) func_L01_0037C6E8_00377C38((s32)obj);
         *(s32 *)(v + 0x44) = 0;
         *(s32 *)(v + 0x48) = 0;
         *(s32 *)(v + 0x4C) = 0;
@@ -272,7 +289,7 @@ void func_L01_00377C38(u8 *obj) {
                 if (*(u8 **)(co + 0xDC) == obj && co[0xD0] != 0) func_003A4F28(ci);
             }
             *(s32 *)(v + 0x5C) = -1;
-            func_L01_0037C758((s32)obj);
+            func_L01_0037C758_00377C38((s32)obj);
             func_L01_004C8668(*(void **)(v + 0x60));
             func_003C2880(obj);
             return;
@@ -306,8 +323,8 @@ void func_L01_00377C38(u8 *obj) {
         *(q128_77C38 *)&p10 = *(q128_77C38 *)(obj + 0x10);
         p10.w = 4.0f;
         if (func_0038DC20(&p10, 80.0f) < 0) goto tail;
-        if (wt >= 2) func_L01_00404A10(func_L01_00379398, obj);
-        else func_L01_00404A10(func_L01_00379B20, obj);
+        if (wt >= 2) func_L01_00404A10_00377C38(func_L01_00379398, obj);
+        else func_L01_00404A10_00377C38(func_L01_00379B20, obj);
         *(q128_77C38 *)&p20 = *(q128_77C38 *)(obj + 0x10);
         func_L01_0037C3C8(obj, &p20, &old_pos);
         goto tail;
@@ -367,8 +384,8 @@ void func_L01_00377C38(u8 *obj) {
                 func_L01_004713C8(&p20, &p30, life_c3, col_c3, r1_c3, 0, 0x7F, 23100.0f, rr2_c3 * 210000.0f, 0.0f, 6);
             }
         }
-        if (wt >= 2) func_L01_00404A10(func_L01_00379398, obj);
-        else func_L01_00404A10(func_L01_00379B20, obj);
+        if (wt >= 2) func_L01_00404A10_00377C38(func_L01_00379398, obj);
+        else func_L01_00404A10_00377C38(func_L01_00379B20, obj);
         if (wt >= 4) func_L01_004C84D8(obj);
         goto tail;
     case 4:
@@ -379,11 +396,12 @@ void func_L01_00377C38(u8 *obj) {
             func_L01_004450F0(obj, 5, -1);
         }
         if (*(s32 *)(v + 0x30) == 25) {
-            idx = D_001425C0[0x67];
-            r1_b15 = *((u8 *)&D_L01_002C5600[idx] + 1) + 0x67;
+            idx_c4 = D_001425C0[0x67];
+            pp = (u8 *)D_L01_002C5600;
+            r1_b15 = pp[idx_c4 * 0xF0 + 1] + 0x67;
             pd = D_00142DE0;
             *(s32 *)(pd + 0x19C) = *(s32 *)(pd + 0x19C) +
-                (D_L01_002C5600[r1_b15].xp_next << 5) / 150;
+                (*(s32 *)(pp + r1_b15 * 0xF0 + 0x68) << 5) / 150;
             *(u16 *)(v + 0x24) = *(u16 *)(v + 0x24) + 1;
             n_b9 = *(u16 *)(v + 0x26) - *(u16 *)(v + 0x54);
             *(s16 *)(v + 0x26) = n_b9;
@@ -391,8 +409,8 @@ void func_L01_00377C38(u8 *obj) {
             func_003A52A0(1, 0, obj);
         }
         if (wt >= 4 && *(s32 *)(v + 0x30) % 10 == 0) {
-            hero = (u8 *)&D_001A4BE0;
-            count_b18 = func_003D4D00(obj + 0x10, 1, *(void **)(hero + 0x25C0), 0, 16.0f);
+            o_b11 = (u8 *)&D_001A4BE0;
+            count_b18 = func_003D4D00(obj + 0x10, 1, *(void **)(o_b11 + 0x25C0), 0, 16.0f);
             hl = (u8 *)&D_001A4BE0;
             for (i_b1 = 0; i_b1 < count_b18; i_b1++) {
                 o_b11 = (u8 *)D_L01_001EEA80[i_b1];
@@ -415,18 +433,20 @@ void func_L01_00377C38(u8 *obj) {
                 vec_sub_ab(&p20, &p10, obj + 0x10);
                 func_0038CF68(1.25f, &p20, &p20);
                 func_L01_004C81F0(obj, o_b11, 0x23);
+                pq = (u8 *)D_L01_002C5600;
+                idx_d = D_001425C0[0x67];
                 *(q128_77C38 *)&p30 = *(q128_77C38 *)(obj + 0x10);
                 func_L01_00373368(obj, &p30, &p20,
-                    *(f32 *)((u8 *)&D_L01_002C5600[D_001425C0[0x67]] + 0x6C) * 0.25f);
+                    0.25f * *(f32 *)(pq + idx_d * 0xF0 + 0x6C));
                 break;
             }
         } else if ((u32)(wt - 2) < 2 && *(s32 *)(v + 0x30) == 12) {
-            hero = (u8 *)&D_001A4BE0;
-            count = func_003D4D00(obj + 0x10, 1, *(void **)(hero + 0x25C0), 0, 7.5f);
-            hl = (u8 *)&D_001A4BE0;
+            hx = (u8 *)&D_001A4BE0;
+            count = func_003D4D00(obj + 0x10, 1, *(void **)(hx + 0x25C0), 0, 7.5f);
             for (i_b2 = 0; i_b2 < count; i_b2++) {
                 o = (u8 *)D_L01_001EEA80[i_b2];
                 hp = func_00382348(o);
+                hl = (u8 *)&D_001A4BE0;
                 if (o == *(u8 **)(hl + 0x25C0)) continue;
                 if (o == 0) continue;
                 if (o[0x20] == 0xFE) continue;
@@ -482,8 +502,8 @@ void func_L01_00377C38(u8 *obj) {
                 func_L01_004713C8(&p20, &p30, life, col_c4, r1, 0, 0x7F, 23100.0f, rr2 * 210000.0f, 0.0f, 6);
             }
         }
-        if (wt >= 2) func_L01_00404A10(func_L01_0037A0F8, obj);
-        else func_L01_00404A10(func_L01_0037A880, obj);
+        if (wt >= 2) func_L01_00404A10_00377C38(func_L01_0037A0F8, obj);
+        else func_L01_00404A10_00377C38(func_L01_0037A880, obj);
         goto tail;
     case 5:
         n_c5 = *(s32 *)(v + 0x14) + 1;
@@ -499,14 +519,14 @@ void func_L01_00377C38(u8 *obj) {
                 if (*(u8 **)(co + 0xDC) == obj && co[0xD0] != 0) func_003A4F28(ci);
             }
             *(s32 *)(v + 0x5C) = -1;
-            func_L01_0037C758((s32)obj);
+            func_L01_0037C758_00377C38((s32)obj);
             if (wt >= 4) func_L01_004C8598(obj);
             func_L01_004C8668(*(void **)(v + 0x60));
             func_003C2880(obj);
             return;
         }
-        if (wt >= 2) func_L01_00404A10(func_L01_0037ADE0, obj);
-        else func_L01_00404A10(func_L01_0037B6C0, obj);
+        if (wt >= 2) func_L01_00404A10_00377C38(func_L01_0037ADE0, obj);
+        else func_L01_00404A10_00377C38(func_L01_0037B6C0, obj);
         goto tail;
     default:
         goto tail;
@@ -523,9 +543,9 @@ tail:
         *(q128_77C38 *)(v + 0x80) = *(q128_77C38 *)(*(u8 **)(v + 0x6C) + 0x10);
         vec_add_ab(obj + 0x10, obj + 0x10, &p10);
     }
-    if (wt > 0 && *(s16 *)(v + 0x26) > 0 && *(s32 *)(D_001A4BE0 + 0x2850) < D_00142668) {
+    if (wt > 0 && *(s16 *)(v + 0x26) > 0 && *(s32 *)(D_001A4BE0 + 0x2850) < D_00142668[0]) {
         func_L01_0037CC30(obj);
-        func_L01_00404A10(func_L01_0037CEC8, obj);
+        func_L01_00404A10_00377C38(func_L01_0037CEC8, obj);
     }
     rr = *(f32 *)(v + 0x18);
     a = *(f32 *)(obj + 0x2C);

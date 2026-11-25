@@ -82,7 +82,8 @@ typedef struct {
     s32 d;
     s32 e;
     s32 f;
-    u8 pad18[8];
+    s32 dir;
+    f32 alpha;
     s32 f20;
     f32 g;
     s32 state;
@@ -105,32 +106,3 @@ void func_L01_004C17E8(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g) {
     D_L01_001E0F38.state = 1;
 }
 /* localdecomp:end func_L01_004C17E8 */
-
-INCLUDE_ASM("asm/levels", func_L01_004C1838);
-
-/* localdecomp:start func_L01_004C1CE0 */
-typedef struct {
-    s32 id;
-    u8 pad4[4];
-    s32 state;
-    u8 padC[4];
-    f32 x;
-    f32 y;
-    s32 a;
-    s32 b;
-} S_004C1CE0;
-extern S_004C1CE0 D_L01_001E0F58 __attribute__((section(".sdata")));
-
-s32 func_L01_004C1CE0(s32 id, f32 x, f32 y, s32 a, s32 b) {
-    if (D_L01_001E0F58.state == 1) {
-        D_L01_001E0F58.id = id;
-        D_L01_001E0F58.x = x;
-        D_L01_001E0F58.y = y;
-        D_L01_001E0F58.state = 2;
-        D_L01_001E0F58.a = a;
-        D_L01_001E0F58.b = b;
-        return 1;
-    }
-    return 0;
-}
-/* localdecomp:end func_L01_004C1CE0 */
