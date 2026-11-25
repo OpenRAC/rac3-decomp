@@ -409,7 +409,98 @@ void func_L01_004C70A8(u8 *position, u8 *direction, f32 scale, u32 *colors, s32 
 
 INCLUDE_ASM("asm/levels", func_L01_004C7438);
 
-INCLUDE_ASM("asm/levels", func_L01_004C7A18);
+/* localdecomp:start func_L01_004C7A18 */
+#include "vu0.h"
+typedef struct {
+    u8 pad0[0x18];
+    s32 hit;
+    s32 count;
+    Vec4_004C4AD8 position;
+    u8 pad30[0x10];
+    Vec4_004C4AD8 normal;
+} Hit_004C7A18;
+extern S_4C4A18 D_001A4BE0;
+extern s32 D_L01_001D6694_004C7A18;
+__asm__(".extern D_L01_001D6694_004C7A18,16");
+extern s32 D_L01_001D673C_004C7A18,D_L01_001D6740_004C7A18;
+__asm__(".extern D_L01_001D673C_004C7A18,4\n.extern D_L01_001D6740_004C7A18,4");
+extern s32 D_L01_001DB000;
+__asm__(".extern D_L01_001DB000,4");
+extern Hit_004C7A18 D_L01_001EAA00_004C7A18;
+extern Vec4_004C4AD8 D_L01_001E29C0_004C7A18;
+extern Vec4_004C4AD8 D_L01_001E1190 __attribute__((section(".sdata")));
+extern Vec4_004C4AD8 D_L01_00251100[];
+s32 func_L01_004C7A18(Vec4_004C4AD8 *start,Vec4_004C4AD8 *initialVelocity,
+                      Vec4_004C4AD8 *outPosition,Vec4_004C4AD8 *outDirection,
+                      void *skip,s32 *outHit,s32 *outIndex,f32 step) {
+    extern s32 func_L01_004C85C8(u8 *,u128_4C4A18 *,f32,f32,f32);
+    extern void func_L01_004C8688(s32,Vec4_004C4AD8 *,Vec4_004C4AD8 *);
+    extern void func_L01_004C7D40(void *,void *,f32);
+    extern s32 func_003D3CB0_004C7A18(void *,void *,s32,void *,s32);
+    extern s32 func_003D5630(void);
+    extern s32 func_0038CAD0(void *);
+    extern void func_0038CE20(Vec4_004C4AD8 *,Vec4_004C4AD8 *,f32);
+    extern void func_0038CF68(Vec4_004C4AD8 *,Vec4_004C4AD8 *,f32);
+    extern void func_L01_004C8668(int);
+    Vec4_004C4AD8 position,velocity,previous;
+    u8 context[0x100] __attribute__((aligned(16)));
+    s32 remaining;
+    s32 result=0;
+    s32 index,i;
+    u8 *gbase=(u8 *)&D_001A4BE0;
+    if (*(s32 *)(gbase+0x25C4)==0x74 || D_L01_001D6694_004C7A18) return 0;
+    *(u128_4C4A18 *)(context+0x10)=*(u128_4C4A18 *)start;
+    index=func_L01_004C85C8(context,0,1.0f,1.0f,1.0f);
+    velocity=*initialVelocity;
+    previous=*start;
+    position=*start;
+    remaining=250;
+    while(!func_0038CAD0(&remaining)) {
+        previous=position;
+        for(i=0;i<10;i++) {
+            func_L01_004C8688(index,&velocity,0);
+            vec_add_ab(&position, &position, &velocity);
+            *(u128_4C4A18 *)(context+0x10)=*(u128_4C4A18 *)&position;
+            func_L01_004C7D40(&position,&velocity,step);
+        }
+        if (func_003D3CB0_004C7A18(&previous,&position,0x12,skip,0)) {
+            s32 hitIndex=func_003D5630();
+            if (D_L01_001EAA00_004C7A18.count>0 || hitIndex!=-1) {
+                if (outIndex) *outIndex=hitIndex;
+                *(u128_4C4A18 *)outPosition=*(u128_4C4A18 *)&D_L01_001EAA00_004C7A18.position;
+                break;
+            }
+        }
+        if (!D_L01_001D673C_004C7A18 && !D_L01_001D6740_004C7A18 && !D_001A4BE0.x368) {
+            if (20.0f < fabs_asm(start->z-position.z)) {
+                remaining=0;
+                break;
+            }
+        }
+    }
+    if (remaining) {
+        func_0038CE20(outDirection,&D_L01_001EAA00_004C7A18.normal,0.0009765625f);
+        func_0038CF68(outDirection,outDirection,1.0f);
+        if (outHit) *outHit=D_L01_001EAA00_004C7A18.hit;
+        vec_sub_ab(&previous, outPosition, &D_L01_001E29C0_004C7A18);
+        result=1;
+        func_0038CE20(&previous,&previous,0.94f);
+        vec_add_ba(outPosition, &previous, &D_L01_001E29C0_004C7A18);
+    }
+    D_L01_001DB000++;
+    *(u128_4C4A18 *)&D_L01_00251100[D_L01_001DB000%15]=*(u128_4C4A18 *)outDirection;
+    qzero(&D_L01_001E1190);
+    {
+    s32 j;
+    for(j=0;j<15;j++) {
+        vec_add_ab(&D_L01_001E1190, &D_L01_001E1190, &D_L01_00251100[j]);
+    }
+    }
+    func_0038CF68(outDirection,&D_L01_001E1190,1.0f);
+    func_L01_004C8668(index);
+    return result;
+}
+/* localdecomp:end func_L01_004C7A18 */
 
 /* localdecomp:start func_L01_004C7D40 */
 #include "vu0.h"

@@ -19,13 +19,128 @@ typedef struct {
 
 INCLUDE_ASM("asm/levels", func_L01_0036B670);
 
-INCLUDE_ASM("asm/levels", func_L01_0036C828);
+/* localdecomp:start func_L01_0036C828 */
+#include "vu0.h"
+typedef struct { u8 pad[0x54]; s32 mode; } Vars_0036C828;
+typedef struct { u8 pad[0x18]; u8 *hit; u8 pad1C[4]; vu0_v4 pos; } Hit_0036C828;
+typedef struct { u8 p0; u8 effect; u8 p2[0x6A]; f32 damage; u8 p70[0x80]; } Weapon_0036C828;
+extern Hit_0036C828 D_L01_001EAA00;
+extern vu0_v4 D_L01_001EAA20;
+extern u8 *D_001A71A0[];
+extern u8 D_001425C0[];
+extern Weapon_0036C828 D_L01_002C5600_0036C828[];
+u8 *func_L01_0036C828(u8 *owner, vu0_v4 *from, vu0_v4 *to, f32 *out, f32 damage) {
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, u8 *, s32);
+    extern void func_L01_00389B00(void *, void *, void *, s32, f32);
+    extern void func_L01_0036AA60(void *, void *, void *, s32, f32);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_00446978(u8 *, f32 *);
+    extern void func_L01_0034C9F0(u8 *, s32, u8 *);
+    Vars_0036C828 *vars;
+    vu0_v4 delta;
+    f32 dist;
+    u8 *hit;
+    u8 *result;
+    vars = *(Vars_0036C828 **)(owner + 0x68);
+    vec_sub_ab(out, to, from);
+    func_0038CF68(out, out, 1.5f);
+    out[3] = 5627.9248046875f;
+    if (func_003D3CB0(from, to, 16, D_001A71A0[0], 0)) {
+        vec_sub_ba(&delta, to, from);
+        func_0038CF68(&delta, &delta, 1.0f);
+        vec_sub_ba(&delta, &D_L01_001EAA20, from);
+        if (vars->mode) func_L01_00389B00(from, &delta, &D_L01_001EAA20, 1, damage);
+        else func_L01_0036AA60(from, &delta, &D_L01_001EAA20, 1, damage);
+        if (D_L01_001EAA00.hit != 0) {
+            damage = ((Weapon_0036C828 *)(D_001425C0[0x27] * 0xF0 + (u8 *)D_L01_002C5600_0036C828))->damage;
+            if (vars->mode) damage *= 3.0f;
+            dist = func_0038CF00(&D_L01_001EAA00.pos, from);
+            if (dist < 10.0f) out[7] = damage;
+            else if (dist < 14.0f) out[7] = damage * 0.75f;
+            else if (dist < 20.0f) out[7] = damage * 0.5f;
+            else out[7] = damage * 0.125f;
+            func_L01_00446978(D_L01_001EAA00.hit, out);
+            if (D_L01_002C5600_0036C828[D_001425C0[0x27]].effect) func_L01_0034C9F0(D_L01_001EAA00.hit, 39, owner);
+            hit = D_L01_001EAA00.hit;
+            if (hit == 0) goto none;
+            if (*(u8 **)(hit + 0x24) == 0) goto none;
+            result = hit;
+            if ((*(u8 **)(hit + 0x24))[0x46] == 5) goto done;
+            goto none;
+        }
+    } else {
+        vec_sub_ab(&delta, to, from);
+        if (vars->mode) func_L01_00389B00(from, &delta, to, 0, damage);
+        else func_L01_0036AA60(from, &delta, to, 0, damage);
+    }
+none:
+    result = 0;
+done:
+    return result;
+}
+/* localdecomp:end func_L01_0036C828 */
 
 INCLUDE_ASM("asm/levels", func_L01_0036CB08);
 
 INCLUDE_ASM("asm/levels", func_L01_0036D018);
 
-INCLUDE_ASM("asm/levels", func_L01_0036D8C8);
+/* localdecomp:start func_L01_0036D8C8 */
+#include "vu0.h"
+typedef int Q_0036D8C8 __attribute__((mode(TI)));
+typedef union { Q_0036D8C8 q; f32 f[4]; } V_0036D8C8;
+typedef struct {
+    u8 pad[0x25C0];
+    u8 *camera;
+    u8 pad25C4[0x2874-0x25C4];
+    s16 mode;
+} Hero_0036D8C8;
+extern Hero_0036D8C8 D_001A4BE0_0036D8C8;
+extern f32 D_L01_001E1D20;
+extern s32 D_L01_001E1D1C;
+extern f32 D_L01_001DD85C;
+__asm__(".extern D_L01_001DD85C, 4");
+extern f32 D_L01_001DD858;
+__asm__(".extern D_L01_001DD858, 4");
+extern f32 D_L01_001DD854;
+__asm__(".extern D_L01_001DD854, 4");
+extern s32 D_L01_001DD868;
+__asm__(".extern D_L01_001DD868, 4");
+extern s32 D_L01_001DD86C;
+__asm__(".extern D_L01_001DD86C, 4");
+void func_L01_0036D8C8(u8 *obj) {
+    extern void func_003C2F58(s32,s32,void *);
+    extern void func_0038CE20(void *,void *,f32);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32,f32);
+    extern void func_0038D328(void *,void *);
+    extern void func_003D9740(void *,s32,u32,s32,s32,f32);
+    V_0036D8C8 matrix[4];
+    V_0036D8C8 position, direction, rotation, offset;
+    func_003C2F58((s32)obj,0,&position);
+    if(D_001A4BE0_0036D8C8.mode) func_0038CE20(&direction,obj+0xD0,-1.0f);
+    else direction.q=*(Q_0036D8C8 *)(D_001A4BE0_0036D8C8.camera+0xC0);
+    rotation.f[0]=0.0f;
+    rotation.f[1]=-func_0038D160(func_0038CED8(&direction),direction.f[2]) + -1.5707964f;
+    rotation.f[2]=func_0038D160(direction.f[0],direction.f[1]);
+    rotation.f[3]=1.0f;
+    func_0038D328(matrix,&rotation);
+    if(D_001A4BE0_0036D8C8.mode) func_0038CE20(&offset,obj+0xD0,-1.0f);
+    else offset.q=*(Q_0036D8C8 *)(D_001A4BE0_0036D8C8.camera+0xC0);
+    func_0038CE20(&offset,&offset,5.0f);
+    vec_add_ab(&position, &position, &offset);
+    *(Q_0036D8C8 *)&matrix[3]=*(Q_0036D8C8 *)&position;
+    func_0038CE20(&matrix[0],&matrix[0],D_L01_001DD85C);
+    func_0038CE20(&matrix[1],&matrix[1],D_L01_001DD858);
+    func_0038CE20(&matrix[2],&matrix[2],D_L01_001DD854);
+    D_L01_001E1D20 += 0.2f;
+    if(D_L01_001E1D20 >= 7.0f) D_L01_001E1D20 -= 7.0f;
+    func_003D9740(matrix,D_L01_001DD868,(D_L01_001E1D1C*5 <<24)|0x00FF8080,4,1,D_L01_001E1D20);
+    func_0038CE20(&matrix[0],&matrix[0],D_L01_001DD85C*1.25f);
+    func_0038CE20(&matrix[1],&matrix[1],D_L01_001DD858*1.25f);
+    func_003D9740(matrix,D_L01_001DD86C,(D_L01_001E1D1C*3 <<24)|0x00FFC480,2,1,D_L01_001E1D20);
+}
+/* localdecomp:end func_L01_0036D8C8 */
 
 /* localdecomp:start func_L01_0036DB20 */
 extern s32 D_L01_001E1D18;

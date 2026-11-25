@@ -589,7 +589,43 @@ P_474680 *func_L01_00474680(vu0_v4 *a0, vu0_v4 *a1, s32 a2, s32 a3, s32 a4, s32 
 }
 /* localdecomp:end func_L01_00474680 */
 
-INCLUDE_ASM("asm/levels", func_L01_004747C0);
+/* localdecomp:start func_L01_004747C0 */
+#include "vu0.h"
+extern f32 D_L01_001D7F88;
+__asm__(".extern D_L01_001D7F88, 4");
+void func_L01_004747C0(u8 *p) {
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_004CAB30(void *, void *);
+    vu0_v4 delta;
+    u8 *s = p + 0x30;
+    u8 *pos;
+    u8 *tail;
+    f32 t, blend;
+    s32 alpha;
+    if (func_0038CB00(p + 0xA)) { func_003CD250(p); return; }
+    t = (f32)*(s16 *)(p + 0xA) / (f32)*(s16 *)(s + 0xC);
+    blend = *(f32 *)(s + 8) + (1.0f - *(f32 *)(s + 8)) * t;
+    pos = p + 0x10;
+    *(f32 *)(p + 0x1C) = *(f32 *)(s + 4) * blend;
+    *(f32 *)s -= 0.014f;
+    tail = p + 0x20;
+    vec_sub_ba(&delta, pos, tail);
+    delta.w = 0;
+    func_0038CF68(&delta, &delta, *(f32 *)s);
+    vec_add_ba(pos, pos, &delta);
+    func_0038CF68(&delta, &delta, *(f32 *)s * D_L01_001D7F88);
+    vec_add_ba(tail, tail, &delta);
+    func_L01_004CAB30(pos, pos);
+    func_L01_004CAB30(tail, tail);
+    if (*(s16 *)(p + 0xA) < p[8]) {
+        alpha = (s32)((f32)*(s16 *)(p + 0xA) / (f32)p[8] * 127.0f);
+        *(u32 *)(p + 4) = (alpha << 24) | (*(u32 *)(p + 4) & 0xFFFFFF);
+        *(u32 *)(p + 0xC) = (alpha << 24) | (*(u32 *)(p + 0xC) & 0xFFFFFF);
+    }
+}
+/* localdecomp:end func_L01_004747C0 */
 
 /* localdecomp:start func_L01_00474968 */
 extern s32 func_0038CB00(void *p);
@@ -1480,7 +1516,45 @@ s32 func_L01_00477190(s32 index, Q_00477190 *position, Q_00477190 *output, f32 r
 }
 /* localdecomp:end func_L01_00477190 */
 
-INCLUDE_ASM("asm/levels", func_L01_00477488);
+/* localdecomp:start func_L01_00477488 */
+#include "vu0.h"
+extern int D_L01_0021F6C0[];
+s32 func_L01_00477488(s32 index, Vec4 *start, Vec4 *end) {
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    Vec4 basis[3];
+    Vec4 prev;
+    Vec4 current;
+    s32 i;
+    f32 x;
+    f32 one = 1.0f;
+    vec_sub_ab(&(basis[0]), end, start);
+    basis[0].f[2] = 0;
+    func_0038CF68(&basis[0], &basis[0], one / func_0038CEA8(&basis[0]));
+    qzero(&basis[1]);
+    qzero(&basis[2]);
+    basis[1].f[0] = basis[0].f[1];
+    basis[1].f[1] = -basis[0].f[0];
+    basis[2].f[2] = one;
+    vec_sub_ba(&(prev), (Vec4 *)(D_L01_0021F6C0[index] + 16), start);
+    func_0038D000(&prev, &prev, basis);
+    for (i = 1; i < *(s32 *)D_L01_0021F6C0[index]; i++) {
+        vec_sub_ba(&(current), (Vec4 *)(D_L01_0021F6C0[index] + i * 16 + 16), start);
+        func_0038D000(&current, &current, basis);
+        if (prev.f[3] == 0.0f && current.f[3] == 0.0f) {
+            prev.q = current.q;
+            continue;
+        }
+        if (current.f[1] * prev.f[1] < 0.0f) {
+            x = ((prev.f[0] - current.f[0]) / (prev.f[1] - current.f[1])) * -current.f[1] + current.f[0];
+            if (x > 0.0f && x < one) return 1;
+        }
+        prev.q = current.q;
+    }
+    return 0;
+}
+/* localdecomp:end func_L01_00477488 */
 
 INCLUDE_ASM("asm/levels", func_L01_00477668);
 

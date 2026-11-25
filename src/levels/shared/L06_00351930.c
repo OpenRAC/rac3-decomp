@@ -342,7 +342,52 @@ void func_L06_003525E0(u8 *a0, u8 *a1) {
 }
 /* localdecomp:end func_L06_003525E0 */
 
-INCLUDE_ASM("asm/levels", func_L06_00352648);
+/* localdecomp:start func_L06_00352648 */
+#include "vu0.h"
+extern void func_003C2F58(u8 *a, s32 b, f32 *out);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern u8 *func_L06_00359650(u8 *a0, u8 *a1, f32 *a2, s32 a3, f32 f);
+extern void func_L01_0046E078(s32, void *, void *, void *, s32);
+extern void func_L06_00354828(u8 *, u8 *, void *, s32);
+__asm__(".extern D_L06_001DD2E0, 4");
+extern s32 D_L06_001DD2E0[2];
+__asm__(".extern D_L06_001DD2F0, 4");
+extern s32 D_L06_001DD2F0[2];
+__asm__(".extern D_L06_001DD2F8_00352648, 4");
+extern u8 D_L06_001DD2F8_00352648;
+
+void func_L06_00352648(u8 *a0, u8 *a1, s32 side) {
+    vu0_v4 pos;
+    vu0_v4 dir;
+    vu0_v4 p;
+    vu0_v4 q;
+    vu0_v4 t;
+    s32 i;
+
+    func_003C2F58(*(u8 **)(a1 + 0x260), D_L06_001DD2E0[side], (f32 *)&pos);
+    if (side == 0) {
+        func_0038CE20(&t, *(u8 **)(a1 + 0x260) + 0xD0, -0.35f);
+        vec_add_ab(&pos, &t, &pos);
+    } else {
+        func_0038CE20(&t, *(u8 **)(a1 + 0x260) + 0xD0, 0.35f);
+        vec_add_ab(&pos, &t, &pos);
+    }
+    pos.z += 0.3f;
+    func_0038CE20(&dir, *(u8 **)(a1 + 0x260) + 0xC0, 0.2f);
+    dir.z = 1.0f;
+    func_0038CF68(&dir, &dir, 0.6f);
+    func_L06_00359650(a0, (u8 *)&pos, (f32 *)&dir, ((*(s32 *)(a1 + 0x35C) - 1) & 3) == 0, a1[0x45]);
+    func_003C2F58(*(u8 **)(a1 + 0x260), D_L06_001DD2F0[side], (f32 *)&p);
+    qzero(&q);
+    q.z += -0.36f;
+    for (i = 3; i >= 0; i--) {
+        func_L01_0046E078(0, &p, &q, &D_L06_001DD2F8_00352648, 1);
+        func_0038CE20(&q, &q, 0.75f);
+    }
+    func_L06_00354828(a0, a1, &p, 15);
+}
+/* localdecomp:end func_L06_00352648 */
 
 /* localdecomp:start func_L06_00352810 */
 typedef struct {
@@ -360,7 +405,7 @@ typedef struct {
 } O351B10;
 
 extern s32 func_0038CAD0(s32 *);
-extern void func_L06_00352648(P351B10 *, O351B10 *, s32);
+extern void func_L06_00352648_00352810(P351B10 *, O351B10 *, s32);
 
 s32 func_L06_00352810(P351B10 *p, O351B10 *o) {
     if (o->unk35C != 0) {
@@ -368,10 +413,10 @@ s32 func_L06_00352810(P351B10 *p, O351B10 *o) {
             return 0;
         }
         if (o->unk380 == 0) {
-            func_L06_00352648(p, o, 1);
+            func_L06_00352648_00352810(p, o, 1);
             o->unk380 = 1;
         } else {
-            func_L06_00352648(p, o, 0);
+            func_L06_00352648_00352810(p, o, 0);
             o->unk380 = 0;
         }
         if (p->unk94 == 24) {
