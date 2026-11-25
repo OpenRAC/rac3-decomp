@@ -1,3 +1,29 @@
+/* b44-w17 (round 30, 2026-11-26, Opus medium, base b6b5f8069): 48 aligned rows / 50 positional differences
+   (tools/check.py --no-context --flags=-mvu0-use-vf0-vf2, standalone and in place in
+   src/levels/08_aquatos/L08_003A4E60.c with the INCLUDE_ASM/other markers stripped; the file's other five
+   blocks func_L08_003A6F48/3A7138/3A74A8/3A76C8/3A7750 still MATCH with -mvu0-use-vf0-vf2). Built from the
+   c3 vu0.h draft (59 aligned; the r12 local-asm form below it measured 113), not the r12 form.
+   Changed: case 7's first loop counts up (`for (n = 0; n < 3; n++)`: loop.c's reversed counter init then
+   lands after the hoisted a+0x10 / st+0x220 sets, 59 -> 53); case 7's second loop has its own counter (n2,
+   53 -> 48). Declarations unified with the file's later blocks: func_L08_003A7138 K&R (its definition takes
+   O_003A7138 *, defined after this block), void * parameters where the later blocks use them,
+   func_L01_0045BD78 in the file's (void *, f32 x4) order and D_L08_001D66B0 as u8[8] (both neutral, 48),
+   and func_L01_003303B8 through the per-function alias func_L01_003303B8_003A4E60 (its real prototype,
+   eight ints first, in L01_003303B8.c, gives 51; floats after the 4th int 48; after the 1st-3rd 49, 5th 51,
+   6th/7th 52, 9th-12th 51). check.py does not resolve the alias standalone (jal 0): measure with the bare
+   name.
+   Left (46 real rows + the 2 masked jtbl %hi/%lo):
+   - case 3 (~42 rows): the stack-argument constant set-up of func_L01_0044AF78 and func_L01_003303B8. The
+     -dS dump shows sched1 issuing those constants in argument (LUID) order at equal priority; retail's
+     local-alloc gives u0/w64 (0x388EF7, 0x1010000) $v0/$v1 and the rest $a2.. in order, ours the reverse,
+     so retail's sched1 order differs. Not moved by: the 7-float block of AF78 at any of positions 0-9 of
+     its 16 trailing parameters, the other callers' mixed prototypes (L05/L08_00310D78/L11/L24/L01_003068B8
+     forms: 48-50), AF78 returning void (56), func_L01_003303B8 returning void * (50 positional).
+   - case 6 loop test (2 rows): retail base + idx*0x30, ours idx*0x30 + base. Same 48 for `((R30 *)D + i)->n`,
+     `((R30 *)D + S32(st, 0x334) + 1)->n`, `(&D[i])[1].n`, `((R30 *)D + i)[1].n`, `(D + i * 0x30)[1].n`;
+     REC(st)->n in the test gives the base-first addu but loses the gcse reuse of the base load in the body
+     (65), REC in the test and the body 71.
+   Earlier headers follow. */
 /* r12 retry (2026-11-21): first plain-C form that compiles on the file's own line
    (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as; the draft below needs -mvu0-use-vf0-vf2
    for its vu0.h vec_add/vec_sub helpers). Changed: the three helpers are local inlines with the
@@ -45,9 +71,9 @@ extern f32 D_L08_001DE298;
 __asm__(".extern D_L08_001DE298, 4");
 extern u8 *D_L08_0021EB18[];
 extern s32 D_001A71A0[];
-extern char D_L08_001D66B0[] __attribute__((section(".sdata")));
+extern u8 D_L08_001D66B0[8];
 
-extern s32 func_L08_003A7138(u8 *);
+extern s32 func_L08_003A7138();
 extern s32 func_L01_004561E0(u8 *);
 extern s32 func_L01_004561B8(u8 *);
 extern s32 func_00382498(s32, s32);
@@ -55,25 +81,25 @@ extern s32 func_L01_00456250();
 extern f32 *func_00382348(void *);
 extern s32 func_0038CB00(void *);
 extern s32 func_0038CAD0(void *);
-extern void func_003C3A10(u8 *, s32, s32, s32);
-extern void func_L01_004450F0(u8 *, s32, s32);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_00445BE0(s32, s32);
 extern s32 func_L01_00454370(u8 *, void *);
-extern void func_L08_003A76C8(u8 *);
-extern void func_003C2F58(u8 *, s32, void *);
+extern void func_L08_003A76C8(void *m);
+extern void func_003C2F58(void *, s32, void *);
 extern void func_003C2EC0(u8 *, s32, void *);
 extern s32 func_L01_0044AF78(u8 *, void *, void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
-extern s32  func_L01_003303B8(void *, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32  func_L01_003303B8_003A4E60(void *, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003A52A0(s32, s32, void *);
-extern void func_003C2880(u8 *);
+extern void func_003C2880(void *);
 extern void func_L08_003A6F48();
-extern void func_L08_003A7750(u8 *);
+extern void func_L08_003A7750(void *);
 extern f32 func_00382538(void);
 extern f32 func_003824E0(f32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_L01_00456500(void *, s32);
-extern void func_L01_0045BD78(f32, f32, f32, f32, u8 *);
+extern void func_L01_0045BD78(void *, f32, f32, f32, f32);
 extern void func_L01_0045A748(u8 *, void *);
 extern void func_L01_0045A898(f32, u8 *, void *);
 extern void func_L01_00448890(void *, f32, f32, f32, f32, void *, s32);
@@ -105,21 +131,6 @@ extern s32 func_L01_004468C8(f32, f32, f32, u8 *, s32, s32, s32, s32, s32);
 typedef struct { s16 a; s16 n; u8 p[0xC]; s32 *list; u8 q[0x1C]; } R30;
 static inline R30 *rec_of(u8 *st) { return (R30 *)D_L08_001DEECC + S32(st, 0x334) + 1; }
 #define REC(st) rec_of(st)
-
-static inline void vadd_ab_3A4E60(void *d, void *a, void *b) {
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
-
-static inline void vadd_ba_3A4E60(void *d, void *a, void *b) {
-    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
-
-static inline void vsub_ab_3A4E60(void *d, void *a, void *b) {
-    __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
-            : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
 
 static inline void restore_flags(u8 *a) {
     u8 *m = *(u8 **)(a + 0x24);
@@ -220,7 +231,7 @@ void func_L08_003A4E60(u8 *a) {
             func_003C2F58(a, 2, &v90);
             func_L01_0044AF78(a, D_L08_001D66B0, &v90, 10, 0, 0x10, -1, 0, 9, -1, 0, 0x1010001,
                               0.0f, 0.0f, 0.0f, 0.0f, 9.0f, 1.0f, 0.0f);
-            func_L01_003303B8(&v90, 0, 0x19, 0x14, 1.25f, 0.0f, 0.0f, 2.0f, 0x14, 0x14, 0x19, 0, 0, 1, 0, 0, 0, 1, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+            func_L01_003303B8_003A4E60(&v90, 0, 0x19, 0x14, 1.25f, 0.0f, 0.0f, 2.0f, 0x14, 0x14, 0x19, 0, 0, 1, 0, 0, 0, 1, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
             func_003A52A0(0, 0, a);
         kill:
             func_003C2880(a);
@@ -267,12 +278,12 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vadd_ab_3A4E60(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
             S32(st, 0x304) = func_00382498(300, 530);
-            func_L01_0045BD78(0.004f, 0.080000006f, 0.0018151426f, 0.12566371f, a);
+            func_L01_0045BD78(a, 0.004f, 0.080000006f, 0.0018151426f, 0.12566371f);
         }
         if (S32(st, 0x3D0) != 0) {
             func_L01_0045A748(a, (st + 0x2F0));
@@ -288,7 +299,7 @@ void func_L08_003A4E60(u8 *a) {
             qzero(st + 0x2F0);
             F32(st, 0x2F0) = func_0038D098(ang) * r;
             F32(st, 0x2F4) = func_0038D0B0(ang) * r;
-            vadd_ab_3A4E60(st + 0x2F0, st + 0x2F0, st + 0x2E0);
+            vec_add_ab(st + 0x2F0, st + 0x2F0, st + 0x2E0);
             if (S32(st, 0x30C) != -1 && func_L01_00456500((st + 0x2F0), S32(st, 0x30C)) == 0) {
                 Q(st, 0x2F0) = Q(st, 0x2E0);
             }
@@ -304,7 +315,7 @@ void func_L08_003A4E60(u8 *a) {
         if (func_L01_004561B8(a) != 0) {
             func_L08_003A6F48(a);
             S32(st, 0xA8) |= 0x400;
-            func_L01_0045BD78(0.0096f, 0.22500001f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.0096f, 0.22500001f, 0.010053097f, 0.25132743f);
         }
         if (func_L01_0045BDE8(a, S32(st, 0x308)) != 0
             || (func_0038CF38(a + 0x10, st + 0x220) < 6.0f && S32(st, 0x230) == D_001A71A0[0])) {
@@ -327,7 +338,7 @@ void func_L08_003A4E60(u8 *a) {
         break;
     case 7:
         if (func_L01_004561B8(a) != 0) {
-            func_L01_0045BD78(0.004f, 0.040000003f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.004f, 0.040000003f, 0.010053097f, 0.25132743f);
         }
         func_003C2EC0(a, 0, m);
         {
@@ -339,24 +350,24 @@ void func_L08_003A4E60(u8 *a) {
         func_0038CF68(&v110, pv, -3.5f);
         func_0038CF68(&v120, pv, -7.5f);
         }
-        vadd_ba_3A4E60(&vF0, &vF0, &vE0);
-        vadd_ba_3A4E60(&v100, &v100, &vE0);
-        vadd_ba_3A4E60(&v110, &v110, &vE0);
-        vadd_ab_3A4E60(&v120, &v120, &vE0);
+        vec_add_ba(&vF0, &vF0, &vE0);
+        vec_add_ba(&v100, &v100, &vE0);
+        vec_add_ba(&v110, &v110, &vE0);
+        vec_add_ab(&v120, &v120, &vE0);
         vF0.f[2] -= 0.1f;
         v100.f[2] -= 0.1f;
         func_0038CF68(&v130, &m[1], -(func_003824E0(20.0f, 25.0f) * 0.020000001f));
         func_L01_00446780(a, &vF0, 0.5f, 0x10001, (f32)U8(st, 0x45), 1.0f, 0, 1, 0);
         func_L01_00446780(a, &v100, 0.75f, 0x10001, (f32)U8(st, 0x45), 1.0f, 0, 1, 0);
         func_L01_00446780(a, &v110, 0.75f, 0x10001, (f32)U8(st, 0x45), 1.0f, 0, 1, 0);
-        for (n = 2; n >= 0; n--) {
+        for (n = 0; n < 3; n++) {
             func_003C4C18(&vE0, 0.1f);
             func_003C4C18(&v130, 0.02f);
             r = func_003824E0(0.4f, 0.6f) * 210000.0f;
             r2 = func_003824E0(1.0f, 1.5f) * 210000.0f;
             func_L01_0046FB40(&vE0, &v130, 8, 0x808080, 0x1E, 0x7F, 0x20, 0, r, r2, func_L01_00443A18(0.0f, 0.002f));
         }
-        for (n = 2; n >= 0; n--) {
+        for (n2 = 2; n2 >= 0; n2--) {
             func_003C4C18(&vE0, 0.1f);
             func_003C4C18(&v130, 0.02f);
             r = func_003824E0(0.4f, 0.6f) * 210000.0f;
@@ -372,7 +383,7 @@ void func_L08_003A4E60(u8 *a) {
             v140.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
             v140.i[2] = 0;
-            vadd_ba_3A4E60(&v140, &v140, a + 0x10);
+            vec_add_ab(&v140, &v140, a + 0x10);
             func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
             func_L02_00431568(a, &v140, 0x10, func_0038D160(v140.f[0] - F32(a, 0x10), v140.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         }
@@ -380,7 +391,7 @@ void func_L08_003A4E60(u8 *a) {
     case 4:
         if (func_L01_004561B8(a) != 0) {
             func_L08_003A6F48(a);
-            func_L01_0045BD78(0.0064000003f, 0.15f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.0064000003f, 0.15f, 0.010053097f, 0.25132743f);
         }
         func_L01_0045A748(a, st + 0x220);
         if (func_0038CF38(a + 0x10, st + 0x220) < 10.0f) {
@@ -399,7 +410,7 @@ void func_L08_003A4E60(u8 *a) {
     case 6:
         if (func_L01_004561B8(a) != 0) {
             func_L08_003A6F48(a);
-            func_L01_0045BD78(0.0064000003f, 0.15f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.0064000003f, 0.15f, 0.010053097f, 0.25132743f);
             q0 = D_L08_001DF300 + (*REC(st)->list << 7);
             *(u128_t *)(st + 0x2F0) = *(u128_t *)(q0 + 0x30);
             *(u8 **)(st + 0x34C) = q0;
@@ -476,7 +487,7 @@ void func_L08_003A4E60(u8 *a) {
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vsub_ab_3A4E60(&v90, st + 0x220, m);
+            vec_sub_ab(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, (f32)U8(st, 0x44));
         }
@@ -500,7 +511,7 @@ void func_L08_003A4E60(u8 *a) {
     case 5:
         if (func_L01_004561B8(a) != 0) {
             func_L08_003A6F48(a);
-            func_L01_0045BD78(0.0064000003f, 0.15f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.0064000003f, 0.15f, 0.010053097f, 0.25132743f);
         }
         p = D_L08_001DF300 + (S32(st, 0x328) << 7) + 0x30;
         func_L01_0045A748(a, p);
@@ -520,12 +531,12 @@ void func_L08_003A4E60(u8 *a) {
     case 8:
         if (func_L01_004561B8(a) != 0) {
             func_L08_003A6F48(a);
-            func_L01_0045BD78(0.0064000003f, 0.15f, 0.010053097f, 0.25132743f, a);
+            func_L01_0045BD78(a, 0.0064000003f, 0.15f, 0.010053097f, 0.25132743f);
         }
         v90.f[0] = func_0038D098(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.f[1] = func_0038D0B0(func_0038DAB8(F32(a, 0xF8), 3.1415927f)) * 6.0f;
         v90.i[2] = 0;
-        vadd_ba_3A4E60(&v90, &v90, a + 0x10);
+        vec_add_ab(&v90, &v90, a + 0x10);
         func_L01_0045BD10(a, func_0038D160(F32(st, 0x220) - F32(a, 0x10), F32(st, 0x224) - F32(a, 0x14)));
         func_L02_00431568(a, &v90, 0x10, func_0038D160(v90.f[0] - F32(a, 0x10), v90.f[1] - F32(a, 0x14)), -1.0f, -1.0f, -1.0f);
         if (func_0038CF38(a + 0x10, st + 0x220) > 6.0f || U16(a, 0x96) >= 0x97 || S32(st, 0xF0) >= 5) {
@@ -612,7 +623,7 @@ void func_L08_003A4E60(u8 *a) {
         }
         if (func_L01_0044E1B8(1.0f, a) != 0 && U8(a, 0x42) == 22) {
             func_003C2F58(a, 0, m);
-            vsub_ab_3A4E60(&v90, st + 0x220, m);
+            vec_sub_ab(&v90, st + 0x220, m);
             func_0038CF68(&v90, &v90, D_L08_001DE298 * 0.020000001f);
             func_L08_00311438(a, &v90, m, 0, 0, 5.0f);
         }

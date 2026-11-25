@@ -1,3 +1,16 @@
+/* w22 round 30 (Sonnet): the 19 m2c gotos are gone (shared tails written per state; gcc's cross-jumping rebuilds the shared
+   4450F0 / 3B9078 call tails), state 20's `++pv->i[0x334/4] >= count` test fixed, the 0044E1B8 follow-record tail written
+   out in states 18/19/20/23/26 instead of jumping between states. Measured with check.py + difflib alignment (branch/jal
+   targets masked): 308 rows differ when the saved-register NUMBERS are ignored, 1098 with them (1569 before this pass).
+   The rest is (a) register allocation: retail keeps m in $s4, pv in $s3 and uses only $s0-$s5, this draft pv $s2, m $s3 and
+   $s6; tools/regalloc.py on this file: pv priority 1.02 (254 refs, live 1737), m 0.77, the table / &spA0 pseudos below them;
+   in retail something outranks pv for $s2 (a temp with refs*floor_log2(refs)/live_length > pv's), so some pseudo lives
+   shorter / has more refs than here; (b) cross-jump direction of the five follow-record tails: retail merges the arms of
+   state 20's copy INTO state 26's (the earlier jumps into the later, `b 0x3b7354`), here the arms stay in state 20 and a
+   second pair of arms exists (8 div.s here, 6 in retail); (c) the 30-argument func_L01_003303B8 call and a few if/else orders.
+   Tried and worse: `void *qA = &spA0` pointer local for the spA0 address (1098 -> 1246 raw), block-scope U16 locals per tail.
+   Better: the CF68 call through a file-local `static __inline__ scale_L10()` wrapper (b42-w9 lever, gcse PRE of &spA0): 1098 -> 958 raw
+   (308 -> 328 ignoring register numbers); the frame is then 0xf0 (five $s regs) against retail's 0x100 (six). */
 /* func_L10_003B64C8: a level-10 (Zeldrin Starport) boss/enemy moby update: a switch on its mode
    (m+0x95: 0-5, jtbl_002BD350) and a 31-way switch on its state (m+0x20, cases 1-31, jtbl_002BD370),
    then func_L10_003B8F50. No COP2 instructions: a plain-C match is possible.
@@ -77,6 +90,9 @@ extern s32 func_L10_003B8F50(void *);
 extern s32 func_L10_003B9078(void *, s32, s32, s32);
 extern s32 func_L10_003B9D28(void *);
 #include "vu0.h"
+static __inline__ void scale_L10(void *d, void *v, f32 s) {
+    func_0038CF68(d, v, s);
+}
 void func_L10_003B64C8(Mo *m) {
     U16 sp90;
     U16 spA0;
@@ -270,7 +286,6 @@ void func_L10_003B64C8(Mo *m) {
                         func_L01_004450F0(m, 0x1B, 2);
                     }
                     if ((func_0038CF38(m->b + 0x10, ((G *)pv->p[0x230/4])->b + 0x10) < 10.0f) && ((u16) m->uh[0x96/2] >= 5U) && (pv->i[0x348/4] == 0)) {
-block_158:
                         func_L10_003B9078(m, 9, 0, 8);
                         func_L01_004450F0(m, 0x1B, 2);
                     }
@@ -293,9 +308,7 @@ block_158:
                     }
                     if ((m->uh[0x96/2] >= 0x5BU) && (func_L10_003B9D28(m) != 0)) {
                         func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 5);
-                        var_5 = 0x13;
-block_188:
-                        func_L01_004450F0(m, var_5, -1);
+                        func_L01_004450F0(m, 0x13, -1);
                     }
                     break;
                 case 19:                            /* switch 2 */
@@ -312,24 +325,13 @@ block_188:
                         temp_4_3 = pv->p[0x2DC/4];
                         if (((G *)temp_4_3)->b[0x42] == 0xA) {
                             func_003C2F58(temp_4_3, 0, &sp90);
-                            if (!(fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f)) {
-block_176:
-                                temp_17 = m->b + 0x10;
-                                var_f0 = func_0038CF38(temp_17, ((G *)pv->p[0x230/4])->b + 0x10);
-                                var_21 = temp_17;
-                                var_5_2 = pv->p[0x2DC/4] + 0xC0;
-block_177:
-                                func_0038CF68(&spA0, var_5_2, (var_f0 / 1.3f) * 0.020000001f);
+                            if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
+                                var_21 = m->b + 0x10;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             } else {
-block_174:
-                                temp_2_2 = m->b + 0x10;
-                                var_16 = pv->p[0x2DC/4] + 0xC0;
-                                var_21 = temp_2_2;
-                                var_f0_2 = func_0038CF38(temp_2_2, ((G *)pv->p[0x230/4])->b + 0x10);
-block_175:
-                                func_0038CF68(&spA0, var_16, (var_f0_2 / 1.3f) * 0.020000001f);
+                                var_21 = m->b + 0x10;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             }
-block_178:
                             spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
                             func_L05_0032B880(&sp90, &spA0, m, 5.0f);
                         }
@@ -342,12 +344,12 @@ block_178:
                     if (func_0038CF00(temp_17_2, temp_16_3) < 0.25f) {
                         if (pv->i[0x32C/4] != 0) {
                             func_003C3A10(pv->p[0x2DC/4], 9, 0, 8);
-                            var_5 = 0x1B;
-                            goto block_188;
+                            func_L01_004450F0(m, 0x1B, -1);
+                        } else {
+                            func_L10_003B9078(m, 0xE, 0, 8);
+                            func_L01_004450F0(m, 8, -1);
+                            pv->i[0x334/4] = 0;
                         }
-                        func_L10_003B9078(m, 0xE, 0, 8);
-                        func_L01_004450F0(m, 8, -1);
-                        pv->i[0x334/4] = 0;
                     }
                     break;
                 case 16:                            /* switch 2 */
@@ -369,9 +371,7 @@ block_178:
                         }
                     }
                     if (((u16) m->uh[0x96/2] >= 0x5BU) && (func_L10_003B9D28(m) != 0) && (((G *)(pv->p[0x2DC/4]))->b[0x42] == 9)) {
-                        var_5_3 = 0x14;
-block_108:
-                        func_L01_004450F0(m, var_5_3, -1);
+                        func_L01_004450F0(m, 0x14, -1);
                         func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 3);
                     }
                     break;
@@ -381,9 +381,10 @@ block_108:
                     var_21_2 = temp_16_5;
                     func_L01_00448340(temp_16_5, (u8 *)temp_17_4 + ((pv->i[0x334/4] * 0x10) + 0x10), pv->b + 0x2E8, 0.0032000002f, 0.014400001f, 0.080000006f);
                     if (func_0038CF00(temp_16_5, (u8 *)temp_17_4 + ((pv->i[0x334/4] * 0x10) + 0x10)) < 0.25f) {
-                        pv->i[0x334/4] = (pv->i[0x334/4] + 1);
+                        temp_2_10 = pv->i[0x334/4] + 1;
+                        pv->i[0x334/4] = temp_2_10;
                         temp_3_3 = *temp_17_4;
-                        if ((pv->i[0x334/4] + 1) >= temp_3_3) {
+                        if (temp_2_10 >= temp_3_3) {
                             pv->i[0x334/4] = (s32) (temp_3_3 - 1);
                         }
                     }
@@ -391,19 +392,15 @@ block_108:
                         temp_4_4 = pv->p[0x2DC/4];
                         if (((G *)temp_4_4)->b[0x42] == 0xA) {
                             func_003C2F58(temp_4_4, 0, &sp90);
-                            if (!(fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f)) {
-block_116:
-                                func_0038CF68(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             } else {
-block_115:
-                                func_0038CF68(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             }
-block_117:
                             spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
                             func_L05_0032B880(&sp90, &spA0, m, 5.0f);
                         }
                     }
-block_118:
                     if (((G *)(pv->p[0x2DC/4]))->b[0x60] & 2) {
                         func_L01_004450F0(m, 0x10, 2);
                         func_003C3A10(pv->p[0x2DC/4], 9, 0, 5);
@@ -419,8 +416,7 @@ block_118:
                         pv->i[0x334/4] = temp_2_5;
                         if (temp_2_5 >= *temp_16_6) {
                             func_003C3A10(pv->p[0x2DC/4], 9, 0, 8);
-                            var_5 = 0x1B;
-                            goto block_188;
+                            func_L01_004450F0(m, 0x1B, -1);
                         }
                     }
                     break;
@@ -439,8 +435,8 @@ block_118:
                         }
                     }
                     if (((u16) m->uh[0x96/2] >= 0x5BU) && (func_L10_003B9D28(m) != 0)) {
-                        var_5_3 = 0x1A;
-                        goto block_108;
+                        func_L01_004450F0(m, 0x1A, -1);
+                        func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 3);
                     }
                     break;
                 case 26:                            /* switch 2 */
@@ -462,13 +458,19 @@ block_118:
                         if (((G *)temp_4_5)->b[0x42] == 0xA) {
                             func_003C2F58(temp_4_5, 0, &sp90);
                             if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
-                                goto block_115;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            } else {
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             }
-                            goto block_116;
-                            goto block_117;
+                            spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21_2, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
+                            func_L05_0032B880(&sp90, &spA0, m, 5.0f);
                         }
                     }
-                    goto block_118;
+                    if (((G *)(pv->p[0x2DC/4]))->b[0x60] & 2) {
+                        func_L01_004450F0(m, 0x10, 2);
+                        func_003C3A10(pv->p[0x2DC/4], 9, 0, 5);
+                    }
+                    break;
                 case 3:                             /* switch 2 */
                     if (m->b[0x60] & 2) {
                         pv->i[0x338/4] = 1;
@@ -505,7 +507,8 @@ block_118:
                         func_L01_004450F0(m, 0x1B, 2);
                     }
                     if ((func_0038CF38(temp_17_7, ((G *)pv->p[0x230/4])->b + 0x10) < 10.0f) && ((u16) m->uh[0x96/2] >= 5U)) {
-                        goto block_158;
+                        func_L10_003B9078(m, 9, 0, 8);
+                        func_L01_004450F0(m, 0x1B, 2);
                     }
                     break;
                 case 15:                            /* switch 2 */
@@ -528,8 +531,7 @@ block_118:
                     }
                     if ((m->uh[0x96/2] >= 0x5BU) && (func_L10_003B9D28(m) != 0)) {
                         func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 5);
-                        var_5 = 0x12;
-                        goto block_188;
+                        func_L01_004450F0(m, 0x12, -1);
                     }
                     break;
                 case 18:                            /* switch 2 */
@@ -551,15 +553,12 @@ block_118:
                         if (((G *)temp_4_6)->b[0x42] == 0xA) {
                             func_003C2F58(temp_4_6, 0, &sp90);
                             if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
-                                var_16 = pv->p[0x2DC/4] + 0xC0;
-                                var_f0_2 = func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10);
-                                goto block_175;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            } else {
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             }
-                            temp_16_15 = pv->p[0x2DC/4] + 0xC0;
-                            var_f0 = func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10);
-                            var_5_2 = temp_16_15;
-                            goto block_177;
-                            goto block_178;
+                            spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
+                            func_L05_0032B880(&sp90, &spA0, m, 5.0f);
                         }
                     }
                     break;
@@ -570,7 +569,8 @@ block_118:
                     }
                     func_0038CF38(m->b + 0x10, ((G *)pv->p[0x230/4])->b + 0x10);
                     if (func_L01_0045BDE8(m, pv->i[0x314/4]) != 0) {
-                        goto block_158;
+                        func_L10_003B9078(m, 9, 0, 8);
+                        func_L01_004450F0(m, 0x1B, 2);
                     }
                     break;
                 case 22:                            /* switch 2 */
@@ -585,8 +585,7 @@ block_118:
                     }
                     if (((u16) m->uh[0x96/2] >= 0x5BU) && (func_L10_003B9D28(m) != 0)) {
                         func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 5);
-                        var_5 = 0x17;
-                        goto block_188;
+                        func_L01_004450F0(m, 0x17, -1);
                     }
                     break;
                 case 23:                            /* switch 2 */
@@ -604,10 +603,14 @@ block_118:
                         if (((G *)temp_4_7)->b[0x42] == 0xA) {
                             func_003C2F58(temp_4_7, 0, &sp90);
                             if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
-                                goto block_174;
+                                var_21 = m->b + 0x10;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            } else {
+                                var_21 = m->b + 0x10;
+                                scale_L10(&spA0, pv->p[0x2DC/4] + 0xC0, (func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                             }
-                            goto block_176;
-                            goto block_178;
+                            spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
+                            func_L05_0032B880(&sp90, &spA0, m, 5.0f);
                         }
                     }
                     break;
@@ -618,11 +621,9 @@ block_118:
                         if (m->b[0x42] == 0xD) {
                             func_003C3A10(pv->p[0x2DC/4], 0xA, 0, 8);
                         } else {
-block_186:
                             func_L10_003B9078(m, 0xA, 0, 8);
                         }
-                        var_5 = 0xA;
-                        goto block_188;
+                        func_L01_004450F0(m, 0xA, -1);
                     }
                     break;
                 case 9:                             /* switch 2 */
@@ -630,7 +631,8 @@ block_186:
                     func_L01_00448728(pv->p[0x2DC/4] + 0xF8, pv->b + 0x330, 0, m->f[0xF8/4], 0.0030717796f, 0.0008377581f, 0.15358898f);
                     func_L01_0045A748(m, pv->b + 0x220);
                     if (((func_0038CF38(m->b + 0x10, ((G *)pv->p[0x230/4])->b + 0x10) < 14.0f) || (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) > 3.0f)) && (func_0038DBA0(m->f[0xF8/4], func_0038D160(pv->f[0x220/4] - m->f[0x10/4], pv->f[0x224/4] - m->f[0x14/4])) < 0.5235988f)) {
-                        goto block_186;
+                        func_L10_003B9078(m, 0xA, 0, 8);
+                        func_L01_004450F0(m, 0xA, -1);
                     }
                     break;
                 case 10:                            /* switch 2 */
@@ -641,12 +643,12 @@ block_186:
                         if (fabs_asm(m->f[0x18/4] - pv->f[0x228/4]) < 2.0f) {
                             temp_16_20 = pv->p[0x2DC/4] + 0xC0;
                             var_21_3 = (m->b + 0x10);
-                            func_0038CF68(&spA0, temp_16_20, (func_0038CF38((m->b + 0x10), ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            scale_L10(&spA0, temp_16_20, (func_0038CF38((m->b + 0x10), ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                         } else {
                             temp_17_10 = m->b + 0x10;
                             temp_16_21 = pv->p[0x2DC/4] + 0xC0;
                             var_21_3 = temp_17_10;
-                            func_0038CF68(&spA0, temp_16_21, (func_0038CF38(temp_17_10, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
+                            scale_L10(&spA0, temp_16_21, (func_0038CF38(temp_17_10, ((G *)pv->p[0x230/4])->b + 0x10) / 1.3f) * 0.020000001f);
                         }
                         spA0.f[2] = func_L01_00447878(&sp90, pv->b + 0x220, 0, func_0038CF38(var_21_3, ((G *)pv->p[0x230/4])->b + 0x10) * 0.020000001f, 0xBB902DE0);
                         func_L05_0032B880(&sp90, &spA0, m, 5.0f);

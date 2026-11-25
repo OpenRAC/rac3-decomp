@@ -1,11 +1,11 @@
 /* func_L01_003749E8: a Veldin projectile's update (34 places, shared; switch on the state byte
  * with 5 cases: 0 flies and collides, 1 sets up 24 vector pairs, 2 spawns particles and hunts
- * a target, 3 and 4 wind down). Near miss, not linked. Round 29 W25 (Opus), fifth look
- * (W22: 19 aligned; W17: 50; W10: 154; codex-b41-w10: partial draft).
+ * a target, 3 and 4 wind down). Near miss, not linked. Round 30 W1 (Opus), sixth look
+ * (W25: 7 aligned; W22: 19; W17: 50; W10: 154; codex-b41-w10: partial draft).
  * State: complete C for every state. With the file's flags plus -mvu0-use-vf0-vf2 (mode S, @ps2as),
  *   check.py THIS.c func_L01_003749E8 --flags=-mvu0-use-vf0-vf2
- * gives 1506 words (= retail) and 7 aligned diff rows IN the file's context, 2 of them the jump
- * table's %hi/%lo placeholder: 5 real rows left (below). In context the three names that the file
+ * gives 1506 words (= retail) and 2 diff lines IN the file's context (plus the jump table's
+ * %hi/%lo placeholder): state 4's argument moves (W1 section below). In context the three names that the file
  * declares differently use its declarations: D_001A4BE0.w[], func_L01_0040E548(f32 *, f32 *), and
  * func_0038CF68 called through the cast typedef Fn_CF68_3749E8, the file has (f32, void *, void *);
  * with --no-context add: `extern u8 D_001A4BE0[]` (and `*(void **)(D_001A4BE0 + 0x25C0)`),
@@ -17,6 +17,29 @@
  * func_L01_00374790 and func_L01_00374908 still MATCH with it), the jump table (jtbl_002BED90) checked
  * in the full level build, $gp slot D_001D7BE0_sda (-0x4CD0($gp)), D_L01_001D66B0 declared as a
  * scalar `extern u8 D_L01_001D66B0;` passed as `&D_L01_001D66B0`.
+ *
+ * W1 (round 30; 16 diff lines -> 2):
+ * (a) Particle sites 2 and 3: the copy store and the add store are plain C (`*(vu0_q *)&f[11] = c;`,
+ *   `*(vu0_q *)&f[8] = x;`, `f[12]`/`f[7]` at site 3), the other VU0 steps stay asm. Why (sched2
+ *   dump): a dependence whose consumer is an asm costs 0, so two asm sqc2 issue in one cycle and the
+ *   `addiu/move $a0` set only finds a slot after the vsub; the compiler's own TImode move (lqc2/sqc2
+ *   with vf registers under -mvu0-use-vf0-vf2) is a real insn with a latency, the add store waits a
+ *   cycle and the $a0 set fills it: retail's `sqc2 copy; $a0; sqc2 add; move $a1; lqc2; lqc2; vsub`.
+ *   All 256 asm/C combinations of the 8 memory operands of site 2 swept: this is the smallest change
+ *   that scores 0 (site 1 already matched and is unchanged).
+ * (b) Left: state 4's `func_003A52A0(1, 0, self)`: retail `move $a1,$zero` before `addiu $a0,1`.
+ *   Cause (sched1 dump, rank_for_schedule): the a1 set ranks first only when its source is a pseudo
+ *   that DIES there (register weight 0 vs 1; same rule puts `move $a2` first at the (2, 0, self)
+ *   site, where self's pseudo dies) and that pseudo becomes $zero only AFTER sched1. Measured: a zero
+ *   local set before the use is folded by gcse cprop (any set that reaches the call on every path,
+ *   also two sets in both arms) and by cse skip-blocks; with -fno-gcse -fno-cse-skip-blocks the
+ *   local gives retail's order. The only plain-C form found that hides it from both but lets
+ *   local-alloc's update_equiv_regs substitute 0 (single set, single use) is a local set ONLY in the
+ *   `if (state->target != 0)` arm (`z = 0; state->timer = z;` ... `func_003A52A0(1, z, self)`):
+ *   that gives a full MATCH at level 01 but reads z uninitialized when target == 0 (undefined
+ *   behaviour), so it is not used here (copy: b44-drafts/func_L01_003749E8_uninit.c). Also tried:
+ *   prototype without parameters, s64 second parameter (`por`), comparison result as the argument
+ *   (`slt $a1` kept in $a1), a zero local at the case start / before the test (folded).
  *
  * W25 (this look; 19 -> 7):
  * (a) The three particle loops' add/copy/sub chains are per-instruction VU0 asm statements inside
@@ -411,11 +434,11 @@ void func_L01_003749E8(u8 *self) {
                     {
                         vu0_q x, y, c;
                         __asm__("lqc2 %0, %1" : "=j"(c) : "m"(*(vu0_q *)(self + 0x10)));
-                        __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&f[11]) : "j"(c));
+                        *(vu0_q *)&f[11] = c;
                         __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_q *)&f[8]));
                         __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_q *)&f[3]));
                         __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
-                        __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&f[8]) : "j"(x));
+                        *(vu0_q *)&f[8] = x;
                         __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_q *)&f[8]));
                         __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_q *)&f[11]));
                         __asm__("vsub.xyz %0, %1, %2" : "=j"(c) : "j"(x), "j"(y));
@@ -468,11 +491,11 @@ void func_L01_003749E8(u8 *self) {
                 {
                     vu0_q x, y, c;
                     __asm__("lqc2 %0, %1" : "=j"(c) : "m"(*(vu0_q *)(self + 0x10)));
-                    __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&f[12]) : "j"(c));
+                    *(vu0_q *)&f[12] = c;
                     __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_q *)&f[7]));
                     __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_q *)&f[3]));
                     __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
-                    __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&f[7]) : "j"(x));
+                    *(vu0_q *)&f[7] = x;
                     __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_q *)&f[7]));
                     __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_q *)&f[12]));
                     __asm__("vsub.xyz %0, %1, %2" : "=j"(c) : "j"(x), "j"(y));

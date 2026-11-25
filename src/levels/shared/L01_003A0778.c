@@ -1,43 +1,11 @@
-/* functional: high. Near miss (11 diff rows of 2834 at level 01, register scheduling of one spilled pointer in case 11 only); written from the retail assembly. Needs its own file with -mvu0-use-vf0-vf2 flags to compile; see the draft's header below. Vector ops are plain C (v3_add/v3_sub/q_zero), w lane kept from the first source. */
-/* func_L01_003A0778: a Veldin enemy's update (7 levels: 01 04 09 12 18 26 29). Near miss, not
-   linked. Written from the retail assembly (no rac2/rac4 twin; Opus singletons, 2026-11-08).
-   State: 2834 of 2834 instructions, the same opcode at every row except two; 2823 rows equal with
-   registers (check.py at level 01; the 4 jtbl %hi/%lo rows are the snippet's own .rodata and are
-   not real differences). Left: case 11's spilled +0x430 pointer (both the +0x95 == 3 and the +0x3D0
-   path): retail computes it after the D_L01_001E0100 load ($v0) and after the +0x3D0 load ($v1);
-   this C schedules it first in both paths (its position in the source, its scope and temporaries
-   do not move it). The +0x3D0 path's byte offset `o = i * 0x30` gives retail's registers.
-   Needs, when it lands: its own file, src/levels/shared/L01_003A0778.c, with
-   "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (func_L01_003A0710 and
-   func_L01_003A4938 do not take those flags; split L01_0039E1B0.c at 0x3A0778 and 0x3A33C0, both
-   8-aligned in all 7 levels). Check it with
-     tools/check.py THIS.c func_L01_003A0778 --mode S --as ps2as --flags=-mvu0-use-vf0-vf2
-   What made the difference: a fresh counter per loop of case 11 (one shared counter outranks the
-   per-object pointer in global allocation), the D_L01_001DFC4C header struct (record pointer +
-   index order), byte arithmetic `+ (id << 7)` for D_L01_001E0100, scalar tunables with .extern
-   hints, `*(u128_t *)&s9 = 0` before the 4-float constant, the xori/andi flag test, and the
-   prototypes (00448890: ptr, f, f, f, f, ptr, int; 004468C8: ptr, f, f, f, ints). */
+#include "common.h"
+
+/* localdecomp:start func_L01_003A0778 */
 #include "vu0.h"
 typedef int u128_t __attribute__((mode(TI)));
 typedef union { u8 b[0x2A00]; s16 h[0x1500]; u16 uh[0x1500]; s32 i[0xA80]; u32 u[0xA80]; f32 f[0xA80]; u8 *ptr[0xA80]; u128_t q[0x2A0]; } Hero;
 typedef union { u8 b[0x500]; s8 c[0x500]; s16 h[0x280]; u16 uh[0x280]; s32 i[0x140]; u32 u[0x140]; f32 f[0x140]; u8 *ptr[0x140]; u128_t q[0x50]; } Obj;
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4;
-
-/* plain-C stand-ins for the vector library's xyz add/sub (w lane kept from the first source, as vadd.xyz leaves it) and the quad zero store */
-static void v3_add(void *d, void *a, void *b) {
-    V4 *D = (V4 *)d, *A = (V4 *)a, *B = (V4 *)b;
-    f32 x = A->x + B->x, y = A->y + B->y, z = A->z + B->z, w = A->w;
-    D->x = x; D->y = y; D->z = z; D->w = w;
-}
-static void v3_sub(void *d, void *a, void *b) {
-    V4 *D = (V4 *)d, *A = (V4 *)a, *B = (V4 *)b;
-    f32 x = A->x - B->x, y = A->y - B->y, z = A->z - B->z, w = A->w;
-    D->x = x; D->y = y; D->z = z; D->w = w;
-}
-static void q_zero(void *d) {
-    V4 *D = (V4 *)d;
-    D->x = 0.0f; D->y = 0.0f; D->z = 0.0f; D->w = 0.0f;
-}
 typedef struct { u8 p[0x10]; s16 n10; s16 n12; s16 n14; s16 n16; u8 p18[4]; s32 *list1C; s32 *list20; u8 p24[0x0C]; } Rec30;
 typedef struct { s32 count; u8 p4[0x1C]; Rec30 recs[1]; } Hdr30;
 typedef struct { u8 b[0x80]; } Rec80;
@@ -405,10 +373,10 @@ void func_L01_003A0778(Obj *m) {
         if (func_L01_004561B8(m) != 0) {
             f32 a = func_00382538();
             f32 r = func_003824E0(6.0f, 9.0f);
-            q_zero(&pv->b[0x390]);
+            qzero(&pv->b[0x390]);
             pv->f[0x390 / 4] = func_0038D098(a) * r;
             pv->f[0x394 / 4] = func_0038D0B0(a) * r;
-            v3_add(&pv->b[0x390], &pv->b[0x390], &pv->b[0x380]);
+            vec_add_ab(&pv->b[0x390], &pv->b[0x390], &pv->b[0x380]);
             if (pv->i[0x2FC / 4] != -1 && func_L01_00456500(&pv->b[0x390], pv->i[0x2FC / 4]) == 0) {
                 pv->q[0x390 / 16] = pv->q[0x380 / 16];
             }
@@ -420,10 +388,10 @@ void func_L01_003A0778(Obj *m) {
         if (func_0038CF38(&m->q[1], &pv->b[0x390]) < 0.75f) {
             f32 a = func_00382538();
             f32 r = func_003824E0(6.0f, 9.0f);
-            q_zero(&pv->b[0x390]);
+            qzero(&pv->b[0x390]);
             pv->f[0x390 / 4] = func_0038D098(a) * r;
             pv->f[0x394 / 4] = func_0038D0B0(a) * r;
-            v3_add(&pv->b[0x390], &pv->b[0x390], &pv->b[0x380]);
+            vec_add_ab(&pv->b[0x390], &pv->b[0x390], &pv->b[0x380]);
             if (pv->i[0x2FC / 4] != -1 && func_L01_00456500(&pv->b[0x390], pv->i[0x2FC / 4]) == 0) {
                 pv->q[0x390 / 16] = pv->q[0x380 / 16];
             }
@@ -482,13 +450,11 @@ void func_L01_003A0778(Obj *m) {
     }
     case 11: {
         if (func_L01_004561B8(m) != 0) {
-            u8 *dst;
             s32 k1;
             s32 k2;
             func_L01_0045BD78(m, 0.0112000005f, 0.120000005f, 0.0201061945f, 0.50265485f);
             if (m->b[0x95] == 3) {
                 *(u128_t *)&pv->b[0x3E0] = *(u128_t *)(D_L01_001E0100 + (*D_L01_001DFC4C->recs[pv->i[0x414 / 4]].list20 << 7) + 0x30);
-                dst = &pv->b[0x430];
                 for (k1 = 0; k1 < D_L01_001DFC4C->recs[pv->i[0x414 / 4]].n12; k1++) {
                     u8 *t = D_L01_001E0100 + (D_L01_001DFC4C->recs[pv->i[0x414 / 4]].list20[k1] << 7);
                     f32 d = func_0038CF38(t + 0x30, &pv->b[0x220]);
@@ -498,7 +464,6 @@ void func_L01_003A0778(Obj *m) {
                     }
                 }
             } else {
-                dst = &pv->b[0x430];
                 if (pv->i[0x3D0 / 4] != -1) {
                     s32 o = pv->i[0x3D0 / 4] * 0x30;
                     if (*(s16 *)((u8 *)D_L01_001DFC4C + o + 0x32) != 0) {
@@ -515,7 +480,7 @@ void func_L01_003A0778(Obj *m) {
                 }
             }
             *(u128_t *)&s9 = pv->q[0x3E0 / 16];
-            func_L01_004591B8(m, &s9, dst);
+            func_L01_004591B8(m, &s9, &pv->b[0x430]);
         }
         if (!(func_0038CF38((u8 *)&m->q[1], &pv->b[0x3E0]) < 1.0f)) {
             goto walk;
@@ -728,7 +693,7 @@ void func_L01_003A0778(Obj *m) {
                 }
                 func_003C2F58(m, 2, &s9);
                 if ((u8 *)pv->ptr[0x3DC / 4] == D_001A4BE0.ptr[0x25C0 / 4]) {
-                    v3_sub(&sA, D_001A4BE0.b + 0xD0, &s9);
+                    vec_sub_ab(&sA, D_001A4BE0.b + 0xD0, &s9);
                     if (pv->i[0x3C0 / 4] != 0) {
                         sA.z -= 4.0f;
                     }
@@ -741,7 +706,7 @@ void func_L01_003A0778(Obj *m) {
                     } else {
                         sB.z += 0.5f;
                     }
-                    v3_sub(&sA, &sB, &s9);
+                    vec_sub_ab(&sA, &sB, &s9);
                 }
                 if (sA.z > 1.13446403f) {
                     sA.z = 1.13446403f;
@@ -783,7 +748,7 @@ void func_L01_003A0778(Obj *m) {
             if (func_L01_0044E1B8(m, 1.0f) != 0) {
                 func_003C2F58(m, 3, &s9);
                 if ((u8 *)pv->ptr[0x3DC / 4] == D_001A4BE0.ptr[0x25C0 / 4]) {
-                    v3_sub(&sA, D_001A4BE0.b + 0xD0, &s9);
+                    vec_sub_ab(&sA, D_001A4BE0.b + 0xD0, &s9);
                     if (pv->i[0x3C0 / 4] != 0) {
                         sA.z -= 4.0f;
                     }
@@ -796,7 +761,7 @@ void func_L01_003A0778(Obj *m) {
                     } else {
                         sB.z += 0.5f;
                     }
-                    v3_sub(&sA, &sB, &s9);
+                    vec_sub_ab(&sA, &sB, &s9);
                 }
                 func_0038CF68(&sA, &sA, 1.00000012f);
                 if (pv->i[0x3C0 / 4] != 0) {
@@ -932,3 +897,4 @@ void func_L01_003A0778(Obj *m) {
     }
     func_L01_003A4180(m);
 }
+/* localdecomp:end func_L01_003A0778 */

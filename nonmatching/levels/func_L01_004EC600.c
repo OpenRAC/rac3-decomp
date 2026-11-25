@@ -1,3 +1,10 @@
+/* Round 30 (W16): with the file's current flag line (-mvu0-use-vf0-vf2 ... @ps2as) check.py's aligned diff is
+   7 rows (+3 trailing padding rows). `if ((pressed & 3) != 0) locked = 1;` instead of `locked = (pressed & 3) != 0`
+   fixed `andi $v0` / `sltu $s0, $zero, $v0` (2 rows). The 7 left are the three reorg spots below. All three lie
+   between the jump to the epilogue in the b28C9 return block and the next barrier, and every retail choice
+   there is what resource.c's mark_target_live_regs gives when find_basic_block() fails (all registers live):
+   retail's label after that barrier was not a flow2 basic-block head at dbr time, ours is. Tried without a
+   change: 9 shapes of the wrench condition, 4 of the two return blocks (opus-b44-w16-findings.md). */
 /* NEAR MISS (r11, hero_item_switch, func_L01_004EC600, 2952 bytes). check.py: 657 diff by
    position, but only 17 words differ structurally (scratch/match/r10_a/sdiff.py): 735 of retail's
    738 instructions, with every register right except one temporary. The position count is high
@@ -236,7 +243,9 @@ void func_L01_004EC600(s32 slot)
         if (((H_4EC600 *)D_001A4BE0)->slot[0].item == 9 && D_001D4C40[0] != 0
             && (((flag_bits = D_00142A60[D_001D4C40[0]]) >> 5) & 1) == 1
             && (((Pad_4EC600 *)D_001D52FC)->held & 3) == 3) {
-            locked = (((Pad_4EC600 *)D_001D52FC)->pressed & 3) != 0;
+            if ((((Pad_4EC600 *)D_001D52FC)->pressed & 3) != 0) {
+                locked = 1;
+            }
         }
         if ((((Pad_4EC600 *)D_001D52FC)->pressed & 0x20) != 0
             || ((((Pad_4EC600 *)D_001D52FC)->pressed & 8) != 0 && func_L01_00513EF0() != 0) || locked != 0) {
