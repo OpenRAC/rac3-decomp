@@ -1,12 +1,23 @@
-/* func_L19_003C1F18: 3 diff in L19_003C0938.c (-mvu0-use-vf0-vf2 @ps2as): the per-frame update of the moby func_L19_003C2388 initialises. Left: one delay slot. After the t[0x20] == 0xFD test retail fills the beq as a beql with the target's lbu obj[0x20] and the following b with the lbu of its own target; this C puts that lbu in the beq's slot unannulled and the b takes the next insn (addiu 0xF). The pre-reorg code is the same (-fno-delayed-branch); ternary/||/goto/inline-helper forms of the k test, u8 k, and the state-check forms do not move it. Fixed on the way: s16 s2 assigned inside the first switch's (u8) index (retail's lbu, andi and copy), case 1: goto past the second switch (retail's threaded jump), the 0x10/0x11/0xF compares as nested ifs with return on 0xF (fold-const merges an && chain into a range)
-
- * Round 25 W7 (b39, ~35 compiles; base 626eebd0d). Reorg theory: retail fills the b to Lend first (its own target's lbu,
- * simple pass) so the beq's eager fill finds the fall-through thread headed by a filled jump and takes the annulled copy of
- * its own target (beql); here the b is not yet filled when the beq is processed, the beq takes the shared lbu unannulled and
- * relax_delay_slots later refills the b with the next insn. Nothing in the pre-reorg RTL differs. Tested without effect
- * (3 diff): both-arm duplication of the whole body (166), the 0x10/0x11/0xF tests reordered (8) or with 0xF first (13) or
- * as a switch (144), k as a single expression, t / k as function-level locals, `s` block-local or reusing s4, three
- * declaration orders; flags -fno-sched-interblock 3, -fno-regmove 3, -fno-strength-reduce 3, -fno-gcse 19.
+/* func_L19_003C1F18: 2 diff in L19_003C0938.c (-mvu0-use-vf0-vf2 @ps2as): the per-frame update of the moby func_L19_003C2388 initialises.
+ * Left: the two loads of obj[0x20] at the state-check block after the hero-target test are `lb` here, retail `lbu` (every delay
+ * slot is now retail's). With `s32 s` (the previous draft) every opcode is right but 3 slots differ; `s8 s` trades them for these 2.
+ * Fixed earlier: s16 s2 assigned inside the first switch's (u8) index (retail's lbu, andi and copy), case 1: goto past the second
+ * switch (retail's threaded jump), the 0x10/0x11/0xF compares as nested ifs with return on 0xF (fold-const merges an && chain into a range).
+ * The definition takes `void *arg` because the file declares `extern void func_L19_003C1F18(void *);` (in-context compile).
+ *
+ * Round 29 W29 (Opus; gcc 2.95.3 reorg.c read): with `s32 s` the pre-reorg RTL equals retail's; pass 1 gives the `b L_end` its
+ * target's lbu (b -> L_end+4) and the beq 0xFD the annulled lbu of its target L_A (beql), both as retail. Then relax_delay_slots
+ * calls try_merge_delay_insns (the slot is from-target and no CODE_LABEL lies between the beq and the b, own_thread_p), the two
+ * lbu patterns are rtx_equal_p, so the b's copy is deleted and the beq unannulled; pass 2 refills the b with `addiu 0xf`. Retail
+ * did not merge: its two loads must differ as RTL (or a label sat between the beq and the b at reorg time). `s8 s` makes the L_A
+ * load a sign_extend (lb): no merge, all slots as retail, proof of the mechanism. Needed: an lbu at L_A whose pattern is not
+ * (zero_extend:SI (mem:QI)) like L_end's. Tested: u8 140, s16/u16 3 (same pattern), unsigned long (zero_extend:DI, lbu, no merge)
+ * 145 (dsll32/dsra32 truncations for the range test), an (unsigned long) cast on the L_end test 3 (folded), goto/if-else forms of
+ * the k arms 3 / 14.
+ *
+ * Round 25 W7 (b39, ~35 compiles): whole-body duplication in both k arms 166, compare order variants 8 / 13, a switch for the
+ * compares 144, declaration orders and block-local s all 3; flags -fno-sched-interblock / -fno-regmove / -fno-strength-reduce 3,
+ * -fno-gcse 19.
  */
 typedef struct { f32 x, y, z, w; } V_3C1F18 __attribute__((aligned(16)));
 typedef struct { u8 p0[0xBF4]; u8 *xBF4; u8 p1[0x25C0 - 0xBF8]; u8 *x25C0; u8 p2[0x2850 - 0x25C4]; s32 x2850; } H_3C1F18;
@@ -29,13 +40,14 @@ extern int func_L01_00456B40(u8 *, u8 *, f32, f32);
 extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 
-void func_L19_003C1F18(u8 *obj) {
+void func_L19_003C1F18(void *arg) {
+    u8 *obj = arg;
     u8 *p = *(u8 **)(obj + 0x68);
     u8 *e;
     s32 idx;
     s32 found;
     s32 was;
-    s32 s, s4; s16 s2;
+    s8 s; s32 s4; s16 s2;
     V_3C1F18 a;
     V_3C1F18 b;
 

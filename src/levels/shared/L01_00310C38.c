@@ -62,5 +62,3 @@ void func_L01_00310C38(char *pos, int color, int alpha, char *texture_id, int bl
     func_003D2DA0(packet, matrix, 0);
 }
 /* localdecomp:end func_L01_00310C38 */
-
-INCLUDE_ASM("asm/levels", func_L01_00310DB8);

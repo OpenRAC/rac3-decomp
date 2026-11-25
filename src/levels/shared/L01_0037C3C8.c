@@ -1,18 +1,6 @@
-﻿/* PAL near miss, 7 diffs (round 21 W3): port of func_L39_00554A70 (master C, 808 bytes) to level 01.
- * Needs file flags "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (NOT the current line of
- * L01_0037BE80.c, which has -mno-split-addresses: cut the function into its own file with this line) and the divs_nops
- * row "func_L01_0037C3C8 2 2".
- * Remaining diffs: m and the &off pointer (po) swap callee-saved registers ($s5/$s4 vs retail $s4/$s5) and the
- * dependent uses (7 words). Everything else is retail's: 0.02f is no longer hoisted (written inline as
- * -(f() * 0.02f)), D_001A4EC0 is the core vector (retail hoists its lui into $s7) and po = &off at the top of the
- * loop body keeps retail's fresh `addiu $a0,$sp,0x30` for the CE20 call.
- * Tried: po assigned before the loop (16 raw: the same swap), po declared before m, po assigned at function start
- * (49) or after n (32).
- * b37 W8: reproduced 7 diffs; also tried here: po declared in the loop, m declared last, m assigned after to/pos, vec_sub/add_ab|ba helpers
- * in place of the asm blocks (9-13 diffs: vf roles change), mixed helper/asm (9-13), all without moving m/po.
- */
 #include "common.h"
 #include "vu0.h"
+
 /* localdecomp:start func_L01_0037C3C8 */
 extern u8 D_L01_00221098[];
 extern vu0_v4 D_001A4EC0;
@@ -64,9 +52,10 @@ void func_L01_0037C3C8(u8 *self, vu0_v4 *a1, vu0_v4 *a2) {
     for (i = 0; i < n; i++) {
         u8 *g = D_L01_00221098;
 
-        po = &off;
+
         life = func_L01_00443A18(1.0f, 3.0f);
-        func_0038CE20(&off, &D_001A4EC0, -(func_003824E0(0.1f, 0.2f) * 0.020000001f));
+        spd = func_003824E0(0.1f, 0.2f);
+        func_0038CE20(&off, &D_001A4EC0, -(spd * 0.020000001f));
         r = func_00382498(3, 6);
         if (func_0013D3E0() & 2) {
             size = 0x40;
@@ -75,7 +64,7 @@ void func_L01_0037C3C8(u8 *self, vu0_v4 *a1, vu0_v4 *a2) {
             size = 0x60;
             col = 0xFF4040;
         }
-        e = func_L01_0046A610(&pos, po, (r * 5 + 2) / 6, size, col, life, 63000.004f, 10000.0f, 1.0f, 0.0f, 0.0f);
+        e = func_L01_0046A610(&pos, &off, (r * 5 + 2) / 6, size, col, life, 63000.004f, 10000.0f, 1.0f, 0.0f, 0.0f);
         __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(pos));
         __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(step));
         __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qb));
