@@ -1,3 +1,14 @@
+/* Round 14 (r14_b): still 8 with the file's flags. With the file's vu0.h helpers (vec_add_ba for
+ * the first add, vec_add_ab for the second) it is 13: the colour mask's lui is scheduled above the
+ * second add's sqc2. A sched1 barrier there is what retail shows: the same helpers with the second
+ * sqc2 written `__asm__ __volatile__` give 4 (r14_b/k1.c; the colour block then agrees: lw first,
+ * then lui/ori, the 0.025 constant, the and, move $a1 in the delay slot). Not used: a volatile asm
+ * chosen for its scheduling is not allowed. A do { } while (0) around the add or the colour block
+ * (loop notes are barriers too) gives 17 and 45. The other 4 words: retail has slti right after
+ * the lbu of obj[4] and the -0.00075 constant after it; every form (ternary, if/else, the else
+ * value first, either comparison sense, an s32 brightness) puts the constant in the load's
+ * latency slot. func_0038DBD8 as (f32, s32, s32) (open-rac-engine's colour_lerp order) changes
+ * nothing. */
 /* PAL near miss (haiku-w5): 8 words differ with the file's flags. Retail computes brightness < 32 (slti) before the -0.00075f constant load, and loads color (lw) before the 0.025f constant with the and before the jal; every ordering tried (ternary, if/else, named constants, color placed earlier or later, masked argument) left 8 or more. The data alias D_L01_002C5600_004730F8 avoids the file's Stream_472F58 declaration of the same address (conflicting types otherwise). */
 /* PAL near miss (Codex wave 8): near miss: 8 words differ with the file's flags.
  * Worker's note: 8 word differences; build/codex/w455/func_L01_004730F8.01.log. Comparison vs negative-float materialization order, mask-lui vs color load, and func_0038DBD8 argument delay slot. Signed color/explicit default and typed color-union forms preserve residual; ...

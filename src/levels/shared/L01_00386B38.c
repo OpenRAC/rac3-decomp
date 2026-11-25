@@ -20,31 +20,33 @@ INCLUDE_ASM("asm/levels", func_L01_00386B38);
 
 /* localdecomp:start func_L01_003882A0 */
 #include "vu0.h"
-struct Moby_00389B00;
 
-typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_003882A0;
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) Vec_003882A0;
 typedef struct { u8 pad[0x46]; u8 kind; } Class_003882A0;
 typedef struct { u8 pad[0x24]; Class_003882A0 *cls; } Moby_003882A0;
-typedef struct { u8 pad[0x18]; Moby_003882A0 *obj; } Hit_003882A0;
-typedef struct { u8 pad[0x6c]; f32 damage; u8 tail[0x80]; } Weapon_003882A0;
+typedef struct { u8 pad[0x18]; Moby_003882A0 *moby; } Hit_003882A0;
+typedef struct { u8 pad[0x6C]; f32 damage; u8 tail[0x80]; } WeaponRow_003882A0;
 
 extern Hit_003882A0 D_L01_001EAA00;
 extern Vec_003882A0 D_L01_001EAA20;
-extern Weapon_003882A0 D_L01_002C5600[];
+extern WeaponRow_003882A0 D_L01_002C5600_003882A0[];
 extern u8 D_001425E7[];
 extern s32 D_001A71A0[];
 
-Moby_003882A0 *func_L01_003882A0(void *owner, Vec_003882A0 *start, Vec_003882A0 *end, Vec_003882A0 *shot, f32 radius) {
+/* shock_cannon_ray_test: tests one of the Shock Cannon's rays from start to end. On a hit, the
+ * distance sets the damage (all of it under 10 u, 3/4 under 14, 1/2 under 20, else 1/8), queued on
+ * the moby hit; returns that moby if its class is of kind 5, else 0. */
+Moby_003882A0 *func_L01_003882A0(void *gun, Vec_003882A0 *start, Vec_003882A0 *end, Vec_003882A0 *shot, f32 radius) {
     extern void func_0038CF68(void *, void *, f32);
     extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
-    extern struct Moby_00389B00 *func_L01_00389B00(s128 *, void *, s128 *, s32, f32);
+    extern void *func_L01_00389B00_003882A0(void *, void *, void *, s32, f32);
     extern f32 func_0038CF00(void *, void *);
     extern void func_L01_00446978(void *, void *);
     extern void func_L01_0034C9F0(void *, s32, void *);
     Vec_003882A0 delta;
     f32 damage, dist;
-    Moby_003882A0 *obj, *ret;
-    Vec_003882A0 *hitpos;
+    Moby_003882A0 *moby, *ret;
+    Vec_003882A0 *hit_pos;
 
     vec_sub_ab(shot, end, start);
     func_0038CF68(shot, shot, 1.5f);
@@ -52,31 +54,31 @@ Moby_003882A0 *func_L01_003882A0(void *owner, Vec_003882A0 *start, Vec_003882A0 
     if (func_003D3CB0(start, end, 16, D_001A71A0[0], 0)) {
         vec_sub_ab(&delta, end, start);
         func_0038CF68(&delta, &delta, 1.0f);
-        hitpos = &D_L01_001EAA20;
-        vec_sub_ab(&delta, hitpos, start);
-        func_L01_00389B00((s128 *)start, &delta, (s128 *)hitpos, 1, radius);
-        if (((s32 *)hitpos)[-2]) {
-            damage = ((Weapon_003882A0 *)D_L01_002C5600)[D_001425E7[0]].damage;
-            dist = func_0038CF00(hitpos, start);
+        hit_pos = &D_L01_001EAA20;
+        vec_sub_ab(&delta, hit_pos, start);
+        func_L01_00389B00_003882A0(start, &delta, hit_pos, 1, radius);
+        if (((s32 *)hit_pos)[-2]) {
+            damage = ((WeaponRow_003882A0 *)D_L01_002C5600_003882A0)[D_001425E7[0]].damage;
+            dist = func_0038CF00(hit_pos, start);
             if (dist < 10.0f) ((f32 *)shot)[7] = damage;
             else if (dist < 14.0f) ((f32 *)shot)[7] = damage * 0.75f;
             else if (dist < 20.0f) ((f32 *)shot)[7] = damage * 0.5f;
             else ((f32 *)shot)[7] = damage * 0.125f;
-            func_L01_00446978(D_L01_001EAA00.obj, shot);
-            func_L01_0034C9F0(D_L01_001EAA00.obj, 39, owner);
-            obj = D_L01_001EAA00.obj;
+            func_L01_00446978(D_L01_001EAA00.moby, shot);
+            func_L01_0034C9F0(D_L01_001EAA00.moby, 39, gun);
+            moby = D_L01_001EAA00.moby;
             ret = 0;
-            if (obj) {
-                Class_003882A0 *c = obj->cls;
-                ret = obj;
-                if (c == 0 || c->kind != 5) ret = 0;
+            if (moby != 0) {
+                Class_003882A0 *cls = moby->cls;
+                ret = moby;
+                if (cls == 0 || cls->kind != 5) ret = 0;
             }
         } else {
             ret = 0;
         }
     } else {
         vec_sub_ab(&delta, end, start);
-        func_L01_00389B00((s128 *)start, &delta, (s128 *)end, 0, -1.0f);
+        func_L01_00389B00_003882A0(start, &delta, end, 0, -1.0f);
         ret = 0;
     }
     return ret;
@@ -134,9 +136,165 @@ void func_L01_003884D8(u8 *obj) {
 }
 /* localdecomp:end func_L01_003884D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003886E8);
+/* localdecomp:start func_L01_003886E8 */
+typedef struct {
+    u8 pad0[0x16B0]; s32 mode;
+    u8 pad16B4[0x25C0 - 0x16B4]; u8 *camera;
+    u8 pad25C4[0x2874 - 0x25C4]; s16 aiming;
+} Hero_003886E8;
+extern Hero_003886E8 D_001A4BE0_003886E8;
+extern s128 D_L01_001E29E0;
+extern f32 D_L01_001DDE00, D_L01_001DDE04, D_L01_001DDE08;
+extern s32 D_L01_001DDDF4, D_L01_001DDDF8, D_L01_001DDDFC;
+extern s32 D_L01_001E1EA4;
+extern f32 D_L01_001E1EA8, D_L01_001E1EAC, D_L01_001E1EB0;
+__asm__(".extern D_L01_001DDE00, 4");
+__asm__(".extern D_L01_001DDE04, 4");
+__asm__(".extern D_L01_001DDE08, 4");
+__asm__(".extern D_L01_001DDDF4, 4");
+__asm__(".extern D_L01_001DDDF8, 4");
+__asm__(".extern D_L01_001DDDFC, 4");
 
-INCLUDE_ASM("asm/levels", func_L01_00388AC8);
+/* shock_cannon_domes_draw: the Shock Cannon lance's three spinning domes (fx_dome), from the gun
+ * along the aim, the camera's facing, or the scripted direction, opening out along the lance. */
+void func_L01_003886E8(u8 *moby) {
+    extern void func_003C2F58(void *, s32, void *);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038D160(f32, f32);
+    extern void func_0038D328(s128 *, S_38C110v *);
+    extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+    extern void func_003D9740(s128 *, s32, u32, s32, s32, f32);
+    struct { s128 matrix[4], position, direction; S_38C110v rotation; s128 offset; } v;
+    func_003C2F58(moby, 0, &v.position);
+    if (D_001A4BE0_003886E8.aiming) {
+        func_0038CE20(&v.direction, moby + 0xD0, -1.0f);
+    } else if (D_001A4BE0_003886E8.mode == 1) {
+        v.direction = D_L01_001E29E0;
+    } else {
+        v.direction = *(s128 *)(D_001A4BE0_003886E8.camera + 0xC0);
+    }
+    v.rotation.x = 0.0f;
+    v.rotation.y = -func_0038D160(func_0038CED8(&v.direction), ((f32 *)&v.direction)[2]) + -1.57079637f;
+    v.rotation.z = func_0038D160(((f32 *)&v.direction)[0], ((f32 *)&v.direction)[1]);
+    v.rotation.w = 1.0f;
+    func_0038D328(v.matrix, &v.rotation);
+    if (D_001A4BE0_003886E8.aiming) {
+        func_0038CE20(&v.offset, moby + 0xD0, -1.0f);
+    } else if (D_001A4BE0_003886E8.mode == 1) {
+        v.offset = D_L01_001E29E0;
+    } else {
+        v.offset = *(s128 *)(D_001A4BE0_003886E8.camera + 0xC0);
+    }
+    func_0038CE20(&v.offset, &v.offset, D_L01_001DDE00 - 0.5f);
+    vec_add_ab(&v.position, &v.position, &v.offset);
+    v.matrix[3] = v.position;
+    func_0038CE20(&v.matrix[0], &v.matrix[0], D_L01_001DDE08);
+    func_0038CE20(&v.matrix[1], &v.matrix[1], D_L01_001DDE04);
+    func_0038CE20(&v.matrix[2], &v.matrix[2], D_L01_001DDE00);
+    /* each dome's spin, wrapped at 7 */
+    D_L01_001E1EA8 += 0.15f;
+    if (D_L01_001E1EA8 >= 7.0f) D_L01_001E1EA8 -= 7.0f;
+    D_L01_001E1EAC += 0.1f;
+    if (D_L01_001E1EAC >= 7.0f) D_L01_001E1EAC -= 7.0f;
+    D_L01_001E1EB0 += 0.05f;
+    if (D_L01_001E1EB0 >= 7.0f) D_L01_001E1EB0 -= 7.0f;
+    func_0038D890((f32 *)&v.matrix[0], (f32 *)&v.matrix[0], (f32 *)&v.matrix[2], 0.785398185f);
+    func_0038D890((f32 *)&v.matrix[1], (f32 *)&v.matrix[1], (f32 *)&v.matrix[2], 0.785398185f);
+    func_003D9740(v.matrix, D_L01_001DDDF4, (D_L01_001E1EA4 << 25) | 0x804020, 8, 1, D_L01_001E1EA8);
+    func_0038D890((f32 *)&v.matrix[0], (f32 *)&v.matrix[0], (f32 *)&v.matrix[2], -1.57079637f);
+    func_0038D890((f32 *)&v.matrix[1], (f32 *)&v.matrix[1], (f32 *)&v.matrix[2], -1.57079637f);
+    func_003D9740(v.matrix, D_L01_001DDDF8, (D_L01_001E1EA4 << 25) | 0x801040, 8, 1, D_L01_001E1EAC);
+    func_003D9740(v.matrix, D_L01_001DDDFC, (D_L01_001E1EA4 << 25) | 0x804010, 8, 1, D_L01_001E1EB0);
+    func_0038CE20(&v.matrix[0], &v.matrix[0], 1.1f);
+    func_0038CE20(&v.matrix[1], &v.matrix[1], 1.1f);
+    func_003D9740(v.matrix, 10, (D_L01_001E1EA4 << 24) | 0xD20A40, 6, 1, D_L01_001E1EA8);
+}
+/* localdecomp:end func_L01_003886E8 */
+
+/* localdecomp:start func_L01_00388AC8 */
+#include "vu0.h"
+typedef struct {
+    u8 pad_0[0x110];
+    s128 velocity;              /* 0x110 */
+    u8 pad_120[0x360 - 0x120];
+    s32 moving;                 /* 0x360 */
+    u8 pad_364[0x6C0 - 0x364];
+    S_38C110v axes[2];          /* 0x6C0 */
+} Hero_00388AC8;
+extern Hero_00388AC8 D_001A4BE0_00388AC8;
+extern u8 *D_L01_00221098[];
+
+/* A burst of 20 smoke puffs (particle_spawn_smoke) and embers (particle_spawn_ember) from position,
+ * thrown out along a direction tilted 20 deg about the hero's axes and spun by a random angle each
+ * time, carrying 1.7 x the hero's velocity when he moves. */
+void func_L01_00388AC8(void *unused, s128 *position) {
+    extern void func_0038D890(f32 *, f32 *, f32 *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+    extern u8 *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D850(void *, void *, void *);
+    S_38C110v spin, direction, base, origin, velocity, point, inherited, offset;
+    s32 i, kind;
+    f32 angle = 0.0f;
+    u8 *particle;
+
+    *(s128 *)&base = 0;
+    base.x = 0.3f;
+    base.y = -1.0f;
+    base.w = 1.0f;
+    *(s128 *)&origin = *position;
+    func_0038D890((f32 *)&base, (f32 *)&D_001A4BE0_00388AC8.axes[0], (f32 *)&D_001A4BE0_00388AC8.axes[1], 0.34906584f);
+    direction = base;
+    qzero(&inherited);
+    if (D_001A4BE0_00388AC8.moving)
+        func_0038CE20(&inherited, &D_001A4BE0_00388AC8.velocity, 1.7f);
+    func_0038CE20(&offset, &D_001A4BE0_00388AC8.axes[0], 0.4f);
+    vec_add_ab(&origin, &origin, &offset);
+    for (i = 0; i < 20; i++) {
+        angle = func_0038DAB8(angle, func_003824E0(0.0f, 0.62831855f));
+        func_0038CE20(&velocity, &direction, func_003824E0(0.24000001f, 0.32000002f));
+        vec_add_ab(&velocity, &velocity, &inherited);
+        point.x = origin.x + func_L01_00443A18(0.0f, 0.3f);
+        point.y = origin.y + func_L01_00443A18(0.0f, 0.3f);
+        point.z = origin.z + func_L01_00443A18(0.0f, 0.3f);
+        kind = (s32)func_L01_00443A18(1.0f, 2.0f);
+        particle = func_L01_004669B0(&point, 0.0f, 1.0f, 1.01f, func_003824E0(0.2f, 0.75f) * 210000.0f, kind,
+                                     &D_001A4BE0_00388AC8.velocity, 0x7FFFFFFF, 0);
+        if (particle) {
+            u8 *p;
+            particle[3] = 72;
+            *(s16 *)(particle + 10) = 50;
+            p = particle + 0x20;
+            particle[9] = 68;
+            *(f32 *)(p + 0x1C) = 4.0f;
+            *(s32 *)(p + 4) = 3;
+            p[10] = 48;
+            p[11] = particle[10];
+        }
+        point.x = origin.x + func_L01_00443A18(0.0f, 0.6f);
+        point.y = origin.y + func_L01_00443A18(0.0f, 0.6f);
+        point.z = origin.z + func_L01_00443A18(0.0f, 0.6f);
+        {
+            f32 size = func_003824E0(0.2f, 1.75f);
+            vec_sub_ab(&point, &point, &velocity);
+            particle = func_L01_0046A610(&point, &velocity, 5, 127, 0x404040, kind, size * 210000.0f, 500.0f, 0.95f, 0.0f, 0.0f);
+        }
+        if (particle) particle[2] = D_L01_00221098[0x5B][1];
+        if (fabs_asm(angle) > 0.00001f) {
+            func_003C4840(&spin, &D_001A4BE0_00388AC8.axes[0], angle);
+            func_0038D850(&direction, &base, &spin);
+        }
+    }
+    {
+        f32 scale = func_003824E0(8.0f, 12.0f) * 0.020000001f;
+        func_0038CE20(&base, &D_001A4BE0_00388AC8.axes[0], scale);
+    }
+}
+/* localdecomp:end func_L01_00388AC8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00388EE0);
 
@@ -298,7 +456,111 @@ Moby_00389B00 *func_L01_00389B00(s128 *position, void *direction, s128 *rotation
 
 INCLUDE_ASM("asm/levels", func_L01_00389C28);
 
-INCLUDE_ASM("asm/levels", func_L01_0038A0F8);
+/* localdecomp:start func_L01_0038A0F8 */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 position[4];
+    u32 colour[4];
+    f32 uv[4][2];
+    u8 pad70[0x20];
+} Quad_0038A0F8;
+extern s32 D_L01_001DDEA0;
+extern s32 D_L01_001DDEA4;
+extern vu0_v4 D_L01_001E29C0;
+__asm__(".extern D_L01_001DDEA0, 4");
+__asm__(".extern D_L01_001DDEA4, 4");
+
+/* shock_cannon_ray_draw: draws the Shock Cannon's ray (class 0x1883) from the moby to the end point
+ * in its vars (+0x50) as camera-facing quads, their u scrolled by vars+0x30 each frame: the first
+ * texture in (0x20, 0x40, 0x80) blended over two halves, then the second in (0, 0x40, 0xFF), its
+ * alpha 96 x life x fade. */
+void func_L01_0038A0F8(u8 *moby) {
+    extern void func_003D93B0(Quad_0038A0F8 *, s32, s32, s32);
+    extern void func_003D2DA0(Quad_0038A0F8 *, s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    Quad_0038A0F8 quad;
+    vu0_v4 eye, step, end, side;
+    u8 *vars;
+    f32 intensity, *uv;
+    s32 i;
+    u32 colour;
+
+    vars = *(u8 **)(moby + 0x68);
+    if (moby == 0) return;
+    if (moby[0x20] == 0xFE) return;
+    if (moby[0x20] == 0xFD) return;
+    if (vars == 0) return;
+    intensity = (f32)*(s32 *)(vars + 0x38) * *(f32 *)(vars + 0x3C);
+    func_003D93B0(&quad, D_L01_001DDEA0, 0, 0x80);
+    colour = ((s32)(intensity * 96.0f) << 24) | 0x804020;
+    quad.colour[1] = colour;
+    quad.colour[0] = colour;
+    quad.colour[3] = colour;
+    quad.colour[2] = colour;
+    quad.uv[0][0] = 0.0f;
+    quad.uv[0][1] = 0.0f;
+    quad.uv[1][0] = 0.0f;
+    quad.uv[1][1] = 1.0f;
+    quad.uv[2][0] = 1.0f;
+    quad.uv[2][1] = 0.0f;
+    quad.uv[3][0] = 1.0f;
+    quad.uv[3][1] = 1.0f;
+    uv = &quad.uv[0][0];
+    for (i = 3; i >= 0; i--, uv += 2) {
+        *uv += *(f32 *)(vars + 0x30);
+        if (*uv >= 7.0f) *uv -= 7.0f;
+    }
+    *(f32 *)(vars + 0x30) += 0.1f;
+    if (*(f32 *)(vars + 0x30) >= 4.0f) *(f32 *)(vars + 0x30) -= 4.0f;
+    vec_sub_ab(&eye, moby + 0x10, &D_L01_001E29C0);
+    vec_sub_ab(&step, vars + 0x50, moby + 0x10);
+    func_0038CE20(&step, &step, 0.5f);
+    vec_add_ba(&end, moby + 0x10, &step);
+    func_0038CE90(&side, &eye, &step);
+    func_0038CF68(&side, &side, 1.4f);
+    vec_add_ba(&quad.position[0], moby + 0x10, &side);
+    vec_sub_ab(&quad.position[1], moby + 0x10, &side);
+    func_0038CF68(&side, &side, 0.6f);
+    vec_add_ba(&quad.position[2], &end, &side);
+    vec_sub_ba(&quad.position[3], &end, &side);
+    func_003D2DA0(&quad, 0, 0);
+    quad.colour[0] = quad.colour[2];
+    quad.colour[1] = quad.colour[3];
+    quad.colour[3] = 0x204080;
+    quad.colour[2] = 0x204080;
+    *(vu0_q *)&quad.position[0] = *(vu0_q *)&quad.position[2];
+    *(vu0_q *)&quad.position[1] = *(vu0_q *)&quad.position[3];
+    vec_add_ba(&quad.position[2], &quad.position[2], &step);
+    vec_add_ab(&quad.position[3], &quad.position[3], &step);
+    func_003D2DA0(&quad, 0, 0);
+    func_003D93B0(&quad, D_L01_001DDEA4, 1, 0x80);
+    colour = ((s32)(intensity * 96.0f) << 24) | 0xFF4000;
+    quad.uv[0][0] = 0.0f;
+    quad.uv[0][1] = 0.0f;
+    quad.uv[1][0] = 0.0f;
+    quad.uv[1][1] = 1.0f;
+    quad.colour[1] = colour;
+    quad.uv[2][0] = 1.0f;
+    quad.uv[2][1] = 0.0f;
+    quad.uv[3][0] = 1.0f;
+    quad.colour[0] = colour;
+    quad.colour[3] = 0xFF4000;
+    quad.uv[3][1] = 1.0f;
+    quad.colour[2] = 0xFF4000;
+    func_0038CF68(&side, &side, 0.6f);
+    vec_add_ba(&quad.position[0], moby + 0x10, &side);
+    vec_sub_ab(&quad.position[1], moby + 0x10, &side);
+    vec_add_ab(&end, moby + 0x10, &step);
+    vec_add_ba(&end, &end, &step);
+    vec_add_ab(&quad.position[2], &end, &side);
+    vec_sub_ab(&quad.position[3], &end, &side);
+    func_003D2DA0(&quad, 0, 0);
+}
+/* localdecomp:end func_L01_0038A0F8 */
+
+INCLUDE_ASM("asm/levels", func_L01_00389C28);
 
 INCLUDE_ASM("asm/levels", func_L01_0038A4B8);
 

@@ -1,26 +1,37 @@
-/* NEAR MISS (not a MATCH): func_L01_005138F8 xp_level_check, 178 differing lines at level_01 (was 318 in hero3).
-   Structure agrees with retail except the points below; the rest of the diff is register numbers
-   that follow from them.
-   1. In the not-in-hand path retail builds ok = (is_weapon && level >= 2) as a branchy value (u8, a join at
-      L24, so the row/base/240 are recomputed after it, with lui+mtlo+madd and a hoisted 240 in $fp), and it
-      keeps a second test of is_weapon right after the `if (is_weapon == 0) continue;` guard. Here gcc
-      deletes that second test (CSE) and turns the rest into sltiu+movn, so no join, and the later blocks
-      reuse the first block's 240/base instead.
-   2. `D_L01_001DFD38 = 0` ends the item-0x7F/9 else-arm: gcc puts the sw in the `b`'s delay slot, where the
-      assembler turns it into a $gp store; retail has lui $at/sw before the branch and the loop's item++ in
-      the slot.
-   3. Loop prologue: gcc also hoists &D_001D4C40 (retail does not) and lacks retail's hoisted 240 ($fp).
-   4. The top: nano/max/health registers are shifted by one ($a2/$a3/$v1 against retail's $a1/$a2/$a3).
-   Found: `lv = D_001A7498; f(lv, lv - 1, ...)` gives the addiu $a1,$a0,-4; the item loop wants no row
-   pointer, `tier`/`xp` pointer inductions and the row spelled out at each use; `u8 nano` read into an
-   s32 with (u8) casts gives the andi; `if (nano >= missing)` first arm; `item != 0x7F && item != 9`
-   with the 4c94c0 arm first. */
-/* NOT A MATCH (skipped): best attempt, 318 differing lines at level_01 (check.py).
-   Still wrong: the start (&D_001A7498 - 1 is folded into a second lui/addiu, retail uses
-   addiu from the first), register allocation throughout, and the item loop's branch shape.
-   Gates: the frame counter reads lui/lw in the prologue but $gp (0x3290) for the >= 11 test,
-   so that one uses D_001DFB40_sda with a .extern hint; the cooldown is at -0x828($gp)
-   (0x1DC088), D_001DC088_sda. */
+/* NEAR MISS: func_L01_005138F8 / xp_level_check (src file L01_00512DF8.c since the master split;
+   D_001425C0 and D_L01_002C5600 declared here now). 2026-11-22 (round 13, r13_b/x27.c): 178 words
+   positional, 76 structural, 41 ignoring registers (round 10: 178 / 88 / 70).
+   What closed the gap this round:
+   - the item loop indexes D_001425C0[item] and D_00142DE0[item] instead of walking tier/xp
+     pointers: loop.c makes the pointers itself, with fresh lui/addiu for both bases after the
+     call to func_0040DFC0 as retail has (the prologue now agrees but for one nop);
+   - the two "is a gun at level n" tests of the not-in-hand path as
+     `if (row.is_weapon == 0 || x < 2) t = 0; else t = 1; ok = t;` with an s32 t and a u8 ok:
+     that is retail's branchy value and its `andi 0xff` after the join, and the row recomputed
+     after it with lui + mtlo/madd and the 240 hoisted into $fp. The D test now agrees.
+     `ok = a && b` (u8 or s32), a ternary, or `ok = t` with `t = a && b` all give movn/movz;
+   - `if ((u8)nano >= (missing = max - health))` gives retail's andi-before-subu order.
+   Still differs:
+   1. The first test (level >= 2): retail keeps `beql $3,$0` on is_weapon right after the
+      `is_weapon == 0 -> continue` guard, so the value has two jumps into its join. Here cse1
+      knows is_weapon != 0 from the guard (record_jump_equiv) and deletes the test (-ds dump),
+      so jump.c turns the rest into sltiu + movz, there is no join, and the later madd sites
+      reuse the first tier load instead of reloading it. Same bytes: the guard after the
+      value, a saved func_L01_0041A4F0() result tested twice (threaded before cse), a
+      do { } while (0) around the value (cse still follows it), D_001425C0[item] in the value
+      only (another load, not reduced to the pointer).
+   2. The nano block's registers: nano is a user variable and is allocated before health/max
+      ($v1 against retail's $a3, the others shift by one). Same bytes: missing declared at
+      function scope or before nano, nano block-local. Testing the byte in memory first: 44.
+   3. Reorg: the 40-particle loop's bgez has a nop where retail moves the next addiu in; the
+      ground_frames test is beqz with the D_001D4C40 lui in its slot (retail: beql with item++,
+      the lui later into $a0). `extern s32 D_L01_001DFD38[]` (not small data) keeps its `= 0`
+      store out of the b's delay slot as retail has, but moves `move $a0` there instead (46).
+   Older notes (hero3/round 10): `lv = D_001A7498; f(lv, lv - 1, ...)` gives the addiu
+   $a1,$a0,-4; `u8 nano` read into an s32 with (u8) casts gives the andi; `if (nano >= missing)`
+   first arm; `item != 0x7F && item != 9` with the 4c94c0 arm first. The frame counter reads
+   lui/lw in the prologue but $gp (0x3290) for the >= 11 test, so that one is D_001DFB40_sda
+   with a .extern hint; the cooldown is at -0x828($gp) (0x1DC088), D_001DC088_sda. */
 typedef struct {
     u8 pad0[0x8];
     s32 max_health;                /* 0x08: 0x142668, 10 on a new game */
@@ -45,6 +56,8 @@ typedef struct {
     s32 health;                    /* 0x2850 */
 } H_5138F8;
 extern s32 D_L01_001DFB40;
+extern u8 D_001425C0[];
+extern u8 D_L01_002C5600[];
 extern s32 D_001DFB40_sda;
 extern s32 D_001DC088_sda;
 __asm__(".extern D_001DC088_sda, 4");
@@ -86,12 +99,11 @@ void func_L01_005138F8(void) {
     s32 k;
     s32 nano;
     u8 ok;
+    s32 t;
     W_5138F8 *row;
     Vec4 velocity;
     s32 frame = D_L01_001DFB40;
     s32 *lv;
-    u8 *tier;
-    s32 *xp;
 
     if ((frame & 0xF) == 1 && frame != 1) {
         return;
@@ -129,9 +141,9 @@ void func_L01_005138F8(void) {
     if (((H_5138F8 *)&D_001A4BE0)->health <= (s32)((f32)((P_5138F8 *)&D_00142660)->max_health * 0.1f)) {
         nano = D_001426E0[0xD3];
         if (nano != 0) {
-            s32 missing = ((P_5138F8 *)&D_00142660)->max_health - ((H_5138F8 *)&D_001A4BE0)->health;
+            s32 missing;
 
-            if ((u8)nano >= missing) {
+            if ((u8)nano >= (missing = ((P_5138F8 *)&D_00142660)->max_health - ((H_5138F8 *)&D_001A4BE0)->health)) {
                 ((H_5138F8 *)&D_001A4BE0)->health = ((P_5138F8 *)&D_00142660)->max_health;
                 D_001426E0[0xD3] = nano - missing;
             } else {
@@ -167,17 +179,17 @@ void func_L01_005138F8(void) {
     }
 
     func_0040DFC0(&D_001DC088_sda);
-    for (item = 0, tier = D_001425C0, xp = D_00142DE0; item < 156; item++, xp++, tier++) {
+    for (item = 0; item < 156; item++) {
         level_cap = func_L01_00418D48(item);
         if (func_L01_0041A4F0() == 0) {
             if (level_cap >= 5) {
                 level_cap = 4;
             }
         }
-        if (((W_5138F8 *)D_L01_002C5600)[*tier].is_weapon != 0 && ((W_5138F8 *)D_L01_002C5600)[*tier].level == level_cap) {
+        if (((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].is_weapon != 0 && ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].level == level_cap) {
             continue;
         }
-        if (func_L01_0041A4F0() != 0 && ((W_5138F8 *)D_L01_002C5600)[*tier].level == 7) {
+        if (func_L01_0041A4F0() != 0 && ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].level == 7) {
             continue;
         }
         if (func_L01_00418D48(item) <= 0) {
@@ -186,10 +198,10 @@ void func_L01_005138F8(void) {
         if (D_001DC088_sda != 0) {
             continue;
         }
-        if ((*xp >> 5) < ((W_5138F8 *)D_L01_002C5600)[*tier].xp_next) {
+        if ((D_00142DE0[item] >> 5) < ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].xp_next) {
             continue;
         }
-        if (((W_5138F8 *)D_L01_002C5600)[*tier].xp_next <= 0) {
+        if (((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].xp_next <= 0) {
             continue;
         }
         if (item == 9) {
@@ -199,12 +211,12 @@ void func_L01_005138F8(void) {
             if (((H_5138F8 *)&D_001A4BE0)->ground_frames == 0) {
                 continue;
             }
-            if (D_001D4C40[((W_5138F8 *)D_L01_002C5600)[*tier].slot] != item) {
+            if (D_001D4C40[((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].slot] != item) {
                 continue;
             }
             if (item != 0x7F && item != 9) {
                 D_L01_001DFD38 = 1;
-                func_L01_004C94C0(item, ((W_5138F8 *)D_L01_002C5600)[*tier].next_row);
+                func_L01_004C94C0(item, ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].next_row);
                 D_001DC088_sda = 50;
                 D_L01_001DFD38 = 0;
             } else {
@@ -216,14 +228,24 @@ void func_L01_005138F8(void) {
             continue;
         }
         if (func_L01_0041A4F0() != 0) {
-            if (((W_5138F8 *)D_L01_002C5600)[*tier].is_weapon == 0) {
+            if (((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].is_weapon == 0) {
                 continue;
             }
-            ok = ((W_5138F8 *)D_L01_002C5600)[*tier].is_weapon != 0 && ((W_5138F8 *)D_L01_002C5600)[*tier].level >= 2;
-            if (!ok && ((W_5138F8 *)D_L01_002C5600)[*tier].level >= 4) {
+            if (((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].is_weapon == 0 || ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].level < 2) {
+                t = 0;
+            } else {
+                t = 1;
+            }
+            ok = t;
+            if (!ok && ((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].level >= 4) {
                 continue;
             }
-            ok = ((W_5138F8 *)D_L01_002C5600)[*tier].is_weapon != 0 && func_L01_00418D48(item) >= 2;
+            if (((W_5138F8 *)D_L01_002C5600)[D_001425C0[item]].is_weapon == 0 || func_L01_00418D48(item) < 2) {
+                t = 0;
+            } else {
+                t = 1;
+            }
+            ok = t;
             if (!ok) {
                 continue;
             }

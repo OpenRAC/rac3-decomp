@@ -39,7 +39,7 @@ extern void func_L01_003973F8(Vec4 *, Vec4 *, f32, u32, s32, f32, f32);
 extern s32 func_00382498(s32, s32);
 extern f32 func_00382538(void);
 extern void func_L01_003970C8_00396E08(Vec4 *, u32, f32, s32, s32, s32, f32, f32);
-extern void func_L01_00397278(Vec4 *, u32, s32, f32, f32, s32, s32, Vec4 *);
+extern void func_L01_00397278_00396E08(Vec4 *, u32, s32, f32, f32, s32, s32, Vec4 *);
 void func_L01_00396E08(Object_00396E08 *object) {
     Data_00396E08 *data = object->data;
     Vec4 position;
@@ -59,8 +59,8 @@ void func_L01_00396E08(Object_00396E08 *object) {
         if (data->disabled == 0) {
             f32 scale = object->scale;
             f32 factor = 45.0f;
-            func_L01_00397278(&object->position, 0x103080, data->timer, scale * factor, zero, 11, 2, &data->vector40);
-            func_L01_00397278(&object->position, 0x3F3F3F, data->timer, object->scale * factor * 0.75f, zero, 11, 2, &data->vector40);
+            func_L01_00397278_00396E08(&object->position, 0x103080, data->timer, scale * factor, zero, 11, 2, &data->vector40);
+            func_L01_00397278_00396E08(&object->position, 0x3F3F3F, data->timer, object->scale * factor * 0.75f, zero, 11, 2, &data->vector40);
         }
         break;
     }
@@ -112,6 +112,7 @@ void func_L01_00397060(f32 *m, f32 s) {
 INCLUDE_ASM("asm/levels", func_L01_003970C8);
 
 /* localdecomp:start func_L01_00397278 */
+typedef struct { f32 x, y, z; } V3_00397278;
 typedef struct {
     f32 verts[4][4];
     u32 color[4];
@@ -123,25 +124,25 @@ typedef struct {
 } Quad_00397278;
 extern void func_L01_00396FD8_00397278(u8 *p);
 extern void func_L01_00397060_00397278(f32 *m, f32 s);
-extern unsigned long func_00389598(s32 tex);
+extern unsigned long func_00389598(int tex);
 extern f32 func_0038D160(f32 a, f32 b);
-extern f32 func_0038CED8(Vec4 *v);
+extern f32 func_0038CED8(f32 *v);
 extern void func_0038D328(f32 *mat, f32 *rot);
-extern void func_0038CF68_00397278(Vec4 *dst, Vec4 *src, f32 s);
-extern void func_003D2DA0(Quad_00397278 *quad, f32 *mat, s32 a);
-/* agent_comet_glow_draw (open-rac-engine): one added quad of the comet's glow, facing along dir */
-void func_L01_00397278(Vec4 *origin, u32 color, s32 alpha, f32 scale, f32 roll, s32 tex, s32 flags, Vec4 *dir)
+extern void func_0038CF68_00397278(f32 *dst, f32 *src, f32 s);
+extern void func_003D2DA0(Quad_00397278 *quad, f32 *mat, int a);
+/* agent_comet_glow_draw: one added quad of the comet's glow, facing along dir */
+void func_L01_00397278(V3_00397278 *origin, u32 color, u32 alpha, int tex, int flags, f32 *dir, f32 scale, f32 roll)
 {
     Quad_00397278 quad;
     f32 mat[16];
     f32 rot[4];
-    Vec4 off;
+    V3_00397278 off;
     u32 col;
 
     func_L01_00396FD8_00397278((u8 *)&quad);
     quad.tex = func_00389598(tex);
     col = color + (alpha << 24);
-    quad.prim = ((unsigned long)flags << 2) | 0x8000000040;
+    quad.prim = ((long)flags << 2) | 0x8000000040;
     quad.color[3] = col;
     quad.color[2] = col;
     quad.color[1] = col;
@@ -149,15 +150,16 @@ void func_L01_00397278(Vec4 *origin, u32 color, s32 alpha, f32 scale, f32 roll, 
     quad.reg80 = 0xFF9000000260;
     quad.f70 = 0;
     rot[3] = 0.0f;
-    rot[2] = func_0038D160(dir->v[0], dir->v[1]);
-    rot[1] = -func_0038D160(func_0038CED8(dir), dir->v[2]);
+    rot[2] = func_0038D160(dir[0], dir[1]);
+    rot[1] = -func_0038D160(func_0038CED8(dir), dir[2]);
     rot[0] = roll;
     func_0038D328(mat, rot);
-    func_0038CF68_00397278(&off, dir, 0.025f);
-    mat[12] = origin->v[0] + off.v[0];
+    /* 0.025: how far the glow sits ahead along dir */
+    func_0038CF68_00397278((f32 *)&off, dir, 0.025f);
+    mat[12] = origin->x + off.x;
     mat[15] = 1.0f;
-    mat[13] = origin->v[1] + off.v[1];
-    mat[14] = origin->v[2] + off.v[2];
+    mat[13] = origin->y + off.y;
+    mat[14] = origin->z + off.z;
     func_L01_00397060_00397278((f32 *)&quad, scale);
     func_003D2DA0(&quad, mat, 0);
 }

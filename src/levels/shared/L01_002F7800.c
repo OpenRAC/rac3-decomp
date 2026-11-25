@@ -82,7 +82,99 @@ void func_L01_002F8F10(void) {
 
 LINKER_REMNANT("asm/levels", func_L01_002F8F18);
 
-INCLUDE_ASM("asm/levels", func_L01_002F8F20);
+/* localdecomp:start func_L01_002F8F20 */
+#include "vu0.h"
+typedef struct {
+    u8 pad[0x3C];
+    s32 bolts;              /* 0x3C: the bolt count */
+} Stats_002F8F20;
+extern vu0_v4 D_L01_001E29C0;   /* the camera position */
+extern Stats_002F8F20 D_00142660_002F8F20;
+extern u8 *D_001A71A0[];
+/* the moby at the root of a chain of parents (0xB8) */
+static __inline__ u8 *root_002F8F20(u8 *moby) {
+    while (*(u8 **)(moby + 0xB8)) moby = *(u8 **)(moby + 0xB8);
+    return moby;
+}
+/* bolt_coin_spawn: spawns a coin moby worth value bolts (its class by value) at position, moving
+   with velocity, spun toward its parent; 64 u or more from the camera it banks the bolts instead */
+u8 *func_L01_002F8F20(u8 *parent, vu0_q *position, vu0_q *velocity, s32 flags, s32 value, s32 counts) {
+    extern f32 func_L01_0040E548(void *, void *);
+    extern u8 *func_003C24B0_002F8F20(s32, s32);
+    extern void func_L01_002F7808(void);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern s32 func_L01_002F94F8();
+    extern void func_0038D308(void *, void *);
+    extern void func_L01_0044E820(u8 *, u32);
+    extern void func_003C6FB0(u8 *, s32 *, s32 *, s32 *);
+    extern void func_003C6F90(u8 *, s32, s32, s32, s32);
+    extern void func_L01_0043B9E8(u8 *, s32, s32, s32);
+    extern s32 func_00382468(s32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern s32 func_L01_002F8D40(u8 *, u8 *, s32, f32, f32);
+    extern void func_003C7C38(u8 *);
+    vu0_v4 axis, toward;
+    s32 r, g, b;
+    s32 type;
+    u8 *coin, *vars, *root;
+    f32 spin, angle;
+    if (func_L01_0040E548(position, &D_L01_001E29C0) >= 4096.0f) {
+        D_00142660_002F8F20.bolts += value;
+        return 0;
+    }
+    if (value >= 30000) type = 0x1BA5;
+    else if (value >= 10000) type = 0x1D5D;
+    else if (value >= 3000) type = 0x1D5C;
+    else if (value >= 1000) type = 0x13;
+    else if (value >= 500) type = 0x12;
+    else if (value >= 100) type = 0x11;
+    else if (value >= 50) type = 0x10;
+    else if (value >= 20) type = 0xF;
+    else if (value >= 50) type = 0xE; /* never true: retail tests 50 again here (slti 0x32; movz) */
+    else type = 0xD;
+    coin = func_003C24B0_002F8F20(type, 0x80);
+    if (coin == 0) return 0;
+    func_L01_002F7808();
+    vars = *(u8 **)(coin + 0x68);
+    vars[0x6D] = 0;
+    if (counts) vars[0x6D] = 2;
+    if (!parent) root = 0;
+    else root = root_002F8F20(parent);
+    *(u8 **)(coin + 0xB8) = root;
+    coin[0x63] = 10;
+    coin[0x30] = 64;
+    *(s16 *)(coin + 0x32) = 64;
+    coin[0x31] = 1;
+    func_L01_004450F0(coin, 1, -1);
+    *(u16 *)(coin + 0x34) |= 0x100;
+    *(f32 *)(coin + 0x2C) = *(f32 *)(*(u8 **)(coin + 0x24) + 0x24) *
+        *(f32 *)&D_L01_002BE708[func_L01_002F94F8(coin)];
+    func_0038D308(coin + 0xC0, coin + 0xF0);
+    func_L01_0044E820(coin, 0x80181010);
+    func_003C6FB0(coin, &r, &g, &b);
+    func_003C6F90(coin, 0, 13, 0, 0);
+    func_L01_0043B9E8(coin, r, g, b);
+    *(vu0_q *)(coin + 0x10) = *position;
+    *(vu0_q *)(vars + 0x30) = *velocity;
+    if (func_00382468(2)) vars[0x6D] |= 1;
+    *(f32 *)(vars + 0x78) = *(f32 *)(coin + 0x18);
+    spin = func_003824E0(0.0f, 0.25132742524147034f);
+    vec_sub_ba(&toward, parent + 0x10, coin + 0x10);
+    func_0038CE90(&axis, vars + 0x30, &toward);
+    func_0038CF68(vars + 0x20, &axis, 1.0f);
+    func_003C4840(vars + 0x20, vars + 0x20, spin);
+    if (flags & 2) {
+        angle = 0.0f;
+        if (flags & 0x10) angle = func_003824E0(-0.5235987901687622f, 0.5235987901687622f);
+        func_L01_002F8D40(coin, D_001A71A0[0], 0, angle, 0.0f);
+    }
+    func_003C7C38(coin);
+    return coin;
+}
+/* localdecomp:end func_L01_002F8F20 */
 
 INCLUDE_ASM("asm/levels", func_L01_002F9310);
 
@@ -1342,7 +1434,45 @@ void func_L01_002FD988(f32 *p) {
 }
 /* localdecomp:end func_L01_002FD988 */
 
-INCLUDE_ASM("asm/levels", func_L01_002FDA10);
+/* localdecomp:start func_L01_002FDA10 */
+#include "vu0.h"
+void func_L01_002FDA10(u8 *owner, void *in) {
+    extern void func_L01_00445208_002FDA10(void *, void *, void *, void *, void *, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_002FDC18_002FDA10(void *, s32, void *, s32);
+    Effect_002FD530 *input = (Effect_002FD530 *)in;
+    vu0_q points[25];
+    vu0_v4 a, b, random;
+    vu0_q *out = points;
+    s32 i;
+    for (i = 0; i < 24; i++, out++) {
+        /* both ends go into VU0 registers first; the "j" class has only vf1 and vf2, so the second
+           is spilled to the stack around the first sum (retail's sqc2/lqc2 at sp+0x1C0) */
+        vu0_q qo, qe, qa, qb;
+        __asm__("lqc2 %0, %1" : "=j"(qo) : "m"(*(vu0_v4 *)input->origin));
+        __asm__("lqc2 %0, %1" : "=j"(qe) : "m"(*(vu0_v4 *)input->attached));
+        *(vu0_q *)&a = *(vu0_q *)input->pos;
+        *(vu0_q *)&b = *(vu0_q *)input->second;
+        __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)&a));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qa) : "j"(qa), "j"(qo));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&a) : "j"(qa));
+        __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)&b));
+        __asm__("vadd.xyz %0, %1, %2" : "=j"(qb) : "j"(qb), "j"(qe));
+        __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&b) : "j"(qb));
+        func_L01_00445208_002FDA10(out, input->origin, input->attached, &a, &b, (f32)i / 23.0f);
+        random.w = 0.0f;
+        random.x = func_003824E0(-1.0f, 1.0f);
+        random.y = func_003824E0(-1.0f, 1.0f);
+        random.z = func_003824E0(-1.0f, 1.0f);
+        func_0038CF68(&random, &random, 0.075f);
+        vec_add_ab(out, out, &random);
+    }
+    if (input->timer >= 6) func_L01_002FDC18_002FDA10(owner, func_00382498(64, 128), points, 25);
+    else func_L01_002FDC18_002FDA10(owner, func_00382498(0, 64), points, 25);
+}
+/* localdecomp:end func_L01_002FDA10 */
 
 /* localdecomp:start func_L01_002FDBD8 */
 void func_L01_002FDBD8(f32 (*pts)[4], s32 n) {

@@ -1,5 +1,20 @@
-/* PAL near miss (Codex wave 8): near miss: 183 words differ with the file's flags.
- * Worker's note: 183 raw positional diff: fifth-best.log; trail update and two particle strips reconstructed; saved-FPR count, jitter negative bound materialization, copy addressing and scheduling differ; contract compiles fifth-contract.log
+/* PAL near miss: cutting_wave_draw. 177 words differ with the file's flags (round 13,
+ * 2026-11-22). It compiles in L01_003D0D48.c's context again: D_L01_001DFB40 is a scalar s32
+ * there (blocks 003D1A50 and 003D1C60), not an array.
+ * What still differs: the jitter bounds. Retail keeps 0.175 in $f21, computes -0.175 as
+ * `neg.s $f20, $f21` in every iteration of the first loop, but once at the top for the second
+ * (`neg.s $f25, $f21`, then `mov.s $f20, $f25` before it), and loads the upper 0.175 as a literal
+ * (lui/ori/mtc1 $f13) at every call; the second loop's 0.25 reuses $f21. Here the block-scope
+ * `spread` is folded by cse: -0.175 and 0.175 become two hoisted constants. Everything after the
+ * first loop shifts registers from that.
+ * Tried (all worse): `f32 spread = 0.175f` at function scope (207: cse then hoists the literal
+ * upper bound and uses spread's register for it, and -spread is hoisted out of loop 1 too); an
+ * inline jitter(s) helper returning func_003824E0(-s, s) (193: -0.175 folded to a literal).
+ * Dropping -mvu0-use-vf0-vf2 (experiment only) changes nothing. With only 36 insns per loop,
+ * loop.c moves every invariant (-dL), so retail's unhoisted neg.s in loop 1 means it was not an
+ * invariant there at loop time.
+ * Earlier worker's note: saved-FPR count, jitter negative bound materialization, copy addressing
+ * and scheduling differ.
  */
 #include "common.h"
 /* localdecomp:start func_L01_003D8780 */
@@ -13,7 +28,7 @@ typedef struct {
     u8 pad3[16];
     u8 output[1];
 } Trail_003D8780;
-extern s32 D_L01_001DFB40[] __attribute__((section(".data")));
+extern s32 D_L01_001DFB40;
 extern s32 D_L01_001DF4BC, D_L01_001DF4B4, D_L01_001DF4B8;
 __asm__(".extern D_L01_001DF4BC, 4");
 __asm__(".extern D_L01_001DF4B4, 4");
@@ -34,7 +49,7 @@ void func_L01_003D8780(u8 *moby) {
     f32 width, life;
     s32 i;
     f32 (*p)[4] = D_L01_001E23A0;
-    trail->phase = (f32)(D_L01_001DFB40[0] % 8) * 0.125f;
+    trail->phase = (f32)(D_L01_001DFB40 % 8) * 0.125f;
     if (trail->phase == 0) {
         trail->index = (trail->index + 1) % 8;
         if (trail->count < 8) trail->count++;

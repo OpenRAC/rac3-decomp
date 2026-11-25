@@ -1,104 +1,114 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_0042CE68 */
+typedef struct { s32 sector; s32 count; } Range_0042CE68;
+/* The gadget WAD's table in the table of contents: 48 entries of 20 bytes */
 typedef struct {
-    s32 id;
-    s32 sector;          /* 0x4: where its data starts on the disc, in 2048-byte sectors */
-    u8 pad8[0x14 - 0x8];
+    s32 id;                /* the gadget's class */
+    Range_0042CE68 file;   /* 0x4: its file, sectors from the WAD's first */
+    Range_0042CE68 sounds; /* 0xC: its sound bank */
 } Gadget_0042CE68;
 typedef struct {
     u8 pad0[0x4590];
     Gadget_0042CE68 gadgets[48];
-} Gadgets_0042CE68;
+} Toc_0042CE68;
+/* A gadget's file: where its class and its textures are (offsets in bytes from the WAD's first
+   sector), each a WAD */
 typedef struct {
-    s32 f0;
+    s32 class_offset;
+    s32 class_size;
+    s32 texture_offset;
+    s32 texture_size;
+} GadgetFile_0042CE68;
+typedef struct {
+    s32 slot;              /* 0x0 */
     u8 pad4[0xA - 0x4];
-    u16 fA;
+    u16 palette;           /* 0xA */
     u8 padC[0x10 - 0xC];
-    s16 f10;
-    s16 f12;
-} State_0042CE68;
+    s16 texture;           /* 0x10 */
+    s16 class_slot;        /* 0x12 */
+} GadgetState_0042CE68;
+typedef struct { u8 pad0[0x60]; } __attribute__((aligned(16))) LoadImage_0042CE68;
+/* A sound table entry of a moby class: +0x1C the bank (0 the level's, 4 a gun's own) */
 typedef struct {
-    u8 pad0[0x20];
-    s32 f20;
-    u8 pad24[0x34 - 0x24];
-    s32 f34;
-} Image_0042CE68;
-typedef struct {
-    s32 off0;
-    s32 size0;
-    s32 off1;
-    s32 size1;
-} Buffer_0042CE68;
+    u8 pad0[0x1C];
+    s32 bank;
+} ClassSound_0042CE68;
 typedef struct {
     u8 pad0[0xD];
-    u8 count;
+    u8 sound_count;              /* 0xD */
     u8 padE[0x28 - 0xE];
-    u8 *items;
-} Object_0042CE68;
-extern Gadgets_0042CE68 D_00160C40_0042CE68;
-extern State_0042CE68 D_0016C690_0042CE68;
+    ClassSound_0042CE68 *sounds; /* 0x28 */
+} MobyClass_0042CE68;
+extern Toc_0042CE68 D_00160C40_0042CE68;
+extern GadgetState_0042CE68 D_0016C690_0042CE68;
 extern s32 D_00191ED0[];
 extern s32 D_00191EE8[];
 extern u8 D_00191F00[];
 extern u8 D_00192300[];
-extern Image_0042CE68 D_001A1ED0;
+extern s32 D_001A1ED0[];
 extern s32 D_L01_001E0000;
 extern u8 D_L01_001FDBD0[];
-extern u8 *D_L01_001FD180[];
+extern MobyClass_0042CE68 *D_L01_001FD180[];
 extern s32 D_L01_00200670[];
 extern void func_0011F0A0(s32);
 extern void func_003A0760(u8 *, s32 *);
+/* s32, as the core's: the result it leaves in $v0 changes how sched2 orders the next call's set-up */
 extern s32 func_0012C9A0(void *, s16, s16, s16, s16, s16, s16, s16);
-extern s32 func_0012CCC8(void *, void *);
+extern void func_0012CCC8(void *, void *);
 extern s32 func_0012A9F0(s32, s32);
-extern void func_00399D68(s32 *, u8 *, u8 *, s32);
+extern void func_00399D68(s32 *, void *, void *, s32);
 
-void func_L01_0042CE68(s32 class, s32 row, u8 *buffer) {
-    Buffer_0042CE68 *b = (Buffer_0042CE68 *)buffer;
-    u8 image[0x60];
-    u8 *data0;
-    u8 *data1;
+/* gadget_install: sends a gadget's texture to its GS slot, unpacks its class into the class
+   buffer and registers it with that texture as its texture 0. */
+void func_L01_0042CE68(s32 class, s32 row, u8 *file) {
+    /* the load-image packet, then the class's texture map (its texture 0 is the gadget's) */
+    union {
+        LoadImage_0042CE68 li;
+        u8 textures[0x60];
+    } stack;
+    u8 *texture_data;
+    u8 *class_data;
     s32 saved;
-    Object_0042CE68 *obj;
+    MobyClass_0042CE68 *moby_class;
     s32 i;
     s32 width;
     u8 *pixels;
 
-    if (b->size1 != 0) {
-        data1 = buffer + b->off1;
-        data1 -= D_00160C40_0042CE68.gadgets[row].sector << 11;
+    if (((GadgetFile_0042CE68 *)file)->texture_size != 0) {
+        texture_data = file + ((GadgetFile_0042CE68 *)file)->texture_offset;
+        texture_data -= D_00160C40_0042CE68.gadgets[row].file.sector << 11;
         func_0011F0A0(0);
-        func_003A0760(data1, D_00191ED0);
+        func_003A0760(texture_data, D_00191ED0);
         func_0011F0A0(0);
         if (D_00191ED0[0] == 1) {
-            func_0012C9A0(image, D_0016C690_0042CE68.fA + (D_001A1ED0.f20 >> 8), 1, 0, 0, 0, 16, 16);
+            func_0012C9A0(&stack.li, D_0016C690_0042CE68.palette + (D_001A1ED0[8] >> 8), 1, 0, 0, 0, 16, 16);
             func_0011F0A0(0);
-            func_0012CCC8(image, D_00191F00);
+            func_0012CCC8(&stack.li, D_00191F00);
             func_0012A9F0(0, 0);
             width = D_00191EE8[0];
             pixels = D_00192300;
-            func_0012C9A0(image, (D_001A1ED0.f34 + D_0016C690_0042CE68.f0 * 4) >> 8,
-                (width >> 6) > 0 ? (width >> 6) : 1, 27, 0, 0, width, width);
+            func_0012C9A0(&stack.li, (D_001A1ED0[13] + D_0016C690_0042CE68.slot * 4) >> 8,
+                (width >> 6) > 0 ? (width >> 6) : 1, 0x1B, 0, 0, width, width);
             func_0011F0A0(0);
-            func_0012CCC8(image, pixels);
+            func_0012CCC8(&stack.li, pixels);
             func_0012A9F0(0, 0);
         }
     }
-    data0 = buffer + b->off0;
-    data0 -= D_00160C40_0042CE68.gadgets[row].sector << 11;
+    class_data = file + ((GadgetFile_0042CE68 *)file)->class_offset;
+    class_data -= D_00160C40_0042CE68.gadgets[row].file.sector << 11;
     func_0011F0A0(0);
-    func_003A0760(data0, D_00191ED0);
+    func_003A0760(class_data, D_00191ED0);
     func_0011F0A0(0);
-    image[0] = D_0016C690_0042CE68.f10;
+    stack.textures[0] = D_0016C690_0042CE68.texture;
     saved = D_L01_001E0000;
-    D_L01_001E0000 = D_0016C690_0042CE68.f12;
-    func_00399D68(D_00191ED0, (u8 *)&D_0016C690_0042CE68 - D_0016C690_0042CE68.f10 * 16, image, class);
-    D_L01_00200670[D_0016C690_0042CE68.f12] = 0xFFF00000;
-    obj = (Object_0042CE68 *)D_L01_001FD180[D_L01_001FDBD0[class]];
+    D_L01_001E0000 = D_0016C690_0042CE68.class_slot;
+    func_00399D68(D_00191ED0, (u8 *)&D_0016C690_0042CE68 - D_0016C690_0042CE68.texture * 16, stack.textures, class);
+    D_L01_00200670[D_0016C690_0042CE68.class_slot] = 0xFFF00000;
+    moby_class = D_L01_001FD180[D_L01_001FDBD0[class]];
     D_L01_001E0000 = saved;
-    for (i = 0; i < obj->count; i++) {
-        *(s32 *)(obj->items + i * 32 + 0x1C) = 4;
+    for (i = 0; i < moby_class->sound_count; i++) {
+        moby_class->sounds[i].bank = 4;
     }
 }
 /* localdecomp:end func_L01_0042CE68 */
@@ -378,7 +388,7 @@ extern s32 D_001D4BB4;
 extern u8 D_L01_001FDBD0[];
 extern s16 D_L01_001FD9F0[];
 extern s32 D_L01_00200670[];
-extern u8 *D_L01_001FD180[];
+extern u8 *D_L01_001FD180_0042D798[];
 __asm__(".extern D_L01_001E0000, 16");
 __asm__(".extern D_L01_001E000C, 16");
 __asm__(".extern D_001D4BB4, 16");
@@ -395,7 +405,7 @@ void func_L01_0042D798(void) {
         D_L01_0021F5E0.saved[D_L01_0021F5E0.count] = 0;
         D_L01_001FD9F0[n] = -1;
         D_L01_001E0000 = n;
-        D_L01_001FD180[n] = 0;
+        D_L01_001FD180_0042D798[n] = 0;
         D_L01_001FDBD0[id] = 255;
         D_L01_00200670[n] = 0;
         D_L01_0021F5E0.other[D_L01_0021F5E0.count] = 0;

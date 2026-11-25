@@ -315,72 +315,84 @@ void func_L01_003D22A8(void) {
 /* localdecomp:end func_L01_003D22A8 */
 
 /* localdecomp:start func_L01_003D2300 */
-extern void func_L01_004C5B90(s32, unsigned long);
-extern s32 func_L01_00404040(s32);
-extern void func_L01_00407588(void);
-extern f32 func_L01_0040E8F8(f32);
-extern f32 func_L01_0040E910(f32);
-extern f32 func_L01_0040F3F8(f32, f32);
-extern void func_L01_00408AAC(s32, void *, void *, void *, s32);
-extern f32 D_L01_001DF340[2];
-__asm__(".extern D_L01_001DF340, 4");
-extern f32 D_L01_001DF344[] __attribute__((section(".sdata")));
-extern f32 D_L01_001DF360[2];
-__asm__(".extern D_L01_001DF360, 4");
-extern f32 D_L01_001DF364[] __attribute__((section(".sdata")));
+typedef struct Node_003D2300 {
+    f32 x, y, z, padC;
+    f32 radius;
+    f32 alpha;
+    f32 angle;
+    f32 pad1C;
+    f32 scale;
+    u32 color;
+    struct Node_003D2300 *next;
+} Node_003D2300;
+typedef struct { u8 pad[0x10]; u8 *texture; u8 pad14[0x128]; Node_003D2300 *head; } Vars_003D2300;
 extern f32 D_L01_001DF2FC;
 __asm__(".extern D_L01_001DF2FC, 4");
-extern f32 D_L01_001E2340[] __attribute__((section(".sdata")));
-extern f32 D_L01_001E2344[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DF340[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DF340, 4");
+extern f32 D_L01_001DF360[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DF360, 4");
+extern f32 D_L01_001DF344[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DF364[] __attribute__((section(".sdata")));
 extern f32 D_L01_001E2300[] __attribute__((section(".sdata")));
 extern f32 D_L01_001E2304[] __attribute__((section(".sdata")));
 extern f32 D_L01_001E2308[] __attribute__((section(".sdata")));
-extern s32 D_L01_001E2330[] __attribute__((section(".sdata")));
+extern u32 D_L01_001E2330[] __attribute__((section(".sdata")));
+extern f32 D_L01_001E2340[] __attribute__((section(".sdata")));
+extern f32 D_L01_001E2344[] __attribute__((section(".sdata")));
 extern f32 D_L01_001E2A40[];
-void func_L01_003D2300(void *arg) {
-    u8 *v = *(u8 **)((u8 *)arg + 0x68);
-    Particle_003D1900 *p;
-    s32 i;
-    f32 t, d;
-    s32 color;
+/* Draws each node of the list as a quad: radius-scaled cos/sin axes at the node's angle and a
+   quarter turn later, its alpha faded out when D_L01_001E2A40[2] (the camera's z) is less than
+   D_L01_001DF2FC u above the node. */
+void func_L01_003D2300(void *moby) {
+    extern void func_003A9440(long, unsigned long);
+    extern long func_00389598(void *);
+    extern void func_0038C750(void);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_003D3A24(s32, void *, void *, void *, s32);
+    Vars_003D2300 *vars = *(Vars_003D2300 **)((u8 *)moby + 0x68);
+    Node_003D2300 *node;
     f32 a[4], b[4];
-    f32 ang;
-
-    func_L01_004C5B90(8, 0);
-    func_L01_004C5B90(0x14, 0xFF90UL << 32 | 0x260);
-    func_L01_004C5B90(0x47, 0x513F1);
-    func_L01_004C5B90(6, func_L01_00404040(*(s32 *)(v + 0x10) + 0x64));
-    func_L01_004C5B90(0x42, 0x8000UL << 24 | 0x44);
-    func_L01_00407588();
+    f32 dz, fade, angle;
+    u32 color;
+    s32 i;
+    func_003A9440(8, 0);
+    func_003A9440(20, 0xFF9000000260UL);
+    func_003A9440(71, 0x513F1);
+    func_003A9440(6, func_00389598(vars->texture + 0x64));
+    func_003A9440(66, 0x8000000044UL);
+    func_0038C750();
     for (i = 0; i < 4; i++) {
         D_L01_001E2340[i * 2] = D_L01_001DF340[i * 2];
         D_L01_001E2344[i * 2] = D_L01_001DF344[i * 2];
     }
-    for (p = *(Particle_003D1900 **)(v + 0x13C); p != 0; p = p->next) {
-        d = D_L01_001E2A40[2] - p->pos[2];
-        if (d < D_L01_001DF2FC) {
-            t = d / D_L01_001DF2FC;
-            if (t < 0.01f) continue;
+    for (node = vars->head; node != 0; node = node->next) {
+        dz = D_L01_001E2A40[2] - node->z;
+        if (dz < D_L01_001DF2FC) {
+            fade = dz / D_L01_001DF2FC;
+            if (fade < 0.01f) continue;
         } else {
-            t = 1.0f;
+            fade = 1.0f;
         }
-        color = p->color + ((s32)(p->scale * p->age * t * 127.0f) << 24);
-        a[0] = func_L01_0040E8F8(p->angle) * p->size;
-        a[1] = func_L01_0040E910(p->angle) * p->size;
+        color = node->color + ((s32)(node->scale * node->alpha * fade * 127.0f) << 24);
+        a[0] = func_0038D098(node->angle) * node->radius;
+        a[1] = func_0038D0B0(node->angle) * node->radius;
         a[2] = 0.0f;
-        ang = func_L01_0040F3F8(p->angle, 1.5707964f);
-        b[0] = func_L01_0040E8F8(ang) * p->size;
-        b[1] = func_L01_0040E910(ang) * p->size;
+        angle = func_0038DAB8(node->angle, 1.5707964f);
+        b[0] = func_0038D098(angle) * node->radius;
+        b[1] = func_0038D0B0(angle) * node->radius;
         b[2] = 0.0f;
         for (i = 0; i < 4; i++) {
             D_L01_001E2330[i] = color;
-            D_L01_001E2300[i * 3] = p->pos[0] + a[0] * D_L01_001DF360[i * 2] + b[0] * D_L01_001DF364[i * 2];
-            D_L01_001E2304[i * 3] = p->pos[1] + a[1] * D_L01_001DF360[i * 2] + b[1] * D_L01_001DF364[i * 2];
-            D_L01_001E2308[i * 3] = p->pos[2];
+            D_L01_001E2300[i * 3] = node->x + a[0] * D_L01_001DF360[i * 2] + b[0] * D_L01_001DF364[i * 2];
+            D_L01_001E2304[i * 3] = node->y + a[1] * D_L01_001DF360[i * 2] + b[1] * D_L01_001DF364[i * 2];
+            D_L01_001E2308[i * 3] = node->z;
         }
-        func_L01_00408AAC(4, D_L01_001E2300, D_L01_001E2330, D_L01_001E2340, 1);
+        func_003D3A24(4, D_L01_001E2300, D_L01_001E2330, D_L01_001E2340, 1);
     }
-    func_L01_004C5B90(0x47, 0x5360B);
+    func_003A9440(71, 0x5360B);
 }
 /* localdecomp:end func_L01_003D2300 */
 

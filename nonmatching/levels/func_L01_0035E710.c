@@ -1,4 +1,12 @@
-/* PAL near miss (haiku-w4): 228 words differ with the file's flags (contract-only snippet with the owner's typedefs from L01_0035F480.c copied in); retail is 972 bytes and this C is 1028, so the switch, the case 0 branch layout and the callee-saved set still differ, and the VU0 block interleaves the moves. Not for src/ as is. */
+/* PAL near miss (haiku-w4; round 14): 227 words with -mvu0-use-vf0-vf2 added to its file's flags
+   (L01_0035E450.c lacks it; without it the vu0.h helper does not compile), 41 ignoring registers
+   (253 of retail's 257 instructions). Round 14 replaced the hand-written VU0 block with
+   vec_add_ba from include/vu0.h. What still differs: retail keeps &previous (sp+0x90) in $s0 and
+   copies obj+0x10 through $v1 into $s6; the hero global is a pointer whose %lo is added at each
+   use (reload rematerializing a spilled constant pseudo: only the %hi stays in $fp), where this C
+   folds the offsets (D_001A4BE0 written directly) or keeps the whole address in $fp (a `hero`
+   local, 228 words); the hit test has beql/lq where this C has beqz; and the registers follow.
+   A `prev = &previous` pointer local gives 217 words but 58 ignoring registers. */
 #include "common.h"
 #include "vu0.h"
 typedef struct {
@@ -53,9 +61,7 @@ void func_L01_0035E710(u8 *obj) {
     case 0:
         position = obj + 0x10;
         previous = *(S_38C110v *)(obj + 0x10);
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*(S_38C110v *)(obj + 0x10))
-            : "m"(*(S_38C110v *)(obj + 0x10)), "m"(*(S_38C110v *)v) : "vf1", "vf2");
+        vec_add_ba(obj + 0x10, v, obj + 0x10);
         if (func_L01_004CB2D8()) func_L01_004CAB30(position, position);
         if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
             *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||

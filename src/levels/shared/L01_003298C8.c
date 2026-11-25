@@ -1,233 +1,74 @@
 #include "common.h"
 
-typedef struct {
-    u8 pad0[0x120];
-    s32 x120[16];
-    s32 x160[16];
-    u8 pad1[0x140];
-    u16 x2E0[16];
-    u8 x300[16][3];
-} S_324F38;
-typedef int u128_t __attribute__((mode(TI)));
-typedef struct {
-    u8 pad[12];
-    void (*fn)(u8 *);
-} Vt003254A8;
-typedef void (*Func00325CE8Cb)(void *, s32, s32);
-typedef struct {
-    u8 pad0[8];
-    s32 (*check)(s32);
-} VT_00325E48;
-typedef struct {
-    s32 unk0;
-    s32 next;
-} Node_00325E48;
-typedef struct {
-    u8 pad0[352];
-    VT_00325E48 *vt[16];
-    s32 free[32];
-    s32 count[16];
-    s32 stamp[16];
-    s32 head[16];
-} S_00325E48;
-typedef struct { u8 p0[0x86]; s16 h86; } P_00325F68;
-typedef struct { u8 p0[0x14]; f32 f14; u8 p18[0x50 - 0x18]; P_00325F68 *p50; } S_00325F68;
-typedef struct { u8 p0[0x70]; s32 w70; } A_00325F68;
-typedef struct {
-    u8 pad0[36];
-    s32 w36;
-    u8 pad28[68];
-    s32 w108;
-    u8 pad70[6];
-    s16 h118;
-    u8 pad78[28];
-    s32 w148;
-    s16 h152;
-    u8 pad9A[4];
-    s16 h158;
-} S_001CCFD0;
-typedef struct {
-    s32 w0;
-    u8 pad4[32];
-    s32 w36;
-} S_002E5F70;
-typedef struct {
-    u8 pad0[132];
-    s32 w132;
-    s32 w136;
-    s32 w140;
-    s32 arr144[16];
-    s32 arr208[16];
-} Obj_003260C8;
-typedef struct { u8 p0[0x20]; u8 b20; u8 p1[3]; s32 w24; u8 p2[0xC]; u16 h34; u8 p3[0x62]; s32 w98; } M_326F30;
-typedef struct {
-    char pad0[0x58];
-    void (*fn88)(int);
-    char pad5C[0x60 - 0x5C];
-    void (*fn96)(int);
-} Iface;
-typedef struct {
-    char pad0[0x14];
-    int index;
-} Vars;
-typedef struct {
-    char pad0[0x68];
-    Vars *vars;
-} Obj;
-typedef struct Node_003290D8 {
-    u8 pad[104];
-    struct Node_003290D8 *link;
-    struct Node_003290D8 *next;
-} Node_003290D8;
-typedef struct {
-    s32 pad0;
-    Node_003290D8 *head;
-    Node_003290D8 *found;
-    s32 index;
-} List_003290D8;
-typedef struct { u8 pad[0x30]; s32 x30; } O_329180;
-typedef struct { u8 p0[0x20]; u8 b20; u8 p21[0x13]; u16 h34; } M_329358;
-typedef struct {
-    int w[4];
-    char pad10[0x21 - 0x10];
-    unsigned char b33;
-    char pad22[0xA0 - 0x22];
-    unsigned char b160[4];
-    int w164;
-} Sub;
-typedef struct {
-    char pad0[0x20];
-    unsigned char b32;
-    char pad21[0x30 - 0x21];
-    unsigned char b48;
-    char pad31[0x34 - 0x31];
-    unsigned short h52;
-    char pad36[0x68 - 0x36];
-    Sub *p104;
-} Obj_00329E70;
-typedef int s128_329AA8 __attribute__((mode(TI)));
-
-typedef struct {
-    u8 pad[0x20];
-    s32 (*fn20)(u8 *);
-} Vt_00327608;
-
-typedef struct {
-    u8 p0[0x14];
-    s32 index;
-    s32 w18;
-} Vars_00327678;
-typedef struct {
-    u8 p0[0x68];
-    Vars_00327678 *vars;
-} Obj_00327678;
-typedef struct {
-    u8 p0[0x28];
-    void (*fn)(s32, s32, s32);
-} Iface_00327678;
-
-typedef struct {
-    u8 pad0[0x40];
-    s32 (*fn40)(u8 *);
-} Vt_00327968;
-
-typedef struct { u8 pad0[0x14]; s32 index; s32 w18; } V_003279D8;
-typedef struct { u8 pad0[0x68]; V_003279D8 *vars; } O_003279D8;
-typedef struct { u8 pad0[0x44]; s32 (*fn44)(s32, s32); } I_003279D8;
-
-typedef struct { u8 p0[0x14]; s32 index; } Vars_00327A78;
-typedef struct { u8 p0[0x68]; Vars_00327A78 *vars; } Obj_00327A78;
-typedef struct { u8 p0[0x48]; s32 (*fn48)(s32); } Iface_00327A78;
-
-typedef struct {
-    u8 p0[8];
-    s32 w8;
-    u8 p12[0x53 - 12];
-    u8 b53;
-} L_00329038;
-typedef struct {
-    u8 p0[12];
-    s32 w12;
-    u8 p16[40];
-} E_00329038;
-
-/* declared by functions of L01_003241A0.c, which this file was cut from */
-extern void func_003C7C38(u8 *a0);
-
 /* localdecomp:start func_L01_003298C8 */
-typedef int Q_003298C8 __attribute__((mode(TI)));
+#include "structs/moby.h"
+typedef int u128_3298C8 __attribute__((mode(TI)));
+/* A piece of debris's pvars (class 0x1A50, the chunk; open-rac-engine docs/research/effects.md,
+   "A piece of debris"; its update is func_L01_00329AD0). */
 typedef struct {
-    Q_003298C8 origin;
-    f32 f10;
-    f32 f14;
-    s16 h18;
-    s16 h1A;
-    s16 h1C;
-    s16 h1E;
-    u32 colours[4];
-    s32 kind;
-    s32 w34;
-    s32 w38;
-    s16 h3C;
-    s16 h3E;
-} Vars_003298C8;
-typedef struct {
-    u8 p0[0x10];
-    Q_003298C8 pos;
-    u8 p20[3];
-    u8 b23;
-    u8 p24[8];
-    f32 scale;
-    u8 b30;
-    u8 b31;
-    s16 h32;
-    u8 p34[0x34];
-    Vars_003298C8 *vars;
-    u8 p6C[0xC];
-    s32 w78;
-} Moby_003298C8;
-extern Moby_003298C8 *func_003C24B0(s32, s32);
-extern void func_0038CC88(void *, void *, s32);
-extern void func_L01_0043B9E8(void *, s32, s32, s32);
-extern f32 func_003824E0(f32, f32);
-extern s32 func_00382468(s32);
-u8 *func_L01_003298C8(Q_003298C8 *pos, Q_003298C8 *origin, s32 life, s32 kind, s32 a4, s32 a5, void *colours, s32 a7, s16 a8, s16 a9, f32 scale, f32 opacity) {
-    Moby_003298C8 *moby = func_003C24B0(0x1A50, 0x80);
-    Vars_003298C8 *vars;
-    s32 size;
-    if (moby) {
-        vars = moby->vars;
-        moby->b30 = 0xFF;
-        moby->h32 = 0xFF;
-        moby->b31 = 1;
-        moby->b23 = 0x80;
-        vars->w34 = a4;
-        vars->w38 = a7;
+    u128_3298C8 velocity;          /* 0x00 */
+    f32 spin_x;                    /* 0x10: 0.126 to 0.251 rad a frame about x */
+    f32 spin_y;                    /* 0x14: and about y */
+    s16 life;                      /* 0x18: frames left */
+    s16 life_start;                /* 0x1A */
+    s16 scale;                     /* 0x1C: the moby's scale x 128, which it shrinks from */
+    s16 gravity;                   /* 0x1E: x 128 */
+    u32 smoke_colours[4];          /* 0x20: the smoke puffs' colours, one picked at random */
+    s32 smoke_kind;                /* 0x30: 0 none, 1 a puff in half the frames, 2 three a frame */
+    s32 bounce;                    /* 0x34 */
+    s32 additive;                  /* 0x38: the puffs are added (0x48), else blended (0x44) */
+    s16 puff_size;                 /* 0x3C: a puff's first size, x 1000 */
+    s16 puff_growth;               /* 0x3E: what a puff's size grows by, x 1000 */
+} Debris_3298C8;
+/* debris_spawn: spawns a piece of debris (class 0x1A50) at position, moving at velocity, drawn at
+   its class's scale times scale and falling at gravity; smoke kind 3 picks one of the three at
+   random; smoke_colours 0 gives four greys at alpha 0x2F. Returns the moby or 0. */
+struct Moby *func_L01_003298C8(u128_3298C8 *position, u128_3298C8 *velocity, s32 life, s32 smoke_kind, s32 bounce, s32 glow, u32 *smoke_colours, s32 additive, s16 puff_size, s16 puff_growth, f32 scale, f32 gravity)
+{
+    extern struct Moby *func_003C24B0(s32, s32);
+    extern void func_0038CC88(void *, void *, s32);
+    extern void func_L01_0043B9E8(struct Moby *, s32, s32, s32);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382468(s32);
+    extern void func_003C7C38(struct Moby *);
+    struct Moby *moby = func_003C24B0(0x1A50, 0x80);
+    Debris_3298C8 *vars;
+    if (moby != 0) {
+        vars = moby->pvar;
+        ((u8 *)moby)[0x30] = 0xFF;
+        moby->draw_dist = 0xFF;
+        ((u8 *)moby)[0x31] = 1;
+        moby->opacity = 0x80;
+        vars->bounce = bounce;
+        vars->additive = additive;
         moby->scale *= scale;
-        vars->h3C = a8;
-        vars->h3E = a9;
-        if (colours) func_0038CC88(vars->colours, colours, 0x10);
-        else {
-            vars->colours[0] = 0x2FFFFFFF;
-            vars->colours[1] = 0x2F808080;
-            vars->colours[2] = 0x2FC0C0C0;
-            vars->colours[3] = 0x2F404040;
+        vars->puff_size = puff_size;
+        vars->puff_growth = puff_growth;
+        if (smoke_colours != 0) {
+            func_0038CC88(vars->smoke_colours, smoke_colours, 0x10);
+        } else {
+            vars->smoke_colours[0] = 0x2FFFFFFF;
+            vars->smoke_colours[1] = 0x2F808080;
+            vars->smoke_colours[2] = 0x2FC0C0C0;
+            vars->smoke_colours[3] = 0x2F404040;
         }
         func_L01_0043B9E8(moby, 0x7F, 0x7F, 0x7F);
-        moby->pos = *pos;
-        vars->origin = *origin;
-        vars->f10 = func_003824E0(0.12566371262073517f, 0.25132742524147034f);
-        vars->f14 = func_003824E0(0.12566371262073517f, 0.25132742524147034f);
-        vars->h18 = life;
-        vars->h1A = life;
-        vars->kind = kind;
-        if (kind == 3) vars->kind = func_00382468(3);
-        size = moby->scale * 128.0f;
-        vars->h1E = opacity * 128.0f;
-        vars->h1C = size;
-        moby->w78 = a5;
-        func_003C7C38((u8 *)moby);
+        *(u128_3298C8 *)&moby->position = *position;
+        vars->velocity = *velocity;
+        vars->spin_x = func_003824E0(0.12566371262073517f, 0.25132742524147034f);
+        vars->spin_y = func_003824E0(0.12566371262073517f, 0.25132742524147034f);
+        vars->life = life;
+        vars->life_start = life;
+        vars->smoke_kind = smoke_kind;
+        if (smoke_kind == 3) vars->smoke_kind = func_00382468(3);
+        {
+            s32 shrink = moby->scale * 128.0f;
+            vars->gravity = (s32)(gravity * 128.0f);
+            vars->scale = shrink;
+        }
+        *(s32 *)((u8 *)moby + 0x78) = glow;
+        func_003C7C38(moby);
     }
-    return (u8 *)moby;
+    return moby;
 }
 /* localdecomp:end func_L01_003298C8 */
