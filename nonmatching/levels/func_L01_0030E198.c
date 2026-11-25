@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 8): near miss: 75 words differ with the file's flags.
- * Worker's note: Best 75 diff / 294 words, attempt05.log (nine drafts checked). Remaining packet setup/store scheduling, loop 0x80FF0000 hoist and tail registers. VU helpers and real stack layout retained; exact existing callee prototypes; type-contract.log compiles cleanly.
- */
+/* PAL near miss (round 23 W1): 73 word differences with the existing flags. Ordering the first packet tag stores reduces the prologue differences. The second packet, loop color constant hoist, and tail registers still differ. */
 #include "common.h"
 /* localdecomp:start func_L01_0030E198 */
 #include "vu0.h"
@@ -27,11 +25,11 @@ void func_L01_0030E198(s32 unused, s32 alpha, vu0_v4 *points, s32 count) {
     s32 i;
     f32 u0, u1;
     a.texture = func_00389598(43);
-    a.tag88 = ((unsigned long)alpha << 32) | 0x68;
     a.tag80 = 0xFF9000000260L;
+    a.tag88 = ((unsigned long)alpha << 32) | 0x68;
+    a.tag70 = 0;
     a.color[1] = 0x7FAFAFAF;
     a.color[0] = 0x7FAFAFAF;
-    a.tag70 = 0;
     i = 1;
     b.texture = func_00389598(43);
     b.tag88 = ((unsigned long)(alpha / 3) << 32) | 0x68;

@@ -1,6 +1,4 @@
-/* PAL near miss (Codex wave 10): near miss: 41 words differ with the file's flags.
- * Worker's note: 41 word diffs/331; best v5.log, retained v5 source. VU0 opaque sequences prevent retail interleaving; modulo/table temporary allocation and duplicated particle-call color allocation remain. vu0.h j helpers fail with fixed flags (v3.log); no alternate flags. ...
- */
+/* PAL near miss (round 23 W1): 21 positional word differences with the existing flags after using the shared vector helpers and a local weapon-row table pointer. The two particle-call argument setup sequences still differ in register allocation and scheduling. The draft contains a switch. */
 #include "common.h"
 /* localdecomp:start func_L01_00394AF0 */
 #include "vu0.h"
@@ -33,14 +31,14 @@ void func_L01_00394AF0(u8 *m) {
     vu0_q impact;
     u8 *p = *(u8 **)(m + 0x68);
     s32 old, kind, cheap, small, surface, rest, next;
+    u8 (*rows)[0xF0];
     vu0_v4 *position;
     u8 *spawned;
     if (func_L01_004CB2D8(m)) func_L01_004CAB30(m + 0x10, m + 0x10);
     switch (m[0x20]) {
     case 0:
         func_L01_004C8688(*(s32 *)(p + 0x4C), p, 0);
-        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-            : "=m"(*(vu0_v4 *)(m + 0x10)) : "m"(*(vu0_v4 *)p), "m"(*(vu0_v4 *)(m + 0x10)) : "vf1", "vf2");
+        vec_add_ab((vu0_v4 *)(m + 0x10), p, m + 0x10);
         rest = D_L01_001DFB40 % 3;
         position = (vu0_v4 *)(m + 0x10);
         old = *(s32 *)(p + 0x34);
@@ -52,14 +50,13 @@ void func_L01_00394AF0(u8 *m) {
                 D_L01_001E2A40.frames = 21;
                 D_L01_001E2A40.timer = 0;
             }
-            kind = D_L01_002C5600[D_0014263F[0]][1];
+            rows = D_L01_002C5600;
+            kind = rows[D_0014263F[0]][1];
             func_L01_004C7D98(position, &ray);
             func_0038CF68(&ray, &ray, -10.0f);
             func_0038CF68(&delta, p, -6.0f);
-            __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                : "=m"(origin) : "m"(delta), "m"(*(vu0_v4 *)(m + 0x10)) : "vf1", "vf2");
-            __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-                : "=m"(ray) : "m"(ray), "m"(origin) : "vf1", "vf2");
+            vec_add_ba(&origin, &delta, m + 0x10);
+            vec_add_ab(&ray, &ray, &origin);
             if (func_003D3CB0(&origin, &ray, 0, m, 0)) {
                 impact = D_L01_001EAA20;
                 small = kind < 4;

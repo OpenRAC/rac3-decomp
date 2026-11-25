@@ -71,6 +71,153 @@ void func_L01_0033F388(void) {
 }
 /* localdecomp:end func_L01_0033F388 */
 
-INCLUDE_ASM("asm/levels", func_L01_0033F530);
+/* localdecomp:start func_L01_0033F530 */
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} __attribute__((aligned(16))) V_0033F530;
+typedef struct {
+    V_0033F530 verts[4];
+    u32 colors[4];
+    f32 uv[8];
+    unsigned long zero;
+    unsigned long texture;
+    unsigned long alpha;
+    unsigned long prim;
+} Packet_0033F530;
+typedef struct {
+    u8 pad[8];
+    s16 age;
+} P_0033F530;
+typedef struct {
+    u8 pad[0x10];
+    V_0033F530 pos;
+    u8 state;
+    u8 pad21[0x68 - 0x21];
+    P_0033F530 *p;
+} M_0033F530;
+extern s32 D_L01_001DD040;
+__asm__(".extern D_L01_001DD040, 4");
+extern s32 D_L01_001DD098_0033F530;
+__asm__(".extern D_L01_001DD098_0033F530, 4");
+extern s32 D_L01_001DD09C;
+__asm__(".extern D_L01_001DD09C, 4");
+extern f32 D_L01_001DD0A0;
+__asm__(".extern D_L01_001DD0A0, 4");
+extern f32 D_L01_001DD0E0;
+__asm__(".extern D_L01_001DD0E0, 4");
+extern f32 D_L01_001DD0E4;
+__asm__(".extern D_L01_001DD0E4, 4");
+extern f32 D_L01_001DD0E8;
+__asm__(".extern D_L01_001DD0E8, 4");
+extern s32 D_L01_001DD0EC;
+__asm__(".extern D_L01_001DD0EC, 4");
+extern s32 D_L01_001DD0F0;
+__asm__(".extern D_L01_001DD0F0, 4");
+extern f32 D_L01_001DD0F4;
+__asm__(".extern D_L01_001DD0F4, 4");
+extern V_0033F530 D_L01_001E29C0[];
+extern V_0033F530 D_001A4EC0[];
+extern long func_00389598(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+extern f32 func_L01_00443A18(f32, f32);
+extern void func_L01_0033F920(void *, f32);
+extern void func_L01_003405B8(void);
+
+void func_L01_0033F530(M_0033F530 *m) {
+    Packet_0033F530 packet;
+    V_0033F530 normal;
+    V_0033F530 tangent;
+    V_0033F530 bitangent;
+    V_0033F530 pos;
+    V_0033F530 tmp;
+    V_0033F530 *posptr;
+    s32 i;
+    s32 j;
+    s32 next;
+    V_0033F530 *source;
+    V_0033F530 *dest;
+    V_0033F530 *source2;
+    V_0033F530 *dest2;
+    s32 j2;
+    u32 color;
+    u32 color2;
+    f32 fade;
+    f32 ratio;
+    f32 size;
+    P_0033F530 *p = m->p;
+
+    if (m->state != 2) {
+        if (p->age >= ((D_L01_001DD040 - 30) * 5 + 2) / 6) {
+            fade = (f32)((D_L01_001DD040 * 5 + 2) / 6 - p->age) / 25.0f;
+        } else {
+            fade = 1.0f;
+        }
+        packet.texture = func_00389598(8);
+        packet.prim = 0x8000000048UL;
+        packet.alpha = 0xff9000000260UL;
+        packet.zero = 0;
+        packet.uv[0] = 0;
+        packet.uv[1] = 0;
+        packet.uv[2] = 0;
+        packet.uv[3] = 1;
+        packet.uv[4] = 1;
+        packet.uv[5] = 0;
+        packet.uv[6] = 1;
+        packet.uv[7] = 1;
+        vec_sub_ba(&normal, D_L01_001E29C0, &m->pos);
+        func_0038CF68(&normal, &normal, 1.0f);
+        pos = m->pos;
+        func_0038CE20(&bitangent, D_001A4EC0, -1.0f);
+        func_0038CE90(&tangent, &normal, &bitangent);
+        func_0038CF68(&tangent, &tangent, 1.0f);
+        func_0038CE90(&bitangent, &tangent, &normal);
+        posptr = &pos;
+        i = 0;
+        do {
+            next = i + 1;
+            if (D_L01_00278DA0[i].h8) {
+                ratio = (f32)D_L01_00278DA0[i].h4 * D_L01_001E18CC[0];
+                if (ratio > 1.0f) ratio = 1.0f;
+                color = (D_L01_001DD09C & 0xffffff) | ((s32)(fade * ((f32)D_L01_001DD098_0033F530 + (0.0f - (f32)D_L01_001DD098_0033F530) * ratio)) << 24);
+                size = D_L01_001DD0E0 + (D_L01_001DD0E4 - D_L01_001DD0E0) * ratio;
+                packet.colors[3] = color;
+                packet.colors[2] = color;
+                packet.colors[1] = color;
+                packet.colors[0] = color;
+                for (j = 0; j < 4; j++) {
+                    func_0038CE20(&tmp, &((V_0033F530 *)&D_L01_001DD0A0)[j], size);
+                    func_0038D028(&packet.verts[j], &tmp, &normal);
+                }
+                func_003D2DA0(&packet, 0, 0);
+            }
+            i = next;
+        } while (i < 10);
+        packet.texture = func_00389598(11);
+        color2 = (D_L01_001DD0F0 & 0xffffff) | D_L01_001DD0EC;
+        packet.prim = 0x8000000044UL;
+        packet.colors[3] = color2;
+        packet.colors[2] = color2;
+        packet.colors[1] = color2;
+        packet.colors[0] = color2;
+        func_0038CF68(posptr, &normal, D_L01_001DD0F4);
+        vec_add_ab(&pos, &pos, &m->pos);
+        size = D_L01_001DD0E8 + func_L01_00443A18(0.0f, 0.1f);
+        for (j2 = 0; j2 < 4; j2++) {
+            func_0038CE20(&tmp, &((V_0033F530 *)&D_L01_001DD0A0)[j2], size);
+            func_0038D028(&packet.verts[j2], &tmp, &normal);
+        }
+        func_003D2DA0(&packet, 0, 0);
+        func_L01_0033F920(m, fade);
+    }
+    func_L01_003405B8();
+}
+/* localdecomp:end func_L01_0033F530 */
 
 INCLUDE_ASM("asm/levels", func_L01_0033F920);
