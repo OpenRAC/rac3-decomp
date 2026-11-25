@@ -1,4 +1,13 @@
-/* func_L19_003C1F18: 3 diff in L19_003C0938.c (-mvu0-use-vf0-vf2 @ps2as): the per-frame update of the moby func_L19_003C2388 initialises. Left: one delay slot. After the t[0x20] == 0xFD test retail fills the beq as a beql with the target's lbu obj[0x20] and the following b with the lbu of its own target; this C puts that lbu in the beq's slot unannulled and the b takes the next insn (addiu 0xF). The pre-reorg code is the same (-fno-delayed-branch); ternary/||/goto/inline-helper forms of the k test, u8 k, and the state-check forms do not move it. Fixed on the way: s16 s2 assigned inside the first switch's (u8) index (retail's lbu, andi and copy), case 1: goto past the second switch (retail's threaded jump), the 0x10/0x11/0xF compares as nested ifs with return on 0xF (fold-const merges an && chain into a range) */
+/* func_L19_003C1F18: 3 diff in L19_003C0938.c (-mvu0-use-vf0-vf2 @ps2as): the per-frame update of the moby func_L19_003C2388 initialises. Left: one delay slot. After the t[0x20] == 0xFD test retail fills the beq as a beql with the target's lbu obj[0x20] and the following b with the lbu of its own target; this C puts that lbu in the beq's slot unannulled and the b takes the next insn (addiu 0xF). The pre-reorg code is the same (-fno-delayed-branch); ternary/||/goto/inline-helper forms of the k test, u8 k, and the state-check forms do not move it. Fixed on the way: s16 s2 assigned inside the first switch's (u8) index (retail's lbu, andi and copy), case 1: goto past the second switch (retail's threaded jump), the 0x10/0x11/0xF compares as nested ifs with return on 0xF (fold-const merges an && chain into a range)
+
+ * Round 25 W7 (b39, ~35 compiles; base 626eebd0d). Reorg theory: retail fills the b to Lend first (its own target's lbu,
+ * simple pass) so the beq's eager fill finds the fall-through thread headed by a filled jump and takes the annulled copy of
+ * its own target (beql); here the b is not yet filled when the beq is processed, the beq takes the shared lbu unannulled and
+ * relax_delay_slots later refills the b with the next insn. Nothing in the pre-reorg RTL differs. Tested without effect
+ * (3 diff): both-arm duplication of the whole body (166), the 0x10/0x11/0xF tests reordered (8) or with 0xF first (13) or
+ * as a switch (144), k as a single expression, t / k as function-level locals, `s` block-local or reusing s4, three
+ * declaration orders; flags -fno-sched-interblock 3, -fno-regmove 3, -fno-strength-reduce 3, -fno-gcse 19.
+ */
 typedef struct { f32 x, y, z, w; } V_3C1F18 __attribute__((aligned(16)));
 typedef struct { u8 p0[0xBF4]; u8 *xBF4; u8 p1[0x25C0 - 0xBF8]; u8 *x25C0; u8 p2[0x2850 - 0x25C4]; s32 x2850; } H_3C1F18;
 extern H_3C1F18 D_001A4BE0;

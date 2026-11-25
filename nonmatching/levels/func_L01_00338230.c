@@ -1,5 +1,5 @@
-/* PAL near miss (Codex wave 10): near miss: 155 words differ with the file's flags.
- * Worker's note: 155 diff in w523/func_L01_00338230-03-detail.log: opaque VU sequence scheduling/prologue, cached global-base and float constant allocation differ. Fresh PAL reconstruction; fixed flags; contract compiles (contract log).
+/* PAL near miss: 151 raw differing words in the file's flags.
+ * The prologue, static vector addressing, loop scheduling and saved-register assignments still differ. With -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as, hoisting the output vector pointer reduces the old layout from 155 to 151 raw words. A separate --as newas diagnostic on the old draft gives 145 raw, and the closest level 39 port with -mvu0-use-vf0-vf2 remains further away.
  */
 #include "common.h"
 /* localdecomp:start func_L01_00338230 */
@@ -25,6 +25,7 @@ void func_L01_00338230(u8 *m)
     s32 i;
     f32 jitter = 0.1f;
     f32 spread = 3.1415927f;
+    Vec_337F38 *at_ptr = &at;
     State_00338230 *state = &D_L01_001EAA00;
     __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
         : "=m"(velocity) : "m"(D_L01_001E29C0), "m"(state->pos) : "vf1", "vf2");
@@ -37,7 +38,7 @@ void func_L01_00338230(u8 *m)
         func_0038CE20(&at, &velocity, func_003824E0(1.0f, 3.0f));
         __asm__("lqc2 $vf2, %0\n\tlqc2 $vf1, %1\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
             : "+m"(at) : "m"(state->pos) : "vf1", "vf2");
-        func_L01_004660F8(&at, &velocity);
+        func_L01_004660F8(at_ptr, &velocity);
     }
     for (i=9; i>=0; i--) {
         at.x = state->pos.x + func_L01_00443A18(0.0f, jitter);

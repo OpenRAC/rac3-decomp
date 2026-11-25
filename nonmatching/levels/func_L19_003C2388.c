@@ -1,4 +1,6 @@
-/* func_L19_003C2388: 32 diff in L19_003C0938.c (-mvu0-use-vf0-vf2 @ps2as): the moby-vars init. Store order and the float constant registers of the two long store runs (a greedy single-move search over the statement order went from 41 to 36); the two D_L19_001DE838/83C loads are locals (retail loads each once). */
+/* PAL near miss: 26 raw differing words in the file's flags.
+ * Named constants for the second run in the order 188, 1BC, 17C, 180, 184, 18C, 1B8 improve the earlier 32-word draft. The remaining differences are the byte/float store order, associated float register choices, and the height store around the final zeroing writes. Measured with the file's @ps2as and -mvu0-use-vf0-vf2 flags.
+ */
 __asm__(".extern D_L19_001DE838, 4");
 __asm__(".extern D_L19_001DE83C, 4");
 extern f32 D_L19_001DE838;
@@ -46,18 +48,27 @@ void func_L19_003C2388(u8 *obj) {
         v[0x1D3] = 16;
         v[0x1D2] = 7;
     }
-    v[0x171] = 16;
-    v[0x1CD] = 0x11;
-    *(f32 *)(v + 0x1B8) = 0.1f;
-    v[0x1CC] = 8;
-    v[0x1DB] = 0x16;
-    *(f32 *)(v + 0x188) = 0.0100000007f;
-    *(f32 *)(v + 0x1BC) = 1.0f;
-    *(f32 *)(v + 0x17C) = 0.3f;
-    *(f32 *)(v + 0x180) = 0.0250000022f;
-    *(f32 *)(v + 0x184) = 0.006f;
-    *(f32 *)(v + 0x18C) = 0.000800000038f;
-    v[0x1A9] = 1;
+    {
+        f32 field188Value = 0.0100000007f;
+        f32 field1BCValue = 1.0f;
+        f32 field17CValue = 0.3f;
+        f32 field180Value = 0.0250000022f;
+        f32 field184Value = 0.006f;
+        f32 field18CValue = 0.000800000038f;
+        f32 field1B8Value = 0.1f;
+        v[0x171] = 16;
+        v[0x1CD] = 0x11;
+        *(f32 *)(v + 0x1B8) = field1B8Value;
+        v[0x1CC] = 8;
+        v[0x1DB] = 0x16;
+        *(f32 *)(v + 0x188) = field188Value;
+        *(f32 *)(v + 0x1BC) = field1BCValue;
+        *(f32 *)(v + 0x17C) = field17CValue;
+        *(f32 *)(v + 0x180) = field180Value;
+        *(f32 *)(v + 0x184) = field184Value;
+        *(f32 *)(v + 0x18C) = field18CValue;
+        v[0x1A9] = 1;
+    }
     v[0x1DA] = 0;
     v[0x1D8] = 0;
     *(s16 *)(v + 0x414) = 0;

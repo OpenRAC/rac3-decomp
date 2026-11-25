@@ -831,7 +831,95 @@ void func_L01_00467910(u8 *self) {
 }
 /* localdecomp:end func_L01_00467910 */
 
-INCLUDE_ASM("asm/levels", func_L01_00467B20);
+/* localdecomp:start func_L01_00467B20 */
+typedef struct {
+    u8 *obj;
+    f32 f04;
+    f32 f08;
+    s16 h0C;
+    s16 h0E;
+    f32 f10;
+    f32 f14;
+} Sub_00467B20;
+typedef struct {
+    u8 pad0[2];
+    u8 b2;
+    u8 pad3;
+    s32 rgba;
+    u8 b8;
+    u8 pad9;
+    s16 hA;
+    f32 fC;
+    vu0_v4 pos;
+    Sub_00467B20 sub;
+} T_00467B20;
+
+extern u8 *D_L01_0022110C[];
+extern vu0_v4 D_L01_001E29C0;
+extern s32 func_0038CB00(u8 *);
+extern void func_003CD250(u8 *);
+extern void func_003C2F58(void *, s32, void *);
+
+void func_L01_00467B20(T_00467B20 *p) {
+    extern void func_0038CF68(void *, void *, f32);
+    Sub_00467B20 *s;
+    vu0_v4 a;
+    vu0_v4 b;
+
+    if (p == 0) {
+        return;
+    }
+    s = &p->sub;
+    if (func_0038CB00((u8 *)&p->hA) != 0 || p->sub.obj == 0 || (s8)p->sub.obj[0x20] < 0) {
+        func_003CD250((u8 *)p);
+        return;
+    }
+    s->h0C = (s->h0C + 1) & 0xF;
+    if (p->fC < 159600.0f) {
+        p->fC += 4788.0f;
+        if (159600.0f < p->fC) {
+            p->fC = 159600.0f;
+        }
+    } else if (159600.0f < p->fC) {
+        p->fC -= 19152.0f;
+        if (p->fC < 159600.0f) {
+            p->fC = 159600.0f;
+        }
+    }
+    s->f08 += 0.0012f;
+    p->b8 = (s32)(s->f08 * 255.0f);
+    p->b2 = D_L01_0022110C[0][s->h0C];
+    if (p->fC <= 159600.0f || s->f10 > 0.0f) {
+        s->f04 += s->f10;
+    }
+    if (p->fC <= 159600.0f) {
+        if (0.3f < s->f04) {
+            s->f10 = -s->f10;
+            s->f04 += s->f10;
+        } else if (s->f04 < 0.0f) {
+            func_003CD250((u8 *)p);
+            return;
+        }
+    } else {
+        if (0.15f < s->f04) {
+            s->f10 = -s->f10;
+            s->f04 += s->f10;
+        } else if (s->f04 < 0.0f) {
+            func_003CD250((u8 *)p);
+            return;
+        }
+    }
+    p->rgba = (p->rgba & 0xFFFFFF) + ((s32)(s->f04 * 256.0f) << 24);
+    s->f14 += (1.0f - s->f14) * 0.21000001f;
+    if (s->h0E == -1) {
+        return;
+    }
+    func_003C2F58(s->obj, s->h0E, &a);
+    vec_sub_ba(&b, &D_L01_001E29C0, &a);
+    func_0038CF68(&b, &b, s->f14);
+    vec_add_ab(&p->pos, &a, &b);
+}
+/* localdecomp:end func_L01_00467B20 */
 
 LINKER_REMNANT("asm/levels", func_L01_00467DC0);
 
@@ -1255,7 +1343,7 @@ update:
 extern vu0_v4 D_L01_001E29C0;
 void func_L01_00468D98(u8 *self) {
     extern f32 func_0038CEA8(f32 *);
-    extern void func_0038CF68(f32 *, f32 *, f32);
+    extern void func_0038CF68(void *, void *, f32);
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern f32 func_0038DAB8(f32, f32);
     extern f32 func_0038D0B0(f32);

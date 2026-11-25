@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 
 /* localdecomp:start func_L01_0032FBA0 */
@@ -44,7 +45,72 @@ void func_L01_0032FBE0(char *p)
 }
 /* localdecomp:end func_L01_0032FBE0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0032FC70);
+/* localdecomp:start func_L01_0032FC70 */
+typedef struct { f32 x, y, z, w; } V_32FC70;
+typedef union { vu0_q q; V_32FC70 v; } Q_32FC70;
+typedef struct { Q_32FC70 v[4]; s32 col[4]; f32 uv[4][2]; long f70, f78, f80, f88; } S_32FC70;
+extern long func_00389598(s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_0038D160(f32, f32);
+extern f32 func_0038CF38(void *, void *);
+extern f32 func_00382538(void);
+extern void func_0038D328(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_003D2DA0(void *, void *, s32);
+extern f32 D_L01_001E2880[];
+
+void func_L01_0032FC70(void *a0, void *op) {
+    f32 *o = op;
+    S_32FC70 s;
+    f32 m[16] __attribute__((aligned(16)));
+    f32 dir[4] __attribute__((aligned(16)));
+    f32 d[4] __attribute__((aligned(16)));
+    f32 sc;
+    s32 c;
+    f32 *dp;
+    func_L01_0032FBE0((char *)&s);
+    s.f78 = func_00389598(0x2C);
+    s.f80 = 0xFF9000000260UL;
+    s.f88 = 0x8000000048UL;
+    s.f70 = 0;
+    c = (func_00382498(0x30, 0x40) << 24) + 0x8183F;
+    s.col[3] = c; s.col[2] = c; s.col[1] = c; s.col[0] = c;
+    dp = D_L01_001E2880;
+    dir[3] = 0;
+    dir[2] = func_0038D160(dp[80] - o[0], dp[81] - o[1]);
+    dir[1] = -func_0038D160(func_0038CF38(o, dp + 80), dp[82] - o[2]);
+    dir[0] = func_00382538();
+    func_0038D328(m, dir);
+    vec_sub_ba(d, dp + 80, o);
+    func_0038CF68(d, d, 0.25f);
+    m[12] = o[0] + d[0];
+    m[13] = o[1] + d[1];
+    m[14] = o[2] + d[2];
+    m[15] = 1.0f;
+    sc = func_003824E0(0.3f, 0.4f);
+    func_0038CE20(&s.v[0], &s.v[0], sc);
+    func_0038CE20(&s.v[1], &s.v[1], sc);
+    func_0038CE20(&s.v[2], &s.v[2], sc);
+    func_0038CE20(&s.v[3], &s.v[3], sc);
+    func_003D2DA0(&s, m, 0);
+    func_0038CE20(&s.v[0], &s.v[0], 0.5f);
+    func_0038CE20(&s.v[1], &s.v[1], 0.5f);
+    func_0038CE20(&s.v[2], &s.v[2], 0.5f);
+    func_0038CE20(&s.v[3], &s.v[3], 0.5f);
+    c = (func_00382498(0x40, 0x7F) << 24) + 0x103080;
+    s.col[3] = c; s.col[2] = c; s.col[1] = c; s.col[0] = c;
+    func_003D2DA0(&s, m, 0);
+    func_0038CE20(&s.v[0], &s.v[0], 0.5f);
+    func_0038CE20(&s.v[1], &s.v[1], 0.5f);
+    func_0038CE20(&s.v[2], &s.v[2], 0.5f);
+    func_0038CE20(&s.v[3], &s.v[3], 0.5f);
+    c = (func_00382498(0x40, 0x7F) << 24) + 0x7F7F7F;
+    s.col[3] = c; s.col[2] = c; s.col[1] = c; s.col[0] = c;
+    func_003D2DA0(&s, m, 0);
+}
+/* localdecomp:end func_L01_0032FC70 */
 
 /* localdecomp:start func_L01_0032FF68 */
 #include "vu0.h"
@@ -64,14 +130,14 @@ extern void func_003C2F58(void *, s32, void *);
 extern f32 func_003824E0(f32, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038D000(void *, void *, void *);
-extern void func_L01_0032FC70(void *, void *);
+
 extern long func_00389598(s32);
 extern void func_L01_0032FBE0(char *);
 extern s32 func_0013D3E0();
 extern void func_0038CE90(void *, void *, void *);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_0038D028(void *, void *, void *);
-extern void func_003D2DA0(void *, s32, s32);
+extern void func_003D2DA0(void *, void *, s32);
 
 void func_L01_0032FF68(void *arg) {
     u8 *o = arg;
@@ -454,7 +520,7 @@ extern void func_003C5180(void *, void *, s32);
 extern void func_003D93B0(void *, s32, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
-extern void func_003D2DA0(void *, s32, s32);
+extern void func_003D2DA0(void *, void *, s32);
 
 void func_L01_00331DD0(u8 *obj) {
     u8 packet[0x90] __attribute__((aligned(16)));
@@ -528,7 +594,7 @@ extern void func_0038D5F0(void *, void *, void *);
 extern void func_0038CE20(void *, void *, f32);
 extern void func_0038D028(void *, void *, void *);
 extern void func_003A9440(long, long);
-extern void func_003D2DA0(void *, s32, s32);
+extern void func_003D2DA0(void *, void *, s32);
 extern void func_00389478(void *, f32 *, f32 *);
 extern s32 func_00382468(s32);
 extern f32 func_003824E0(f32, f32);

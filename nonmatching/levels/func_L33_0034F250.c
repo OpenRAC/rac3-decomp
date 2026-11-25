@@ -3,9 +3,10 @@
  * `*(f32 *)(p + 0x10)` let the scheduler keep the $gp loads behind the stores: 37 -> 13 aligned in one edit). Needs the file line
  * `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (retail's lui/ori/mtc1 float constants: a cut of src/levels/33_vidcomic_2/L33_0034E8C0.c,
  * which has neither flag) and the row `func_L33_0034F250 0 2 2` in config/levels/divs_nops.txt (not committed: the function is still INCLUDE_ASM).
- * 16 raw words differ (10 aligned): (1) `move $a0, $sp` (the &v argument of func_L33_00344F88) sits after the first store (`swc1 $f0, 0x10($s0)`) in
- * retail, first in ours; (2) the 1.0f constant is $f5 and n+1 is $f4 in retail, the other way round in ours; (3) the last block's `lh q->h8` goes to $a1 in
- * retail, to $v1 in ours. Tried without effect: statement-order permutations of the join block (12), n/n+1 as separate variables and temporaries,
+ * 14 raw words differ: (1) `move $a0, $sp` (the &v argument of func_L33_00344F88) sits after the first store (`swc1 $f0, 0x10($s0)`) in
+ * retail, first in ours; (2) the 1.0f constant is $f5 and n+1 is $f4 in retail, the other way round in ours.
+ * Pass q->h8 as the second argument of func_L03_0034B148, as declared in its definition. This fixes the two $a1 words.
+ * Tried without effect: statement-order permutations of the join block (12), n/n+1 as separate variables and temporaries,
  * block-local n, call-argument locals, `(f32)n / ((f32)n + 1.0f)` (worse), the three orders of the final loads, declaration order of v and a (worse).
  */
 #include "common.h"
@@ -42,7 +43,7 @@ extern s32 func_L30_0034DBA0(s32, s32);
 extern f32 func_003C4088(f32, f32, f32);
 extern void func_L33_00344F88(void *, s32);
 extern void func_L33_003453C8(void *, void *);
-extern f32 func_L03_0034B148(s32, f32);
+extern f32 func_L03_0034B148(s32, s32, f32);
 extern f32 D_L33_001DD704;
 __asm__(".extern D_L33_001DD704, 4");
 extern f32 D_L33_001DD700;
@@ -120,7 +121,7 @@ void func_L33_0034F250(P_0034F250 *p, Q_0034F250 *q) {
         f32 lo = (f32)(q->hE & 0xFF);
         f32 hi = (f32)(q->hE >> 8);
         f32 hi2 = D_L33_001DD6E4 * (f32)q->h8 * hi * 0.00390625f;
-        p->b8 = (s32)func_003C4088(lo, lo + hi2, func_L03_0034B148(p->hA, 0.0f));
+        p->b8 = (s32)func_003C4088(lo, lo + hi2, func_L03_0034B148(p->hA, q->h8, 0.0f));
     }
 }
 /* localdecomp:end func_L33_0034F250 */

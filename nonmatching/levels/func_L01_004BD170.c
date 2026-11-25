@@ -1,4 +1,4 @@
-/* PAL near miss (sonnet-b30-j1, round 19): 12 words differ with the file's flags plus `@ps2as` (the function builds 1.0f / 1.1f with
+/* PAL near miss (sonnet-b30-j1, round 19; b40 W2 2026-11-25: 12 -> 10, the `nop` slot word is fixed by declaring D_001D54D0/D_001D54D2 as ONE small union `{ u32 w; struct { u16 h0, h2; } h; }`: both reads are then `D+0`/`D+2` macros of one small object, the assembler cannot put the 2-insn lhu macro into the delay slot and leaves retail's nop): 10 words differ with the file's flags plus `@ps2as` (the function builds 1.0f / 1.1f with
  * lui/mtc1, so it also needs a cut: a file of its own at 0x4BD170 with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`, 8-aligned).
  * What differs: (1) the three quad loads of `D_L01_001E29D0.rest = D_L01_001E0FA0` come in another register order (ours: src base $v1,
  * dst base $a0, first `lq $a2, 0xe0($s0)`; retail: src $a0, dst $v1, first `lq $v0, 0($a0)`), 10 words, all register names; (2) one word: at
@@ -64,9 +64,7 @@ extern Tbl_004BD170 D_L01_001DAD18;
 extern u8 D_00142660[];
 extern s16 D_001426A0[];
 extern Hit_004BD170 D_L01_0016C580;
-extern u32 D_001D54D0;
-extern u16 D_001D54D2;
-__asm__(".extern D_001D54D2, 16");
+extern union { u32 w; struct { u16 h0; u16 h2; } h; } D_001D54D0;
 extern void func_L01_004BF980(void);
 extern void func_L01_00479280(void);
 extern s32 func_L01_0047B420(void);
@@ -150,11 +148,11 @@ void func_L01_004BD170(void) {
         }
     }
     if (D_L01_002446C0_004BD170.f50 == 2) {
-        n = D_001D54D0;
+        n = D_001D54D0.w;
         if (D_L01_0016C580.f18 != n) {
             func_00398BB8(n & 3);
         }
-        k = D_001D54D2 & 0x1F;
+        k = D_001D54D0.h.h2 & 0x1F;
         if (D_L01_0016C580.f30 != k) {
             func_00398C80(k);
         }

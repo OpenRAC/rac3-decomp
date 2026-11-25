@@ -1,6 +1,7 @@
-/* near miss (level 10, Zeldrin Starport): 49 differences at level 10 with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as), down from about 130. In src/levels/10_zeldrin_starport/L10_003B5B48.c after func_L10_003B85A0 (which calls it).
- * What fixed it (130 to 49): (1) retail's 0x180 / call-argument constant is 0x3df5c290, which is 0.120000005f, not 0.12f (0x3df5c28f); (2) the constant 1 kept in a named local (`s32 one = 1;` for the stores at 0x334, 0x39, 0x3e and 0x338): retail keeps it in $s2 over the calls and stores it with `sw $s2,0x338`, a literal 1 after the branches is rematerialised as `addiu $v0,$zero,1` (130 to 77); (3) the order of the 31 initialising stores found by a hill climb (about 1200 compiles; 77 to 49; the draft order was retail's output order, which is not the source order that produces it: ties go to the later statement and constants with more uses are materialised first).
- * Left (49): about 37 in the stores (retail materialises 0.5 then 0.12 first, `mov.s $f13,$f11` right after it, and keeps the 0x180 store late; this C schedules the 0.12 chain last), and about 12 in the 0x328 branch: retail's != -1 path starts with `move $a3,$zero` (in the beq's delay slot) and jumps with `b` into one shared `jal func_L01_004450F0` whose delay slot is a nop, with the vector `sq` in the `b`'s delay slot; this C merges nothing there and puts the `sq` in the jal's delay slot. A single call after the if/else (110) and a local for the index (198) were worse. */
+/* near miss (level 10, Zeldrin Starport): 34 differences at level 10 with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as), down from 49 (round 26 W7, on round 11's draft). In src/levels/10_zeldrin_starport/L10_003B5B48.c after func_L10_003B85A0 (which calls it).
+ * Round 11 fixed (130 to 49): retail's 0x180 / call-argument constant is 0x3df5c290 = 0.120000005f; the constant 1 kept in a named local (`s32 one = 1;`: retail keeps it in $s2 over the calls); the order of the 31 initialising stores (hill climb, about 1200 compiles).
+ * Round 26 W7 (49 to 34): the `p + 0x338 = one` store INSIDE both arms of `if (*(s32 *)(p + 0x310) != -1)`, after the func_L01_004450F0 call of each arm. gcc 2.95 combine puts a `(use (const_int 0))` after a call that is followed by a label; with the store after the join only the second arm's call has one, jump2's cross-jump then compares arm 1's call with that `use` and merges nothing. With the store inside both arms both arms end `call; store; jump end`, jump2 merges the tail and arm 1 jumps into arm 2's `jal` (retail: `b 0x28` into the shared `jal 0x4284b0`, `nop` slot, the store in the `b`'s slot). All 12 differences of the 0x328 branch are gone.
+ * Left (34, all in the 31 initialising stores): retail materialises 0.5 then 0.12 first (`mov.s $f13,$f11` right after the fifth constant), then 0.64, 0.0088, 0.0148, 0.016, 0.4, 0.7, 1.0, 0.785, 0.349 (f4), 0.00392; this C schedules 0.349 second and 0.12 last (hard registers f8/f1/f4 for 0.349/1.0/0.4 differ from retail's f4/f8/f1), and retail's `swc1 $f0,0x74` is the jal's delay slot where this C has `swc1 $f11,0x180`. Adjacent swaps and 40 random moves from this order give no improvement (round 26: 67 compiles); earlier rounds' hill climbs, constant locals, typed fields, -fno-sched-interblock, return types of func_L01_004450F0 / func_L10_003B9078 (s32) did not help either. Local-alloc priority of a constant is floor_log2(refs) * refs / live length (-dl), so retail's register numbers say which constants have the shortest lives in sched1's order. */
 #include "common.h"
 
 /* localdecomp:start func_L10_003B8A80 */
@@ -89,11 +90,12 @@ s32 func_L10_003B8A80(u8 *m) {
             func_L10_003B9078(m, 0xD, 0, 0);
             *(V4_3B8A80 *)(m + 0x10) = *(V4_3B8A80 *)(D_L10_0021D1C0[*(s32 *)(p + 0x310)] + 0x10);
             func_L01_004450F0(m, 1, 0);
+            *(s32 *)(p + 0x338) = one;
         } else {
             func_L10_003B9078(m, 0xD, 0, 0);
             func_L01_004450F0(m, 1, 0);
+            *(s32 *)(p + 0x338) = one;
         }
-        *(s32 *)(p + 0x338) = one;
     } else {
         func_L01_004450F0(m, 1, 0);
         if (m[0x43] != 0) {

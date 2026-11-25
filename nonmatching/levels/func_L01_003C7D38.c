@@ -26,7 +26,12 @@
  * (sched1 emits D80 D88 D74 D84 in both forms). h2c's one-variable form gives a = $f4 (right) but b = $f3: global-alloc `preferences` for b is only $f3 (operand 0 of its PLUS = the D88 temp),
  * and with a allocated before b there is no anti-edge, so sched2 keeps D80 D88 D74 D84 (5 raw). In the w form the allocation order is w, b, a and a (last) prefers its operand 0 = D80 temp = $f2.
  * Open: a form where a conflicts with the D80 temp (so it falls to $f4 = w's register) while b is still allocated before a. Tried without change: the 224-form toy sweep (factor in w or a, a = k / in place,
- * a / b accumulators, operand orders, statement orders, a = w copies) and 12 real variants (best 3 = this draft). */
+ * a / b accumulators, operand orders, statement orders, a = w copies) and 12 real variants (best 3 = this draft).
+ * Round 26 W12 (-dg dump of the w form: w $f4 pri 1.5, b $f0 .333 allocated before the D88 temps, a $f2 .273 takes its operand-0 temp's register because it conflicts with
+ * nothing there; the one-variable form allocates a first ($f4, 11 refs) and b late, after the temps, so b takes a temp's register): the allocator sees `a` only as a def at the sum,
+ * so $f4 needs a to be live before the sum (the factor itself), which brings back the WAR edge. New and all >= 3: a static inline lerp(x, y, t) for both blends (3, same bytes), the
+ * same with b first (9), declaration order of a/b/w at the front or back of the f32 list (12 permutations, all 3), defaults a = D80, b = D88 before the test with `a = a + (D74 - a) * w`
+ * (356), `a = D80; b = D88; a += ..; b += ..` inside the else arm (15), ternary clamp (345), one-variable form with b first (8, b lands $f2). */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L01_003C7D38 */

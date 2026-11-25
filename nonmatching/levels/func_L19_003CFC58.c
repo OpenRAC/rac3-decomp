@@ -26,6 +26,11 @@
  *   a three-argument call, `-fno-gcse`, and about 30 toy shapes (inline helpers with pointer parameters, post-increment, `p + 1`, a two-iteration loop, 32-byte struct copies, typed index locals).
  * - gcse of this draft: `PRE GCSE ... 0 substs`. Retail's copy needs a second computation of the entry address in ANOTHER extended basic block (a label with two predecessors between the two quad
  *   reads) that vanishes before the final code (reaching registers are probably never copy-propagated: recalled from gcse.c, not verified). No plain C with such a boundary and no visible branch found.
+
+ * Round 25 W7 (b39, base 626eebd0d): reproduced 6 with the divs_nops row `func_L19_003CFC58 0 1 0` (check.py without
+ * --no-context --mode S: the file's own line is S mode, @ps2as). The retail join (both arms of the last-point test end in
+ * `lw $a1, 0x5c($s2)` in the b's slot / at the join) puts the index in $a1 and E = (index << 4) + path in $a2 as
+ * `addu $a2, $a1, $v0`. See the sonnet-b39-w7 notes for the rest; no new wording was found to produce the copy.
  */
 #include "common.h"
 #include "vu0.h"

@@ -36,6 +36,7 @@ extern s32 func_L01_004C85C8(u8 *ball, s32 a1, f32 x, f32 y, f32 z);
 extern void func_L01_004CAC78();
 extern u8 *D_L01_001E1724;
 extern S_0030CD20 *D_L01_001E1720;
+extern void func_L01_0030CFC0(s32);
 
 /* localdecomp:start func_L01_0030D258 */
 void func_L01_0030D258(s32 a0) {
@@ -377,12 +378,100 @@ void func_L01_0030DAD0(u8 *position, s32 color, s32 resource, s32 mode, s32 flag
 }
 /* localdecomp:end func_L01_0030DAD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0030DC38);
+/* localdecomp:start func_L01_0030DC38 */
+typedef struct { vu0_v4 vertices[4]; u32 colors[4]; vu0_v4 uv[2]; unsigned long zero,texture,alpha,mode; } Packet_0030DC38;
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_0030DC38(vu0_v4 *start, vu0_v4 *end, s32 unused2, s32 alpha, s32 unused4, s32 flag, f32 width, f32 unused13, f32 scroll) {
+    extern long func_00389598(s32);
+    extern void func_L01_0030D720(u8 *);
+    extern void func_0038CF68(S_0030CD20 *, S_0030CD20 *, f32);
+    extern void func_0038CE90(f32 *, f32 *, f32 *);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_003D2DA0(S_35A8A0 *, f32 *, s32);
+    Packet_0030DC38 first,second;
+    vu0_v4 matrix[4];
+    vu0_v4 a,b;
+    u32 color;
+    first.texture=func_00389598(47);
+    first.alpha=0xFF9000000260UL;
+    alpha<<=24;
+    color=alpha+0x800000;
+    first.colors[3]=0x800000;
+    first.colors[2]=0x800000;
+    first.colors[1]=color;
+    first.colors[0]=color;
+    first.mode=((unsigned long)flag<<2)|0x8000000040UL;
+    first.zero=0;
+    second.texture=func_00389598(48);
+    second.alpha=0xFF9000000260UL;
+    second.mode=0x8000000048UL;
+    alpha+=0xffffff;
+    color=alpha;
+    second.colors[3]=0x800000;
+    second.colors[1]=color;
+    second.colors[2]=0x800000;
+    second.colors[0]=color;
+    second.zero=0;
+    *(vu0_q *)&a=0;
+    *(vu0_q *)&b=0;
+    a.w=1.0f;
+    b.w=1.0f;
+    a.z=width;
+    b.z=width;
+    func_L01_0030D720((u8 *)&first);
+    func_L01_0030D720((u8 *)&second);
+    first.uv[0].x=scroll;
+    first.uv[0].y=0.0f;
+    first.uv[0].z=scroll;
+    first.uv[0].w=1.0f;
+    first.uv[1].x=scroll+1.0f;
+    first.uv[1].y=0.0f;
+    first.uv[1].z=scroll+1.0f;
+    first.uv[1].w=1.0f;
+    second.uv[0].x=scroll;
+    second.uv[0].y=0.0f;
+    second.uv[0].z=scroll;
+    second.uv[0].w=1.0f;
+    second.uv[1].x=scroll+1.0f;
+    second.uv[1].y=0.0f;
+    second.uv[1].z=scroll+1.0f;
+    second.uv[1].w=1.0f;
+    vec_sub_ba(&matrix[0],end,start);
+    func_0038CF68((S_0030CD20 *)&matrix[0],(S_0030CD20 *)&matrix[0],1.0f);
+    vec_sub_ba(&matrix[1],&D_L01_001E29C0,start);
+    func_0038CE90((f32 *)&matrix[2],(f32 *)&matrix[1],(f32 *)&matrix[0]);
+    func_0038CF68((S_0030CD20 *)&matrix[2],(S_0030CD20 *)&matrix[2],1.0f);
+    func_0038CE90((f32 *)&matrix[1],(f32 *)&matrix[0],(f32 *)&matrix[2]);
+    matrix[3]=*start;
+    *(vu0_q *)&first.vertices[0]=*(vu0_q *)&a;
+    *(vu0_q *)&second.vertices[0]=*(vu0_q *)&b;
+    func_0038CE20((f32 *)&first.vertices[1],(f32 *)&first.vertices[0],-1.0f);
+    func_0038CE20((f32 *)&second.vertices[1],(f32 *)&second.vertices[0],-1.0f);
+    func_0038D028(&first.vertices[0],&first.vertices[0],matrix);
+    func_0038D028(&first.vertices[1],&first.vertices[1],matrix);
+    func_0038D028(&second.vertices[0],&second.vertices[0],matrix);
+    func_0038D028(&second.vertices[1],&second.vertices[1],matrix);
+    a.z*=0.5f;
+    b.z*=0.5f;
+    matrix[3]=*end;
+    *(vu0_q *)&second.vertices[2]=*(vu0_q *)&b;
+    *(vu0_q *)&first.vertices[2]=*(vu0_q *)&a;
+    func_0038CE20((f32 *)&first.vertices[3],(f32 *)&first.vertices[2],-1.0f);
+    func_0038CE20((f32 *)&second.vertices[3],(f32 *)&second.vertices[2],-1.0f);
+    func_0038D028(&first.vertices[2],&first.vertices[2],matrix);
+    func_0038D028(&first.vertices[3],&first.vertices[3],matrix);
+    func_0038D028(&second.vertices[2],&second.vertices[2],matrix);
+    func_0038D028(&second.vertices[3],&second.vertices[3],matrix);
+    func_003D2DA0((S_35A8A0 *)&first,0,0);
+    func_003D2DA0((S_35A8A0 *)&second,0,0);
+}
+/* localdecomp:end func_L01_0030DC38 */
 
 /* localdecomp:start func_L01_0030DF88 */
 #include "vu0.h"
 void func_L01_0030DF88(u8 *owner, u8 *arc) {
-    extern void func_L01_0030D7A8(void *, void *, void *, void *, void *, f32);
+
     extern f32 func_003824E0(f32, f32);
     extern void func_0038CF68(S_0030CD20 *, S_0030CD20 *, f32);
     extern s32 func_00382498(s32, s32);

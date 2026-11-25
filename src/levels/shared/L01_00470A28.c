@@ -553,7 +553,99 @@ void func_L01_00471670(T_00471670 *p) {
 
 LINKER_REMNANT("asm/levels", func_L01_00471740);
 
-INCLUDE_ASM("asm/levels", func_L01_00471748);
+/* localdecomp:start func_L01_00471748 */
+typedef struct {
+    f32 f0;
+    f32 f4;
+    f32 f8;
+    f32 fC;
+    f32 f10;
+    s16 h14;
+    s16 h16;
+    f32 f18;
+    f32 f1C;
+} Q_00471748;
+
+typedef struct {
+    u8 pad0[4];
+    s32 c4;
+    u8 b8;
+    u8 b9;
+    s16 hA;
+    f32 fC;
+    Vec4 pos;
+    Q_00471748 q;
+} T_00471748;
+
+typedef struct {
+    u8 pad0[0x80];
+    Vec4 pos;
+    u8 pad90[0x170 - 0x90];
+    f32 f170;
+} H_00471748;
+
+extern H_00471748 D_001A4BE0;
+extern s32 D_L01_001DFB40_00471748;
+__asm__(".extern D_L01_001DFB40_00471748, 16");
+extern vu0_v4 D_L01_001E2880;
+extern s32 func_0038CB00(s16 *);
+extern void func_003CD250(Obj *);
+extern void func_L01_004CAB30(void *, void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CF00(void *, void *);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038DAB8(f32, f32);
+extern f32 func_0038D0B0(f32);
+
+void func_L01_00471748(T_00471748 *p) {
+    Q_00471748 *q = &p->q;
+    Vec4 d;
+    Vec4 t;
+    s32 h;
+    Vec4 *hp;
+
+    func_L01_004CAB30(&p->pos, &p->pos);
+    func_0038CE20(q, q, 0.9f);
+    q->f8 = q->f8 - q->fC;
+    vec_add_ab(&p->pos, &p->pos, q);
+    hp = &D_001A4BE0.pos;
+    if (func_0038CF00(&p->pos, hp) < 1.05f) {
+        if (D_001A4BE0.f170 != 0.0f) {
+            t = *hp;
+            vec_sub_ab(&d, &p->pos, &t);
+            func_0038CF68(&d, &d, D_001A4BE0.f170 * 0.2f + func_003824E0(0.1f, 2.0f) * 0.020000001f * 0.15f);
+            p->b8 += (s32)((f32)q->h16 * D_001A4BE0.f170 * 0.5f);
+            vec_add_ab(&p->pos, &p->pos, &d);
+        }
+    }
+    if (D_L01_001DFB40_00471748 % 10 == 0) {
+        f32 sway;
+        q->f1C = func_0038DAB8(q->f1C, 1.0f);
+        sway = func_0038D0B0(q->f1C) * 0.0075f;
+        func_0038CF68(&d, &D_L01_001E2880, sway);
+        vec_add_ab(q, q, &d);
+    }
+    h = q->h14;
+    if (h >= 0xA0) {
+        if (p->hA < h) {
+            p->c4 = ((s32)((f32)p->hA / (f32)h * 128.0f) << 24) | 0x353535;
+        } else {
+            p->c4 = 0x9F353535;
+        }
+    } else {
+        if (p->hA < h) {
+            p->c4 = ((s32)((f32)p->hA / (f32)h * 64.0f) << 24) | 0x909090;
+        } else {
+            p->c4 = 0x40909090;
+        }
+    }
+    p->b8 += q->h16;
+    if (func_0038CB00(&p->hA) != 0) {
+        func_003CD250((Obj *)p);
+    }
+}
+/* localdecomp:end func_L01_00471748 */
 
 /* localdecomp:start func_L01_00471A30 */
 extern int func_0038CB00(short *);

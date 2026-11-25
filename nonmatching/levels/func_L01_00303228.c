@@ -1,3 +1,25 @@
+/* Round 27 W20: 8 raw differences (W13: 9; round 19: 12), measured at level 01 with tools/check.py --mode S --as ps2as
+ * and the owning file's other flags. A match still needs the split-address file cut (see the J5D note below).
+ * What W20 changed: the vector block is written as explicit VU0 asm statements (lqc2/vadd.xyz/sqc2 per operand) with the
+ * memory operand of the F load typed vu0_q (TImode, 16 bytes) and the others typed vu0_v4 (struct = BLKmode). A BLK operand
+ * conflicts with every earlier store in sched1, a TI operand only with the overlapping one. A sweep of 2^8 typings
+ * of the eight memory operands (qld, qst, add c/f/store, sub c/D29C0/store, 200+ compiles): best 8, all-BLK 12,
+ * W13's 9 = only the q store typed TI; every mix that types the c load TI too grows the frame by a spill slot (197-201).
+ * Source order of the asm statements, the c.w store position, helper ab/ba order: no effect (sched1 reorders them).
+ * What still differs (8 raw):
+ * (1) retail's D29C0 load takes vf2 (spilled with sqc2 vf2,0x110, then the c load takes vf1, then the F load vf2); this C
+ *     gets vf1 for it. The pre-reload (sched1) order is the same as retail's: q ld, swc1, q st, D29C0 ld, c ld, F ld,
+ *     because the D29C0 load (insn 184) fills the free issue slot at t=15 beside the q store; the c/F loads depend on that
+ *     store. The register is chosen by reload (order_regs_for_reload / the spill reg of the output reload of the spilled
+ *     D29C0 pseudo): vf1 here, vf2 in retail.
+ * (2) the spill slots: retail has the loop's &uv pointer at 0x100 and the vf spill at 0x110, this C the other way round.
+ *     Slots are handed out in pseudo order (reload's alter_reg): the vf pseudo (174) is an expand-time pseudo, the pointer
+ *     (287, `sp+0x50`) one that loop.c creates, so the vf slot comes first. A user-variable pointer (declared at the top,
+ *     set before the loops) gets the slot 0x100 but becomes an allocated callee-saved register (no spill): 105 diffs.
+ * Tried and not better: a separate local copy g of D29C0 (vec_copy(&g,..); sub from g; g outside or inside the struct): 15;
+ * the loop's vec_sub_ba instead of ab: 9; extra vf pseudos in the loop to move the hard_reg_n_uses balance: reload still takes vf1;
+ * one vu0_q variable reused for the add and the sub result (a 4-ref pseudo that spills: 11 / 200).
+ * Retain INCLUDE_ASM. */
 /* near miss (round 19 worker J5D): 7 aligned rows of 267 words (12 raw diffs, same length as retail) with `--mode S` (split addresses) and the file's other flags.
  * check.py --all-modes: S + ps2as 55 raw (before the fixes below), N 156: retail is built in S mode, but the file's line (L01_00302118.c) has -mno-split-addresses, so a
  * match needs a CUT: a new file at 0x303228 with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (8-aligned at all 34 places) and the rest
@@ -12,6 +34,7 @@
  * (vf spill), this C the other way round (reload numbers the slots by pseudo number: the vf pseudo comes before loop.c's hoisted `&uv` pointer here). Sweeps over the
  * position of `s.c.w = 1.0f`, of the vec_copy, of `r = &s.b0` and the helper forms (ab / ba) all stay at 7. */
 #include "common.h"
+#include "vu0.h"
 
 /* localdecomp:start func_L01_00303228 */
 typedef struct {
@@ -100,10 +123,20 @@ void func_L01_00303228(u8 *m)
         s.c.y = *(f32 *)(m + 0x14);
         s.c.z = *(f32 *)(m + 0x18);
         func_003C5278(m + 0x10, &s.c, &s.c, -0.5f - *(f32 *)info);
-        s.c.w = 1.0f;
-        vec_copy(&s.f, D_L01_001E16D0);
-        vec_add_ab(&s.c, &s.c, &s.f);
-        vec_sub_ba(&s.e, &D_L01_001E29C0, &s.c);
+        {
+            vu0_q q, qa, qb, qr, qc, qd, qs;
+            __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(vu0_v4 *)D_L01_001E16D0));
+            s.c.w = 1.0f;
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&s.f) : "j"(q));
+            __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)&s.c));
+            __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_q *)&s.f));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&s.c) : "j"(qr));
+            __asm__("lqc2 %0, %1" : "=j"(qc) : "m"(*(vu0_v4 *)&s.c));
+            __asm__("lqc2 %0, %1" : "=j"(qd) : "m"(*(vu0_v4 *)&D_L01_001E29C0));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(qs) : "j"(qd), "j"(qc));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)&s.e) : "j"(qs));
+        }
         func_0038CF68(r, &s.e, 1.0f);
         func_0038CE90(&s.b1, r, *(u8 **)(m + 0xB8) + 0xE0);
         func_0038CF68(&s.b1, &s.b1, 1.0f);
