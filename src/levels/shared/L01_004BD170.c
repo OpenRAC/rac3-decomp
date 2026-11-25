@@ -1,15 +1,5 @@
-/* PAL near miss (sonnet-b30-j1, round 19; b40 W2 2026-11-25: 12 -> 10, the `nop` slot word is fixed by declaring D_001D54D0/D_001D54D2 as ONE small union `{ u32 w; struct { u16 h0, h2; } h; }`: both reads are then `D+0`/`D+2` macros of one small object, the assembler cannot put the 2-insn lhu macro into the delay slot and leaves retail's nop): 10 words differ with the file's flags plus `@ps2as` (the function builds 1.0f / 1.1f with
- * lui/mtc1, so it also needs a cut: a file of its own at 0x4BD170 with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`, 8-aligned).
- * What differs: (1) the three quad loads of `D_L01_001E29D0.rest = D_L01_001E0FA0` come in another register order (ours: src base $v1,
- * dst base $a0, first `lq $a2, 0xe0($s0)`; retail: src $a0, dst $v1, first `lq $v0, 0($a0)`), 10 words, all register names; (2) one word: at
- * the `D_001D54D0` compare retail has `beq ...; nop` where the copy of the join's first insn (`lhu` of D_001D54D2) fills the slot in mine
- * (as `lui` with an array declaration, as a $gp `lhu` with `.extern X, 16`). Things that fixed 201 -> 12: the gp size hints on
- * every $gp slot, `tbl` as a struct of `s32 v[5]` (alignment 4: ldl/ldr + lw), the destination of the 3-quad copy written as
- * `*(Q3 *)(&D.q + 1) = ...` (retail's `addiu $t0, $v1, 0x10`), and a fresh `u8 *p = D_00142660;` pointer at each of the three uses (retail keeps
- * `addiu x, $s0, 0x2660` + displacement 0x40/0x78 instead of folding 0x40 into the address).
- * Check: python tools/check.py nonmatching/levels/func_L01_004BD170.c func_L01_004BD170 --as ps2as
- */
 #include "common.h"
+
 /* localdecomp:start func_L01_004BD170 */
 typedef int u128_004BD170 __attribute__((mode(TI)));
 typedef struct { u8 pad0[0x34]; u16 h34; } Obj_004BD170;
@@ -43,7 +33,7 @@ extern u8 D_L01_001DABA4;
 extern u8 D_001D5477;
 extern s32 D_L01_001E0F80;
 extern s32 D_L01_001E0F7C;
-extern Q3_004BD170 D_L01_001E0FA0;
+extern u8 D_L01_001E0FA0_u[8];
 extern Q4_004BD170 D_L01_001E29D0;
 extern s32 D_L01_001E0FD4;
 extern s32 D_L01_001E0FD8;
@@ -111,7 +101,7 @@ void func_L01_004BD170(void) {
     func_003A52A0(5, 0x11, D_L01_002446C0_004BD170.f28);
     if (D_L01_002446C0_004BD170.f60 != 0) {
         D_L01_001E29D0.q = D_L01_002446C0_004BD170.qE0;
-        *(Q3_004BD170 *)(&D_L01_001E29D0.q + 1) = D_L01_001E0FA0;
+        *(Q3_004BD170 *)(&D_L01_001E29D0.q + 1) = *(Q3_004BD170 *)D_L01_001E0FA0_u;
     }
     D_L01_002446C0_004BD170.f28->h34 |= 0x100;
     D_L01_002446C0_004BD170.f0 = 2;
