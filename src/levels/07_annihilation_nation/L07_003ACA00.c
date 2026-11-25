@@ -237,4 +237,79 @@ void func_L07_003AD180(void *arg0) {
 }
 /* localdecomp:end func_L07_003AD180 */
 
-INCLUDE_ASM("asm/levels", func_L07_003AD210);
+/* localdecomp:start func_L07_003AD210 */
+#include "vu0.h"
+typedef struct { f32 x, y, z; } Point_003AD210;
+typedef struct { f32 x, y, z, w; } UV_003AD210;
+extern vu0_v4 D_L07_001E1EC0;
+extern Point_003AD210 D_L07_002A22E0[];
+extern f32 D_L07_001E1678[] __attribute__((section(".sdata")));
+extern u32 D_L07_002A23D0[][2];
+extern UV_003AD210 D_L07_002A2420[];
+extern void func_0038C750(void);
+extern long func_00389598(s32);
+extern void func_003A9440(s32, unsigned long);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern void func_003D3A24(s32, void *, void *, void *, s32);
+
+void func_L07_003AD210(void *object, void *points, s32 count, s32 start, s32 texture)
+{
+    vu0_v4 *v = points;
+    vu0_v4 delta, previous, normal, view, cross, temp;
+    f32 total, t;
+    s32 n, i, j, next, color, k;
+
+    if (count < 2) return;
+    func_0038C750();
+    total = 0.0f;
+    func_003A9440(6, func_00389598(texture));
+    func_003A9440(0x14, 0x0000FF9000000260UL);
+    func_003A9440(8, 0);
+    func_003A9440(0x42, 0x4000000044UL);
+    n = 0;
+    for (i = 0; i < count; i++, n += 2) {
+        j = (i + start) % count;
+        next = (j + 1) % count;
+        if (i != count - 1) {
+            f32 d;
+            vec_sub_ab(&delta, &v[j], &v[next]);
+            d = func_0038CEA8(&delta);
+            total += d;
+            D_L07_001E1678[i] = d;
+        }
+        if (i != 0 && i != count - 1) {
+            vec_add_ab(&normal, &delta, &previous);
+        } else {
+            *(vu0_q *)&normal = *(vu0_q *)&delta;
+        }
+        vec_sub_ab(&view, &D_L07_001E1EC0, &v[j]);
+        func_0038CE90(&cross, &view, &normal);
+        func_0038CF68(&cross, &cross, 0.5f);
+        vec_add_ba(&temp, &v[j], &cross);
+        D_L07_002A22E0[n].x = temp.x;
+        D_L07_002A22E0[n].y = temp.y;
+        D_L07_002A22E0[n].z = temp.z;
+        vec_sub_ba(&temp, &v[j], &cross);
+        D_L07_002A22E0[n + 1].x = temp.x;
+        D_L07_002A22E0[n + 1].y = temp.y;
+        D_L07_002A22E0[n + 1].z = temp.z;
+    }
+    total = 1.0f / total;
+    t = 0.0f;
+    for (k = 0; k < count; k++) {
+        color = func_0038DBD8(0x00804020, 0x30202080, t);
+        D_L07_002A23D0[k][1] = color;
+        D_L07_002A23D0[k][0] = color;
+        D_L07_002A2420[k].x = t;
+        D_L07_002A2420[k].y = 0.0f;
+        D_L07_002A2420[k].z = t;
+        D_L07_002A2420[k].w = 1.0f;
+        t += D_L07_001E1678[k] * total;
+    }
+    func_003D3A24(count * 2, D_L07_002A22E0, D_L07_002A23D0, D_L07_002A2420, 1);
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L07_003AD210 */

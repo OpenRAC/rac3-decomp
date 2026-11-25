@@ -1,8 +1,6 @@
 #include "common.h"
 #include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L24_00359248);
-
 /* localdecomp:start func_L24_00359528 */
 typedef struct {
     s32 f0;

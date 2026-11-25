@@ -1,7 +1,8 @@
-/* PAL near miss (Codex wave 8): near miss: 53 words differ with the file's flags.
- * Worker's note: 3378-03.log: 21 diff with divs 1,0 and sq_ra injected, all in frame/save slots. Retail 0xD0 frame and 16-byte sq/lq saves; fixed -fopt-stack gives 0x80 and 8-byte slots. Body matches with metadata, cannot change flags. out/func_L01_00463378.near.c
- */
 #include "common.h"
+#include "vu0.h"
+
+typedef int Q_463218 __attribute__((mode(TI)));
+
 /* localdecomp:start func_L01_00463378 */
 extern u8 *D_L01_002210F4[];
 extern u8 *D_L01_00221098[];
