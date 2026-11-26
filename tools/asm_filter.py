@@ -114,6 +114,9 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
             if im and -0x8000 <= int(im.group(1), 0) <= 0xFFFF:
                 n += 1  # a small immediate is a single addiu/ori
                 continue
+            if im and -0x80000000 <= int(im.group(1), 0) <= 0xFFFFFFFF and not int(im.group(1), 0) & 0xFFFF:
+                n += 1  # low half zero: a single lui
+                continue
             return None
         if not m or not SIMPLE_OPS.match(m.group(1)):
             return None

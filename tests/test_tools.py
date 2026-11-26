@@ -555,6 +555,26 @@ class LevelSqRaTest(unittest.TestCase):
         self.assertIn(".word 0x7FBF0010", gnu)
 
 
+class ShortLoopLiTest(unittest.TestCase):
+    """tools/asm_filter.py: an `li` whose low half is zero is one `lui`, so a short loop holding one is
+    still padded to retail's 6 words (func_L39_005E0510's `func_003E8630(0x30000, i)` loop: Ps2EeAs
+    itself would pad it to 7)."""
+
+    def test_lui_li_counts_one_word(self):
+        import asm_filter
+        self.assertEqual(asm_filter.insn_count(["\tli\t$4,196608\t\t\t# 0x30000\n"]), 1)
+        self.assertIsNone(asm_filter.insn_count(["\tli\t$4,196609\n"]))   # lui + ori: left alone
+
+    def test_short_loop_with_lui_li_is_padded(self):
+        import asm_filter
+        text = ("\t.set\tnoreorder\n$L5:\n\tjal\tfunc_003E8630\n"
+                "\tli\t$4,196608\t\t\t# 0x30000\n\taddiu\t$16,$16,1\n\tslt\t$2,$17,$16\n"
+                "\tbeq\t$2,$0,$L5\n\tmove\t$5,$16\n")
+        out = asm_filter.filter_asm(text, ps2as=True)
+        self.assertIn(".word 0x1040", out)          # the branch written raw, so Ps2EeAs adds no nop
+        self.assertNotIn("\tnop\n", out)  # 4 words + branch + slot: already 6, no padding
+
+
 class SetupLabelsTest(unittest.TestCase):
     """tools/setup_asm.py: an address a call word reaches inside a catalogue row is a branch label for
     splat, not a function start (level 39's DNAS blocks hold words that decode as jals)."""
