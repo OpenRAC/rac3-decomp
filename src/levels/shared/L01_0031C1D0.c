@@ -258,7 +258,63 @@ void func_L01_0031CA18(void *a0, void *a1, int a2, void *a3) {
 }
 /* localdecomp:end func_L01_0031CA18 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031CAA8);
+/* localdecomp:start func_L01_0031CAA8 */
+#include "vu0.h"
+extern vu0_v4 D_001A4C60;
+extern s32 func_L01_00456500(vu0_v4 *, s32);
+
+void func_L01_0031CAA8(u8 *a0) {
+    u8 *s = *(u8 **)(a0 + 0x68);
+    vu0_v4 v;
+    s32 flag;
+    s32 i;
+    s32 *p;
+
+    a0[0x30] = 0xFF;
+    flag = 0;
+    if (((s8 *)s)[0x7A] != 0) {
+        v = D_L01_001E29C0;
+    } else {
+        v = D_001A4C60;
+    }
+    if (a0[0x95] == 0) {
+        for (i = 0; i < 4; i++) {
+            if (((s32 *)s)[i] != -1 && func_L01_00456500(&v, ((s32 *)s)[i])) break;
+        }
+        if (i < 4) goto found;
+    } else if (a0[0x95] == 1) {
+found:
+        flag = 1;
+    } else {
+        flag = 0;
+    }
+    if (flag) {
+        if (a0[0xBC] == 0) goto doit;
+    } else {
+        if (a0[0xBC] != 0) goto doit;
+    }
+    if (a0[0x20] != 0) return;
+doit:
+    if (flag) {
+        a0[0xBC] = 1;
+    } else {
+        a0[0xBC] = 0;
+    }
+    a0[0x20] = a0[0xBC] + 1;
+    for (i = 0; i < 13; i++) {
+        p = (s32 *)(s + 0x10);
+        if (p[i] != -1) {
+            func_L01_0031CA18(a0, s, p[i], (void *)flag);
+        }
+    }
+    p = (s32 *)(s + 0x44);
+    for (i = 0; i < 13; i++, p++) {
+        if (*p != -1) {
+            func_L01_0031C770(a0, (u8 *)(D_L01_001E001C + (*p << 8)), (s8 *)s, flag);
+        }
+    }
+}
+/* localdecomp:end func_L01_0031CAA8 */
 
 /* localdecomp:start func_L01_0031CC48 */
 extern void func_003C2880(Moby_0031BEF0 *);

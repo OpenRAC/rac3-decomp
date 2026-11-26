@@ -73,7 +73,48 @@ Smoke_472F58 *func_L01_00472F58(Quad_472F58 *position, Quad_472F58 *velocity, f3
 }
 /* localdecomp:end func_L01_00472F58 */
 
-INCLUDE_ASM("asm/levels", func_L01_004730F8);
+/* localdecomp:start func_L01_004730F8 */
+#include "vu0.h"
+extern u8 D_001425D1[];
+typedef struct { u8 pad0; u8 kind; u8 pad[0xEE]; } Entry_004730F8;
+extern Entry_004730F8 D_L01_002C5600_004730F8[];
+void func_L01_004730F8(u8 *obj) {
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_004C7D98(void *, void *);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern void func_003CD250(u8 *);
+    vu0_v4 noise;
+    u8 *state;
+    u8 *pos;
+    s32 brightness;
+    u32 color;
+    func_L01_004CAB30(obj + 0x10, obj + 0x10);
+    state = obj + 0x20;
+    if (((Entry_004730F8 *)((D_001425D1[0] * 0xF0) + (s32)D_L01_002C5600_004730F8))->kind >= 4) *(s32 *)(state + 0x10) -= 2;
+    else *(s32 *)(state + 0x10) -= 1;
+    if (*(s32 *)(state + 0x10) < 0) *(s32 *)(state + 0x10) = 0;
+    obj[8]++;
+    pos = obj + 0x10;
+    vec_add_ba(pos, state, pos);
+    *(f32 *)(obj + 0xC) += 1575.0f;
+    func_0038CE20(state, state, 0.99f);
+    func_L01_004C7D98(pos, &noise);
+    brightness = obj[4];
+    if (brightness < 32) {
+        func_0038CE20(&noise, &noise, 0.0015f);
+        vec_add_ab(state, state, &noise);
+    } else {
+        func_0038CE20(&noise, &noise, -0.00075f);
+        vec_add_ab(state, state, &noise);
+    }
+    color = *(u32 *)(obj + 4);
+    color &= 0xFFFFFF;
+    color = func_0038DBD8(color, 0, 0.025f);
+    *(s32 *)(obj + 4) = color | (*(s32 *)(state + 0x10) << 24);
+    if (*(s32 *)(state + 0x10) == 0) func_003CD250(obj);
+}
+/* localdecomp:end func_L01_004730F8 */
 
 /* localdecomp:start func_L01_00473268 */
 #include "vu0.h"
@@ -1513,7 +1554,99 @@ f32 func_L01_00476920(Vec4 *out, Vec4 *point, Vec4 *a, Vec4 *b, f32 height) {
 }
 /* localdecomp:end func_L01_00476920 */
 
-INCLUDE_ASM("asm/levels", func_L01_00476B98);
+/* localdecomp:start func_L01_00476B98 */
+#include "vu0.h"
+typedef int Q_00476B98 __attribute__((mode(TI)));
+typedef union { Q_00476B98 q; f32 f[4]; s32 count; } V_00476B98;
+
+extern s32 func_L01_00476440(const s32 *count, s32 index, s32 delta, s32 wrap);
+extern s32 func_L01_00476498_00476B98(V_00476B98 *path, V_00476B98 *out, s32 *idx, f32 *t, f32 step, s32 wrap);
+extern f32 func_L01_004766E0_00476B98(V_00476B98 *a, V_00476B98 *b, f32 r);
+extern f32 func_L01_00476920_00476B98(V_00476B98 *out, V_00476B98 *pos, V_00476B98 *a, V_00476B98 *b, f32 r);
+
+s32 func_L01_00476B98(V_00476B98 *path, V_00476B98 *pos, V_00476B98 *out, s32 *outIdx, f32 *outT, s32 wrap, f32 range, f32 step, f32 r) {
+    V_00476B98 cur;
+    V_00476B98 tmp;
+    V_00476B98 a;
+    V_00476B98 b;
+    s32 idx;
+    f32 t;
+    s32 lo;
+    s32 hi;
+    s32 best;
+    f32 bestT;
+    f32 bestD;
+    f32 d;
+    s32 done;
+
+    cur.q = path[1].q;
+    tmp.q = pos->q;
+    idx = 0;
+    t = 0.0f;
+    best = 0;
+    bestT = 0.0f;
+    bestD = func_L01_004766E0_00476B98(&cur, &tmp, r);
+    if (path->count == 0) {
+        qzero(out);
+        return 0;
+    }
+    do {
+        done = func_L01_00476498_00476B98(path, &cur, &idx, &t, step, wrap);
+        tmp.q = pos->q;
+        d = func_L01_004766E0_00476B98(&cur, &tmp, r);
+        if (d < bestD) {
+            best = idx;
+            bestD = d;
+            bestT = t;
+        }
+    } while (!done);
+    if (step + range < bestD) {
+        return 0;
+    }
+    lo = best;
+    t = bestT;
+    func_L01_00476498_00476B98(path, &cur, &lo, &t, -step, wrap);
+    bestD = 1e9f;
+    t = bestT;
+    hi = best;
+    func_L01_00476498_00476B98(path, &cur, &hi, &t, step, wrap);
+    hi = func_L01_00476440(&path->count, hi, 1, wrap);
+    idx = lo;
+    while (1) {
+        tmp.q = path[idx + 1].q;
+        a.q = pos->q;
+        d = func_L01_004766E0_00476B98(&tmp, &a, r);
+        if (d < bestD) {
+            best = idx;
+            bestD = d;
+        }
+        if (idx == hi) break;
+        idx = (idx + 1) % path->count;
+    }
+    bestD = 1e9f;
+    if (best > 0 || wrap) {
+        s32 prev = (best - 1 + path->count) % path->count;
+        f32 e = func_L01_00476920_00476B98(out, pos, &path[prev + 1], &path[best + 1], r);
+        *outIdx = prev;
+        tmp.q = path[prev + 1].q;
+        a.q = out->q;
+        *outT = func_L01_004766E0_00476B98(&tmp, &a, 0.0f);
+        bestD = e;
+    }
+    if (best < path->count - 1 || wrap) {
+        s32 next = (best + 1) % path->count;
+        d = func_L01_00476920_00476B98(&tmp, pos, &path[best + 1], &path[next + 1], r);
+        if (d < bestD) {
+            out->q = tmp.q;
+            *outIdx = best;
+            a.q = path[best + 1].q;
+            b.q = out->q;
+            *outT = func_L01_004766E0_00476B98(&a, &b, 0.0f);
+        }
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_00476B98 */
 
 /* localdecomp:start func_L01_00476F10 */
 #include "vu0.h"

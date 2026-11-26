@@ -1,7 +1,17 @@
-/* PAL near miss (Codex wave 8): near miss: 86 words differ with the file's flags.
- * Worker's note: 86 diff; three scalar/array/typed-work wordings unchanged; one-word length difference begins at cfg[0x98] vector reset block, later code shifted; best log build/codex/w410/func_L01_00333F18-02.log
- */
 #include "common.h"
+
+typedef int s128 __attribute__((mode(TI)));
+typedef int u128_t __attribute__((mode(TI)));
+typedef struct {
+    u8 pad[148];
+    u8 *(*fn)(u8 *);
+} Vt00335B98;
+typedef void (*Fn_335C70)(u8 *);
+typedef struct {
+    u8 pad[0x1E];
+    u16 flags;
+} Obj_003378A0;
+
 /* localdecomp:start func_L01_00333F18 */
 extern u8 *D_L01_001E001C;
 extern u128_t D_L01_001D66B0;

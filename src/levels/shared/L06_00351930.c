@@ -72,7 +72,37 @@ void func_L06_00351A08(A_350D10 *a, B_350D10 *b, s32 c) {
 }
 /* localdecomp:end func_L06_00351A08 */
 
-INCLUDE_ASM("asm/levels", func_L06_00351A68);
+/* localdecomp:start func_L06_00351A68 */
+extern void func_003C3A10(u8 *, s32, s32, s32);
+void func_L06_00351A68(u8 *a0, u8 *a1, s32 seq) {
+    f32 t;
+    s32 key;
+
+    if (a0[0x43] == seq) {
+        return;
+    }
+    if (a0[0x43] == 5) {
+        t = a0[0x41] / 40.0f;
+    } else if (a0[0x43] == 0x15) {
+        t = a0[0x41] / 50.0f;
+    } else if (a0[0x43] == 0x14) {
+        t = a0[0x41] / 50.0f;
+    } else {
+        func_003C3A10(a0, seq, 0, 10);
+        func_003C3A10(*(u8 **)(a1 + 0x260), seq, 0, 10);
+        return;
+    }
+    if (seq == 5) {
+        key = ((s32)(t * 40.0f) + 1) % (*(u8 **)(*(u8 **)(a0 + 0x24) + 0x5C))[0x10];
+    } else if (seq == 0x15) {
+        key = ((s32)(t * 50.0f) + 1) % (*(u8 **)(*(u8 **)(a0 + 0x24) + 0x9C))[0x10];
+    } else {
+        key = ((s32)(t * 50.0f) + 1) % (*(u8 **)(*(u8 **)(a0 + 0x24) + 0x98))[0x10];
+    }
+    func_003C3A10(a0, seq, key, 10);
+    func_003C3A10(*(u8 **)(a1 + 0x260), seq, key, 10);
+}
+/* localdecomp:end func_L06_00351A68 */
 
 /* localdecomp:start func_L06_00351BB8 */
 extern s32 D_L06_001E8458[];

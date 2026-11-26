@@ -36,5 +36,3 @@ unsigned long func_L39_004BD280(s8 *s)
     return (h >> 16) ^ h;
 }
 /* localdecomp:end func_L39_004BD280 */
-
-INCLUDE_ASM("asm/levels", func_L39_004BD350);

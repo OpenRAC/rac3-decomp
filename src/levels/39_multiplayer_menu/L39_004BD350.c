@@ -1,4 +1,31 @@
 #include "common.h"
+/* localdecomp:start func_L39_004BD350 */
+extern void func_L39_004BD428(u32, s32 *, s32 *, s32 *);
+extern void func_L39_004BD4E0(s32, s32, s32, s32, s32, s32);
+extern void func_L39_004BDC08(s32, s32, s32, s32, s32, s32);
+extern void func_001264E0(s32);
+
+void func_L39_004BD350(s32 a, s32 b, s32 c, u32 flags) {
+    s32 l[3];
+    s32 d = b ^ c;
+    s32 *p;
+    u32 f = flags >> 1;
+
+    if (!(flags & 1)) p = (s32 *)(a - 0x14); else p = (s32 *)(a - d - 0x14);
+    if (!(flags & 1)) {
+        *p = (s32)p;
+        func_L39_004BD428(f, &l[0], &l[1], &l[2]);
+        func_L39_004BDC08(a, a + d, a - l[0], c, l[1], l[2]);
+    } else {
+        *p = 0;
+        func_L39_004BD428(f, &l[0], &l[1], &l[2]);
+        func_L39_004BD4E0(a - d, a, (a - d) - l[0], c, l[1], l[2]);
+    }
+    func_001264E0(0);
+    func_001264E0(2);
+}
+/* localdecomp:end func_L39_004BD350 */
+
 /* localdecomp:start func_L39_004BD428 */
 typedef struct { u32 key; s32 off; } E_4BD428;
 typedef struct { s32 count; E_4BD428 ent[1]; } T_4BD428;

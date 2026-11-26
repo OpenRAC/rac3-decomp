@@ -2227,7 +2227,33 @@ void func_L01_003E9500(u8 *moby, f32 a, f32 b)
 }
 /* localdecomp:end func_L01_003E9500 */
 
-INCLUDE_ASM("asm/levels", func_L01_003E9908);
+/* localdecomp:start func_L01_003E9908 */
+#include "vu0.h"
+extern f32 D_L01_001D5FE8[] __attribute__((section(".sdata")));
+void func_L01_003E9908(u8 *obj) {
+    extern void func_0038CDF8(f32 *, f32 *, f32 *, f32);
+    extern f32 func_0038CEA8(f32 *);
+    extern void func_0038CF68(f32 *, f32 *, f32);
+    vu0_v4 v;
+    u8 *p = *(u8 **)(obj + 0x70);
+    u8 *q = p + 0x210;
+    f32 *s = (f32 *)(p + 0x180);
+    f32 len;
+    if (*(s16 *)(p + 0x10) > 0) {
+        vec_sub_ba(&v, p, p + 0xB0);
+        func_0038CDF8(s, s, (f32 *)&v, D_L01_001D5FE8[*(s32 *)(obj + 0x94)]);
+        len = func_0038CEA8(s);
+        if (s[0x2C/4] < len) {
+            len = s[0x2C/4];
+            func_0038CF68(s, s, len);
+        } else if (len < s[0x2C/4] - *(f32 *)(q + 0x30)) {
+            len = s[0x2C/4] - *(f32 *)(q + 0x30);
+            func_0038CF68(s, s, len);
+        }
+        *(f32 *)(q + 0x30) = s[0x2C/4] - len;
+    }
+}
+/* localdecomp:end func_L01_003E9908 */
 
 INCLUDE_ASM("asm/levels", func_L01_003E99E8);
 

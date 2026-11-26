@@ -69,7 +69,75 @@ INCLUDE_ASM("asm/levels", func_L01_00380880);
 
 INCLUDE_ASM("asm/levels", func_L01_00380CE0);
 
-INCLUDE_ASM("asm/levels", func_L01_003812B0);
+/* localdecomp:start func_L01_003812B0 */
+#include "structs/weapon.h"
+typedef struct {
+    Q_0037F860 v[4];
+    s32 c[4];
+    f32 uv[8];
+    long t70, tex0, t80, t88;
+} Quad_3812B0;
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+__asm__(".extern D_L01_001DDC30, 4");
+__asm__(".extern D_L01_001DDC34, 4");
+extern s32 D_L01_001DDC30;
+extern s32 D_L01_001DDC34;
+extern Q_0037F860 D_L01_001DDC80[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DDC80, 4");
+extern f32 D_L01_001E1E70[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1E70, 12");
+extern f32 D_L01_001E1E50[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1E50, 12");
+extern Q_0037F860 D_L01_001E1DE0[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1DE0, 48");
+extern Q_0037F860 D_001A4EC0_3812B0;
+void func_L01_003812B0(void) {
+    extern long func_00389598(s32);
+    extern void func_0038CE20(Q_0037F860 *, Q_0037F860 *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_003D2DA0(void *, s32, s32);
+    Quad_3812B0 quad;
+    Q_0037F860 rows[4];
+    Q_0037F860 scaled;
+    s32 base;
+    s32 i;
+    s32 k;
+    s32 alpha;
+
+    quad.tex0 = func_00389598(8);
+    quad.t88 = 0x8000000048L;
+    quad.t80 = 0xFF9000000260L;
+    quad.t70 = 0;
+    quad.uv[0] = 0.0f;
+    quad.uv[1] = 0.0f;
+    quad.uv[2] = 0.0f;
+    quad.uv[3] = 1.0f;
+    quad.uv[4] = 1.0f;
+    quad.uv[5] = 0.0f;
+    quad.uv[6] = 1.0f;
+    quad.uv[7] = 1.0f;
+    base = ((D_L01_002C5600 + D_001425C0[0x8F])->level >= 4 ? D_L01_001DDC34 : D_L01_001DDC30);
+    for (i = 0; i < 3; i++) {
+        if (D_L01_001E1E80[i] == 0) continue;
+        alpha = (s32)D_L01_001E1E50[i];
+        quad.c[0] = quad.c[1] = quad.c[2] = quad.c[3] = (base & 0xFFFFFF) | (alpha << 24);
+        rows[3] = D_L01_001E1DE0[i];
+        rows[0] = D_L01_001E1E10[i];
+        func_0038CE20(&rows[2], &D_001A4EC0_3812B0, -1.0f);
+        func_0038CE90(&rows[1], &rows[0], &rows[2]);
+        func_0038CF68(&rows[1], &rows[1], 1.0f);
+        func_0038CE90(&rows[2], &rows[1], &rows[0]);
+        for (k = 0; k < 4; k++) {
+            func_0038CE20(&scaled, &D_L01_001DDC80[k], D_L01_001E1E70[i]);
+            func_0038D028(&quad.v[k], &scaled, rows);
+        }
+        func_003D2DA0(&quad, 0, 0);
+    }
+}
+/* localdecomp:end func_L01_003812B0 */
 
 /* localdecomp:start func_L01_00381500 */
 #include "vu0.h"
