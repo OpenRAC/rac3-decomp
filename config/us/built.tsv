@@ -3647,6 +3647,7 @@ levels	func_L01_0031C348	34	-
 levels	func_L01_0031C398	34	-
 levels	func_L01_0031C770	13	-
 levels	func_L01_0031CA18	13	-
+levels	func_L01_0031CAA8	13	-
 levels	func_L01_0031CC48	10	-
 levels	func_L01_0031CDB8	34	-
 levels	func_L01_0031CF70	34	-
@@ -3818,6 +3819,7 @@ levels	func_L01_00331D28	51	-
 levels	func_L01_00331DD0	51	-
 levels	func_L01_00332160	51	-
 levels	func_L01_00333D80	10	-
+levels	func_L01_00333F18	10	-
 levels	func_L01_00334188	10	-
 levels	func_L01_00334250	10	-
 levels	func_L01_003347C0	10	-
@@ -4050,6 +4052,7 @@ levels	func_L01_0036DB20	34	-
 levels	func_L01_0036DB78	34	-
 levels	func_L01_0036F120	34	-
 levels	func_L01_0036F9F8	34	-
+levels	func_L01_003706F0	34	-
 levels	func_L01_00371C98	34	-
 levels	func_L01_00372128	34	-
 levels	func_L01_00372240	34	-
@@ -4078,6 +4081,7 @@ levels	func_L01_0037ADE0	34	-
 levels	func_L01_0037B6C0	34	-
 levels	func_L01_0037BCF8	51	-
 levels	func_L01_0037BDC0	34	-
+levels	func_L01_0037BE80	51	-
 levels	func_L01_0037C208	34	-
 levels	func_L01_0037C6E8	34	-
 levels	func_L01_0037C720	34	-
@@ -4090,6 +4094,7 @@ levels	func_L01_0037D210	34	-
 levels	func_L01_0037E2E8	34	-
 levels	func_L01_0037E620	34	-
 levels	func_L01_0037F860	34	-
+levels	func_L01_003812B0	34	-
 levels	func_L01_00381500	34	-
 levels	func_L01_00382500	34	-
 levels	func_L01_00382578	34	-
@@ -4583,6 +4588,7 @@ levels	func_L01_003DB588	34	-
 levels	func_L01_003DB768	34	-
 levels	func_L01_003DBC60	6	-
 levels	func_L01_003DC268	6	-
+levels	func_L01_003DC690	6	-
 levels	func_L01_003DD310	34	-
 levels	func_L01_003DD390	34	-
 levels	func_L01_003DDDA8	34	-
@@ -4660,6 +4666,7 @@ levels	func_L01_003E9218	51	-
 levels	func_L01_003E9250	51	-
 levels	func_L01_003E92B0	51	-
 levels	func_L01_003E9500	34	-
+levels	func_L01_003E9908	51	-
 levels	func_L01_003EA090	51	-
 levels	func_L01_003EA190	34	-
 levels	func_L01_003EA648	51	-
@@ -5520,6 +5527,7 @@ levels	func_L01_00471D88	51	-
 levels	func_L01_00471F78	51	-
 levels	func_L01_00472158	51	-
 levels	func_L01_00472238	34	-
+levels	func_L01_004730F8	34	-
 levels	func_L01_004734A8	51	-
 levels	func_L01_004736F0	51	-
 levels	func_L01_00473860	51	-
@@ -5543,6 +5551,7 @@ levels	func_L01_00476498	33	-
 levels	func_L01_004766E0	51	-
 levels	func_L01_00476750	51	-
 levels	func_L01_00476920	51	-
+levels	func_L01_00476B98	30	-
 levels	func_L01_00476F10	51	-
 levels	func_L01_00477190	34	-
 levels	func_L01_00477488	34	-
@@ -7850,6 +7859,7 @@ levels	func_L06_00351930	2	-
 levels	func_L06_003519A0	2	-
 levels	func_L06_003519D0	2	-
 levels	func_L06_00351A08	2	-
+levels	func_L06_00351A68	2	-
 levels	func_L06_00351BB8	2	-
 levels	func_L06_00351C48	2	-
 levels	func_L06_00351FA0	2	-
@@ -10423,6 +10433,7 @@ levels	func_L31_00344A08	2	-
 levels	func_L31_00344C30	2	-
 levels	func_L31_00344F00	1	-
 levels	func_L31_00344FC8	2	-
+levels	func_L31_00345398	1	-
 levels	func_L31_00346470	3	-
 levels	func_L31_003464C0	3	-
 levels	func_L31_00346798	4	-
@@ -10965,6 +10976,7 @@ levels	func_L39_004BCED8	1	-
 levels	func_L39_004BD050	1	-
 levels	func_L39_004BD178	1	-
 levels	func_L39_004BD280	1	-
+levels	func_L39_004BD350	1	-
 levels	func_L39_004BD428	1	-
 levels	func_L39_004BD4E0	1	-
 levels	func_L39_004BD5B8	1	-
@@ -13068,6 +13080,7 @@ levels	func_L39_005D6468	17	-
 levels	func_L39_005D6730	17	-
 levels	func_L39_005D6A78	17	-
 levels	func_L39_005D6AE0	17	-
+levels	func_L39_005D6DC8	17	-
 levels	func_L39_005D72E8	17	-
 levels	func_L39_005D7360	1	-
 levels	func_L39_005D7398	0	level_39: no object of the block alone checks MATCH;level_40: no object of the block alone checks MATCH;level_41: no object of the block alone checks MATCH;level_42: no object of the block alone checks MATCH;level_43: no object of the block alone checks MATCH;level_44: no object of the block alone checks MATCH;level_45: no object of the block alone checks MATCH;level_46: no object of the block alone checks MATCH;level_47: no object of the block alone checks MATCH;level_48: no object of the block alone checks MATCH;level_49: no object of the block alone checks MATCH;level_50: no object of the block alone checks MATCH;level_51: no object of the block alone checks MATCH;level_52: no object of the block alone checks MATCH;level_53: no object of the block alone checks MATCH;level_54: no object of the block alone checks MATCH;level_55: no object of the block alone checks MATCH
@@ -13307,6 +13320,7 @@ levels	func_L39_006086F8	17	-
 levels	func_L39_00608730	17	-
 levels	func_L39_00608C08	17	-
 levels	func_L39_00608DB0	17	-
+levels	func_L39_00608FE0	17	-
 levels	func_L39_00609050	17	-
 levels	func_L39_00609228	17	-
 levels	func_L39_00609248	17	-
