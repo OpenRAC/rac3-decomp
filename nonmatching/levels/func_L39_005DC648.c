@@ -1,6 +1,6 @@
 #include "common.h"
-/* func_L39_005DC648 (k4 Sonnet first pass, 3088 B, 15 places): NEAR, check says 300+ diff rows but an LCS alignment of
- * retail vs this C matches 699 of 773 instructions (90%); place 39 only, other places not checked.
+/* func_L39_005DC648 (k4 Sonnet first pass, 3088 B, 15 places): NEAR, 80 diff rows of 773 (check.py); an LCS alignment of
+ * retail vs this C matches 699 of 773 instructions; place 39 only, other places not checked.
  * Flags: file's own (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as).
  * Equal: prologue incl. the four f20-f23 saves, every call sequence and argument, all three do/while build loops,
  *   the final func_003E8630 link loops, epilogue. (Floats are f32 literals 0.5/0.52/0.8/0.7/0.9/0.14/0.05/0.062000003/
