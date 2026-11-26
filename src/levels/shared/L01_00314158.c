@@ -1490,8 +1490,8 @@ void func_L01_00319A48(vu0_v4 *base, s32 i) {
 #include "vu0.h"
 void func_L01_00319A88(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
     extern unsigned long func_00389598(s32);
-    extern void func_L01_00319A48(f32 (*)[4], s32);
-    extern void func_L01_00318FB8(f32 *);
+    extern void func_L01_00319A48_00319A88(f32 (*)[4], s32);
+    extern void func_L01_00318FB8_00319A88(f32 *);
     extern void func_0038CE20(f32 *, f32 *, f32);
     extern void func_0038CF68(f32 *, f32 *, f32);
     extern void func_0038CE90(f32 *, f32 *, f32 *);
@@ -1528,9 +1528,9 @@ void func_L01_00319A88(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
     *(s32 *)(a + 17) = edgeColour;
     *(s32 *)(b + 16) = edgeColour;
     inner[3] = 1.0f; outer[3] = 1.0f;
-    func_L01_00319A48(pts, count);
-    func_L01_00318FB8(a);
-    func_L01_00318FB8(b);
+    func_L01_00319A48_00319A88(pts, count);
+    func_L01_00318FB8_00319A88(a);
+    func_L01_00318FB8_00319A88(b);
     a[20]=0.0f; a[21]=0.0f; a[22]=0.0f; a[23]=1.0f;
     a[24]=1.0f; a[25]=0.0f; a[26]=1.0f; a[27]=1.0f;
     b[20]=0.0f; b[21]=0.0f; b[22]=0.0f; b[23]=1.0f;

@@ -925,7 +925,7 @@ extern u32 D_L01_001E2058;
 void func_L01_0039C560(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
     extern unsigned long func_00389598_0039C560(s32);
     extern void func_L01_0039C498_0039C560(f32 (*)[4], s32);
-    extern void func_L01_0039C4D8(f32 *);
+    extern void func_L01_0039C4D8_0039C560(f32 *);
     extern void func_0038CE20_0039C560(f32 *, f32 *, f32);
     extern void func_0038CF68_0039C560(f32 *, f32 *, f32);
     extern void func_0038CE90_0039C560(f32 *, f32 *, f32 *);
@@ -963,8 +963,8 @@ void func_L01_0039C560(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
     *(s32 *)(b + 16) = D_L01_001E2058;
     inner[3] = 1.0f; outer[3] = 1.0f;
     func_L01_0039C498_0039C560(pts, count);
-    func_L01_0039C4D8(a);
-    func_L01_0039C4D8(b);
+    func_L01_0039C4D8_0039C560(a);
+    func_L01_0039C4D8_0039C560(b);
     a[20]=0.0f; a[21]=0.0f; a[22]=0.0f; a[23]=1.0f;
     a[24]=1.0f; a[25]=0.0f; a[26]=1.0f; a[27]=1.0f;
     b[20]=0.0f; b[21]=0.0f; b[22]=0.0f; b[23]=1.0f;
