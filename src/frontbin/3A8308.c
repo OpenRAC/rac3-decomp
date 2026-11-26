@@ -87,9 +87,48 @@ void func_003A8450(void) {
 }
 /* localdecomp:end func_003A8450 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003A8500);
-
-LINKER_REMNANT("asm/remnants", func_003A8628);
+/* localdecomp:start func_003A8500 */
+typedef struct { u8 pad0[0x24]; s32 serve; } Cd_3A8500;
+extern Cd_3A8500 D_001D4B08 __attribute__((section(".sdata")));
+extern s32 D_001D4B00;
+extern s32 D_001D4B04;
+extern s32 D_001D4B30;
+extern s32 D_001D4B34;
+extern s32 D_001D4B38;
+extern s32 D_0022DF20[256];
+extern void func_00121FE8(s32);
+extern s32 func_00122630(void *, s32, s32);
+extern s32 func_00122A10(void *);
+extern s32 func_00122810(void *, s32, s32, void *, s32, void *, s32, void *, void *);
+void func_003A8500(void) {
+    s32 r[4];
+    s32 i;
+    func_00121FE8(0);
+    while (1) {
+        if (func_00122630(&D_001D4B08, 0x11, 1) < 0) {
+            while (1) {
+            }
+        }
+        while (func_00122A10(&D_001D4B08) != 0) {
+        }
+        if (D_001D4B08.serve != 0) {
+            break;
+        }
+        for (i = 0xFFFF; i != -1; i--) {
+        }
+    }
+    func_00122810(&D_001D4B08, 2, 0, 0, 0, r, 0x10, 0, 0);
+    D_001D4B00 = r[0];
+    D_001D4B04 = r[1];
+    D_001D4B34 = 0;
+    D_001D4B30 = D_001D4B00;
+    D_001D4B38 = r[2];
+    for (i = 0; i < 0x40; i++) {
+        D_0022DF20[i * 4] = 0;
+        D_0022DF20[i * 4 + 1] = 0;
+    }
+}
+/* localdecomp:end func_003A8500 */
 
 /* PAL retail bytes for func_003A8630.
    The three globals are reached through `lui $at` in retail (not through $gp): the
