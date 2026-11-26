@@ -1,17 +1,17 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 87.464414,
+  "fuzzy_match_percent": 88.202368,
   "total_code": "7524052",
-  "matched_code": "6580868",
-  "matched_code_percent": 87.464414,
+  "matched_code": "6636392",
+  "matched_code_percent": 88.202368,
   "total_functions": 16589,
-  "matched_functions": 16106,
-  "matched_functions_percent": 97.088432,
-  "complete_code": "942388",
-  "complete_code_percent": 12.525006,
+  "matched_functions": 16119,
+  "matched_functions_percent": 97.166797,
+  "complete_code": "992144",
+  "complete_code_percent": 13.186299,
   "total_units": 584,
-  "complete_units": 542
+  "complete_units": 544
  },
  "categories": [
   {
@@ -154,30 +154,30 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 86.688524,
+    "fuzzy_match_percent": 87.495018,
     "total_code": "6884616",
-    "matched_code": "5968172",
-    "matched_code_percent": 86.688524,
+    "matched_code": "6023696",
+    "matched_code_percent": 87.495018,
     "total_functions": 13684,
-    "matched_functions": 13224,
-    "matched_functions_percent": 96.63841,
-    "complete_code": "395772",
-    "complete_code_percent": 5.748643,
+    "matched_functions": 13237,
+    "matched_functions_percent": 96.733411,
+    "complete_code": "445528",
+    "complete_code_percent": 6.471356,
     "total_units": 37,
-    "complete_units": 15
+    "complete_units": 17
    }
   },
   {
    "id": "common",
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 81.931748,
+    "fuzzy_match_percent": 83.057016,
     "total_code": "3914092",
-    "matched_code": "3206884",
-    "matched_code_percent": 81.931748,
+    "matched_code": "3250928",
+    "matched_code_percent": 83.057016,
     "total_functions": 7789,
-    "matched_functions": 7428,
-    "matched_functions_percent": 95.365259,
+    "matched_functions": 7437,
+    "matched_functions_percent": 95.480806,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -188,34 +188,34 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 92.95626,
+    "fuzzy_match_percent": 93.342723,
     "total_code": "2970524",
-    "matched_code": "2761288",
-    "matched_code_percent": 92.95626,
+    "matched_code": "2772768",
+    "matched_code_percent": 93.342723,
     "total_functions": 5895,
-    "matched_functions": 5796,
-    "matched_functions_percent": 98.320611,
-    "complete_code": "395772",
-    "complete_code_percent": 13.323306,
+    "matched_functions": 5800,
+    "matched_functions_percent": 98.388465,
+    "complete_code": "445528",
+    "complete_code_percent": 14.998297,
     "total_units": 36,
-    "complete_units": 15
+    "complete_units": 17
    }
   },
   {
    "id": "level_01",
    "name": "Level 01: Veldin",
    "measures": {
-    "fuzzy_match_percent": 82.330861,
+    "fuzzy_match_percent": 100.0,
     "total_code": "44756",
-    "matched_code": "36848",
-    "matched_code_percent": 82.330861,
+    "matched_code": "44756",
+    "matched_code_percent": 100.0,
     "total_functions": 72,
-    "matched_functions": 71,
-    "matched_functions_percent": 98.611111,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 72,
+    "matched_functions_percent": 100.0,
+    "complete_code": "44756",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    }
   },
   {
@@ -494,13 +494,13 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 91.144225,
+    "fuzzy_match_percent": 92.648953,
     "total_code": "164548",
-    "matched_code": "149976",
-    "matched_code_percent": 91.144225,
+    "matched_code": "152452",
+    "matched_code_percent": 92.648953,
     "total_functions": 125,
-    "matched_functions": 118,
-    "matched_functions_percent": 94.4,
+    "matched_functions": 120,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -647,17 +647,17 @@
    "id": "level_29",
    "name": "Level 29: Tyhrranosis Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 78.08,
+    "fuzzy_match_percent": 100.0,
     "total_code": "5000",
-    "matched_code": "3904",
-    "matched_code_percent": 78.08,
+    "matched_code": "5000",
+    "matched_code_percent": 100.0,
     "total_functions": 7,
-    "matched_functions": 6,
-    "matched_functions_percent": 85.714286,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 7,
+    "matched_functions_percent": 100.0,
+    "complete_code": "5000",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    }
   },
   {
@@ -41732,13 +41732,13 @@
   {
    "name": "Shared level code",
    "measures": {
-    "fuzzy_match_percent": 81.931748,
+    "fuzzy_match_percent": 83.057016,
     "total_code": "3914092",
-    "matched_code": "3206884",
-    "matched_code_percent": 81.931748,
+    "matched_code": "3250928",
+    "matched_code_percent": 83.057016,
     "total_functions": 7789,
-    "matched_functions": 7428,
-    "matched_functions_percent": 95.365259,
+    "matched_functions": 7437,
+    "matched_functions_percent": 95.480806,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -43260,7 +43260,7 @@
     {
      "name": "func_L01_0030E198",
      "size": "1176",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "92568",
      "metadata": {
       "virtual_address": "3203480"
@@ -45177,7 +45177,7 @@
     {
      "name": "func_L04_00325C08",
      "size": "3648",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "189448",
      "metadata": {
       "virtual_address": "3300360"
@@ -46761,7 +46761,7 @@
     {
      "name": "func_L01_003303B8",
      "size": "1124",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "232376",
      "metadata": {
       "virtual_address": "3343288"
@@ -50748,7 +50748,7 @@
     {
      "name": "func_L01_00350750",
      "size": "8704",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "364368",
      "metadata": {
       "virtual_address": "3475280"
@@ -58155,7 +58155,7 @@
     {
      "name": "func_L01_003A0778",
      "size": "11336",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "692088",
      "metadata": {
       "virtual_address": "3803000"
@@ -61170,7 +61170,7 @@
     {
      "name": "func_L22_003B3228",
      "size": "11472",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "768552",
      "metadata": {
       "virtual_address": "3879464"
@@ -90105,7 +90105,7 @@
     {
      "name": "func_L01_004BF980",
      "size": "3844",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1868160",
      "metadata": {
       "virtual_address": "4979072"
@@ -93750,7 +93750,7 @@
     {
      "name": "func_L01_004ED8A8",
      "size": "1384",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2056360",
      "metadata": {
       "virtual_address": "5167272"
@@ -94398,7 +94398,7 @@
     {
      "name": "func_L04_004FCAF0",
      "size": "1356",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2118384",
      "metadata": {
       "virtual_address": "5229296"
@@ -111859,17 +111859,17 @@
   {
    "name": "Level 01: Veldin",
    "measures": {
-    "fuzzy_match_percent": 82.330861,
+    "fuzzy_match_percent": 100.0,
     "total_code": "44756",
-    "matched_code": "36848",
-    "matched_code_percent": 82.330861,
+    "matched_code": "44756",
+    "matched_code_percent": 100.0,
     "total_functions": 72,
-    "matched_functions": 71,
-    "matched_functions_percent": 98.611111,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 72,
+    "matched_functions_percent": 100.0,
+    "complete_code": "44756",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
@@ -111911,7 +111911,7 @@
     {
      "name": "func_L01_00353EA0",
      "size": "7908",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "263640",
      "metadata": {
       "virtual_address": "3489440"
@@ -112522,7 +112522,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/levels/01_veldin",
     "progress_categories": [
      "level_code",
@@ -127339,13 +127339,13 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 91.144225,
+    "fuzzy_match_percent": 92.648953,
     "total_code": "164548",
-    "matched_code": "149976",
-    "matched_code_percent": 91.144225,
+    "matched_code": "152452",
+    "matched_code_percent": 92.648953,
     "total_functions": 125,
-    "matched_functions": 118,
-    "matched_functions_percent": 94.4,
+    "matched_functions": 120,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -127742,7 +127742,7 @@
     {
      "name": "func_L19_003C1F18",
      "size": "1132",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "784408",
      "metadata": {
       "virtual_address": "3940120"
@@ -128408,7 +128408,7 @@
     {
      "name": "func_L19_004E1D60",
      "size": "1344",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "1963616",
      "metadata": {
       "virtual_address": "5119328"
@@ -134728,17 +134728,17 @@
   {
    "name": "Level 29: Tyhrranosis Ranger Missions",
    "measures": {
-    "fuzzy_match_percent": 78.08,
+    "fuzzy_match_percent": 100.0,
     "total_code": "5000",
-    "matched_code": "3904",
-    "matched_code_percent": 78.08,
+    "matched_code": "5000",
+    "matched_code_percent": 100.0,
     "total_functions": 7,
-    "matched_functions": 6,
-    "matched_functions_percent": 85.714286,
-    "complete_code": "0",
-    "complete_code_percent": 0.0,
+    "matched_functions": 7,
+    "matched_functions_percent": 100.0,
+    "complete_code": "5000",
+    "complete_code_percent": 100.0,
     "total_units": 1,
-    "complete_units": 0
+    "complete_units": 1
    },
    "functions": [
     {
@@ -134753,7 +134753,7 @@
     {
      "name": "func_L29_003D34E8",
      "size": "1096",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "307752",
      "metadata": {
       "virtual_address": "4011240"
@@ -134806,7 +134806,7 @@
     }
    ],
    "metadata": {
-    "complete": false,
+    "complete": true,
     "source_path": "src/levels/29_tyhrranosis_ranger_missions",
     "progress_categories": [
      "level_code",
