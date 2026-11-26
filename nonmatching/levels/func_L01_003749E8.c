@@ -1,4 +1,11 @@
-/* func_L01_003749E8: a Veldin projectile's update (34 places, shared; switch on the state byte
+/* k6 agent 4b (2026-11-26): the $gp slot is level data (gp-0x4CD0 in level 01, gp-0x4E10 in level 02),
+ * so it is named D_L01_001D7BE0 (with its `.extern ..., 4` hint) instead of D_001D7BE0_sda: check.py now gives the
+ * same 2 rows (state 4's a1/a0 order) at all 34 places with the file line plus -mvu0-use-vf0-vf2. Tried for the
+ * a1/a0 order: a static (inline) wrapper with reversed parameters, the call in the `>= 18` arm, `(s32)(void *)0`,
+ * `0 * timer`, a `z` set to 0 at the case start, `z = state->target` cleared in the arm (defined, but z then lives
+ * in $a1 across the branch: 10 rows).
+ *
+ * func_L01_003749E8: a Veldin projectile's update (34 places, shared; switch on the state byte
  * with 5 cases: 0 flies and collides, 1 sets up 24 vector pairs, 2 spawns particles and hunts
  * a target, 3 and 4 wind down). Near miss, not linked. Round 30 W1 (Opus), sixth look
  * (W25: 7 aligned; W22: 19; W17: 50; W10: 154; codex-b41-w10: partial draft).
@@ -15,7 +22,7 @@
  * 00221098) need per-level aliases at the other 33 places.
  * Needs, when it lands: -mvu0-use-vf0-vf2 added to L01_00374630.c's flag line (func_L01_00374630,
  * func_L01_00374790 and func_L01_00374908 still MATCH with it), the jump table (jtbl_002BED90) checked
- * in the full level build, $gp slot D_001D7BE0_sda (-0x4CD0($gp)), D_L01_001D66B0 declared as a
+ * in the full level build, $gp slot D_L01_001D7BE0 (-0x4CD0($gp)), D_L01_001D66B0 declared as a
  * scalar `extern u8 D_L01_001D66B0;` passed as `&D_L01_001D66B0`.
  *
  * W1 (round 30; 16 diff lines -> 2):
@@ -190,8 +197,8 @@ extern u8 *D_L01_00221098[];
 extern u8 *D_L01_001EEA80[];
 extern struct WeaponRow D_L01_002C5600[];
 typedef void (*Fn_CF68_3749E8)(void *, void *, f32);
-extern u32 D_001D7BE0_sda;
-__asm__(".extern D_001D7BE0_sda, 4");
+extern u32 D_L01_001D7BE0;
+__asm__(".extern D_L01_001D7BE0, 4");
 
 extern s32 func_L01_004CB2D8(void);
 extern void func_L01_004CAB30(void *, void *);
@@ -721,14 +728,14 @@ void func_L01_003749E8(u8 *self) {
         *(u16 *)(state->target + 0x34) &= 0xFFFD;
         q = func_00382348(state->target);
         if (q != 0) {
-            if (D_001D7BE0_sda < 0x29) {
-                if (D_001D7BE0_sda != 9) {
+            if (D_L01_001D7BE0 < 0x29) {
+                if (D_L01_001D7BE0 != 9) {
                     n = func_L01_00444350();
                     pd = D_00142DE0;
                     *(s32 *)(pd + 0x17C) += n;
                 }
             } else {
-                if (D_001D7BE0_sda != 9) {
+                if (D_L01_001D7BE0 != 9) {
                     u8 *pd2;
                     pd2 = D_00142DE0;
                     *(s32 *)(pd2 + 0x17C) += *(u16 *)(state->target + 0xB6);

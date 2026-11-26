@@ -764,7 +764,105 @@ void func_L19_00331380(M_00331380 *m) {
 }
 /* localdecomp:end func_L19_00331380 */
 
-INCLUDE_ASM("asm/levels", func_L19_00332948);
+/* localdecomp:start func_L19_00332948 */
+extern s32 D_L19_001DF240_00332948;
+__asm__(".extern D_L19_001DF240_00332948, 4");
+extern s32 D_L19_001DCBD4, D_L19_001DCBD8;
+__asm__(".extern D_L19_001DCBD4, 4");
+__asm__(".extern D_L19_001DCBD8, 4");
+extern u8 D_L19_001E2100[];
+extern u8 D_1A4C60[];
+extern u16 D_L19_001DF42A_00332948[4];
+__asm__(".extern D_L19_001DF42A_00332948, 16");
+extern u16 D_L19_001DF430_00332948[4];
+__asm__(".extern D_L19_001DF430_00332948, 16");
+extern void func_L19_00333160(u8 *);
+extern f32 func_L01_0040E548(void *, void *);
+extern void func_L01_004472C0(u8 *);
+extern void func_L19_0044B008(u8 *);
+extern s32 func_L01_00447490(void *, s32, s32);
+extern void func_L04_00325460(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32);
+extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern void func_L01_004AA7E8(void *, s32);
+extern f32 func_0038CF38(void *, void *);
+extern void func_L19_00332D38(Obj_00332360 *);
+
+void func_L19_00332948(void *arg0) {
+    u8 *obj = (u8 *)arg0;
+    u8 *pv = *(u8 **)(obj + 0x68);
+    u8 *hit;
+    s32 t;
+
+    if (obj[0x20] == 0) {
+        func_L19_00333160(obj);
+    }
+    if (obj[0x20] != 0x17 && (*(unsigned long *)(obj + 0x30) & 0x104100000000ul) == 0x4100000000ul && *(s32 *)(obj + 0x98) == 0) {
+        u8 *def = *(u8 **)(obj + 0x24);
+        u16 f = *(u16 *)(obj + 0x34) & 0xFFBE;
+        *(u16 *)(obj + 0x34) = f;
+        *(u16 *)(obj + 0x34) = f | (*(u16 *)(def + 0x44) & 0x1000);
+        *(s32 *)(obj + 0x98) = *(s32 *)(def + 0x10);
+    }
+    if (obj[0x31] != 0) {
+        if (func_L01_0040E548(D_L19_001E2100, obj + 0x10) < 576.0f) {
+            func_L01_004472C0(obj);
+            obj[0x6F] = 0x16;
+        }
+    }
+    if (obj[0x20] >= 2 && obj[0x95] != 4 && obj[0x20] != 1) {
+        func_L19_0044B008(obj);
+    }
+    hit = (u8 *)func_L01_00447490(obj, 1, 0);
+    if (hit == 0 && !(*(f32 *)(obj + 0x18) <= *(f32 *)(pv + 0x3BC))) {
+        goto after;
+    }
+    if ((*(unsigned long *)(obj + 0x30) & 0x104100000000ul) == 0x4100000000ul && *(s32 *)(obj + 0x98) == 0) {
+        goto after;
+    }
+    if (!(*(f32 *)(obj + 0x18) <= *(f32 *)(pv + 0x3BC))) {
+        u8 *other;
+        if (hit == 0 || (other = *(u8 **)(hit + 0x20)) == 0 || *(s16 *)(other + 0xAA) != 0x1A8E) {
+            t = abs_asm(D_L19_001DCBD4 - D_L19_001DF240_00332948);
+            if (!(D_L19_001DCBD8 < t)) {
+                obj[0xA8] = 0xFF;
+                goto after;
+            }
+        }
+    }
+    D_L19_001DCBD4 = D_L19_001DF240_00332948;
+    func_L04_00325460(obj + 0x10, 0, 5, 5, 5, 10, 20, 0, 1, 0, 0, 0, 0.25f, 20.0f);
+    if (*(s16 *)(obj + 0xAA) == 0x964) {
+        func_L01_00451FE0(obj, 15, pv + 0x1E0, 3.0f, 6.0f, 3.0f, 6.0f, 255, -1.0f, -1.0f, 180, 0, 0, 35,
+                          1.0f, 1.0f, 0, 3);
+    }
+    *(s32 *)(obj + 0x98) = 0;
+    *(u16 *)(obj + 0x34) = (*(u16 *)(obj + 0x34) | 0x41) & 0xEFFF;
+    func_L01_004AA7E8(obj, 1);
+    func_L01_004450F0(obj, 0x17, 0);
+    obj[0xA8] = 0xFF;
+after:
+    if (obj[0x95] == 4) {
+        D_L19_001DF42A_00332948[2]++;
+    }
+    if (!((*(unsigned long *)(obj + 0x30) & 0x104100000000ul) == 0x4100000000ul && *(s32 *)(obj + 0x98) == 0) && obj[0x20] != 1) {
+        if (func_0038CF38(obj + 0x10, D_1A4C60) < 16.0f) {
+            D_L19_001DF42A_00332948[1]++;
+            switch (*(s16 *)(obj + 0xAA)) {
+            case 0x940:
+                D_L19_001DF42A_00332948[3]++;
+                break;
+            case 0x93C:
+                D_L19_001DF430_00332948[1]++;
+                break;
+            case 0xA59:
+                D_L19_001DF430_00332948[2]++;
+                break;
+            }
+        }
+    }
+    func_L19_00332D38((Obj_00332360 *)obj);
+}
+/* localdecomp:end func_L19_00332948 */
 
 /* localdecomp:start func_L19_00332D38 */
 /* PAL port of the NTSC-U match src/us/levels/func_L19_00332360.c */

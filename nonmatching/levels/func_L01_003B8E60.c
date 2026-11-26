@@ -1,3 +1,14 @@
+/* k6 agent 4b (2026-11-26): still 4 rows. The loop dump (-dL) shows why: in the 0x1290 copy loop the store's
+ * address is a DEST_REG giv (insn `r532 = at + (l+3)*16`, made at expand before the load) but loop.c records the
+ * store as a separate DEST_ADDR giv at the store insn, after the load's DEST_ADDR giv; strength_reduce walks
+ * bl->giv (newest first), so the destination's new register and its increment come before the source's and the
+ * scheduler's luid tie keeps that order. Swept without effect (same or worse): 96 forms with the source and/or
+ * the a0 argument as user pointer bivs (increment after the copy, after the call, in the for header, before the
+ * copy, declared/assigned in either order), `V[l + 3]`, `((u128 *)(w + 0x30))[l]`, `(R *)` struct copies, a
+ * 16-byte aligned f32x4 struct copy, `*(u128 *)&V[..]`, a destination pointer local (119 rows: it merges with
+ * the argument giv), `&vp[l]` for both uses. Permuter (box2, 30 min, -j4): no change from 40.
+ *
+ */
 /* PAL near miss (opus-b43-w20, fourth look after sonnet-b43-w14b, sonnet-b43-w7 and sonnet-b42-w23): 4 raw diffs (check.py) and 2 words
  * outside the longest matching blocks (difflib over check.py's two columns), 854 = 854 words, with the file's flags (-O2 -G8 -fopt-stack
  * -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2); needs the divs_nops.txt row `func_L01_003B8E60 2 2 2 2 2` (committed).
