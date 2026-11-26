@@ -538,9 +538,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003415F8` | levels | Codex wave 10 near miss | near miss (shield_charger_fire): 2 words: the addiu of obj+0xE0 and obj+0xD0 after the func_0038D308 call in the other order; assigning them the other way round swaps their $s registers (round 14 E, 2026-11-24) |
 | `func_L01_0034C4E8` | levels | Codex wave 10 near miss | near miss: 204 words differ with the file's flags |
 | `func_L01_0034C9F0` | levels | Codex wave 10 near miss | near miss: 257 words differ with the file's flags |
-| `func_L01_0034D2F0` | levels | Codex wave 10 near miss | near miss: 76 words differ with the file's flags |
 | `func_L01_0034E080` | levels | Codex wave 10 near miss | near miss: 230 words differ with the file's flags |
-| `func_L01_0034EAA0` | levels | Codex wave 10 near miss | near miss: 240 words differ with the file's flags |
+| `func_L01_0034EAA0` | levels | Codex wave 10 draft, k6 agent 4 (2026-11-26) | near miss: 33 aligned diffs with divs_nops `func_L01_0034EAA0 2 2`: the particle loop's hoisted constants and their registers; see the header |
 | `func_L01_0035E710` | levels | Codex wave 10 near miss | near miss (enemy_bullet_update): 227 words with `-mvu0-use-vf0-vf2` (41 ignoring registers): &previous kept in $s0, the hero address's %lo added at each use, beql in the hit test (round 14 D, 2026-11-24) |
 | `func_L01_00363690` | levels | Codex wave 10 near miss | near miss: 310 words differ with the file's flags |
 | `func_L01_00369700` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
