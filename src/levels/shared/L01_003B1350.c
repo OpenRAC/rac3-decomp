@@ -11,7 +11,104 @@ void func_L01_003B1350(void) {
 }
 /* localdecomp:end func_L01_003B1350 */
 
-INCLUDE_ASM("asm/levels", func_L01_003B1358);
+/* localdecomp:start func_L01_003B1358 */
+#include "vu0.h"
+extern u8 D_L01_001D66B0[] __attribute__((section(".sdata")));
+void func_L01_003B1848(char *);
+typedef struct { u8 pad[0x18]; u8 *hit; u8 pad1C[4]; vu0_v4 pos; } Hit_003B1358;
+extern Hit_003B1358 D_L01_001EAA00;
+void func_L01_003B1358(u8 *obj) {
+    extern f32 func_00382538(void);
+    extern u8 *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038CF38(void *, void *);
+    extern void func_L01_00446760(void *, void *, s32, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+    extern void func_L01_00404A10_003B1358(void (*)(char *), u8 *) __asm__("func_L01_00404A10");
+    extern s32 func_L01_00456250(void *);
+    extern void func_L01_003B1D10(s32, s32, s32);
+    extern void func_L01_00456230(void *, s32);
+    extern void func_003C2880(u8 *);
+    extern void func_L01_003B1DB8(void *);
+    vu0_v4 old, velocity;
+    u8 info[0x30];
+    vu0_v4 back, acceleration;
+    u8 *state = *(u8 **)(obj + 0x68);
+    f32 power = *(f32 *)(state + 0x3C);
+    vu0_v4 *point;
+    s32 hit;
+    s32 rotation;
+    *(f32 *)(state + 0x38) += 1.0f;
+    if (*(f32 *)(state + 0x38) > 84.0f) power *= 1.0f - (*(f32 *)(state + 0x38) - 84.0f) / 6.0f;
+    if (*(f32 *)(state + 0x38) > 2.0f) old = *(vu0_v4 *)(state + 0x10);
+    else old = *(vu0_v4 *)state;
+    rotation = (s32)func_00382538();
+    func_L01_0046A610(state + 0x10, D_L01_001D66B0, 3, 96, *(s32 *)(state + 0x50), rotation, 210000.0f, 200.0f, 0.95f, 0.0f, 0.0f);
+    if (*(f32 *)(state + 0x38) < 15.0f) {
+        *(f32 *)(state + 0x34) += 0.40000004f;
+        func_0038CF68((f32 *)(state + 0x10), (f32 *)(state + 0x20), *(f32 *)(state + 0x34));
+        func_0038CF68((f32 *)&velocity, (f32 *)(state + 0x20), 0.08000000566244125f);
+        func_L01_00446760(info, obj, 0x10000, &velocity, power);
+        *(u16 *)(info + 0x1A) = *(u16 *)(obj + 0xAA);
+        vec_add_ba(state + 0x10, state, state + 0x10);
+        func_0038CF68((f32 *)&back, (f32 *)(state + 0x20), -0.40000004f);
+        vec_add_ab(&back, &back, state + 0x10);
+        hit = func_003D3CB0(state + 0x10, &old, 16, *(void **)(obj + 0xB8), info);
+        if (hit) {
+            Hit_003B1358 *collision = &D_L01_001EAA00;
+            u8 *other = collision->hit;
+            if (other != *(u8 **)(obj + 0xB8) && (other == 0 || *(s16 *)(other + 0xAA) != 0x1C7F)) {
+                point = &collision->pos;
+                *(vu0_q *)(state + 0x10) = *(vu0_q *)point;
+                if (!func_L01_00456250(obj)) {
+                    func_L01_003B1D10((s32)point, 20, *(s32 *)(state + 0x4C));
+                    func_L01_00456230(obj, 1);
+                }
+                func_003C2880(obj);
+                return;
+            }
+        }
+        func_0038CF68((f32 *)&acceleration, (f32 *)(state + 0x20), 0.40000004f);
+        vec_add_ab(state, state, &acceleration);
+        func_L01_00404A10_003B1358(func_L01_003B1848, obj);
+    } else if (*(f32 *)(state + 0x38) < 90.0f) {
+        if (0.40000004f < func_0038CF38(state, state + 0x10)) {
+            *(f32 *)(state + 0x34) += 0.40000004f;
+            func_0038CF68((f32 *)(state + 0x10), (f32 *)(state + 0x20), *(f32 *)(state + 0x34));
+            func_0038CF68((f32 *)&velocity, (f32 *)(state + 0x20), 0.08000000566244125f);
+            func_L01_00446760(info, obj, 0x10000, &velocity, power);
+            *(u16 *)(info + 0x1A) = *(u16 *)(obj + 0xAA);
+            vec_add_ba(state + 0x10, state, state + 0x10);
+            func_0038CF68((f32 *)&back, (f32 *)(state + 0x20), -0.40000004f);
+            vec_add_ab(&back, &back, state + 0x10);
+            hit = func_003D3CB0(state + 0x10, &old, 16, obj, info);
+            {
+                u8 *other;
+                if (hit) {
+                    Hit_003B1358 *collision = &D_L01_001EAA00;
+                    other = collision->hit;
+                    if (other != *(u8 **)(obj + 0xB8) && (other == 0 || *(s16 *)(other + 0xAA) != 0x1625)) {
+                        point = &collision->pos;
+                        *(vu0_q *)(state + 0x10) = *(vu0_q *)point;
+                        if (!func_L01_00456250(obj)) {
+                            func_L01_003B1D10((s32)point, 20, *(s32 *)(state + 0x4C));
+                            func_L01_00456230(obj, 1);
+                        }
+                        func_003C2880(obj);
+                        return;
+                    }
+                }
+            }
+            func_0038CF68((f32 *)&acceleration, (f32 *)(state + 0x20), 1.0000001f);
+            vec_add_ab(state, state, &acceleration);
+            func_L01_00404A10_003B1358(func_L01_003B1848, obj);
+        }
+    } else {
+        func_L01_003B1DB8(state + 0x10);
+        func_003C2880(obj);
+    }
+}
+/* localdecomp:end func_L01_003B1358 */
 
 /* localdecomp:start func_L01_003B1750 */
 
