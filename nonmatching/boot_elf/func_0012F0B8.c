@@ -21,7 +21,7 @@ typedef struct {
 } Cmd_12F0B8;
 extern Chan_12F0B8 D_15BB90[];
 extern u8 D_15BB40[];
-extern u8 D_15BC80[];
+extern s32 D_15BC80[][4][8];
 extern s32 D_15BD80[];
 extern s32 D_0014155C;
 extern char D_00151BD0[];
@@ -44,7 +44,7 @@ s32 func_0012F0B8(s32 ch, s32 n, Cmd_12F0B8 *buf) {
         return 0;
     }
     c = buf;
-    for (i = 1; i >= 0; i--) {
+    for (i = 0; i < 2; i++) {
         c->x58 = 0;
         c->b70 = 5;
         c->b71 = 2;
@@ -61,7 +61,7 @@ s32 func_0012F0B8(s32 ch, s32 n, Cmd_12F0B8 *buf) {
     if (func_00122810(D_15BB40, 1, 0, req, 0x80, req, 0x80, 0, 0) < 0) {
         return 0;
     }
-    q = (s32 *)(D_15BC80 + ch * 0x80 + n * 0x20);
+    q = D_15BC80[ch][n];
     D_15BB90[ch].s[n].f10 = 1;
     D_15BB90[ch].s[n].fC = 0;
     D_15BB90[ch].s[n].f8 = req[5];
