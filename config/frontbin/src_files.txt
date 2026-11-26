@@ -28,6 +28,7 @@ src/frontbin/392A18.c 00392A18
 src/frontbin/392DF0.c 00392DF0
 src/frontbin/392EC0.c 00392EC0
 src/frontbin/392F68.c 00392F68
+src/frontbin/393168.c 00393168
 src/frontbin/393290.c 00393290
 src/frontbin/3932C0.c 003932C0
 src/frontbin/393348.c 00393348
