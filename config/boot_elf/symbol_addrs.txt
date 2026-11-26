@@ -1,1 +1,2 @@
 // boot_elf symbols for splat (name = address). Function boundaries come from the sources.
+D_0031C9E8 = 0x0031C9E8; // the words after jtbl_0031C9D0 that no code refers to

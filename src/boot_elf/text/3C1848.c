@@ -114,5 +114,108 @@ s32 func_003C19B8(s32 arg0, s32 arg1) {
 }
 /* localdecomp:end func_003C19B8 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003C1AE0);
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C9D0);
+/* localdecomp:start func_003C1AE0 */
+/* D_002D2060 (S_BC0F0, above) seen with its float fields as floats: f30 and f50 are written with swc1. */
+typedef struct { u8 n[0x30]; f32 f30; s32 f34, f38, f3C, f40, f44, f48, f4C; f32 f50; u8 p54[0xC]; u8 f60; } T_3C1AE0;
+extern s32 D_001D9094;
+extern f32 D_001D9044;
+extern u8 *D_001D52FC;
+__asm__(".extern D_001D52FC, 16");
+extern void func_003BBC00(s32);
+extern s32 func_0038CEB0(void *);
+extern s32 func_003BE2D0();
+extern void func_003BBD20();
+extern s32 func_003BE6B8(void);
+extern void func_003BBCA8(s32, f32);
+extern f32 func_0038DE98(f32, f32);
+s32 func_003C1AE0(void) {
+    s32 done = 0;
+
+    if (((T_3C1AE0 *)D_002D2060)->f60 == 0) {
+        func_003BBC00(2);
+        ((T_3C1AE0 *)D_002D2060)->f60 = 1;
+    }
+    if (((T_3C1AE0 *)D_002D2060)->f40) {
+        switch (((T_3C1AE0 *)D_002D2060)->f48) {
+        case 0:
+            ((T_3C1AE0 *)D_002D2060)->f30 = 1.0f - (f32)((T_3C1AE0 *)D_002D2060)->f4C / 50.0f;
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                ((T_3C1AE0 *)D_002D2060)->f48 = 1;
+                ((T_3C1AE0 *)D_002D2060)->f4C = 75;
+            }
+            break;
+        case 1:
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                ((T_3C1AE0 *)D_002D2060)->f48 = 2;
+                ((T_3C1AE0 *)D_002D2060)->f4C = ((T_3C1AE0 *)D_002D2060)->f34 * 3;
+            }
+            break;
+        case 2:
+            ((T_3C1AE0 *)D_002D2060)->f30 = 1.0f;
+            if ((((T_3C1AE0 *)D_002D2060)->f34 * 3 - ((T_3C1AE0 *)D_002D2060)->f4C) % D_001D9094 == 0) {
+                func_003BBC00(0);
+            }
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                ((T_3C1AE0 *)D_002D2060)->f48 = 3;
+                ((T_3C1AE0 *)D_002D2060)->f4C = 75;
+                func_003BBC00(1);
+            }
+            break;
+        case 3:
+            ((T_3C1AE0 *)D_002D2060)->f30 = 1.0f;
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                ((T_3C1AE0 *)D_002D2060)->f48 = 4;
+                ((T_3C1AE0 *)D_002D2060)->f4C = 100;
+            }
+            if (*(u32 *)(D_001D52FC + 0x1C4) & 0x40) {
+                ((T_3C1AE0 *)D_002D2060)->f4C = 0;
+            }
+            break;
+        case 4:
+            if (func_003BE2D0()) {
+                func_003BBD20();
+            }
+            if (func_003BE6B8()) {
+                if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                    ((T_3C1AE0 *)D_002D2060)->f48 = 5;
+                    ((T_3C1AE0 *)D_002D2060)->f4C = 50;
+                }
+            }
+            break;
+        case 5:
+            done = (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C) == 1);
+            ((T_3C1AE0 *)D_002D2060)->f30 = (f32)((T_3C1AE0 *)D_002D2060)->f4C / 50.0f;
+            func_003BBCA8(2, ((T_3C1AE0 *)D_002D2060)->f30);
+            break;
+        }
+    } else {
+        switch (((T_3C1AE0 *)D_002D2060)->f48) {
+        case 0:
+            ((T_3C1AE0 *)D_002D2060)->f30 = 1.0f - (f32)((T_3C1AE0 *)D_002D2060)->f4C / 50.0f;
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                ((T_3C1AE0 *)D_002D2060)->f48 = 1;
+                ((T_3C1AE0 *)D_002D2060)->f4C = 100;
+            }
+            break;
+        case 1:
+            ((T_3C1AE0 *)D_002D2060)->f30 = 1.0f;
+            if (func_003BE6B8()) {
+                if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C)) {
+                    ((T_3C1AE0 *)D_002D2060)->f48 = 2;
+                    ((T_3C1AE0 *)D_002D2060)->f4C = 50;
+                }
+            }
+            break;
+        case 2:
+            if (func_0038CEB0(&((T_3C1AE0 *)D_002D2060)->f4C) == 1) {
+                done = 1;
+            }
+            ((T_3C1AE0 *)D_002D2060)->f30 = (f32)((T_3C1AE0 *)D_002D2060)->f4C / 50.0f;
+            break;
+        }
+        ((T_3C1AE0 *)D_002D2060)->f50 = func_0038DE98(((T_3C1AE0 *)D_002D2060)->f50, D_001D9044);
+    }
+    return done;
+}
+/* localdecomp:end func_003C1AE0 */
+INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", D_0031C9E8);
