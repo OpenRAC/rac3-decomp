@@ -93,7 +93,10 @@
  *   locals (all 20; the search was stopped there).
  * Flag for review: the `goto` into the `for (;;)` and the `goto top1` back edge (plain C; precedent: upstream's matched
  * func_L39_0068BAD8, src/levels/39_multiplayer_menu/L39_0068BAD8.c, `goto test; do { ... test:; } while (...)`).
- * Stopped per AGENTS.md. */
+ * Stopped per AGENTS.md.
+ * k6 a5 (2026-11-26, a decomp-permuter find): arm 1 (the `goto test1; for (;;)` search) wrapped in
+ * do { } while (0) gives 13 differences (from 20). Left: the m[0x21] copy order and the
+ * $t0/$a3/$t1 copies of it. */
 #include "common.h"
 
 /* localdecomp:start func_L04_003D0C40 */
@@ -148,6 +151,7 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
     }
     *(u8 **)(v + 0x94) = 0;
     if (*(s32 *)(v + 0x90) == -1) {
+        do {
         p = *(D_L04_0021C9A0 + m[0x21]);
         goto test1;
         for (;;) {
@@ -167,6 +171,7 @@ s32 func_L04_003D0C40(M_003D0968 *mm, V_003D0968 *vv) {
             }
             goto join;
         }
+        } while (0);
     } else if (*(s32 *)(v + 0x90) >= -1) {
         p = *(D_L04_0021C9A0 + m[0x21]);
         while (m[0x21] != 0xFF && m[0x21] <= D_L04_001DFDD8 && p != 0 &&

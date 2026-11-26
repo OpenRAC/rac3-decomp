@@ -1378,7 +1378,160 @@ void func_L01_003DE488(u8 *m) {
 }
 /* localdecomp:end func_L01_003DE488 */
 
-INCLUDE_ASM("asm/levels", func_L01_003DE510);
+/* localdecomp:start func_L01_003DE510 */
+typedef union { vu0_q q; f32 f[4]; } V_3DE510;
+typedef struct {
+    V_3DE510 pos[4];
+    u32 color[4];
+    f32 uv[4][2];
+    u8 tail[0x20];
+} Poly_3DE510;
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_003DE510(u128_t *start_arg, u8 *points_arg, s32 color, s32 count, f32 phase, f32 width, f32 step)
+{
+    V_3DE510 *start = (V_3DE510 *)start_arg;
+    V_3DE510 *points = (V_3DE510 *)points_arg;
+    extern void func_003D93B0(void *,s32,s32,s32);
+    extern s32 func_0013D3E0(void);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_0038CE90(void *,void *,void *);
+    extern void func_0038D028(void *,void *,void *);
+    extern void func_003D2DA0(void *,s32,s32);
+    V_3DE510 origin;
+    Poly_3DE510 outer,inner;
+    V_3DE510 matrix[4];
+    V_3DE510 offset,offset2;
+    s32 i,next;
+    s32 bytes;
+    f32 u,v,u2,v2;
+    origin.q=start->q;
+    start=&origin;
+    func_003D93B0(&outer,43,1,128);
+    func_003D93B0(&inner,43,1,128);
+    offset2.q=offset.q=0;
+    width*=0.25f;
+    outer.color[0]=outer.color[1]=color;
+    inner.color[0]=inner.color[1]=color;
+    outer.color[2]=outer.color[3]=color;
+    inner.color[2]=inner.color[3]=color;
+    offset.f[3]=1.0f;
+    offset2.f[3]=1.0f;
+    offset.f[2]=width;
+    offset2.f[2]=width+width;
+    if ((func_0013D3E0()&1)==0) {
+        outer.uv[0][0]=phase+0.0f;
+        outer.uv[0][1]=0.0f;
+        outer.uv[1][0]=phase+0.0f;
+        outer.uv[1][1]=1.0f;
+        outer.uv[2][0]=step+phase;
+        outer.uv[2][1]=0.0f;
+        outer.uv[3][0]=step+phase;
+        outer.uv[3][1]=1.0f;
+        inner.uv[0][0]=phase+0.0f;
+        inner.uv[0][1]=0.0f;
+        inner.uv[1][0]=phase+0.0f;
+        inner.uv[1][1]=1.0f;
+        inner.uv[2][0]=step+phase;
+        inner.uv[2][1]=0.0f;
+        inner.uv[3][0]=step+phase;
+        inner.uv[3][1]=1.0f;
+    } else {
+        outer.uv[0][0]=phase+0.0f;
+        outer.uv[0][1]=1.0f;
+        outer.uv[1][0]=phase+0.0f;
+        outer.uv[1][1]=0.0f;
+        outer.uv[2][0]=step+phase;
+        outer.uv[2][1]=1.0f;
+        outer.uv[3][0]=step+phase;
+        outer.uv[3][1]=0.0f;
+        inner.uv[0][0]=phase+0.0f;
+        inner.uv[0][1]=1.0f;
+        inner.uv[1][0]=phase+0.0f;
+        inner.uv[1][1]=0.0f;
+        inner.uv[2][0]=step+phase;
+        inner.uv[2][1]=1.0f;
+        inner.uv[3][0]=step+phase;
+        inner.uv[3][1]=0.0f;
+    }
+    vec_sub_ba(&matrix[0],points,start);
+    func_0038CF68(&matrix[0],&matrix[0],1.0f);
+    vec_sub_ba(&matrix[1],&D_L01_001E29C0,start);
+    func_0038CE90(&matrix[2],&matrix[1],&matrix[0]);
+    i=0;
+    bytes=count<<4;
+    func_0038CF68(&matrix[2],&matrix[2],1.0f);
+    func_0038CE90(&matrix[1],&matrix[0],&matrix[2]);
+    matrix[3].q=start->q;
+    outer.pos[0].q=offset.q;
+    inner.pos[0].q=offset2.q;
+    func_0038CE20(outer.pos[1].f,outer.pos[0].f,-1.0f);
+    func_0038CE20(inner.pos[1].f,inner.pos[0].f,-1.0f);
+    func_0038D028(&outer.pos[0],&outer.pos[0],matrix);
+    func_0038D028(&outer.pos[1],&outer.pos[1],matrix);
+    func_0038D028(&inner.pos[0],&inner.pos[0],matrix);
+    func_0038D028(&inner.pos[1],&inner.pos[1],matrix);
+    while (i<count-1) {
+        next=i+1;
+        vec_sub_ab(&matrix[0],points+i+1,points+i);
+        func_0038CF68(&matrix[0],&matrix[0],1.0f);
+        vec_sub_ab(&matrix[1],&D_L01_001E29C0,points+i);
+        func_0038CE90(&matrix[2],&matrix[1],&matrix[0]);
+        func_0038CF68(&matrix[2],&matrix[2],1.0f);
+        func_0038CE90(&matrix[1],&matrix[0],&matrix[2]);
+        offset.f[2]*=0.7f;
+        matrix[3].q=points[i].q;
+        offset2.f[2]=offset.f[2]+offset.f[2];
+        outer.pos[2].q=offset.q;
+        inner.pos[2].q=offset2.q;
+        func_0038CE20(outer.pos[3].f,outer.pos[2].f,-1.0f);
+        func_0038CE20(inner.pos[3].f,inner.pos[2].f,-1.0f);
+        func_0038D028(&outer.pos[2],&outer.pos[2],matrix);
+        func_0038D028(&outer.pos[3],&outer.pos[3],matrix);
+        func_0038D028(&inner.pos[2],&inner.pos[2],matrix);
+        func_0038D028(&inner.pos[3],&inner.pos[3],matrix);
+        u=step*(f32)next; v=u+step;
+        if (u>=1.0f) {u-=1.0f;v-=1.0f;}
+                outer.uv[0][0]=u+phase;outer.uv[1][0]=u+phase;
+        outer.uv[2][0]=v+phase;outer.uv[3][0]=v+phase;
+        inner.uv[0][0]=u+phase;inner.uv[1][0]=u+phase;
+        inner.uv[2][0]=v+phase;inner.uv[3][0]=v+phase;
+        func_003D2DA0(&outer,0,0);
+        func_003D2DA0(&inner,0,0);
+        if (i!=0) {
+            outer.color[0]=outer.color[1]=color|0x7F000000;
+            inner.color[0]=inner.color[1]=color|0x3F000000;
+        }
+        i=next;
+        outer.pos[0].q=outer.pos[2].q;
+        outer.pos[1].q=outer.pos[3].q;
+        inner.pos[0].q=inner.pos[2].q;
+        inner.pos[1].q=inner.pos[3].q;
+        outer.color[2]=outer.color[3]=color|0x7F000000;
+        inner.color[2]=inner.color[3]=color|0x3F000000;
+    }
+    matrix[3].q=((V_3DE510 *)(bytes+(s32)points))[-1].q;
+    offset.f[2]*=0.7f;
+    offset2.f[2]=offset.f[2]+offset.f[2];
+    inner.pos[2].q=offset2.q;
+    outer.pos[2].q=offset.q;
+    func_0038CE20(outer.pos[3].f,outer.pos[2].f,-1.0f);
+    func_0038CE20(inner.pos[3].f,inner.pos[2].f,-1.0f);
+    func_0038D028(&outer.pos[2],&outer.pos[2],matrix);
+    func_0038D028(&outer.pos[3],&outer.pos[3],matrix);
+    func_0038D028(&inner.pos[2],&inner.pos[2],matrix);
+    func_0038D028(&inner.pos[3],&inner.pos[3],matrix);
+    u2=step*(f32)(i+1);v2=u2+step;
+    outer.color[2]=outer.color[3]=color;
+    inner.color[2]=inner.color[3]=color;
+    if (u2>=1.0f) {u2-=1.0f;v2-=1.0f;}
+    outer.uv[0][0]=u2+phase;outer.uv[1][0]=u2+phase;
+    outer.uv[2][0]=v2+phase;outer.uv[3][0]=v2+phase;
+    inner.uv[0][0]=u2+phase;inner.uv[1][0]=u2+phase;
+    inner.uv[2][0]=v2+phase;inner.uv[3][0]=v2+phase;
+    func_003D2DA0(&outer,0,0);
+    func_003D2DA0(&inner,0,0);
+}
+/* localdecomp:end func_L01_003DE510 */
 
 /* localdecomp:start func_L01_003DEB40 */
 void func_L01_003DEB40(u8 *obj) {
@@ -1548,7 +1701,104 @@ u8 *func_L01_003DEFE8(u128_t *position) {
 }
 /* localdecomp:end func_L01_003DEFE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_003DF1B0);
+/* localdecomp:start func_L01_003DF1B0 */
+extern vu0_v4 D_L01_001E29E0;
+extern s32 D_L01_001DF54C;
+__asm__(".extern D_L01_001DF54C, 4");
+extern u8 D_001425C0[];
+extern u8 D_L01_002A3A40[];
+typedef struct {
+    u8 p0[0x25C0];
+    u8 *camera;            /* 0x25C0 */
+} Game_003DF1B0;
+extern Game_003DF1B0 D_001A4BE0_003DF1B0;
+typedef struct {
+    u128_t velocity;
+    u8 pad[0x10];
+    s32 flags;
+    u8 rest[0xC];
+} Damage_003DF1B0;
+typedef struct { u8 p0[0x20]; s32 owner; u8 p24[0x2C]; } Spark_003DF1B0;
+static __inline__ Row_003DD9C8 *row_003DF1B0(void) {
+    return &D_L01_002C5600[D_001425C0[0x97]];
+}
+void func_L01_003DF1B0(u8 *obj) {
+    extern void func_L01_00404808(void (*)(u8 *), void *);
+    extern void func_L01_003DF620(u8 *);
+    extern s32 func_0038CAD0(void *);
+    extern void func_L01_00404A10_003DF1B0(void (*)(u8 *), void *);
+    extern void func_L01_003DF558(u8 *);
+    extern void func_0038CBA0(void *, s32);
+    extern void func_L01_004C84D8(void *);
+    extern u8 *func_L01_004501E8(void *, void *, s32 *, f32, f32, f32, f32, void *, s32, s32, f32, s32, void *, s32, s32, s32);
+    extern u8 *func_00382348(void);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_00446748(void *, void *, s32, f32);
+    extern void func_L01_00446978(void *, void *);
+    extern void func_L01_004AAC98(s32, s32, void *, s32);
+    extern void func_L01_00315900(void *, s32, void *);
+    extern void func_L01_003DE198(void);
+    extern void func_003C2880(u8 *);
+    u8 *vars = *(u8 **)(obj + 0x68);
+    vu0_v4 direction;
+    u8 *objects[32];
+    Damage_003DF1B0 damage;
+    s32 count;
+    s32 i;
+    s32 start;
+    start = 0;
+    if (obj[0x20] != 1) func_L01_00404808(func_L01_003DF620, obj);
+    if (obj[0x20] == 1) {
+        if (func_0038CAD0(vars + 0x10)) {
+            obj[0x20] = 5;
+            *(s32 *)(vars + 4) = (D_L01_001DF54C * 5 + 2) / 6;
+        }
+    } else if (obj[0x20] == 5) {
+        if (func_0038CAD0(vars + 8)) {
+            obj[0x20] = 3;
+            *(s32 *)(vars + 8) = 53;
+        } else func_L01_00404A10_003DF1B0(func_L01_003DF558, obj);
+    } else if (obj[0x20] == 3) {
+        {
+            vu0_v4 *d = &direction;
+            *d = D_L01_001E29E0;
+        }
+        func_0038CBA0(objects, 128);
+        func_L01_004C84D8(obj);
+        func_L01_004501E8(obj + 0x10, &direction, &count, 4.71238899230957f, 1.3962633609771729f, 60.0f, 0.0f, objects, 32, 0, 0.0f, 0, 0, 1, -1, 0);
+        for (i = 0; i < count; i++) {
+            u8 *state = ((u8 *(*)(void *))func_00382348)(objects[i]);
+            if (objects[i] != 0 && *(u8 **)(objects[i] + 0x24) != 0
+                && (*(u8 **)(objects[i] + 0x24))[0x46] == 5 && state != 0 && state[0xE] != 3) {
+                if (*(f32 *)state > row_003DF1B0()->scale) {
+                    damage.flags = 1;
+                    func_0038CE20(&damage.velocity, obj + 0xD0, -1.0f);
+                    ((f32 *)&damage.velocity)[3] = 5627.925f;
+                    func_L01_00446748(&damage, objects[i], 0x110000, row_003DF1B0()->scale);
+                    func_L01_00446978(objects[i], &damage);
+                } else {
+                    func_L01_004AAC98(2, 0, D_001A4BE0_003DF1B0.camera, 500);
+                    func_L01_00315900(objects[i], 4, func_L01_003DE198);
+                }
+            } else if (objects[i] != 0 && *(u8 **)(objects[i] + 0x24) != 0
+                       && (*(u8 **)(objects[i] + 0x24))[0x46] == 5 && state != 0 && state[0xE] == 3) {
+                damage.flags = 1;
+                func_0038CE20(&damage.velocity, obj + 0xD0, -1.0f);
+                ((f32 *)&damage.velocity)[3] = 5627.925f;
+                func_L01_00446748(&damage, objects[i], 0x110000, row_003DF1B0()->scale);
+                func_L01_00446978(objects[i], &damage);
+            }
+        }
+        {
+            s32 n;
+            for (n = start; n < 24; n++) {
+                ((Spark_003DF1B0 *)D_L01_002A3A40)[n].owner = 0;
+            }
+        }
+        func_003C2880(obj);
+    }
+}
+/* localdecomp:end func_L01_003DF1B0 */
 
 /* localdecomp:start func_L01_003DF558 */
 extern void func_003A9440(s32, unsigned long);
