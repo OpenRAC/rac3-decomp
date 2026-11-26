@@ -1,3 +1,11 @@
+/* Round 31 (k6 agent 2, 2026-11-26): the draft now compiles in its file's context (check.py without --no-context): the eleven
+   symbols whose declarations clash with src/levels/20_final_boss/L20_003CFBF0.c's earlier ones take a _003D0910 alias suffix
+   (D_L20_001D66B0, D_L20_001E2E80, fe_func_0038CB00/CED8/CF68, fe_func_003C24B0/2880, func_L01_00404808/4A10, func_L01_004713C8,
+   func_L01_004AAC98). In context: 5560 = 5560 instructions, 214 aligned rows (206 with the divs_nops row `func_L20_003D0910 2 2 0`, not committed) (difflib over the two columns, branch targets masked).
+   D_00142C58 as an array (`D_00142C58[0] & 0x2000000`) fixes the lui/lw order of that test (-4), and D_001A7430 likewise (`D_001A7430[0] <= 0` in case 2: retail's lui and lw share a register, -9), and the D_L20_001E0380_d index as `((s32 *)(pv->b + 0x710))[...]` (retail folds 0x710 into the lw, -2). State 16's loop: declaring
+   `f32 *p30 = sp30;` at the block's top (instead of the assignments) gives retail's allocation there (k in $fp, &sp30 spilled to
+   0xB0) but stores it before the first call instead of after the D890 setup and shifts the float constants (net +17); any
+   assignment of p30 later in the block is folded back into addiu $sp,0x30 by CSE. Other hunks: those listed below. */
 /* func_L20_003D0910: the final boss's per-frame update on level 20 (Dr. Nefarious' arena; the moby
    with pvars at m+0x68), a switch on its mode (m+0x95: 0-7, jtbl_002C8C90) then one on its state
    (m+0x20: 2-34, jtbl_002C8CB0), then the 0x618/0x67C child updates. Written from retail with an m2c
@@ -50,14 +58,14 @@ extern void func_L20_003D7558(void);
 extern void func_L20_003D7950(void);
 extern void func_L20_003D8248(void);
 extern f32 *func_L01_003F2A50(s32, s32);
-extern void func_L01_00404808(void *, Mo *);
-extern void func_L01_00404A10(void *, Mo *);
+extern void func_L01_00404808_003D0910(void *, Mo *);
+extern void func_L01_00404A10_003D0910(void *, Mo *);
 extern s32 fe_func_0038CAD0(u8 *);
-extern s32 fe_func_0038CB00(u8 *);
+extern s32 fe_func_0038CB00_003D0910(u8 *);
 extern void fe_func_0038CE20(void *, void *, f32);
-extern f32 fe_func_0038CED8(u128_t *);
+extern f32 fe_func_0038CED8_003D0910(u128_t *);
 extern f32 fe_func_0038CF38(void *, void *);
-extern void fe_func_0038CF68(u128_t *, void *, f32);
+extern void fe_func_0038CF68_003D0910(u128_t *, void *, f32);
 extern f32 fe_func_0038D098(f32);
 extern f32 fe_func_0038D0B0(f32);
 extern f32 fe_func_0038D160(f32, f32);
@@ -70,8 +78,8 @@ extern s32 fe_func_00392B20(u8 *, s32);
 extern void fe_func_00392C78(u8 *);
 extern s32 func_L01_00424CB0(void *, f32, f32, f32, f32, f32);
 extern void func_L01_00424D88(s32);
-extern Mo *fe_func_003C24B0(s32, s32);
-extern void fe_func_003C2880(Mo *);
+extern Mo *fe_func_003C24B0_003D0910(s32, s32);
+extern void fe_func_003C2880_003D0910(Mo *);
 extern f32 func_L01_004395E0(Mo *);
 extern void fe_func_003C2EC0(Mo *, s32, u128_t *);
 extern void fe_func_003C2F58(Mo *, s32, u128_t *);
@@ -105,15 +113,15 @@ extern void func_L01_0045BD78(Mo *, f32, f32, f32, f32);
 extern s32 func_L01_0045BDE8(Mo *, s32);
 extern u8 *func_L01_004669B0(f32, f32, f32, f32, void *, s32, void *, u32, s32);
 extern u8 *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
-extern u8 *func_L01_004713C8(void *, void *, s32, f32, s32, s32, s32, s32, f32, f32, s32);
+extern u8 *func_L01_004713C8_003D0910(void *, void *, s32, f32, s32, s32, s32, s32, f32, f32, s32);
 extern void func_L01_004AA7E8(Mo *, s32);
 extern void fe_func_003A4F28(s32);
 extern s32 fe_func_003A52A0(s32, s32, Mo *);
-extern s32 func_L01_004AAC98(s32, s32, Mo *, s32);
+extern s32 func_L01_004AAC98_003D0910(s32, s32, Mo *, s32);
 extern s32 func_L01_004BA800(void);
 extern void func_L01_004F50C8(void *, void *, s32, s32);
 
-extern u8 D_L20_001D66B0[8];
+extern u8 D_L20_001D66B0_003D0910[8];
 extern s32 D_L20_001D6694;
 extern s32 D_L20_001D67A8;
 extern s32 D_L20_001D67A8_d;
@@ -139,15 +147,15 @@ extern Spot *D_L20_001E0380;
 extern Spot *D_L20_001E0380_d;
 extern s32 D_L20_001E2698;
 extern s32 D_L20_001E2698_d;
-extern Boss D_L20_001E2E80;
+extern Boss D_L20_001E2E80_003D0910;
 extern u8 D_L20_001E9980[];
 extern Light D_L20_001F0D00[];
 extern void *D_L20_0021E880[];
 extern u8 *D_L20_00220258[];
 extern u8 D_001A30B0[];
 extern char D_001A4BE0[];
-extern s32 D_00142C58;
-extern s32 D_001A7430;
+extern s32 D_00142C58[];
+extern s32 D_001A7430[];
 
 #include "vu0.h"
 
@@ -204,7 +212,7 @@ void func_L20_003D0910(Mo *m) {
     }
     den3 = 20.0f;
     if (func_L20_003D61B8(m) != 0) {
-        fe_func_003C2880(m);
+        fe_func_003C2880_003D0910(m);
         return;
     }
     if (D_L20_001D6694 == 2) {
@@ -274,7 +282,7 @@ void func_L20_003D0910(Mo *m) {
     case 6:
         if (func_L01_004BA800() == 0) {
             func_L20_003D6BF8(m);
-            fe_func_003C2880(m);
+            fe_func_003C2880_003D0910(m);
             return;
         }
         break;
@@ -282,16 +290,16 @@ void func_L20_003D0910(Mo *m) {
         if (func_L01_004561E0(m) != 0) {
             pv->h[0x2D6/2] = 0;
         }
-        if ((pv->h[0x234/2] == 1) && (fe_func_0038CB00(pv->b + 0x2D6) != 0)) {
-            if (D_L20_001E2E80.x144 == 0) {
-                D_L20_001E2E80.x144 = m;
-                D_L20_001E2E80.x148 = 0;
+        if ((pv->h[0x234/2] == 1) && (fe_func_0038CB00_003D0910(pv->b + 0x2D6) != 0)) {
+            if (D_L20_001E2E80_003D0910.x144 == 0) {
+                D_L20_001E2E80_003D0910.x144 = m;
+                D_L20_001E2E80_003D0910.x148 = 0;
             }
             func_L01_004450F0(m, 7, 2);
             if (m->b[0x43] != 9) {
                 fe_func_003C3A10(m, 9, 0, 8);
             }
-            if (!(D_00142C58 & 0x2000000)) {
+            if (!(D_00142C58[0] & 0x2000000)) {
                 func_L01_004450F0(m, 4, 2);
                 if (m->b[0x43] != 8) {
                     fe_func_003C3A10(m, 8, 0, 8);
@@ -303,7 +311,7 @@ void func_L20_003D0910(Mo *m) {
             D_L20_001DEBF0 = 1;
             D_L20_001DEBF4 = 1;
             func_L20_003D6BF8(m);
-            fe_func_003C2880(m);
+            fe_func_003C2880_003D0910(m);
             return;
         }
         break;
@@ -329,7 +337,7 @@ void func_L20_003D0910(Mo *m) {
             pv->fp[0x644/4][1] = 3.0f;
             n = D_L20_001E2698_d;
         }
-        if ((n == D_L20_001D67A8_d) && (D_001A7430 <= 0)) {
+        if ((n == D_L20_001D67A8_d) && (D_001A7430[0] <= 0)) {
             D_L20_001D67A8_d = n + 1;
         }
         if ((pv->h[0x234/2] != 1) && (func_L01_004561E0(m) == 0)) {
@@ -341,8 +349,8 @@ void func_L20_003D0910(Mo *m) {
         {
         s32 r = func_L01_00454370(m, pv->b + 0x160);
         if (r & 1) {
-            if (D_L20_001E2E80.x144 == m) {
-                D_L20_001E2E80.x144 = 0;
+            if (D_L20_001E2E80_003D0910.x144 == m) {
+                D_L20_001E2E80_003D0910.x144 = 0;
             }
             m->i[0x98/4] = 0;
             m->uh[0x34/2] = (m->uh[0x34/2] | 0x41) & 0xEFFF;
@@ -427,7 +435,7 @@ void func_L20_003D0910(Mo *m) {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, -(3.5f / den));
+            fe_func_0038CF68_003D0910(sp10, m->b + 0xD0, -(3.5f / den));
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -482,7 +490,7 @@ void func_L20_003D0910(Mo *m) {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, -(7.0f / den2));
+            fe_func_0038CF68_003D0910(sp10, m->b + 0xD0, -(7.0f / den2));
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -544,7 +552,7 @@ void func_L20_003D0910(Mo *m) {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, 3.5f / den3);
+            fe_func_0038CF68_003D0910(sp10, m->b + 0xD0, 3.5f / den3);
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -594,27 +602,27 @@ void func_L20_003D0910(Mo *m) {
         }
         if ((func_L01_0044E1B8(m, 120.0f) != 0) && (m->b[0x42] == 0xE) && (pv->i[0x5CC/4] >= 2)) {
             fe_func_003A52A0(0xE, 0, m);
-            fe_func_0038CF68(sp0, m->b + 0xD0, 2.0f);
+            fe_func_0038CF68_003D0910(sp0, m->b + 0xD0, 2.0f);
             vec_add_ab(sp0, sp0, m->b + 0x10);
-            pv->mp[0x300/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            pv->mp[0x300/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x300/4], m);
             pv->mp[0x300/4]->q[0x10/16] = *(u128_t *)sp0;
             fe_func_003C3938(pv->mp[0x300/4], 0, m->b[0x40]);
         }
         if ((func_L01_0044E1B8(m, 125.0f) != 0) && (m->b[0x42] == 0xE) && (pv->i[0x5CC/4] >= 2)) {
             fe_func_003A52A0(0xE, 0, m);
-            fe_func_0038CF68(sp0, m->b + 0xD0, -2.0f);
+            fe_func_0038CF68_003D0910(sp0, m->b + 0xD0, -2.0f);
             vec_add_ab(sp0, sp0, m->b + 0x10);
-            pv->mp[0x304/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            pv->mp[0x304/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x304/4], m);
             pv->mp[0x304/4]->q[0x10/16] = *(u128_t *)sp0;
             fe_func_003C3938(pv->mp[0x304/4], 0, m->b[0x40]);
         }
         if ((func_L01_0044E1B8(m, 115.0f) != 0) && (m->b[0x42] == 0xE) && (pv->i[0x5CC/4] != 2)) {
             fe_func_003A52A0(0xE, 0, m);
-            fe_func_0038CF68(sp0, m->b + 0xC0, 2.0f);
+            fe_func_0038CF68_003D0910(sp0, m->b + 0xC0, 2.0f);
             vec_add_ab(sp0, sp0, m->b + 0x10);
-            pv->mp[0x308/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            pv->mp[0x308/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x308/4], m);
             pv->mp[0x308/4]->q[0x10/16] = *(u128_t *)sp0;
             fe_func_003C3938(pv->mp[0x308/4], 0, m->b[0x40]);
@@ -846,7 +854,7 @@ void func_L20_003D0910(Mo *m) {
             s32 k;
             f32 *p30;
             fe_func_0038CAD0(pv->b + 0x2F0);
-            func_L01_00404A10(func_L20_003D6F30, m);
+            func_L01_00404A10_003D0910(func_L20_003D6F30, m);
             fe_func_003C2F58(m, 3, sp0);
             p30 = sp30;
             *(u128_t *)sp30 = 0;
@@ -875,7 +883,7 @@ void func_L20_003D0910(Mo *m) {
                 sp60[1] = sp40[1] + func_L01_00443A18(0.0f, 0.3f);
                 sp60[2] = sp40[2] + func_L01_00443A18(0.0f, 0.3f);
                 n = func_L01_00443A18(1.0f, 2.0f);
-                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0, 0x7F000000, 0);
+                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0_003D0910, 0x7F000000, 0);
                 if (p != 0) {
                     u8 *q;
                     p[3] = 0x44;
@@ -954,7 +962,7 @@ void func_L20_003D0910(Mo *m) {
                     c = 0x7C30;
                 }
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(sp0, D_L20_001D66B0, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(sp0, D_L20_001D66B0_003D0910, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[2] = D_L20_00220258[0x170/4][1];
                 }
@@ -976,7 +984,7 @@ void func_L20_003D0910(Mo *m) {
                 }
                 q = sp10;
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(q, D_L20_001D66B0, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(q, D_L20_001D66B0_003D0910, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[3] = (fe_func_00382468(2) != 0) ? 0x48 : 0x44;
                     p[2] = D_L20_00220258[0x170/4][0];
@@ -987,13 +995,13 @@ void func_L20_003D0910(Mo *m) {
                 u8 *p;
                 fe_func_00382580(sp20, pv->f[0x2E8/4] * 0.10000001f, pv->f[0x2E8/4] * 0.14000002f);
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
                 }
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1036,10 +1044,10 @@ void func_L20_003D0910(Mo *m) {
                 a = 0x1AF1;
                 b = 0xD90;
             }
-            o = fe_func_003C24B0(a, b);
+            o = fe_func_003C24B0_003D0910(a, b);
             *(u128_t *)sp0 = m->q[0x10/16];
             sp0[2] += 1.0f;
-            func_L20_003EAA70(m, D_L20_001D66B0, sp0);
+            func_L20_003EAA70(m, D_L20_001D66B0_003D0910, sp0);
             o->b[0x30] = 0xFF;
             o->uh[0x32/2] = 0xFF;
             o->b[0x31] = 1;
@@ -1048,15 +1056,15 @@ void func_L20_003D0910(Mo *m) {
             o->q[0xF0/16] = m->q[0xF0/16];
             o->f[0x18/4] += 1.5f;
             o->d[0x38/8] = m->d[0x38/8];
-            fe_func_0038CF68(sp10, m->b + 0xC0, 2.0f);
+            fe_func_0038CF68_003D0910(sp10, m->b + 0xC0, 2.0f);
             vec_add_ba(o->b + 0x10, sp10, o->b + 0x10);
             pv->i[0x2EC/4] = 0x15;
             pv->i[0x2F0/4] = 5;
-            D_L20_001E2E80.x40 = 0.1f;
-            D_L20_001E2E80.x48 = 0x4B;
-            D_L20_001E2E80.x20 = 0.2f;
-            D_L20_001E2E80.x28 = 0x32;
-            D_L20_001E2E80.x2C = 0;
+            D_L20_001E2E80_003D0910.x40 = 0.1f;
+            D_L20_001E2E80_003D0910.x48 = 0x4B;
+            D_L20_001E2E80_003D0910.x20 = 0.2f;
+            D_L20_001E2E80_003D0910.x28 = 0x32;
+            D_L20_001E2E80_003D0910.x2C = 0;
             p30 = sp30;
             for (i = 0; i < 300; i++) {
                 s32 n;
@@ -1066,7 +1074,7 @@ void func_L20_003D0910(Mo *m) {
                 fe_func_003C2F58(m, 3, sp20);
                 fe_func_00382580(p30, 0.6f, 0.70000005f);
                 n = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.0f, 6);
+                p = func_L01_004713C8_003D0910(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.0f, 6);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1080,7 +1088,7 @@ void func_L20_003D0910(Mo *m) {
                     c = 0x7C30;
                 }
                 n2 = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
+                p = func_L01_004713C8_003D0910(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1158,7 +1166,7 @@ void func_L20_003D0910(Mo *m) {
             fe_func_0038DBA0(m->f[0xF8/4], fe_func_0038D160(((Hero *)D_001A4BE0)->f[0x80/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0x84/4] - m->f[0x14/4]));
             h = pv->i[0x658/4];
             if ((h == -1) || (s = D_001A30B0 + (h << 7), *(Mo **)(s + 0xDC) != m) || (s[0xD0] == 0)) {
-                pv->i[0x658/4] = func_L01_004AAC98(0, 4, m, 0x1CB4);
+                pv->i[0x658/4] = func_L01_004AAC98_003D0910(0, 4, m, 0x1CB4);
             }
             if (m->uh[0x96/2] >= 0x97) {
                 h = pv->i[0x658/4];
@@ -1228,7 +1236,7 @@ void func_L20_003D0910(Mo *m) {
                 *(u128_t *)sp40 = *(u128_t *)sp30;
                 vec_sub_ab(sp60, D_001A4BE0 + 0xD0, sp40);
                 z = sp60[2];
-                d = fe_func_0038CED8(sp60);
+                d = fe_func_0038CED8_003D0910(sp60);
                 a = m->f[0xF8/4];
                 a = fe_func_0038DAB8(a, fe_func_0038D098(pv->f[0x630/4]));
                 sp60[0] = fe_func_0038D098(a) * d;
@@ -1244,7 +1252,7 @@ void func_L20_003D0910(Mo *m) {
                     *(u128_t *)sp40 = *(u128_t *)sp30;
                     vec_sub_ab(sp60, D_001A4BE0 + 0xD0, sp40);
                     z = sp60[2];
-                    d = fe_func_0038CED8(sp60);
+                    d = fe_func_0038CED8_003D0910(sp60);
                     a = m->f[0xF8/4];
                     a = fe_func_0038DB00(a, fe_func_0038D098(pv->f[0x630/4]));
                     sp60[0] = fe_func_0038D098(a) * d;
@@ -1322,7 +1330,7 @@ void func_L20_003D0910(Mo *m) {
             s32 k;
             f32 *p30;
             fe_func_0038CAD0(pv->b + 0x2F0);
-            func_L01_00404A10(func_L20_003D6F30, m);
+            func_L01_00404A10_003D0910(func_L20_003D6F30, m);
             fe_func_003C2F58(m, 9, sp0);
             p30 = sp30;
             *(u128_t *)sp30 = 0;
@@ -1350,7 +1358,7 @@ void func_L20_003D0910(Mo *m) {
                 sp60[1] = sp40[1] + func_L01_00443A18(0.0f, 0.3f);
                 sp60[2] = sp40[2] + func_L01_00443A18(0.0f, 0.3f);
                 n = func_L01_00443A18(1.0f, 2.0f);
-                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0, 0x7F000000, 0);
+                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0_003D0910, 0x7F000000, 0);
                 if (p != 0) {
                     u8 *q;
                     p[3] = 0x44;
@@ -1415,7 +1423,7 @@ void func_L20_003D0910(Mo *m) {
                     c = 0x7C0030;
                 }
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(sp0, D_L20_001D66B0, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(sp0, D_L20_001D66B0_003D0910, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[2] = D_L20_00220258[0x170/4][1];
                 }
@@ -1433,7 +1441,7 @@ void func_L20_003D0910(Mo *m) {
                 }
                 q = sp10;
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(q, D_L20_001D66B0, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(q, D_L20_001D66B0_003D0910, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[3] = (fe_func_00382468(2) != 0) ? 0x48 : 0x44;
                     p[2] = D_L20_00220258[0x170/4][0];
@@ -1444,13 +1452,13 @@ void func_L20_003D0910(Mo *m) {
                 u8 *p;
                 fe_func_00382580(sp20, pv->f[0x2E8/4] * 0.10000001f, pv->f[0x2E8/4] * 0.14000002f);
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
                 }
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1474,7 +1482,7 @@ void func_L20_003D0910(Mo *m) {
                 *(u128_t *)sp10 = *(u128_t *)(D_001A4BE0 + 0xD0);
                 if (fe_func_0038CF38(pos, D_001A4BE0 + 0x80) > 6.0f) {
                     vec_sub_ba(sp20, m->b + 0x10, D_001A4BE0 + 0x80);
-                    fe_func_0038CF68(sp20, sp20, 5.0f);
+                    fe_func_0038CF68_003D0910(sp20, sp20, 5.0f);
                     vec_add_ab(sp10, sp20, sp10);
                 }
                 w = fe_func_0038CF38(pos, D_001A4BE0 + 0x80) * 3.0f * 0.00040000002f;
@@ -1484,7 +1492,7 @@ void func_L20_003D0910(Mo *m) {
                 vec_sub_ab(sp20, sp10, sp0);
                 sp20[2] = 0.0f;
                 v2 = 0.20000002f;
-                fe_func_0038CF68(sp20, sp20, v2);
+                fe_func_0038CF68_003D0910(sp20, sp20, v2);
                 v2 = 0.20000002f;
                 sp20[2] = func_L01_00447878(sp0, sp10, 0, v2, -w);
                 fe_func_003A52A0(0x13, 0, m);
@@ -1564,17 +1572,17 @@ void func_L20_003D0910(Mo *m) {
         break;
     case 27:
         if (func_L01_004561B8(m) != 0) {
-            if (D_L20_001E2E80.x144 == m) {
-                D_L20_001E2E80.x144 = 0;
+            if (D_L20_001E2E80_003D0910.x144 == m) {
+                D_L20_001E2E80_003D0910.x144 = 0;
             }
             pv->i[0x638/4] = 0;
             pv->i[0xA8/4] |= 5;
             func_L01_0045BD78(m, D_L20_001DEBD0 * 0.00040000002f, D_L20_001DEBCC * 0.020000001f, 0.010053097f, 0.25132743f);
         }
         pv->h[0x36/2] = 8;
-        func_L01_00404808(func_L20_003D7558, m);
-        func_L01_00404808(func_L20_003D7950, m);
-        func_L01_00404808(func_L20_003D8248, m);
+        func_L01_00404808_003D0910(func_L20_003D7558, m);
+        func_L01_00404808_003D0910(func_L20_003D7950, m);
+        func_L01_00404808_003D0910(func_L20_003D8248, m);
         if (func_L01_0045BDE8(m, pv->i[0x63C/4]) != 0) {
             pv->q[0x5B0/16] = m->q[0x10/16];
             func_L01_004450F0(m, 0x1C, -1);
@@ -1584,10 +1592,10 @@ void func_L20_003D0910(Mo *m) {
         {
         u8 *pos;
         pv->h[0x36/2] = 8;
-        func_L01_00404808(func_L20_003D7558, m);
+        func_L01_00404808_003D0910(func_L20_003D7558, m);
         pos = m->b + 0x10;
-        func_L01_00404808(func_L20_003D7950, m);
-        func_L01_00404808(func_L20_003D8248, m);
+        func_L01_00404808_003D0910(func_L20_003D7950, m);
+        func_L01_00404808_003D0910(func_L20_003D8248, m);
         func_L01_0045BD10(m, fe_func_0038D160(((Hero *)D_001A4BE0)->f[0xD0/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0xD4/4] - m->f[0x14/4]));
         if ((fe_func_0038CF38(pos, D_001A4BE0 + 0x80) < 20.0f) || ((pv->i[0x640/4] != -1) && (fe_func_00382380(D_001A4BE0 + 0x80, pv->i[0x674/4], 0) != 0))) {
             if (pv->i[0x640/4] != -1) {
@@ -1596,9 +1604,9 @@ void func_L20_003D0910(Mo *m) {
                 func_L01_004450F0(m, 0x1B, -1);
             } else {
                 func_L01_00456230(&D_L20_001E029C_d[pv->i[0x660/4]], 1);
-                if (D_L20_001E2E80.x144 == 0) {
-                    D_L20_001E2E80.x144 = m;
-                    D_L20_001E2E80.x148 = 0;
+                if (D_L20_001E2E80_003D0910.x144 == 0) {
+                    D_L20_001E2E80_003D0910.x144 = m;
+                    D_L20_001E2E80_003D0910.x148 = 0;
                 }
                 if (m->b[0x43] != 0xD) {
                     fe_func_003C3A10(m, 0xD, 0, 5);
@@ -1617,9 +1625,9 @@ void func_L20_003D0910(Mo *m) {
         {
         f32 f;
         pv->h[0x36/2] = 8;
-        func_L01_00404808(func_L20_003D7558, m);
-        func_L01_00404808(func_L20_003D7950, m);
-        func_L01_00404808(func_L20_003D8248, m);
+        func_L01_00404808_003D0910(func_L20_003D7558, m);
+        func_L01_00404808_003D0910(func_L20_003D7950, m);
+        func_L01_00404808_003D0910(func_L20_003D8248, m);
         func_L01_0045BD10(m, fe_func_0038D160(((Hero *)D_001A4BE0)->f[0x80/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0x84/4] - m->f[0x14/4]));
         if (func_L01_004561B8(m) != 0) {
             pv->f[0x2E8/4] = 0.0f;
@@ -1663,7 +1671,7 @@ void func_L20_003D0910(Mo *m) {
             s32 k;
             f32 *p30;
             fe_func_0038CAD0(pv->b + 0x2F0);
-            func_L01_00404A10(func_L20_003D6F30, m);
+            func_L01_00404A10_003D0910(func_L20_003D6F30, m);
             fe_func_003C2F58(m, 3, sp0);
             p30 = sp30;
             *(u128_t *)sp30 = 0;
@@ -1691,7 +1699,7 @@ void func_L20_003D0910(Mo *m) {
                 sp60[1] = sp40[1] + func_L01_00443A18(0.0f, 0.3f);
                 sp60[2] = sp40[2] + func_L01_00443A18(0.0f, 0.3f);
                 n = func_L01_00443A18(1.0f, 2.0f);
-                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0, 0x7F000000, 0);
+                p = func_L01_004669B0(0.0f, 1.0f, 1.01f, fe_func_003824E0(0.2f, 0.75f) * 210000.0f, sp60, n, D_L20_001D66B0_003D0910, 0x7F000000, 0);
                 if (p != 0) {
                     u8 *q;
                     p[3] = 0x44;
@@ -1756,7 +1764,7 @@ void func_L20_003D0910(Mo *m) {
                     c = 0x7C30;
                 }
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(sp0, D_L20_001D66B0, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(sp0, D_L20_001D66B0_003D0910, 0xC, 6, c, n, e * 6.0f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[2] = D_L20_00220258[0x170/4][1];
                 }
@@ -1778,7 +1786,7 @@ void func_L20_003D0910(Mo *m) {
                 }
                 q = sp10;
                 n = func_L01_00443A18(1.0f, -1.0f);
-                p = func_L01_0046A610(q, D_L20_001D66B0, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
+                p = func_L01_0046A610(q, D_L20_001D66B0_003D0910, 0xC, 0x7F, c, n, e * 2.4f, 500.0f, 1.0f, 0.0f, 0.0f);
                 if (p != 0) {
                     p[3] = (fe_func_00382468(2) != 0) ? 0x48 : 0x44;
                     p[2] = D_L20_00220258[0x170/4][0];
@@ -1789,13 +1797,13 @@ void func_L20_003D0910(Mo *m) {
                 u8 *p;
                 fe_func_00382580(sp20, pv->f[0x2E8/4] * 0.10000001f, pv->f[0x2E8/4] * 0.14000002f);
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.00584f, 6);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
                 }
                 n = func_L01_00443A18(2.0f, 5.0f);
-                p = func_L01_004713C8(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
+                p = func_L01_004713C8_003D0910(sp0, sp20, 0xC, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 3.0f * pv->f[0x2E8/4], 0, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.00584f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1838,10 +1846,10 @@ void func_L20_003D0910(Mo *m) {
                 a = 0x1AF1;
                 b = 0xD90;
             }
-            o = fe_func_003C24B0(a, b);
+            o = fe_func_003C24B0_003D0910(a, b);
             *(u128_t *)sp0 = m->q[0x10/16];
             sp0[2] += 1.0f;
-            func_L20_003EAA70(m, D_L20_001D66B0, sp0);
+            func_L20_003EAA70(m, D_L20_001D66B0_003D0910, sp0);
             o->b[0x30] = 0xFF;
             o->uh[0x32/2] = 0xFF;
             o->b[0x31] = 1;
@@ -1850,15 +1858,15 @@ void func_L20_003D0910(Mo *m) {
             o->q[0xF0/16] = m->q[0xF0/16];
             o->f[0x18/4] += 1.5f;
             o->d[0x38/8] = m->d[0x38/8];
-            fe_func_0038CF68(sp10, m->b + 0xC0, 2.0f);
+            fe_func_0038CF68_003D0910(sp10, m->b + 0xC0, 2.0f);
             vec_add_ba(o->b + 0x10, sp10, o->b + 0x10);
             pv->i[0x2EC/4] = 0x15;
             pv->i[0x2F0/4] = 5;
-            D_L20_001E2E80.x40 = 0.1f;
-            D_L20_001E2E80.x48 = 0x4B;
-            D_L20_001E2E80.x20 = 0.2f;
-            D_L20_001E2E80.x28 = 0x32;
-            D_L20_001E2E80.x2C = 0;
+            D_L20_001E2E80_003D0910.x40 = 0.1f;
+            D_L20_001E2E80_003D0910.x48 = 0x4B;
+            D_L20_001E2E80_003D0910.x20 = 0.2f;
+            D_L20_001E2E80_003D0910.x28 = 0x32;
+            D_L20_001E2E80_003D0910.x2C = 0;
             p30 = sp30;
             for (i = 0; i < 300; i++) {
                 s32 n;
@@ -1868,7 +1876,7 @@ void func_L20_003D0910(Mo *m) {
                 fe_func_003C2F58(m, 3, sp20);
                 fe_func_00382580(p30, 0.6f, 0.70000005f);
                 n = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.0f, 6);
+                p = func_L01_004713C8_003D0910(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * pv->f[0x2E8/4], 0, n, 0x7F, 0x7F, pv->f[0x2E8/4] * 2100.0f, 0.0f, 6);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1882,7 +1890,7 @@ void func_L20_003D0910(Mo *m) {
                     c = 0x7C30;
                 }
                 n2 = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
+                p = func_L01_004713C8_003D0910(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1940,7 +1948,7 @@ void func_L20_003D0910(Mo *m) {
             Spot *s;
             fe_func_003A52A0(0xE, 0, m);
             s = &D_L20_001E0380_d[pv->i[0x71C/4]];
-            pv->mp[0x304/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            pv->mp[0x304/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x304/4], m);
             pv->mp[0x304/4]->q[0x10/16] = s->pos;
             fe_func_003C3938(pv->mp[0x304/4], 0, m->b[0x40]);
@@ -1949,7 +1957,7 @@ void func_L20_003D0910(Mo *m) {
             Spot *s;
             fe_func_003A52A0(0xE, 0, m);
             s = &D_L20_001E0380_d[pv->i[0x720/4]];
-            pv->mp[0x308/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            pv->mp[0x308/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x308/4], m);
             pv->mp[0x308/4]->q[0x10/16] = s->pos;
             fe_func_003C3938(pv->mp[0x308/4], 0, m->b[0x40]);
@@ -1957,8 +1965,8 @@ void func_L20_003D0910(Mo *m) {
         if ((m->b[0x42] == 0xF) && ((D_L20_001DFD40_d & 0xF) == (((s32)m >> 8) & 0xF))) {
             Spot *s;
             fe_func_003A52A0(0xE, 0, m);
-            s = &D_L20_001E0380_d[pv->i[0x710/4 + fe_func_00382468(0x10)]];
-            pv->mp[0x308/4] = fe_func_003C24B0(0x1CAF, 0x130);
+            s = &D_L20_001E0380_d[((s32 *)(pv->b + 0x710))[fe_func_00382468(0x10)]];
+            pv->mp[0x308/4] = fe_func_003C24B0_003D0910(0x1CAF, 0x130);
             func_L01_00456160(pv->mp[0x308/4], m);
             pv->mp[0x308/4]->q[0x10/16] = s->pos;
             fe_func_003C3938(pv->mp[0x308/4], 0, m->b[0x40]);

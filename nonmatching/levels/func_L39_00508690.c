@@ -1,11 +1,15 @@
-/* PAL near miss (k6 agent 2, 2026-11-26), written from retail (no earlier draft). Flags: the file's (`@ee296 @eeas -O2 -G0`, Sony's
- * ee-gcc 2.96 and ee-as), checked with tools/check.py at level 39: 50 = 50 instructions, 24 aligned rows differ, all in the second loop.
- * What matched the first part: the first loop as gotos (retail computes items[i] as i << 2 each time: no strength reduction, which every
- * for/while/do form here gets), the type key in a local set at the top (retail forms `la D_L39_0046F010` once, before the loop), and the two
- * -1 stores as one chained assignment. Left: in the second loop retail reloads src[i] in the body (`lw $a0, 0($v0)` after the test's
- * `lw $v1`, whose register then takes the constant 1 in the bne slot: bne, not bnel), where this C reuses the test's load; and the
- * register pairs dst/src ($t4/$t3 in retail) and j / i*4 ($t1/$t0) are swapped. Declaration order, a while/for second loop (strength-
- * reduced, worse), a separate index for the second loop, `dst[j] = 1` and a u32 compare made no difference.
+/* PAL near miss (k6 agent 2, 2026-11-26), written from retail (no earlier draft). Flags: the file's line plus -fno-strength-reduce
+ * (`@ee296 @eeas -O2 -G0 -fno-strength-reduce`; func_L39_00508470, 005084A8, 00508540, 005085B0 and 00508620, the file's other C,
+ * still match with it). With it the first loop is a plain for (;;) and matches retail exactly (no strength reduction of items[i],
+ * the type key `la` hoisted, the loop head aligned); without it every loop form is strength-reduced. checked with tools/check.py at
+ * level 39: 20 aligned rows, all in the second loop, written here with gotos (retail: no test copy, the -1 and 1 constants
+ * materialised in the loop, src[i] reloaded in the body, the body label aligned). A permuter run (tools/permuter_engine.py)
+ * found that `do { goto test; } while (0);` in place of `goto test;` leaves 2 words (the src load and `move $t0, $zero` swap
+ * around the `b`): a loop note around the entry jump gives the alignment, the reload and the constants. That is not plausible
+ * source, so it is not used; a real while/for second loop gets its exit test copied and its constants hoisted (35+ rows).
+ * A second permuter run reached MATCH with the first loop as for (;;), `src = ...` after `i = 0; j = 0;`, and a dead
+ * `items++; items--;` in the test block before `goto body` (items no longer invariant there): also not plausible, but it says
+ * the original second loop treats items (or what is indexed with i*4 there) as changing inside the loop.
  */
 #include "common.h"
 /* localdecomp:start func_L39_00508690 */
@@ -24,18 +28,19 @@ s32 func_L39_00508690(Ctx_00508690 *ctx, s32 n, Item_00508690 **items, void *typ
     dst = ctx->inner->data;
     dst[n - 1] = dst[n - 2] = -1;
     i = 0;
-find:
-    p = items[i];
-    i++;
-    if (p == 0) {
-        return 0;
+    for (;;) {
+        p = items[i];
+        i++;
+        if (p == 0) {
+            return 0;
+        }
+        if (p->type == key) {
+            break;
+        }
     }
-    if (p->type != key) {
-        goto find;
-    }
-    src = ((Inner_00508690 *)p->data)->data;
     i = 0;
     j = 0;
+    src = ((Inner_00508690 *)p->data)->data;
     goto test;
 body:
         if (src[i] == 1) {
