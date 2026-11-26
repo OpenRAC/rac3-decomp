@@ -564,7 +564,7 @@ extern Weapon_003DABC8 D_L01_002C5600_003DABC8[];
 extern u8 *D_L01_001EEA80[];
 extern s32 D_L01_001DAFEC;
 __asm__(".extern D_L01_001E2430, 16");
-extern s32 D_L01_001DDBB0;
+extern s32 D_L01_001DDBB0_003DABC8;
 void func_L01_003DABC8(u8 *self) {
     extern f32 func_003824E0(f32, f32);
     extern f32 func_00382538(void);
@@ -670,7 +670,7 @@ void func_L01_003DABC8(u8 *self) {
         func_L01_00424D88(*(s32 *)(vars + 0x30));
         *(s32 *)(vars + 0x30) = -1;
     }
-    D_L01_001DDBB0 = 1;
+    D_L01_001DDBB0_003DABC8 = 1;
     *(s32 *)D_L01_001E2430 = 50;
     func_003C2880(self);
     }

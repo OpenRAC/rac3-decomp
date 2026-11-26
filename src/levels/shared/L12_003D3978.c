@@ -46,10 +46,10 @@ extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038CED8(void *);
 extern f32 D_L01_001DEEE4;
 extern f32 D_L01_001DEF0C;
-extern f32 D_L01_001DEF10;
+extern f32 D_L12_001DEF10;
 __asm__(".extern D_L01_001DEEE4, 4");
 __asm__(".extern D_L01_001DEF0C, 4");
-__asm__(".extern D_L01_001DEF10, 4");
+__asm__(".extern D_L12_001DEF10, 4");
 
 void func_L12_003D3978(u8 *obj, u8 *p) {
     V4_003D3978 t;
@@ -69,7 +69,7 @@ void func_L12_003D3978(u8 *obj, u8 *p) {
         *(f32 *)(p + 0x274) = r;
         *(f32 *)(p + 0x274) = func_0038DAB8(r, *(f32 *)(p + 0x27C));
         dist = func_L01_0040E570(obj + 0x10, &q);
-        if (dist < D_L01_001DEF10 * D_L01_001DEF10) {
+        if (dist < D_L12_001DEF10 * D_L12_001DEF10) {
             r = -func_0038D160(func_0038CED8(&d), d.z);
         } else {
             r = -func_0038D160(func_0038CED8(&d), d.z);

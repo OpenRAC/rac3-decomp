@@ -13,7 +13,6 @@ extern void func_003B4218(void);
 
 INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B4218);
 
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C690);
 
 extern s32 D_001D4CE8_003B3BF8;
 extern u8 D_001D9FA0_003B3BF8;

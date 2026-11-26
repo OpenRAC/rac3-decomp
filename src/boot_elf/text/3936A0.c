@@ -43,3 +43,4 @@ done:
     return result;
 }
 /* localdecomp:end func_003936A0 */
+TEXT_PADDING(2);
