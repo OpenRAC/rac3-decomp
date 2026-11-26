@@ -120,9 +120,14 @@ def score(o_path, func):
             if off + i * 4 in resolved:
                 ours[i] = resolved[off + i * 4]
         A = [_norm(w) for w in ours]
+        B = list(B)
         for i in range(len(ours)):
             if (off + i * 4) in mask and mask[off + i * 4] != 0xFFFFFFFF:
                 A[i] = re.sub(r"(-?0x[0-9a-f]+|\b\d+)$", "M", A[i])
+                # a field no symbol gives (a section-relative %hi/%lo, such as a label in .text):
+                # masked on retail's side at the same place too, as tools/check.py does
+                if i < len(B):
+                    B[i] = re.sub(r"(-?0x[0-9a-f]+|\b\d+)$", "M", B[i])
         sm = difflib.SequenceMatcher(None, A, B, autojunk=False)
         mapping = {}
         ops = sm.get_opcodes()
@@ -135,8 +140,14 @@ def score(o_path, func):
             if tag == "equal":
                 for k in range(i2 - i1):
                     ti, tj = _target(ours[i1 + k], i1 + k), _target(th[j1 + k], j1 + k)
-                    if ti is not None and mapping.get(ti) != tj:
-                        nd += 1
+                    if ti is None:
+                        continue
+                    if 0 <= ti < len(ours):
+                        nd += mapping.get(ti) != tj
+                    else:
+                        # a target outside the function (or a data word that decodes as a branch,
+                        # such as a protected DNAS block's ciphertext): the same offset on both sides
+                        nd += (tj is None or ti - (i1 + k) != tj - (j1 + k))
                 continue
             nd += max(i2 - i1, j2 - j1)
         return nd
