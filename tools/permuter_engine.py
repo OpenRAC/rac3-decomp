@@ -132,10 +132,12 @@ def prepare(src_text, func, target, toolchain, runner, mode=None, asm=None, no_c
         cpp = cpp or psu.default_cpp(toolchain, runner)
         base, hints, attrs = psu.build_base(src_text, func, cpp, no_context, tf)
         flags = tf.apply_overrides(flags, mode, asm)
-        if not level and ("@ee29" in flags or "@ee296" in flags or "@eeas" in flags):
-            raise RuntimeError(f"{func} is in an @ee29/@ee296/@eeas range; the engine only drives SN ee-gcc")
+        # level functions and Sony's compilers (@ee29/@ee296/@eeas) compile through check.py's own
+        # compile (_Compiler._compile_level)
+        sony = "@ee29" in flags or "@ee296" in flags or "@eeas" in flags
         return dict(func=func, target=target, base=base, prelude="\n".join(h.strip() for h in hints) + "\n",
-                    attrs=attrs, flags=flags, toolchain=toolchain, runner=runner, level=bool(level))
+                    attrs=attrs, flags=flags, toolchain=toolchain, runner=runner, level=bool(level),
+                    via_check=bool(level) or sony)
     finally:
         os.chdir(cwd)
 
@@ -170,7 +172,7 @@ class _Compiler:
         for f in (s, o):
             if os.path.exists(f):
                 os.remove(f)
-        if self.cfg.get("level"):
+        if self.cfg.get("level") or self.cfg.get("via_check"):
             return self._compile_level(c, o)
         p = subprocess.run(self.base + ["-S", "-I", "include", "-I", "."] + self.cc_flags + ["-o", s, c],
                            cwd=ROOT, capture_output=True, text=True)
@@ -189,8 +191,9 @@ class _Compiler:
 
 
     def _compile_level(self, c, o):
-        """A level function: check.py's own compile (its level names, loop padding, div.s nops,
-        @ee29/@ee296/@eeas), with no context added, since base.c already holds the file's context.
+        """A level function, or one Sony's compilers build: check.py's own compile (level names,
+        loop padding, div.s nops, @ee29/@ee296/@eeas), with no context added, since base.c already
+        holds the file's context.
         base.c is preprocessed, so the "common.h" check.py would add is already in it."""
         import io, contextlib
         import check as tf
