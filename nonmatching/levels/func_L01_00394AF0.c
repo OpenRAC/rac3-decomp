@@ -4,9 +4,9 @@
 #include "vu0.h"
 extern s32 D_L01_001DFB40;
 extern u8 D_0014263F[];
-extern u8 D_L01_002C5600[][240];
+extern u8 D_L01_002C5600_00394AF0[][240];
 typedef struct { u8 pad[0x20]; f32 strength; s32 pad24; s32 frames, timer; } Effect_00394AF0;
-extern Effect_00394AF0 D_L01_001E2A40;
+extern Effect_00394AF0 D_L01_001E2A40_00394AF0;
 extern s32 D_L01_001D673C;
 extern vu0_q D_L01_001EAA20;
 void func_L01_00394AF0(u8 *m) {
@@ -46,11 +46,11 @@ void func_L01_00394AF0(u8 *m) {
         *(s32 *)(p + 0x34) = next;
         if (rest == 0 && next >= 9) {
             if ((u32)(old - 9) < 2) {
-                D_L01_001E2A40.strength = 0.45f;
-                D_L01_001E2A40.frames = 21;
-                D_L01_001E2A40.timer = 0;
+                D_L01_001E2A40_00394AF0.strength = 0.45f;
+                D_L01_001E2A40_00394AF0.frames = 21;
+                D_L01_001E2A40_00394AF0.timer = 0;
             }
-            rows = D_L01_002C5600;
+            rows = D_L01_002C5600_00394AF0;
             kind = rows[D_0014263F[0]][1];
             func_L01_004C7D98(position, &ray);
             func_0038CF68(&ray, &ray, -10.0f);

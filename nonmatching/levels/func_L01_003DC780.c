@@ -4,7 +4,7 @@
 #include "common.h"
 /* localdecomp:start func_L01_003DC780 */
 #include "vu0.h"
-extern u8 *D_001A71A0[];
+extern s32 D_001A71A0[];
 typedef struct { u8 pad[0xD0]; vu0_v4 pos; u8 padE0[0x25C0-0xE0]; u8 *target; u8 pad25C4[0x2850-0x25C4]; s32 alive; } Hero_003DC780;
 extern Hero_003DC780 D_001A4BE0_003DC780;
 extern f32 D_001DF520_sda __attribute__((section(".sdata")));

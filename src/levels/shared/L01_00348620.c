@@ -53,7 +53,45 @@ typedef int s128 __attribute__((mode(TI)));
 
 INCLUDE_ASM("asm/levels", func_L01_00348620);
 
-INCLUDE_ASM("asm/levels", func_L01_00348A98);
+/* localdecomp:start func_L01_00348A98 */
+#include "vu0.h"
+typedef struct { vu0_q a, b; vu0_v4 c; vu0_q d, e; s16 active, timer; f32 u, v, inv; } Row_00348A98;
+extern s32 D_001A71A4[];
+extern s32 D_L01_001D673C;
+extern s32 D_L01_001DD36C;
+__asm__(".extern D_L01_001DD36C, 4");
+static __inline__ void qcopy_00348A98(void *dst, void *src) {
+    *(vu0_q *)dst = *(vu0_q *)src;
+}
+void func_L01_00348A98(u8 *m) {
+    extern char *func_L01_00457480(s32, s32);
+    extern Info *func_L01_004574B0(s32, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003C5180(void *, f32 *, s32);
+    extern void func_0038CE90(void *, void *, void *);
+    vu0_v4 a, b, c;
+    u8 *p = *(u8 **)(m + 0x68);
+    Row_00348A98 *rows;
+    if (D_001A71A4[0] == 29) return;
+    rows = (Row_00348A98 *)(func_L01_00457480(0xC04, *(s16 *)(p + 0x1A)) + func_L01_004574B0(0xC04, *(s16 *)(p + 0x1A))->unk0);
+    func_0038CF68(&a, p, 1.0f);
+    *(vu0_q *)&b = 0;
+    b.z = 1.0f; b.w = 1.0f;
+    if (D_L01_001D673C) func_003C5180(m + 0x10, &b.x, 1);
+    func_0038CE90(&c, &a, &b);
+    func_0038CF68(&c, &c, 1.0f);
+    func_0038CE90(&rows[*(s16 *)(p + 0x18)].e, &c, &a);
+    rows[*(s16 *)(p + 0x18)].d = *(vu0_q *)&a;
+    rows[*(s16 *)(p + 0x18)].a = *(vu0_q *)(m + 0x10);
+    vec_add_ab(&rows[*(s16 *)(p + 0x18)].b, m + 0x10, p);
+    qcopy_00348A98(&rows[*(s16 *)(p + 0x18)].c, &rows[*(s16 *)(p + 0x18)].b);
+    rows[*(s16 *)(p + 0x18)].timer = (D_L01_001DD36C * 5 + 2) / 6;
+    rows[*(s16 *)(p + 0x18)].inv = 1.0f / rows[*(s16 *)(p + 0x18)].timer;
+    rows[*(s16 *)(p + 0x18)].u = 0;
+    rows[*(s16 *)(p + 0x18)].v = 0;
+    rows[*(s16 *)(p + 0x18)].active = 1;
+}
+/* localdecomp:end func_L01_00348A98 */
 
 /* localdecomp:start func_L01_00348C88 */
 #include "vu0.h"
