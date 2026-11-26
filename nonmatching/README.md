@@ -473,7 +473,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L07_003A7CB8` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
 | `func_L07_003B3DB0` | levels | Codex wave 8 near miss | near miss: 224 words differ with the file's flags |
 | `func_L07_003B8FC0` | levels | Codex wave 8 near miss | near miss: 8 words differ with the file's flags |
-| `func_L07_003BEB50` | levels | Codex wave 6 near miss | near miss: 152 words differ with the file's flags |
 | `func_L07_003BFAE8` | levels | Regional matching study (2026-11-24) | PAL and NTSC-U: 8 to 4 words; edge-colour address ordering and split-address scratch registers remain. |
 | `func_L07_003C6B90` | levels | Codex wave 7 near miss | near miss: 32 words differ with the file's flags |
 | `func_L07_003C9C40` | levels | Codex wave 6 near miss | near miss: 30 words differ with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (the file's line: `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
