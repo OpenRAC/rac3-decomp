@@ -1,47 +1,47 @@
 {
  "version": 2,
  "measures": {
-  "fuzzy_match_percent": 88.365577,
+  "fuzzy_match_percent": 88.354147,
   "total_code": "7524052",
-  "matched_code": "6648672",
-  "matched_code_percent": 88.365577,
+  "matched_code": "6647812",
+  "matched_code_percent": 88.354147,
   "total_functions": 16589,
-  "matched_functions": 16142,
-  "matched_functions_percent": 97.305443,
-  "complete_code": "996344",
-  "complete_code_percent": 13.24212,
+  "matched_functions": 16140,
+  "matched_functions_percent": 97.293387,
+  "complete_code": "995492",
+  "complete_code_percent": 13.230796,
   "total_units": 584,
-  "complete_units": 546
+  "complete_units": 545
  },
  "categories": [
   {
    "id": "core",
    "name": "Core programs",
    "measures": {
-    "fuzzy_match_percent": 95.91515,
+    "fuzzy_match_percent": 95.952058,
     "total_code": "639436",
-    "matched_code": "613316",
-    "matched_code_percent": 95.91515,
+    "matched_code": "613552",
+    "matched_code_percent": 95.952058,
     "total_functions": 2905,
     "matched_functions": 2883,
     "matched_functions_percent": 99.242685,
-    "complete_code": "547468",
-    "complete_code_percent": 85.617325,
+    "complete_code": "546616",
+    "complete_code_percent": 85.484083,
     "total_units": 547,
-    "complete_units": 528
+    "complete_units": 527
    }
   },
   {
    "id": "frontbin",
    "name": "frontbin (front end)",
    "measures": {
-    "fuzzy_match_percent": 95.747419,
+    "fuzzy_match_percent": 95.940023,
     "total_code": "444436",
-    "matched_code": "425536",
-    "matched_code_percent": 95.747419,
+    "matched_code": "426392",
+    "matched_code_percent": 95.940023,
     "total_functions": 1860,
-    "matched_functions": 1846,
-    "matched_functions_percent": 99.247312,
+    "matched_functions": 1847,
+    "matched_functions_percent": 99.301075,
     "complete_code": "362316",
     "complete_code_percent": 81.522649,
     "total_units": 280,
@@ -52,13 +52,13 @@
    "id": "frontbin_text",
    "name": "frontbin .text",
    "measures": {
-    "fuzzy_match_percent": 95.747419,
+    "fuzzy_match_percent": 95.940023,
     "total_code": "444436",
-    "matched_code": "425536",
-    "matched_code_percent": 95.747419,
+    "matched_code": "426392",
+    "matched_code_percent": 95.940023,
     "total_functions": 1860,
-    "matched_functions": 1846,
-    "matched_functions_percent": 99.247312,
+    "matched_functions": 1847,
+    "matched_functions_percent": 99.301075,
     "complete_code": "362316",
     "complete_code_percent": 81.522649,
     "total_units": 280,
@@ -69,34 +69,34 @@
    "id": "boot_elf",
    "name": "boot_elf (engine core + boot front end)",
    "measures": {
-    "fuzzy_match_percent": 95.867012,
+    "fuzzy_match_percent": 95.512101,
     "total_code": "174692",
-    "matched_code": "167472",
-    "matched_code_percent": 95.867012,
+    "matched_code": "166852",
+    "matched_code_percent": 95.512101,
     "total_functions": 851,
-    "matched_functions": 843,
-    "matched_functions_percent": 99.059929,
-    "complete_code": "164844",
-    "complete_code_percent": 94.36265,
+    "matched_functions": 842,
+    "matched_functions_percent": 98.942421,
+    "complete_code": "163992",
+    "complete_code_percent": 93.874934,
     "total_units": 243,
-    "complete_units": 236
+    "complete_units": 235
    }
   },
   {
    "id": "boot_elf_core",
    "name": "boot_elf core.text",
    "measures": {
-    "fuzzy_match_percent": 97.988461,
+    "fuzzy_match_percent": 97.589244,
     "total_code": "155304",
-    "matched_code": "152180",
-    "matched_code_percent": 97.988461,
+    "matched_code": "151560",
+    "matched_code_percent": 97.589244,
     "total_functions": 829,
-    "matched_functions": 823,
-    "matched_functions_percent": 99.276236,
-    "complete_code": "149552",
-    "complete_code_percent": 96.296296,
+    "matched_functions": 822,
+    "matched_functions_percent": 99.155609,
+    "complete_code": "148700",
+    "complete_code_percent": 95.747695,
     "total_units": 222,
-    "complete_units": 216
+    "complete_units": 215
    }
   },
   {
@@ -154,13 +154,13 @@
    "id": "level_code",
    "name": "Level code",
    "measures": {
-    "fuzzy_match_percent": 87.664381,
+    "fuzzy_match_percent": 87.648461,
     "total_code": "6884616",
-    "matched_code": "6035356",
-    "matched_code_percent": 87.664381,
+    "matched_code": "6034260",
+    "matched_code_percent": 87.648461,
     "total_functions": 13684,
-    "matched_functions": 13259,
-    "matched_functions_percent": 96.894183,
+    "matched_functions": 13257,
+    "matched_functions_percent": 96.879567,
     "complete_code": "448876",
     "complete_code_percent": 6.519986,
     "total_units": 37,
@@ -188,13 +188,13 @@
    "id": "levels",
    "name": "Level-specific code",
    "measures": {
-    "fuzzy_match_percent": 93.460009,
+    "fuzzy_match_percent": 93.423113,
     "total_code": "2970524",
-    "matched_code": "2776252",
-    "matched_code_percent": 93.460009,
+    "matched_code": "2775156",
+    "matched_code_percent": 93.423113,
     "total_functions": 5895,
-    "matched_functions": 5807,
-    "matched_functions_percent": 98.507209,
+    "matched_functions": 5805,
+    "matched_functions_percent": 98.473282,
     "complete_code": "448876",
     "complete_code_percent": 15.111004,
     "total_units": 36,
@@ -494,13 +494,13 @@
    "id": "level_19",
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 92.974694,
+    "fuzzy_match_percent": 92.648953,
     "total_code": "164548",
-    "matched_code": "152988",
-    "matched_code_percent": 92.974694,
+    "matched_code": "152452",
+    "matched_code_percent": 92.648953,
     "total_functions": 125,
-    "matched_functions": 121,
-    "matched_functions_percent": 96.8,
+    "matched_functions": 120,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -698,13 +698,13 @@
    "id": "level_32",
    "name": "Level 32: Vid-comic 4",
    "measures": {
-    "fuzzy_match_percent": 91.255605,
+    "fuzzy_match_percent": 90.358744,
     "total_code": "62440",
-    "matched_code": "56980",
-    "matched_code_percent": 91.255605,
+    "matched_code": "56420",
+    "matched_code_percent": 90.358744,
     "total_functions": 126,
-    "matched_functions": 120,
-    "matched_functions_percent": 95.238095,
+    "matched_functions": 119,
+    "matched_functions_percent": 94.444444,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -16811,13 +16811,13 @@
   {
    "name": "frontbin/3C0CA0",
    "measures": {
-    "fuzzy_match_percent": 55.570118,
+    "fuzzy_match_percent": 83.6173,
     "total_code": "3052",
-    "matched_code": "1696",
-    "matched_code_percent": 55.570118,
+    "matched_code": "2552",
+    "matched_code_percent": 83.6173,
     "total_functions": 13,
-    "matched_functions": 11,
-    "matched_functions_percent": 84.615385,
+    "matched_functions": 12,
+    "matched_functions_percent": 92.307692,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -16935,7 +16935,7 @@
     {
      "name": "func_003C1728",
      "size": "856",
-     "fuzzy_match_percent": 0.0,
+     "fuzzy_match_percent": 100.0,
      "address": "2696",
      "metadata": {
       "virtual_address": "3938088"
@@ -29771,17 +29771,17 @@
   {
    "name": "boot_elf/core/123838",
    "measures": {
-    "fuzzy_match_percent": 100.0,
+    "fuzzy_match_percent": 27.230047,
     "total_code": "852",
-    "matched_code": "852",
-    "matched_code_percent": 100.0,
+    "matched_code": "232",
+    "matched_code_percent": 27.230047,
     "total_functions": 4,
-    "matched_functions": 4,
-    "matched_functions_percent": 100.0,
-    "complete_code": "852",
-    "complete_code_percent": 100.0,
+    "matched_functions": 3,
+    "matched_functions_percent": 75.0,
+    "complete_code": "0",
+    "complete_code_percent": 0.0,
     "total_units": 1,
-    "complete_units": 1
+    "complete_units": 0
    },
    "functions": [
     {
@@ -29796,7 +29796,7 @@
     {
      "name": "func_00123840",
      "size": "620",
-     "fuzzy_match_percent": 100.0,
+     "fuzzy_match_percent": 0.0,
      "address": "8",
      "metadata": {
       "virtual_address": "1194048"
@@ -29822,7 +29822,7 @@
     }
    ],
    "metadata": {
-    "complete": true,
+    "complete": false,
     "source_path": "src/boot_elf/core/123838.c",
     "progress_categories": [
      "core",
@@ -127339,13 +127339,13 @@
   {
    "name": "Level 19: Thran Asteroid Belt",
    "measures": {
-    "fuzzy_match_percent": 92.974694,
+    "fuzzy_match_percent": 92.648953,
     "total_code": "164548",
-    "matched_code": "152988",
-    "matched_code_percent": 92.974694,
+    "matched_code": "152452",
+    "matched_code_percent": 92.648953,
     "total_functions": 125,
-    "matched_functions": 121,
-    "matched_functions_percent": 96.8,
+    "matched_functions": 120,
+    "matched_functions_percent": 96.0,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -127364,7 +127364,7 @@
     {
      "name": "func_L19_00302998",
      "size": "536",
-     "fuzzy_match_percent": 100.0,
+     "fuzzy_match_percent": 0.0,
      "address": "664",
      "metadata": {
       "virtual_address": "3156376"
@@ -135547,13 +135547,13 @@
   {
    "name": "Level 32: Vid-comic 4",
    "measures": {
-    "fuzzy_match_percent": 91.255605,
+    "fuzzy_match_percent": 90.358744,
     "total_code": "62440",
-    "matched_code": "56980",
-    "matched_code_percent": 91.255605,
+    "matched_code": "56420",
+    "matched_code_percent": 90.358744,
     "total_functions": 126,
-    "matched_functions": 120,
-    "matched_functions_percent": 95.238095,
+    "matched_functions": 119,
+    "matched_functions_percent": 94.444444,
     "complete_code": "0",
     "complete_code_percent": 0.0,
     "total_units": 1,
@@ -136355,7 +136355,7 @@
     {
      "name": "func_L32_003B6A58",
      "size": "560",
-     "fuzzy_match_percent": 100.0,
+     "fuzzy_match_percent": 0.0,
      "address": "454184",
      "metadata": {
       "virtual_address": "3893848"
