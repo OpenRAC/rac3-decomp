@@ -2032,10 +2032,6 @@
 #define func_L01_0037BDB8 func_L01_0037CEC0
 #define func_L01_0037C250 func_L01_0037D358
 #define func_L01_0037C818 func_L01_0037D920
-#define func_L01_0037CB68 func_L01_0037DC70
-#define func_L01_0037D1E0 func_L01_0037E2E8
-#define func_L01_0037D518 func_L01_0037E620
-#define func_L01_0037D568 func_L01_0037E670
 #define func_L01_0037D7D8 func_L18_0038CDC8
 #define func_L01_0037DEB0 func_L01_0037EFC8
 #define func_L01_0037E748 func_L01_0037F860

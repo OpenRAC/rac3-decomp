@@ -413,7 +413,7 @@ boot_elf	func_00135C10	1	-
 boot_elf	func_00135C60	1	-
 boot_elf	func_00135CE0	1	-
 boot_elf	func_00135CF0	1	-
-boot_elf	func_00135D00	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00135D00	1	-
 boot_elf	func_00135D50	1	-
 boot_elf	func_00135DC8	1	-
 boot_elf	func_00135E40	1	-
@@ -4090,6 +4090,7 @@ levels	func_L01_0037C798	34	-
 levels	func_L01_0037C7D8	34	-
 levels	func_L01_0037C860	34	-
 levels	func_L01_0037C978	34	-
+levels	func_L01_0037CB68	1	level_02: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3200;level_03: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C4A00;level_04: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5F80;level_05: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C8000;level_06: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3800;level_07: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C7280;level_08: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C4EC0;level_09: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5E80;level_10: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3880;level_11: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C8580;level_12: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5680;level_13: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3F80;level_14: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C72C0;level_16: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002D1040;level_17: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002CCF40;level_18: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5F40;level_19: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C8000;level_20: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002CF2C0;level_21: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002CE1C0;level_22: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C7080;level_23: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C6780;level_24: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3580;level_26: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5540;level_27: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C7EC0;level_28: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C2940;level_29: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C57C0;level_30: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C3E40;level_31: D_U_001EAAA0 should be 0x001EAAA0, the bytes make it 0x001E9220;level_32: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5E40;level_33: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C53C0;level_34: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5B40;level_35: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5C00;level_36: D_U_002C5640 should be 0x002C5640, the bytes make it 0x002C5D40
 levels	func_L01_0037D210	34	-
 levels	func_L01_0037E2E8	34	-
 levels	func_L01_0037E620	34	-
