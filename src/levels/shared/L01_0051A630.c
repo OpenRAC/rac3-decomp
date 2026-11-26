@@ -127,15 +127,15 @@ s32 func_L01_0051A9D8(u8 *p, s32 a, s32 b) {
 
 /* localdecomp:start func_L01_0051AA40 */
 
-extern u8 D_L01_001E2450;
-extern void *func_L01_00519990(HT_8 *, u32);
+extern u8 D_L01_001E2450_0051AA40;
+extern void *func_L01_00519990_0051AA40(HT_8 *, u32);
 s32 func_L01_0051AA40(HT_8 *t, u32 key, void *val) {
     s32 i;
-    if (t->n >= 8 || func_L01_00519990(t, key) != 0) return 0;
+    if (t->n >= 8 || func_L01_00519990_0051AA40(t, key) != 0) return 0;
     for (i = 0; i < 8; i++) {
         s32 h = ((key & 7) + ((key % 7) * i + i)) & 7;
         void *v = t->e[h].val;
-        if (v == 0 || v == &D_L01_001E2450) {
+        if (v == 0 || v == &D_L01_001E2450_0051AA40) {
             t->e[h].val = val;
             t->e[h].key = key;
             t->n++;

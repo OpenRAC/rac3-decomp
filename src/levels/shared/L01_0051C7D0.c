@@ -7,15 +7,15 @@ typedef struct { u8 pad[0x10]; s32 (*isA)(void *, s32); } VT_3E6108;
 
 /* localdecomp:start func_L01_0051C7D0 */
 
-extern u8 D_L01_001E2457;
-extern void *func_L01_00519D18(HT_8 *, u32);
+extern u8 D_L01_001E2457_0051C7D0;
+extern void *func_L01_00519D18_0051C7D0(HT_8 *, u32);
 s32 func_L01_0051C7D0(HT_8 *t, u32 key, void *val) {
     s32 i;
-    if (t->n >= 8 || func_L01_00519D18(t, key) != 0) return 0;
+    if (t->n >= 8 || func_L01_00519D18_0051C7D0(t, key) != 0) return 0;
     for (i = 0; i < 8; i++) {
         s32 h = ((key & 7) + ((key % 7) * i + i)) & 7;
         void *v = t->e[h].val;
-        if (v == 0 || v == &D_L01_001E2457) {
+        if (v == 0 || v == &D_L01_001E2457_0051C7D0) {
             t->e[h].val = val;
             t->e[h].key = key;
             t->n++;

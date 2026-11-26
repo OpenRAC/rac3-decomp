@@ -425,14 +425,14 @@ void func_L01_0049F798(s32 a0)
 /* localdecomp:end func_L01_0049F798 */
 
 /* localdecomp:start func_L01_0049F868 */
-extern void func_L01_00517918(s32);
+extern void func_L01_00517918_0049F868(s32);
 extern void func_L01_004A03A8_0049F868(void);
 extern void func_003A2750(s32);
 
 void func_L01_0049F868(void) {
-    func_L01_00517918(16);
-    func_L01_00517918(17);
-    func_L01_00517918(20);
+    func_L01_00517918_0049F868(16);
+    func_L01_00517918_0049F868(17);
+    func_L01_00517918_0049F868(20);
     func_L01_004A03A8_0049F868();
     func_003A2750(1);
 }

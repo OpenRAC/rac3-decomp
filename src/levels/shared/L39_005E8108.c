@@ -18,7 +18,7 @@ typedef struct O_005E8108 {
 } O_005E8108;
 
 extern s32 func_003B9E90(u8 *);
-extern void func_L01_00484A80(s32);
+extern void func_L01_00484A80_005E8108(s32);
 extern s32 func_L01_00517538(s32, f32, f32);
 extern void func_003E8E18_005E8108(s32, s32);
 extern s32 func_L01_00516AA0(s32, s32, s32);
@@ -36,15 +36,15 @@ void func_L39_005E8108(O_005E8108 *o) {
     s32 j;
 
     func_003B9E90((u8 *)o);
-    func_L01_00484A80(0x4F00A8);
+    func_L01_00484A80_005E8108(0x4F00A8);
     func_L01_00517538(0x4F00A8, 0.5f, 0.5f);
     func_003E8E18_005E8108(0x4F00A8, 1);
     func_L01_00516AA0(0x4F00A8, 0x2000, 1);
-    func_L01_00484A80(0x4F00AE);
+    func_L01_00484A80_005E8108(0x4F00AE);
     func_003E8630(0x4F00A8, 0x4F00AE);
     func_L01_00516AA0(0x4F00AE, 0x2000, 1);
     for (i = 0; i < o->f14; i++) {
-        func_L01_00484A80(func_L01_00498938((s32)o, i));
+        func_L01_00484A80_005E8108(func_L01_00498938((s32)o, i));
         func_003E8630(0x4F00A8, func_L01_00498938((s32)o, i));
         for (j = 0; j < o->f10 + 2; j++) {
             func_003E8FE8(func_003B9E50(o, i, j), func_L39_005E7FF8(o, i, j), 0x8066CCFF, o->a20[i],

@@ -353,10 +353,10 @@ typedef struct {
 } Vars_003FF570;
 extern s32 D_L01_001E64C0[];
 extern S_003FF4E8 D_L01_001E6850[];
-extern u32 D_001D60B8_sda;
-extern f32 D_001D60BC_sda;
-__asm__(".extern D_001D60B8_sda, 4");
-__asm__(".extern D_001D60BC_sda, 4");
+extern u32 D_L01_001D60B8_003FF570;
+extern f32 D_L01_001D60BC_003FF570;
+__asm__(".extern D_L01_001D60B8_003FF570, 4");
+__asm__(".extern D_L01_001D60BC_003FF570, 4");
 void func_L01_003FF570(s32 item, f32 progress) {
     extern s32 func_L01_00400160(s32, s32 *, s32 *);
     extern s32 func_L01_004000C0(s32);
@@ -372,12 +372,12 @@ void func_L01_003FF570(s32 item, f32 progress) {
         alpha = (progress - 1.0f + ((Vars_003FF570 *)D_L01_001E64C0)->duration) / ((Vars_003FF570 *)D_L01_001E64C0)->duration;
         if (alpha > 1.0f) alpha = 1.0f;
         else if (alpha < 0.0f) alpha = 0.0f;
-        func_L01_003FF9F0_003FF570((u8 *)handle, alpha, 3, D_001D60B8_sda, location, 1);
+        func_L01_003FF9F0_003FF570((u8 *)handle, alpha, 3, D_L01_001D60B8_003FF570, location, 1);
         for (i = ((Vars_003FF570 *)D_L01_001E64C0)->copies; i >= 0; i--) {
             f32 v = (progress - 1.0f + ((Vars_003FF570 *)D_L01_001E64C0)->duration) / ((Vars_003FF570 *)D_L01_001E64C0)->duration + (f32)i * ((Vars_003FF570 *)D_L01_001E64C0)->spacing;
             s32 c;
             ratio = (f32)(((Vars_003FF570 *)D_L01_001E64C0)->copies - i) / (f32)((Vars_003FF570 *)D_L01_001E64C0)->copies;
-            c = (s32)(D_001D60BC_sda * ratio);
+            c = (s32)(D_L01_001D60BC_003FF570 * ratio);
             color = ((c << 16) | 0x80000000) | (c << 8) | c;
             if (v > 1.0f) v = 1.0f;
             else if (v < 0.0f) v = 0.0f;
@@ -387,26 +387,26 @@ void func_L01_003FF570(s32 item, f32 progress) {
         alpha = progress / ((Vars_003FF570 *)D_L01_001E64C0)->duration;
         if (alpha > 1.0f) alpha = 1.0f;
         else if (alpha < 0.0f) alpha = 0.0f;
-        func_L01_003FF9F0_003FF570((u8 *)handle, alpha, 2, D_001D60B8_sda, location, 1);
+        func_L01_003FF9F0_003FF570((u8 *)handle, alpha, 2, D_L01_001D60B8_003FF570, location, 1);
         for (i = ((Vars_003FF570 *)D_L01_001E64C0)->copies; i >= 0; i--) {
             f32 v = progress / ((Vars_003FF570 *)D_L01_001E64C0)->duration - (f32)i * ((Vars_003FF570 *)D_L01_001E64C0)->spacing;
             s32 c;
             ratio = (f32)(((Vars_003FF570 *)D_L01_001E64C0)->copies - i) / (f32)((Vars_003FF570 *)D_L01_001E64C0)->copies;
-            c = (s32)(D_001D60BC_sda * ratio);
+            c = (s32)(D_L01_001D60BC_003FF570 * ratio);
             color = ((c << 16) | 0x80000000) | (c << 8) | c;
             if (v > 1.0f) v = 1.0f;
             else if (v < 0.0f) v = 0.0f;
             func_L01_003FF9F0_003FF570((u8 *)handle, v, 2, color, location, 0);
         }
     } else {
-        func_L01_003FF9F0_003FF570((u8 *)handle, 1.0f, 0, D_001D60B8_sda, location, 1);
+        func_L01_003FF9F0_003FF570((u8 *)handle, 1.0f, 0, D_L01_001D60B8_003FF570, location, 1);
         func_L01_003FF9F0_003FF570((u8 *)handle, -2.2f, 1, 0x80000000, location - 2, 0);
         func_L01_003FF9F0_003FF570((u8 *)handle, 0.0f, 1, 0x80000000, location - 2, 0);
         func_L01_003FF9F0_003FF570((u8 *)handle, 2.2f, 1, 0x80000000, location - 2, 0);
         func_L01_003FF9F0_003FF570((u8 *)handle, -2.2f, 1, 0x80000000, location + 2, 0);
         func_L01_003FF9F0_003FF570((u8 *)handle, 0.0f, 1, 0x80000000, location + 2, 0);
         func_L01_003FF9F0_003FF570((u8 *)handle, 2.2f, 1, 0x80000000, location + 2, 0);
-        func_L01_003FF9F0_003FF570((u8 *)handle, 1.0f, 0, D_001D60B8_sda, location, 0);
+        func_L01_003FF9F0_003FF570((u8 *)handle, 1.0f, 0, D_L01_001D60B8_003FF570, location, 0);
     }
 }
 /* localdecomp:end func_L01_003FF570 */

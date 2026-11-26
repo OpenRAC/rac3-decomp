@@ -97,14 +97,14 @@ extern s32 D_001DBC68_sda;
 extern s32 D_001DBC6C_sda;
 extern s32 D_001DBC70_sda;
 
-void func_L01_00484A80(s32);
+void func_L01_00484A80_0067EF00(s32);
 s32 func_003E8348(s32, s32);
 
 void func_L39_0067F060(s32 arg0, s32 arg1) {
     D_001DBC64_sda = arg0;
     D_001DBC68_sda = arg1;
     D_001DBC70_sda = arg1;
-    func_L01_00484A80(arg1);
+    func_L01_00484A80_0067EF00(arg1);
     func_003E8348(D_001DBC64_sda, D_001DBC70_sda);
     D_001DBC6C_sda = D_001DBC70_sda;
 }
@@ -115,14 +115,14 @@ extern s32 D_001DBC68_sda;
 extern s32 D_001DBC6C_sda;
 extern s32 D_001DBC70_sda;
 
-void func_L01_00484A80(s32);
+void func_L01_00484A80_0067EF00(s32);
 void func_003E8630(s32, s32);
 
 s32 func_L39_0067F0A0(void) {
     if ((D_001DBC70_sda - D_001DBC68_sda) % 17 == 0) {
         D_001DBC70_sda = D_001DBC70_sda + 1;
         D_001DBC6C_sda = D_001DBC70_sda;
-        func_L01_00484A80(D_001DBC70_sda);
+        func_L01_00484A80_0067EF00(D_001DBC70_sda);
         func_003E8630(D_001DBC68_sda, D_001DBC6C_sda);
     }
     D_001DBC70_sda = D_001DBC70_sda + 1;
@@ -137,7 +137,7 @@ extern s32 D_001DBC58_sda;
 extern s32 D_001DBC5C_sda;
 extern s32 D_001DBC60_sda;
 
-void func_L01_00484A80(s32);
+void func_L01_00484A80_0067EF00(s32);
 s32 func_003E8348(s32, s32);
 
 s32 func_L39_0067F100(s32 arg0) {
@@ -150,7 +150,7 @@ s32 func_L39_0067F100(s32 arg0) {
     }
     D_001DBC54_sda = arg0;
     D_001DBC60_sda = arg0;
-    func_L01_00484A80(arg0);
+    func_L01_00484A80_0067EF00(arg0);
     func_003E8348(D_001DBC58_sda, D_001DBC60_sda);
     D_001DBC5C_sda = D_001DBC60_sda;
     return D_001DBC58_sda;
@@ -181,14 +181,14 @@ extern s32 D_001DBC54_sda;
 extern s32 D_001DBC5C_sda;
 extern s32 D_001DBC60_sda;
 
-void func_L01_00484A80(s32);
+void func_L01_00484A80_0067EF00(s32);
 void func_003E8630(s32, s32);
 
 s32 func_L39_0067F1B0(void) {
     if ((D_001DBC60_sda - D_001DBC54_sda) % 17 == 0) {
         D_001DBC60_sda = D_001DBC60_sda + 1;
         D_001DBC5C_sda = D_001DBC60_sda;
-        func_L01_00484A80(D_001DBC60_sda);
+        func_L01_00484A80_0067EF00(D_001DBC60_sda);
         func_003E8630(D_001DBC54_sda, D_001DBC5C_sda);
     }
     D_001DBC60_sda = D_001DBC60_sda + 1;

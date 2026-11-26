@@ -72,7 +72,7 @@ typedef struct {
 } Q_355DE0;
 typedef struct { vu0_v4 pos; u8 p10[0x1C0]; vu0_v4 up; u8 p1E0[0x460 - 0x1E0]; } Cam_355DE0;
 
-extern s32 D_001D52F0;
+extern s32 D_L04_001D52F0;
 extern Cam_355DE0 D_L04_001E2840[];
 extern vu0_v4 D_L04_001D7AD0[4];
 extern void func_003D93B0(void *, s32, s32, s32);
@@ -118,9 +118,9 @@ void func_L04_00355DE0(void *pos, s32 tex, f32 size, f32 lift, f32 roll, f32 unu
     q.uv[3].u = 1.0f;
     q.uv[3].v = 1.0f;
     p = *(vu0_v4 *)pos;
-    vec_sub_ba(&d, &D_L04_001E2840[D_001D52F0], &p);
+    vec_sub_ba(&d, &D_L04_001E2840[D_L04_001D52F0], &p);
     func_0038CF68(&d, &d, 1.0f);
-    cam = &D_L04_001E2840[D_001D52F0];
+    cam = &D_L04_001E2840[D_L04_001D52F0];
     func_0038CE90(&e, &d, &cam->up);
     func_0038CF68(&e, &e, 1.0f);
     func_0038CE90(&f, &e, &d);
