@@ -1,7 +1,13 @@
-/* PAL near miss (Codex wave 7): near miss: 256 words differ with the file's flags.
- * Worker's note: 255 diff; retained.log; fixed default assembler emits .lit4 load instead of retail inline 0x45AFDF66; remaining saved-register allocation, force argument stack spill, scheduling. No alternate flags tested.
- */
+/* func_L40_0048C560 (1536 B, 14 places): PAL near miss, k6 agent 4 (2026-11-26), from the Codex wave 7 draft.
+ * check.py --as ps2as at level 40: 18 aligned diffs, 383 of 384 words (the file holds only this function, so
+ * its line can take @ps2as: SN's assembler builds the 0x45AFDF66 constant inline as retail, the default
+ * assembler uses a .lit4 load). Levers: the integer abs as abs_asm, D_L40_0024112C a scalar (assembler-expanded
+ * lui/lw, the tick load first), h read before extra, `c->damage *= a->fA8`, the isTen test as a ternary.
+ * Left: retail sets `isTen = one` (move $s5,$s6) and clears it with `movn $s5,$zero,$v0`; written that way
+ * gcc folds it to `sltiu` (the ternary gives movz with the registers of isTen and one swapped, one word
+ * short), and the scheduling of the func_L01_00447490 argument moves follows. */
 #include "common.h"
+#include "vu0.h"
 /* localdecomp:start func_L40_0048C560 */
 typedef struct M_0048C560 M_0048C560;
 typedef struct H_0048C560 {
@@ -26,7 +32,7 @@ typedef struct C_0048C560 {
 } C_0048C560;
 typedef unsigned int Q_0048C560 __attribute__((mode(TI)));
 extern M_0048C560 *D_001DCD4C_sda;
-extern int D_L40_0024112C[];
+extern int D_L40_0024112C;
 extern int D_001D5A1C_sda;
 int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int force)
 {
@@ -48,7 +54,7 @@ int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int f
  int result=0, isTen; float old, damage; int one;
  H_0048C560 *h; void *extra; C_0048C560 *c;
  if (!(m->flags34 & 0x20)) return 0;
- extra=m->state->extra; h=m->state->health;
+ h=m->state->health; extra=m->state->extra;
  if (!a || !h) return 0;
  func_L01_0044ABD0(m,a);
  one=1;
@@ -59,9 +65,9 @@ int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int f
  if (!func_0038CB00((char *)h+6)) c=0;
  func_0038CAD0(&a->fBC);
  if(c){
-  isTen=one; old=c->damage; if(c->kind!=10)isTen=0;
+  old=c->damage; isTen=(c->kind==10)?one:0;
   if(isTen && m->id==0x1b39 && h->health<=0.0f) isTen=0;
-  if(a->fA8!=0.0f && c->owner && m->id==c->owner->id) c->damage=old*a->fA8;
+  if(a->fA8!=0.0f && c->owner && m->id==c->owner->id) c->damage*=a->fA8;
   if(special) c->damage*=a->fAC;
  }
  damage=func_L01_004474E8(m,c);
@@ -77,7 +83,7 @@ int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int f
  float t=h->threshold*a->f58;
  int n=300;
  if(t<=0.0f)n=90;
- if(!a->b77){long d=D_L40_0024112C[0]-a->tick; if(d<=0)d=-d;
+ if(!a->b77){long d=abs_asm(D_L40_0024112C-a->tick);
  if((n*5+2)/6<d && damage<t)damage=t;}
  if(isTen) result=3;
  else {

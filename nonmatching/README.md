@@ -155,7 +155,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L30_004D7368` | levels | prep from rac2 `func_L20_002DEBE0` | draft compiles, 5058 of 8822 opcodes equal; differs from the seed by blocks listed in the header |
 | `func_L33_00350818` | levels | Sonnet prep, s1 and c3 Opus passes (2026-11-13/14) | compiles; 334 of 1769 instructions differ aligned with --as ps2as and -mvu0-use-vf0-vf2 (needs @ps2as on the file): per-case scheduling and branch shapes; notes in the file header |
 | `func_L39_005A61D8` | levels | prep from rac2 `func_00298F00` (0.86), API draft | memory-card state machine; draft 98.9% opcode-equal (+12 instr): tail-merge, scheduling and loop-inversion hunks |
-| `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
 | `func_L39_005DC648` | levels | k4 Sonnet first pass | near miss: 80 diff of 773 with the file's flags (UI build routine); only register numbers ($v0/$v1 swaps) and the order of the colour-word shifts differ |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
 | `func_L39_00692918` | levels | k6 Opus near miss (2026-11-26) | near miss: 13 differences (tools/check |
@@ -520,7 +519,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005210A0` | levels | NTSC-U draft of `func_L39_00520C08` (Codex wave 3) | near miss: 537 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00520C08`, whose code is not the PAL one) |
 | `func_L39_00522FA8` | levels | NTSC-U draft of `func_L39_00522B00` (Codex wave 3) | near miss: 305 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_00522B00`, whose code is not the PAL one) |
 | `func_L39_006B6CC8` | levels | NTSC-U draft of `func_L39_006B4360` (Codex wave 3) | near miss: 72 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L39_006B4360`, whose code is not the PAL one) |
-| `func_L40_0048C560` | levels | Codex wave 7 near miss | near miss: 256 words differ with the file's flags |
+| `func_L40_0048C560` | levels | Codex wave 7 draft, k6 agent 4 (2026-11-26) | near miss: 18 aligned diffs at level 40 with `@ps2as` on its file line: the isTen copy/movn that gcc folds to sltiu, and the register swap it causes; see the header |
 | `func_L41_00414A10` | levels | NTSC-U draft of `func_L41_00414160` (Codex wave 3) | near miss: 66 words differ on NTSC-U with `-O2 -G8 -fopt-stack -mno-check-zero-division` (the file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) (NTSC-U twin `func_L41_00414160`, whose code is not the PAL one) |
 | `func_003983C8` | boot_elf | Codex wave 10 near miss, revised (FE-1) | near miss: 2 diff with the file's flags (hardware registers at their literal addresses now; was 21): retail builds the image address 0x01000000 with one lui, the named D_01000000 adds its %lo addiu, and the literal is not an allowed address |
 | `func_L01_002F88E0` | levels | Codex wave 10 near miss | near miss (bolt_pickup_collect): 1 word: `addu $s0,$v0,$s0` against retail's `$s0,$s0,$v0`; cse puts the known-constant row base second in the plus (round 14 C, 2026-11-24) |
