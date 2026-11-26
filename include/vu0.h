@@ -22,10 +22,11 @@
  * - sqrt_asm(): `sqrt.s`, the game's square root. Same evidence as fabs_asm: retail never puts it
  *   into a delay slot (the hero state machines' sqrt.s is followed by jal + nop), and the C
  *   library's sqrtf() adds an errno check and a fallback call.
- * - fmax_asm(): `max.s`, the game's float maximum. SN cc1 emits max.s only under -ffast-math,
- *   which no game file uses, and then it fills delay slots with it; retail never does (the level
- *   loader func_L39_005A12B8's tie and shrub scales: max.s before jal + nop, or before the
- *   argument move that fills the slot).
+ * - fmax_asm(), fmin_asm(): `max.s` and `min.s`, the game's float maximum and minimum. SN cc1
+ *   emits them only under -ffast-math, which no game file uses, and then it fills delay slots with
+ *   them; retail never does (the level loader func_L39_005A12B8's tie and shrub scales: max.s
+ *   before jal + nop, or before the argument move that fills the slot; func_L01_004E48C8 has
+ *   max.s followed immediately by min.s at 0x004E4D84..0x004E4D88).
  * - mat_scale(): scales the four rows of a 4x4 matrix by a float (lqc2 x4, the scalar through $at
  *   into vf5, vmulx.xyzw x4, sqc2 x4), one block as the vector library wrote it: retail's
  *   func_L14_003F9A10 uses vf1-vf5 and $at, which the "j" class (vf1/vf2 only) cannot hold. It needs
@@ -138,6 +139,12 @@ static __inline__ float sqrt_asm(float x) {
 static __inline__ float fmax_asm(float a, float b) {
     float r;
     __asm__("max.s %0, %1, %2" : "=f"(r) : "f"(a), "f"(b));
+    return r;
+}
+
+static __inline__ float fmin_asm(float a, float b) {
+    float r;
+    __asm__("min.s %0, %1, %2" : "=f"(r) : "f"(a), "f"(b));
     return r;
 }
 

@@ -613,7 +613,240 @@ void func_L01_00511AE8(void) {
 }
 /* localdecomp:end func_L01_00511AE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00511B50);
+/* localdecomp:start func_L01_00511B50 */
+#include "vu0.h"
+
+typedef struct {
+    u32 b0 : 1;
+    u32 b1 : 1;
+} Flags_00511B50;
+
+static __inline__ u8 *hero_00511B50(void)
+{
+    return (u8 *)&D_001A4BE0;
+}
+
+void func_L01_00511B50(void)
+{
+    extern u8 *func_003C4D58();
+    extern f32 func_0038CEA8(void *);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_0038DB00(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_003C4138(f32 *, f32, f32);
+    extern void func_0038CFB8(f32 *, f32 *, f32);
+    extern s32 func_L01_0044C638(void *, void *, void *, void *, void *, void *);
+    extern s32 func_L01_0044CB18(void *, void *, void *, void *, void *, void *);
+    extern s32 func_L01_0044C998(void *, void *, void *, void *, void *, void *);
+    Vec4 t0, t10, t20, t30, t40, t50, t60, t70, t80, t90, tA0;
+    f32 b0, b4;
+    u8 *obj;
+    s32 mode = 0;
+    s32 check = 0;
+    f32 dist = 0.0f;
+    f32 old98 = *(f32 *)(hero_00511B50() + 0x98);
+
+    if (*(s32 *)(hero_00511B50() + 0x25CC) == 0 || *(s32 *)(hero_00511B50() + 0x25CC) == 12) {
+        check = *(s32 *)(hero_00511B50() + 0x25C4) != 0x68;
+    }
+    if (*(s32 *)(hero_00511B50() + 0x25CC) == 4) {
+        if (hero_00511B50()[0x46C] != 0) {
+            check = 1;
+        }
+    }
+    if (*(s16 *)(hero_00511B50() + 0x36E) == 0) {
+        if (*(s32 *)(hero_00511B50() + 0x35C) != 0) {
+            mode = 1;
+            if (*(s32 *)(hero_00511B50() + 0x3C0) != *(s32 *)(hero_00511B50() + 0x35C)) {
+                ((Flags_00511B50 *)(hero_00511B50() + 0x3C4))->b0 = 0;
+            }
+            *(s32 *)(hero_00511B50() + 0x3C0) = *(s32 *)(hero_00511B50() + 0x35C);
+        } else {
+            *(s32 *)(hero_00511B50() + 0x3C0) = 0;
+            *(s32 *)(hero_00511B50() + 0x3C4) &= ~1;
+            *(s32 *)(hero_00511B50() + 0x3C4) &= ~2;
+        }
+    } else if (*(s32 *)(hero_00511B50() + 0x25C4) == 0x1B && *(s32 *)(hero_00511B50() + 0x538) != 0) {
+        *(s32 *)(hero_00511B50() + 0x3C0) = *(s32 *)(hero_00511B50() + 0x538);
+        mode = 1;
+    } else if (*(s32 *)(hero_00511B50() + 0x25CC) == 3 && *(s32 *)(hero_00511B50() + 0x538) != 0) {
+        *(s32 *)(hero_00511B50() + 0x3C0) = *(s32 *)(hero_00511B50() + 0x538);
+        mode = 1;
+    } else if (*(s32 *)(hero_00511B50() + 0x3C0) != 0) {
+        dist = (f32)*(s16 *)(hero_00511B50() + 0x36E);
+        mode = 1;
+        if (*(s32 *)(hero_00511B50() + 0x25CC) == 4) {
+            if (*(s32 *)(hero_00511B50() + 0x1B8) >= *(s16 *)(hero_00511B50() + 0x47C) - 1) {
+                if (dist < 2.0f) {
+                    dist = 2.0f;
+                }
+            }
+        }
+    } else {
+        *(s32 *)(hero_00511B50() + 0x3C0) = 0;
+        *(s32 *)(hero_00511B50() + 0x3C4) &= ~1;
+        *(s32 *)(hero_00511B50() + 0x3C4) &= ~2;
+    }
+
+    if (mode == 0) {
+        return;
+    }
+    obj = func_003C4D58(*(s32 *)(hero_00511B50() + 0x3C0));
+    if (obj == 0) {
+        return;
+    }
+
+    if ((check && func_0038CEA8(hero_00511B50() + 0x160) == 0.0f && *(s16 *)(hero_00511B50() + 0x36E) == 0 && *(s16 *)(hero_00511B50() + 0x216) == 0)
+        || *(s32 *)(hero_00511B50() + 0x25CC) == 3) {
+        if ((hero_00511B50()[0x3C4] ^ 1) & 1) {
+            if (*(s32 *)(hero_00511B50() + 0x25CC) == 3) {
+                f32 pi;
+
+                t20.q = *(u128_t *)(hero_00511B50() + 0x500);
+                pi = 3.1415925f;
+                t20.f[0] += func_0038D098(func_0038DAB8(*(f32 *)(hero_00511B50() + 0x524), pi)) * *(f32 *)(hero_00511B50() + 0x284);
+                t20.f[1] += func_0038D0B0(func_0038DAB8(*(f32 *)(hero_00511B50() + 0x524), pi)) * *(f32 *)(hero_00511B50() + 0x284);
+                if (hero_00511B50()[0x25E4] == 0) {
+                    t20.f[2] -= -1.43f;
+                } else {
+                    t20.f[2] -= -2.5f;
+                }
+                func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x500, hero_00511B50() + 0x90, &t30, &t40);
+                func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), &t20, hero_00511B50() + 0x90, &t20, &t40);
+                func_L01_0044CB18(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x500, hero_00511B50() + 0x90, hero_00511B50() + 0x370, &t40);
+                func_L01_0044CB18(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), &t20, hero_00511B50() + 0x90, hero_00511B50() + 0x390, &t40);
+            } else if (*(s32 *)(obj + 0x3C) & 4) {
+                func_L01_0044CB18(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, hero_00511B50() + 0x370, &t20);
+            } else {
+                func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, &t30, &t40);
+                func_L01_0044CB18(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), &t30, &t40, hero_00511B50() + 0x370, &t20);
+            }
+            *(s32 *)(hero_00511B50() + 0x3C4) |= 1;
+        }
+    } else {
+        *(s32 *)(hero_00511B50() + 0x3C4) &= ~1;
+    }
+
+    if (check && *(f32 *)(hero_00511B50() + 0x1A4) == 0.0f && *(s16 *)(hero_00511B50() + 0x36E) == 0) {
+        if (!(*(s32 *)(hero_00511B50() + 0x3C4) & 2)) {
+            func_L01_0044CB18(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, &t20, hero_00511B50() + 0x380);
+            *(s32 *)(hero_00511B50() + 0x3C4) |= 2;
+        }
+    } else {
+        *(s32 *)(hero_00511B50() + 0x3C4) &= ~2;
+    }
+
+    if (*(s32 *)(hero_00511B50() + 0x3C4) & 3) {
+        mode = 2;
+    }
+    qzero(&t20);
+    qzero(&t30);
+    if (dist != 0.0f) {
+        s32 fl;
+        f32 len = func_0038CED8((void *)(hero_00511B50() + 0x3B0));
+
+        fl = *(s32 *)(obj + 0x3C);
+        b0 = *(f32 *)(hero_00511B50() + 0x3B8);
+        b4 = len;
+        if (!(fl & 2)) {
+            f32 k = 2.0f;
+
+            if (fl & 0x10) {
+                k = 20.0f;
+            }
+            if (hero_00511B50()[0x25E4] == 5) {
+                if (k < 23.0f) {
+                    k = 23.0f;
+                }
+            }
+            k *= 0.00040000002f;
+            func_003C4138(&b0, 0.0f, dist * 0.010000001f);
+            func_003C4138(&b4, 0.0f, k * dist);
+            if (hero_00511B50()[0x25E4] == 5 && *(s32 *)(hero_00511B50() + 0x25CC) == 4) {
+                if (b0 < 0.0f) {
+                    b0 = 0.0f;
+                }
+            }
+            func_0038CFB8(t20.f, (f32 *)((u8 *)&D_001A4BE0 + 0x3B0), b4);
+            t20.f[2] = b0;
+        } else if (*(s32 *)(hero_00511B50() + 0x3C0) != 0) {
+            func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, &t0, &t10);
+            if (*(s16 *)(hero_00511B50() + 0x226) == 0) {
+                *(u128_t *)(hero_00511B50() + 0x90) = t10.q;
+            }
+            vec_sub_ab(&t20, &t0, (u8 *)&D_001A4BE0 + 0x80);
+            *(u128_t *)(hero_00511B50() + 0x3B0) = t20.q;
+        } else {
+            t20.q = *(u128_t *)(hero_00511B50() + 0x3B0);
+        }
+        t30.q = t20.q;
+    } else if (mode == 1) {
+        func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, &t0, &t10);
+        if (*(s16 *)(hero_00511B50() + 0x226) == 0) {
+            *(u128_t *)(hero_00511B50() + 0x90) = t10.q;
+        }
+        vec_sub_ab(&t20, &t0, (u8 *)&D_001A4BE0 + 0x80);
+        *(u128_t *)(hero_00511B50() + 0x3B0) = t20.q;
+    } else if (mode == 2) {
+        func_L01_0044C638(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x80, hero_00511B50() + 0x90, &t40, &t50);
+        func_L01_0044C998(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x370, hero_00511B50() + 0x380, &t60, &t70);
+        func_L01_0044C998(*(void **)(hero_00511B50() + 0x25C0), *(void **)(hero_00511B50() + 0x3C0), hero_00511B50() + 0x390, hero_00511B50() + 0x380, &t80, &t90);
+        if (*(s16 *)(hero_00511B50() + 0x226) == 0) {
+            s32 s = *(s32 *)(hero_00511B50() + 0x25C4);
+
+            if ((s == 1 || s == 0x1D) && hero_00511B50()[0x25E5] != 0) {
+                *(f32 *)(hero_00511B50() + 0x98) = t50.f[2];
+            } else if (*(s32 *)(hero_00511B50() + 0x3C4) & 2) {
+                *(f32 *)(hero_00511B50() + 0x98) = t70.f[2];
+            } else {
+                *(f32 *)(hero_00511B50() + 0x98) = t50.f[2];
+            }
+        }
+        if (*(s32 *)(hero_00511B50() + 0x3C4) & 1) {
+            if (*(s32 *)(hero_00511B50() + 0x25CC) == 3) {
+                tA0.f[0] = func_0038D098(*(f32 *)(hero_00511B50() + 0x524)) * 0.45f;
+                tA0.f[1] = func_0038D0B0(*(f32 *)(hero_00511B50() + 0x524)) * 0.45f;
+                tA0.f[2] = 0.0f;
+                vec_add_ab(&tA0, &tA0, &t80);
+                if (hero_00511B50()[0x25E4] == 0) {
+                    tA0.f[2] += -1.43f;
+                } else {
+                    tA0.f[2] += -2.5f;
+                }
+                vec_sub_ab(&t20, &t40, (u8 *)&D_001A4BE0 + 0x80);
+                *(u128_t *)((u8 *)&D_001A4BE0 + 0x500) = tA0.q;
+                *(f32 *)((u8 *)&D_001A4BE0 + 0x524) = func_0038D160(t60.f[0] - t80.f[0], t60.f[1] - t80.f[1]);
+            } else {
+                f32 len;
+
+                vec_sub_ab(&t20, &t60, (u8 *)&D_001A4BE0 + 0x80);
+                len = func_0038CEA8(&t20);
+                if (len < 0.0001f) {
+                    *(u128_t *)(hero_00511B50() + 0x80) = t60.q;
+                    qzero(&t20);
+                } else if (2.0f < len) {
+                    *(s32 *)(hero_00511B50() + 0x3C4) &= ~2;
+                    *(s32 *)(hero_00511B50() + 0x3C4) &= ~1;
+                    qzero(&t20);
+                }
+                vec_add_ba((u8 *)&D_001A4BE0 + 0x500, (u8 *)&D_001A4BE0 + 0x500, &t20);
+                vec_sub_ab(&tA0, &t20, (u8 *)&D_001A4BE0 + 0x150);
+                if (0.1f < func_0038CEA8(&tA0)) {
+                    *(s32 *)(hero_00511B50() + 0x3C4) &= ~1;
+                }
+            }
+        } else {
+            vec_sub_ba(&t20, &t40, (u8 *)&D_001A4BE0 + 0x80);
+            t30.q = t20.q;
+        }
+        *(u128_t *)((u8 *)&D_001A4BE0 + 0x3B0) = t20.q;
+    }
+    vec_add_ba((u8 *)&D_001A4BE0 + 0x100, (u8 *)&D_001A4BE0 + 0x100, &t20);
+    *(f32 *)(hero_00511B50() + 0x10C) = func_0038DB00(*(f32 *)(hero_00511B50() + 0x98), old98);
+}
+/* localdecomp:end func_L01_00511B50 */
 
 /* localdecomp:start func_L01_00512490 */
 extern D_001A4BE0_t D_001A4BE0;

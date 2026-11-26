@@ -436,7 +436,249 @@ void func_L01_0041B600(void) {
 }
 /* localdecomp:end func_L01_0041B600 */
 
-INCLUDE_ASM("asm/levels", func_L01_0041B608);
+/* localdecomp:start func_L01_0041B608 */
+typedef struct {
+    u8 p0[4];
+    u16 h4;
+} SettingsH_0041B608;
+typedef struct {
+    u8 p0[5];
+    u8 b5;
+} SettingsB_0041B608;
+typedef struct {
+    s32 state;        /* 0x00 */
+    s32 timer;        /* 0x04 */
+    s32 half_width;   /* 0x08 */
+    s32 half_height;  /* 0x0C */
+    s32 x10;          /* 0x10 */
+    s32 top;          /* 0x14 */
+    s32 open_frames;  /* 0x18 */
+    s32 close_frames; /* 0x1C */
+    s32 index;        /* 0x20 */
+    s32 request;      /* 0x24 */
+    s32 slot;         /* 0x28 */
+    u8 pad2C[4];
+    s32 ready;        /* 0x30 */
+    s32 wait;         /* 0x34 */
+    s16 hold;         /* 0x38 */
+    s16 opened;       /* 0x3A */
+    s32 w3C;          /* 0x3C */
+    s32 yoff;         /* 0x40 */
+    s32 yoff_timer;   /* 0x44 */
+    s32 shown;        /* 0x48 */
+} Help_0041B608;
+typedef struct {
+    char *text;
+    s32 id;
+    s32 voice;
+    s16 next;
+    s16 icon;
+} HelpRow_0041B608;
+
+extern s32 D_L01_001D6520;
+extern void func_0038C3B0(s32, s32, s32, s32, s32, s32);
+extern void func_L01_00436020(s32, s32, f32, f32, f32, f32);
+extern void func_0038B4D0(s32, s32, s32, s32, s32, s32, s32, s32, long, long);
+extern void func_0038FA18(TextBox_0041A9A0 *, unsigned long, char *, s32, unsigned long, f32, f32);
+extern void func_L01_0041B600(void);
+
+void func_L01_0041B608(void) {
+    TextBox_0041A9A0 box;
+
+    ((Help_0041B608 *)&D_L01_002E5F30)->yoff_timer--;
+    if (((Help_0041B608 *)&D_L01_002E5F30)->yoff_timer < 0) {
+        ((Help_0041B608 *)&D_L01_002E5F30)->yoff_timer = 0;
+    }
+    if (((Help_0041B608 *)&D_L01_002E5F30)->yoff_timer == 0) {
+        ((Help_0041B608 *)&D_L01_002E5F30)->yoff = 0;
+    }
+    if (D_L01_002E5F30.state == 0) {
+        return;
+    }
+    if (D_L01_002E5F30.ready == 0) {
+        return;
+    }
+    if (((SettingsH_0041B608 *)D_00143950)->h4 == 0) {
+        return;
+    }
+    switch (D_L01_002E5F30.state) {
+    case 1:
+        if (((SettingsB_0041B608 *)D_00143950)->b5 != 0) {
+            D_L01_002E5F30.open_frames = 8;
+            D_L01_002E5F30.close_frames = 8;
+            func_0038C3B0(D_L01_002E5F30.top - D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.top + D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.x10 - D_L01_002E5F30.open_frames,
+                          D_L01_002E5F30.x10 + D_L01_002E5F30.open_frames, 0x60, 0x600E5092);
+            func_L01_00436020(0x33, 0x332299DE,
+                              (f32)(D_L01_002E5F30.top - D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.top + D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.x10 - D_L01_002E5F30.open_frames),
+                              (f32)(D_L01_002E5F30.x10 + D_L01_002E5F30.open_frames));
+        } else {
+            func_L01_0041B600();
+        }
+        break;
+    case 2:
+        func_L01_0041B600();
+        break;
+    case 3:
+        if (((SettingsB_0041B608 *)D_00143950)->b5 != 0) {
+            s32 t = D_L01_002E5F30.timer;
+            if (t > 8) {
+                t = 8;
+            }
+            if (t < 0) {
+                t = 0;
+            }
+            D_L01_002E5F30.open_frames = ((D_L01_002E5F30.half_width - 0x20) * t) / 8 + 0x20;
+            D_L01_002E5F30.close_frames = ((D_L01_002E5F30.half_height - 0x20) * t) / 8 + 0x20;
+            func_0038C3B0(D_L01_002E5F30.top - D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.top + D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.x10 - D_L01_002E5F30.open_frames,
+                          D_L01_002E5F30.x10 + D_L01_002E5F30.open_frames, 0x60, 0x600E5092);
+            func_L01_00436020(0x33, 0x332299DE,
+                              (f32)(D_L01_002E5F30.top - D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.top + D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.x10 - D_L01_002E5F30.open_frames),
+                              (f32)(D_L01_002E5F30.x10 + D_L01_002E5F30.open_frames));
+        } else {
+            func_L01_0041B600();
+        }
+        break;
+    case 4:
+    case 5:
+    case 6:
+        if (((SettingsB_0041B608 *)D_00143950)->b5 != 0) {
+            s32 off = 0;
+            s32 flag = 0;
+            s32 icon_h = 0x3D;
+            char *text;
+            switch (((HelpRow_0041B608 *)D_L01_001DFCC0)[D_L01_002E5F30.index].icon) {
+            case 0x1DC:
+            case 0xB0E:
+            case 0x150E:
+            case 0x166A:
+            case 0x1736:
+                flag = 1;
+                break;
+            }
+            if (flag != 0) {
+                s32 border = 2;
+                off = 0xA;
+                if (D_L01_002E5F30.half_height + 0xA < border + 0x20) {
+                    off = (border + 0x20) - D_L01_002E5F30.half_height;
+                }
+                D_L01_002E5F30.half_width = 0xD4;
+            }
+            D_L01_002E5F30.open_frames = D_L01_002E5F30.half_width;
+            D_L01_002E5F30.close_frames = D_L01_002E5F30.half_height;
+            func_0038C3B0(D_L01_002E5F30.top - D_L01_002E5F30.half_height + ((Help_0041B608 *)&D_L01_002E5F30)->yoff - off,
+                          D_L01_002E5F30.top + D_L01_002E5F30.half_height + ((Help_0041B608 *)&D_L01_002E5F30)->yoff + off,
+                          D_L01_002E5F30.x10 - D_L01_002E5F30.half_width,
+                          D_L01_002E5F30.x10 + D_L01_002E5F30.half_width,
+                          0x60, 0x600E5092);
+            func_L01_00436020(0x33, 0x332299DE,
+                              (f32)(D_L01_002E5F30.top - D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff - off),
+                              (f32)(D_L01_002E5F30.top + D_L01_002E5F30.close_frames + ((Help_0041B608 *)&D_L01_002E5F30)->yoff + off),
+                              (f32)(D_L01_002E5F30.x10 - D_L01_002E5F30.open_frames),
+                              (f32)(D_L01_002E5F30.x10 + D_L01_002E5F30.open_frames));
+            /* In multiplayer (func_L39_0059B428) the player count adjusts the text box
+               coordinates for 2- and 4-player splitscreen; in single-player it is constant 1. */
+            {
+                s32 num_players = 1;
+                s32 y0 = 0xF0;
+                s32 y1 = 0x1E0;
+                s32 x0 = 0x2C;
+                s32 x1 = 0x1D4;
+                s32 cx = 0x100;
+                if (num_players == 2) {
+                    y0 = 0;
+                } else if (num_players == 4) {
+                    y0 = 1;
+                }
+                text = D_L01_001DFCC0[D_L01_002E5F30.index].text;
+                if (((HelpRow_0041B608 *)D_L01_001DFCC0)[D_L01_002E5F30.index].icon > 0) {
+                    func_003910C0(&box, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + y0, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + y1,
+                                  0x70, x1, 0x70, D_L01_002E5F30.top + ((Help_0041B608 *)&D_L01_002E5F30)->yoff, 0x10, 2);
+                } else {
+                    func_003910C0(&box, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + y0, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + y1,
+                                  x0, x1, cx, D_L01_002E5F30.top + ((Help_0041B608 *)&D_L01_002E5F30)->yoff, 0x10, 3);
+                }
+            }
+            box.f18 = 2;
+            box.f1A = 2;
+            box.flags |= 0x20;
+            if (((HelpRow_0041B608 *)D_L01_001DFCC0)[D_L01_002E5F30.index].icon > 0) {
+                switch (((HelpRow_0041B608 *)D_L01_001DFCC0)[D_L01_002E5F30.index].icon) {
+                case 0x1DC:
+                    func_0038B4D0(0x32, D_L01_002E5F30.top - (icon_h / 2) + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                                  0x38, icon_h, 0, 0, 0x40, 0x40, (long)(s32)0x80808080, func_00389598(0x5C));
+                    break;
+                case 0xB0E:
+                    func_0038B4D0(0x32, D_L01_002E5F30.top - (icon_h / 2) + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                                  0x38, icon_h, 0, 0, 0x40, 0x40, (long)(s32)0x80808080, func_00389598(0x61));
+                    break;
+                case 0x150E:
+                    func_0038B4D0(0x32, D_L01_002E5F30.top - (icon_h / 2) + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                                  0x38, icon_h, 0, 0, 0x40, 0x40, (long)(s32)0x80808080, func_00389598(0x5D));
+                    break;
+                case 0x166A:
+                    func_0038B4D0(0x32, D_L01_002E5F30.top - (icon_h / 2) + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                                  0x38, icon_h, 0, 0, 0x40, 0x40, (long)(s32)0x80808080, func_00389598(0x62));
+                    break;
+                case 0x1736:
+                    func_0038B4D0(0x32, D_L01_002E5F30.top - (icon_h / 2) + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                                  0x38, icon_h, 0, 0, 0x40, 0x40, (long)(s32)0x80808080, func_00389598(0x5E));
+                    break;
+                default:
+                    func_003910C0(&box, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + 0xF0, ((Help_0041B608 *)&D_L01_002E5F30)->yoff + 0x1E0,
+                                  0x2C, 0x1D4, 0x100, D_L01_002E5F30.top + ((Help_0041B608 *)&D_L01_002E5F30)->yoff, 0x10, 3);
+                    box.f18 = 2;
+                    box.f1A = 2;
+                    box.flags |= 0x20;
+                    break;
+                }
+            }
+            if (D_L01_002E5F30.state == 4) {
+                D_L01_001D6520 = 1;
+            } else {
+                D_L01_001D6520 = 2;
+            }
+            func_0038E150(1);
+            func_0038FA18(&box, 0x8066CCFFUL, text, -1, 0x80000000UL, 1.0f, 1.0f);
+        } else {
+            func_L01_0041B600();
+        }
+        break;
+    case 7:
+        if (((SettingsB_0041B608 *)D_00143950)->b5 != 0) {
+            s32 t = D_L01_002E5F30.timer;
+            s32 c, w, h;
+            if (t > 8) {
+                t = 8;
+            }
+            if (t < 0) {
+                t = 0;
+            }
+            c = (8 - t) * 12;
+            w = D_L01_002E5F30.open_frames - ((D_L01_002E5F30.open_frames - 8) * t) / 8;
+            h = D_L01_002E5F30.close_frames - ((D_L01_002E5F30.close_frames - 8) * t) / 8;
+            func_0038C3B0(D_L01_002E5F30.top - h + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.top + h + ((Help_0041B608 *)&D_L01_002E5F30)->yoff,
+                          D_L01_002E5F30.x10 - w, D_L01_002E5F30.x10 + w, c, 0x600E5092);
+            func_L01_00436020(c, 0x332299DE,
+                              (f32)(D_L01_002E5F30.top - h + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.top + h + ((Help_0041B608 *)&D_L01_002E5F30)->yoff),
+                              (f32)(D_L01_002E5F30.x10 - w),
+                              (f32)(D_L01_002E5F30.x10 + w));
+        } else {
+            func_L01_0041B600();
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_0041B608 */
 
 LINKER_REMNANT("asm/levels", func_L01_0041BD40);
 
