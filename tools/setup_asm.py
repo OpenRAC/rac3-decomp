@@ -164,7 +164,12 @@ def split_data(t, seg, unit):
         print("%s: no jump tables" % seg)
         return
     first, last = jt[0], jt[-1]
-    if any(not n.startswith("jtbl_") for n, _ in blocks[first:last + 1]):
+    # A D_XXXXXXXX block among the jump tables is the tail of the table before it that no code
+    # refers to, named in config/<program>/symbol_addrs.txt so that it gets its own
+    # rodata/<name>.s: the table's function can then be C (gcc emits the table) while an
+    # INCLUDE_RODATA after it keeps the tail in place.
+    tails = {n for n, _ in blocks[first:last + 1] if re.match(r"D_[0-9A-Fa-f]{8}$", n)}
+    if any(not n.startswith("jtbl_") and n not in tails for n, _ in blocks[first:last + 1]):
         sys.exit("%s: non-jtbl data inside the jump table block; aborting" % seg)
     # Target.rodata_cut[seg] = ADDR: the blocks from ADDR up to the jump tables are
     # the code's own read-only data too (strings and literals of functions that sit
@@ -188,7 +193,7 @@ def split_data(t, seg, unit):
         open(os.path.join(rodir, name + ".s"), "w").write(
             "\n".join([".align 3", ""] + [l.rstrip() for l in body]).rstrip() + "\n")
     for name, body in blocks[first:last + 1]:
-        out = [".align 4", ""]
+        out = [".align 2" if name in tails else ".align 4", ""]
         for l in body:
             l = l.replace(".word func_0 ", ".word 0x00000000 ").rstrip()
             if l.rstrip().endswith(".word func_0"):

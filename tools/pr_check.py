@@ -26,9 +26,9 @@ reasons it fails, in terms of the line you need to fix:
   typedefs   a typedef name is not defined twice with different bodies
   aliases    every per-function alias (D_XXXXXXXX_suffix) has an address in
              symbol_addrs_resolved.txt, or the link fails with "undefined"
-  rodata     every INCLUDE_RODATA (jump table) directly follows its
-             function's INCLUDE_ASM, so a converted function doesn't keep a
-             stale copy of its table
+  rodata     every INCLUDE_RODATA of a jump table (jtbl_*) directly follows
+             its function's INCLUDE_ASM, so a converted function doesn't keep
+             a stale copy of its table (a D_* tail after a table may follow C)
   ps2as      no text_parts.txt range assembled with @ps2as contains an
              INCLUDE_ASM stub (Ps2EeAs cannot read macro.inc)
   overrides  config/frontbin/localdecomp_flags.txt entries for functions that are now
@@ -246,11 +246,13 @@ def check_file(raw, label):
 
     # jump tables: an INCLUDE_RODATA belongs right after its function's
     # INCLUDE_ASM. Left behind after the function became C, it duplicates the
-    # table gcc now emits and shifts all of .data.
+    # table gcc now emits and shifts all of .data. A D_XXXXXXXX block is not a
+    # table but the words after one that no code refers to (setup_asm.py
+    # split_data): it stays after the function when the function becomes C.
     prev = ""
     for i, line in enumerate(raw.split("\n"), 1):
         t = line.strip()
-        if t.startswith("INCLUDE_RODATA(") and not prev.startswith(
+        if t.startswith("INCLUDE_RODATA(") and ", jtbl_" in t and not prev.startswith(
                 ("INCLUDE_ASM(", "INCLUDE_RODATA(", "ASM_FUNC(", "LINKER_REMNANT(")):
             err(f"{label}:{i}: {t} does not follow an INCLUDE_ASM; if its function is C now, delete this line")
         if t:
