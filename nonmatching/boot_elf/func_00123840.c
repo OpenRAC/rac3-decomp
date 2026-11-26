@@ -1,3 +1,7 @@
+/* k6-a3 2026-11-26: 9 raw rows with the file's flags (was 16): the semaphore id read once into a local
+ * (sema = D_0013DC94[0] after func_0011EE60, func_0011EE40(sema)) gives async its register. Left: retail keeps
+ * flags & 0x8000 in $s0 and copies it to async ($s2) inside the loop's first test; ours computes the andi
+ * straight into $s2, and retail reloads the semaphore id for func_0011EE40 where we keep it in $t0. */
 /* NTSC-U draft (Claude wave E): C of func_00123840 as NTSC-U has it, with NTSC-U names and addresses.
  * near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin "func_00123840").
  * Worker's note: 16 diff with `@ee29 -O2 -G0` (Sony 2.9-ee: 16-byte save slots, $ra restored first; 152 diff with the file's SN line), same shape as the matched siblings func_001236C0 (close) and func_00123430 (open) of 123430.c (file I/O RPC, libkernl 'SceStdioReadSema'): ...
@@ -41,6 +45,7 @@ s32 func_00123840(s32 fd, void *buf, s32 size) {
     s32 async;
     s32 i;
     s32 t;
+    s32 sema;
     P_123840 *p = &D_154C00_00123840;
 
     f = func_00122C58(fd);
@@ -62,6 +67,7 @@ s32 func_00123840(s32 fd, void *buf, s32 size) {
     p->x0 = s;
     if (flags & 0x8000) {
         func_0011EE60(D_0013DC94_00123840[0]);
+        sema = D_0013DC94_00123840[0];
         async = flags & 0x8000;
         for (i = 0; i < 0x20; i++) {
             if (D_0013DC00_00123840[i] == -1) {
@@ -71,7 +77,7 @@ s32 func_00123840(s32 fd, void *buf, s32 size) {
                 break;
             }
         }
-        func_0011EE40(D_0013DC94_00123840[0]);
+        func_0011EE40(sema);
     } else {
         async = 0;
     }

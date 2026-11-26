@@ -1,3 +1,7 @@
+/* k6-a3 2026-11-26: with func_L03_003C0DD8's dead third test at the end of chain 2 this is 7 raw rows with
+ * --as ps2as (was 68); this file has only this function, so its line can take @ps2as when it lands. Left: the
+ * same as 003C0DD8: the masked state in $v1 and its raw copy in $a0 where retail has $a0/$a1 (and the andi
+ * reading them). */
 /* PAL port of the NTSC-U draft (Sonnet worker b15-z4, 2026-11-18): PAL names, constants and gp slots done; needs @ps2as and -mvu0-use-vf0-vf2 on the file line. */
 /* NM-R7 (2026-11-22): 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as. Why the `== 2` andi is missing (combine's nonzero_bits on the gcse copy of o[0x20]): nonmatching/README.md. */
 /* FAM-2 (2026-11-23, upstream bbf261a1): still 213 / 68 (70 at level 14). A u8 state local following retail's dataflow gives 279, an s32 temporary shared with a call result 281, 15 more flags no better; nonmatching/README.md has the list. */
@@ -161,6 +165,10 @@ void func_L03_003C6888(u8 *o) {
                         func_003C2880(o);
                     }
                 }
+            } else if (o[0x20] == 0 && o[0x42] == 3 && o[0x43] < 5) {
+                return;
+            } else {
+                return;
             }
         } else if (o[0x20] == 0) {
             o[0x20] = 1;

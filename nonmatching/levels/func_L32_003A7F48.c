@@ -1,4 +1,10 @@
-/* Unlinked regional matching draft. PAL: 114 to 55 words; alpha clamp adds one word and final interpolation scheduling differs. */
+/* PAL near miss (k6-a3, 2026-11-26): 6 raw / 5 aligned rows with the file's flags (was 55 raw).
+ * Found: v = o->vars read before the o null test (as the matched L30 particle callbacks do), the alpha
+ * clamp as an if/else whose arms each store al |= ...; a0->color = al (cross-jumped tail, and it ends
+ * sched1's region so the life/colour loads start the next block).
+ * Left: in the alpha interpolation tail retail issues mul.s D*life before the `andi 0xff` of the colour's low
+ * byte and loads a0->age after cvt.s.w of lo; ours does andi first and loads age early (scheduling only).
+ */
 #include "common.h"
 
 extern f32 D_L32_001DE8C0;
@@ -57,9 +63,9 @@ void func_L32_003A7F48(Particle_003A7F48 *a0, Params_003A7F48 *a1) {
     s32 hi;
     if (a1 != 0) {
         o = a1->owner;
+        v = o->vars;
         t = a1->system;
         if (o != 0) {
-            v = o->vars;
             if (v != 0 && t != 0) {
                 if (a1->flags & 1) {
                     func_L02_003BAFA0(o, D_L32_002A2E40, &a0->x, &a1->speedX, 0.0f);
@@ -83,7 +89,13 @@ void func_L32_003A7F48(Particle_003A7F48 *a0, Params_003A7F48 *a1) {
                 }
                 f1 = (one - r) / D_L32_001DE8D0;
                 al = a0->color & 0xFFFFFF;
-                a0->color = al | ((one < f1) ? 0x80000000 : (u32)(s32)(f1 * 128.0f) << 24);
+                if (one < f1) {
+                    al |= 128 << 24;
+                    a0->color = al;
+                } else {
+                    al |= (s32)(f1 * 128.0f) << 24;
+                    a0->color = al;
+                }
                 {
                     u16 color = a1->color;
                     hi = color >> 8;
