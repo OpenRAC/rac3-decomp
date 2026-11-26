@@ -74,7 +74,7 @@ extern void func_L22_003B8100(void *);
 extern void func_L01_00460200(f32);
 extern void func_L01_003EB5E0(s32, s32);
 extern void func_L01_005003D0(s32, s32);
-extern void func_L01_005162B0(void *);
+extern void func_L03_00503D00(void *);
 extern void func_L01_004606A8(s32);
 extern void func_L01_004450F0(void *, s32, s32);
 
@@ -114,7 +114,7 @@ void func_L22_003B6EE8(u8 *a0, s32 a1) {
     } else {
         func_L01_003EB5E0(0, 2);
         func_L01_005003D0(0x51, 1);
-        func_L01_005162B0(a0);
+        func_L03_00503D00(a0);
         func_L01_004606A8(D_001D52FC);
         func_L01_004450F0(a0, 4, 1);
         func_L01_00460200(1.0f);

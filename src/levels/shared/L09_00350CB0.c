@@ -26,7 +26,7 @@ typedef struct {
 } O_350CB0;
 extern vu0_v4 D_L09_001E2B00;
 extern f32 D_L09_001DD3E8 __attribute__((section(".data")));
-extern void func_L01_0034D840(void *);
+extern void func_L01_0040D198(void *);
 extern void func_003D93B0(void *, s32, s32, s32);
 extern void func_003D2DA0(void *, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
@@ -47,7 +47,7 @@ void func_L09_00350CB0(u8 *a0, s32 a1, f32 a2, s32 a3, f32 a4, f32 a5, s32 a6, s
     s32 i;
     s32 j;
 
-    func_L01_0034D840(&g);
+    func_L01_0040D198(&g);
     func_003D93B0(&g, 0x1C, 1, 0x80);
     g.col[0] = g.col[1] = 0xFF1414FF;
     g.col[2] = g.col[3] = 0x80204080;

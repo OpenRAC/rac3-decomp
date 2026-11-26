@@ -21,7 +21,7 @@ extern void func_003A9440(s32, unsigned long);
 extern u8 *func_00381FF0(s32);
 extern s32 func_00120048(u8 *, u8 *, ...);
 extern s32 func_00120884(void *);
-extern void func_L39_00594DB0(unsigned long, u8 *, f32, f32, s32, f32);
+extern void func_L01_00412BC0(unsigned long, u8 *, f32, f32, s32, f32);
 extern s32 func_L39_0066F5C0(s32);
 
 s32 func_L39_0066FC08(void) {
@@ -49,7 +49,7 @@ s32 func_L39_0066FC08(void) {
                 fy = (f32)y;
                 y += step;
                 func_00120048(buf, D_L39_00246418, D_L39_00241640_0066FC08 + a * 16, func_00381FF0(D_L39_002463C8[D_L39_00352AF4[i * 5]]), D_L39_00241640_0066FC08 + b * 16);
-                func_L39_00594DB0((s32)0x90FFFFFF, buf, 15.0f, fy, func_00120884(buf), scale);
+                func_L01_00412BC0((s32)0x90FFFFFF, buf, 15.0f, fy, func_00120884(buf), scale);
             } else if (a < -1) {
                 u8 *s1;
                 r = func_L39_0066F5C0(a);
@@ -58,7 +58,7 @@ s32 func_L39_0066FC08(void) {
                 y += step;
                 s1 = func_00381FF0(D_L39_00246408[r]);
                 func_00120048(buf, D_L39_00246418, s1, func_00381FF0(D_L39_002463C8[D_L39_00352AF4[i * 5]]), D_L39_00241640_0066FC08 + b * 16);
-                func_L39_00594DB0((s32)0x90FFFFFF, buf, 15.0f, fy, func_00120884(buf), scale);
+                func_L01_00412BC0((s32)0x90FFFFFF, buf, 15.0f, fy, func_00120884(buf), scale);
             }
         }
         func_0038E150(saved);

@@ -33,12 +33,12 @@ void func_L39_005E3A58(void) {
 
 /* localdecomp:start func_L39_005E3AB8 */
 extern s32 func_L01_00517688(void);
-extern s32 func_L01_0049F168(s32 a0);
+extern s32 func_L01_004914D0(s32 a0);
 extern void func_L01_00517748(s32 a0);
 extern s32 func_L01_004910C0(s32 a0);
 extern void func_L01_00353C80(s32 a0);
 void func_L39_005E3AB8(void) {
-    func_L01_00517748(func_L01_0049F168(func_L01_00517688()));
+    func_L01_00517748(func_L01_004914D0(func_L01_00517688()));
     func_L01_00353C80(func_L01_004910C0(func_L01_00517688()));
 }
 /* localdecomp:end func_L39_005E3AB8 */

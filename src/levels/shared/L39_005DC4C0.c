@@ -2,7 +2,7 @@
 
 /* localdecomp:start func_L39_005DC4C0 */
 extern u8 *D_L39_0024BF5C;
-extern void func_L01_00451388(u8 *, s32 *, s32 *);
+extern void func_L01_004512E8(u8 *, s32 *, s32 *);
 
 s32 func_L39_005DC4C0(s32 i, s32 *a, s32 *b) {
     s32 r;
@@ -12,7 +12,7 @@ s32 func_L39_005DC4C0(s32 i, s32 *a, s32 *b) {
     *b = 0;
     if (i >= 0) {
         r = 1;
-        func_L01_00451388(D_L39_0024BF5C + (i << 8), a, b);
+        func_L01_004512E8(D_L39_0024BF5C + (i << 8), a, b);
     }
     return r;
 }
@@ -116,7 +116,7 @@ typedef struct {
 extern S_005DD290_t D_L39_00352940;
 extern u8 *D_L39_0024BF5C;
 extern long func_L39_005DD258(u8 *);
-extern void func_L01_00451388(u8 *, s32 *, s32 *);
+extern void func_L01_004512E8(u8 *, s32 *, s32 *);
 
 void func_L39_005DD290(u8 *a0, s32 *a1, s32 *a2) {
     S_005DD290_g *g = *(S_005DD290_g **)(a0 + 0x2558);
@@ -130,7 +130,7 @@ void func_L39_005DD290(u8 *a0, s32 *a1, s32 *a2) {
         (*(S_005DD290_g **)(a0 + 0x2558))->fC60 = ((s32 (*)(u8 *))func_L39_005DD258)(a0);
         p = D_L39_0024BF5C + (D_L39_00352940.f20C->f40[(*(S_005DD290_g **)(a0 + 0x2558))->fC60] << 8);
     }
-    func_L01_00451388(p, a1, a2);
+    func_L01_004512E8(p, a1, a2);
 }
 /* localdecomp:end func_L39_005DD290 */
 

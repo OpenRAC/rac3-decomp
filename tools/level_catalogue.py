@@ -57,9 +57,6 @@ import version  # noqa: E402
 PAIRS = version.cfg("frontend_pairs.tsv")
 BOUNDARIES = version.cfg("levels", "boundaries.tsv")
 EDITS = ("start", "split", "join", "size", "variant", "cut")
-# the multiplayer menu (39) shares code with the story levels but is its own program: its callers are
-# not the story levels' functions, whatever their code looks like (copy_groups())
-NOT_SITES = (39,)
 SPLITS = version.cfg("levels", "split_places.tsv")
 
 
@@ -423,6 +420,16 @@ def main(argv=()):
 
 
 def copy_groups(per_level, found):
+    out = None
+    for _ in range(6):                                        # callers that are copies themselves: until stable
+        again = _copy_groups(per_level, found, out)
+        if again == out:
+            break
+        out = again
+    return out
+
+
+def _copy_groups(per_level, found, previous):
     """{key: [places of one function]}: code that occurs more than once in a level is one function
     per copy. Each row is named after its first place, the k-th copy (by address) in its lowest
     level, as before; another level's copies go to the rows by what shows which they are:
@@ -490,18 +497,52 @@ def copy_groups(per_level, found):
             x = parent[x]
         return x
 
+    firsts = set()                                            # the places that name the rows
+    for k, e in found.items():
+        per = collections.defaultdict(list)
+        for number, a in sorted(e["places"]):
+            per[number].append(a)
+        for c in range(max(len(v) for v in per.values())):
+            n = min(n for n, v in per.items() if len(v) > c)
+            firsts.add((n, per[n][c]))
+
+    class_levels, class_first = {}, {}
+
+    def join(x, y, guard=False):
+        """Put the places x and y in one call-site class, unless that would give a class two places in one
+        level or two rows' first places (a wrong placement of a caller copy must not merge the classes)."""
+        rx, ry = find(x), find(y)
+        if rx == ry:
+            return
+        lx, ly = class_levels.get(rx, {rx[0]}), class_levels.get(ry, {ry[0]})
+        fx, fy = class_first.get(rx, rx in firsts), class_first.get(ry, ry in firsts)
+        if guard and (lx & ly or (fx and fy)):
+            return
+        parent[ry] = rx
+        class_levels[rx] = lx | ly
+        class_first[rx] = fx or fy
+
     sites = collections.defaultdict(list)
     for (number, a), lst in refs.items():
         kk = key_of[(number, a)]
-        if count[number][kk] == 1 and kk not in repeated and number not in NOT_SITES:
+        if count[number][kk] == 1:
             sites[kk].append((number, a))
-    for kk, where in sites.items():
+    groups = [(w, False) for w in sites.values()]
+    for rows in (previous or {}).values():                    # a copy-caller's places, as the last round placed them
+        for row in rows:
+            once = collections.Counter(n for n, a in row)
+            groups.append(([p for p in row if once[p[0]] == 1 and p in refs], True))
+    for where, guard in groups:
+        if len(where) < 2:
+            continue
         where.sort()
         n0, a0 = where[0]
         for number, a in where[1:]:
-            for (i, t), (j, u) in zip(refs[(n0, a0)], refs[(number, a)]):
-                if i == j and key_of[(n0, t)] == key_of[(number, u)]:
-                    parent[find((number, u))] = find((n0, t))
+            at = dict(refs[(n0, a0)])
+            for j, u in refs[(number, a)]:
+                t = at.get(j)
+                if t is not None and key_of[(n0, t)] == key_of[(number, u)]:
+                    join((n0, t), (number, u), guard)
 
     def anchors(number, addrs):
         """{address: [before, after]} of one level's copies."""
@@ -574,6 +615,9 @@ def copy_groups(per_level, found):
                     placed[a] = free.pop(0)
             for a, c in placed.items():
                 rows[c].append((number, a))
+                r = find((number, a))                         # a call-site class placed here keeps its row in later levels
+                if r not in bad and r not in root_row:
+                    root_row[r] = c
         # a row keeps its kind (its source file's folder, src/levels/)
         kinds = lambda rs: [len({p[0] for p in r}) > 1 for r in rs]
         out[k] = [sorted(r) for r in rows] if kinds(rows) == kinds(before) else before

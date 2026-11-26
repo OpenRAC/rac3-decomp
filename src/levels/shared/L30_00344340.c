@@ -38,7 +38,7 @@ extern void func_003C6680(void *, void *, s32, s32, void *, s32, s32, s32, void 
 extern void func_L01_004450F0(u8 *, s32, s32);
 extern void func_L03_0034B218(u8 *, s32, s32, f32, s32, void *);
 extern void func_L30_00343E10();
-extern void func_L01_0034F7E8(void);
+extern void func_L01_0033D390(void);
 
 void func_L30_00344340(u8 *a0)
 {
@@ -102,7 +102,7 @@ void func_L30_00344340(u8 *a0)
         D_L30_001DCEC0 = 1;
         func_L03_0034B218((u8 *)&D_L30_001E1128, D_L30_001DCEAC, D_L30_001DCEB0, D_L30_001DCEB8, D_L30_001DCEBC, (void *)func_L30_00343E10);
         D_L30_001E1128.f10 = 0x44;
-        func_L03_0034B218((u8 *)&D_L30_001E1108, D_L30_001DCE9C, D_L30_001DCEA0, D_L30_001DCEA4, D_L30_001DCEA8, (void *)func_L01_0034F7E8);
+        func_L03_0034B218((u8 *)&D_L30_001E1108, D_L30_001DCE9C, D_L30_001DCEA0, D_L30_001DCEA4, D_L30_001DCEA8, (void *)func_L01_0033D390);
     }
 }
 /* localdecomp:end func_L30_00344340 */

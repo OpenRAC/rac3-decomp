@@ -10,7 +10,7 @@ extern void func_L39_005DEDD8(void);
 /* log: id local = 10 diff (s0 for temp); inline i + 0x6xxxx at each use = MATCH with --as ps2as (float constants inline, file needs @ps2as) */
 extern u8 D_001D821C_sda;
 extern void func_L01_004D2110_005DF060(s32);
-extern void func_L01_00484A80(s32);
+extern void func_L01_00518D40(s32);
 extern s32 func_003B5060(s32);
 extern s32 func_003E5360(s32);
 extern s32 func_00381FF0(s32);
@@ -27,7 +27,7 @@ void func_L39_005DF060(s32 a0) {
     s32 id;
     D_001D821C_sda = 1;
     func_L01_004D2110_005DF060(1);
-    func_L01_00484A80(0x60000);
+    func_L01_00518D40(0x60000);
     func_003B5060(0x60001);
     func_003B5060(0x60002);
     func_003B5060(0x60003);

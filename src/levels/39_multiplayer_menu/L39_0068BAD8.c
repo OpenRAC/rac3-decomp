@@ -49,7 +49,7 @@ extern s32 func_L39_006878A0(W_0068BAD8 *, s32, s32, s32);
 extern s32 func_L39_00688340(s32, s32, s32);
 extern s32 func_L39_006872E8(W_0068BAD8 *, s32, s32, s32, s32, f32);
 extern void func_L39_0068CBE8(S_0068BAD8 *, s32);
-extern void func_L01_004981E0(s32, s32);
+extern void func_L01_0048D930(s32, s32);
 extern s32 func_L39_0068C210(S_0068BAD8 *);
 extern s32 func_L39_0068C4E0(S_0068BAD8 *, s32);
 extern void func_L39_006DF018(void);
@@ -99,7 +99,7 @@ s32 func_L39_0068BAD8(Obj *a, s32 *state) {
                 }
             }
             func_L39_00688340(4, 0, 0);
-            func_L01_004981E0(idx, s);
+            func_L01_0048D930(idx, s);
             D_00247914->f284 = 0x1D;
             goto done;
         }

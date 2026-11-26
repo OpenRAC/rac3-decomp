@@ -12,7 +12,7 @@ extern s32 func_L01_004AAC98(s32, s32, s32, s32);
 extern void func_L32_003B41E8(void *arg0, void *arg1, f32 arg2, f32 arg3, f32 *arg4);
 extern void func_L30_0034C8A8(void *, void *);
 extern void func_L01_00404A10(void *, void *);
-extern void func_L01_004126A8(s32);
+extern void func_L04_00523E58(s32);
 extern void func_L30_0034CC28(void *, void *, void *, s32, s32, f32);
 extern s32 func_003D4D00(void *, s32, void *, void *, f32);
 extern s32 func_0038CAD0(void *);
@@ -58,7 +58,7 @@ void func_L32_003B37A8(u8 *a0) {
         *(f32 *)(st + 0x48) = f - cvtsw_asm(cvtws_asm(f));
         if (0.0f < *(f32 *)(st + 0x34)) {
             func_L30_0034C8A8(D_L32_001E2440, a0);
-            func_L01_00404A10(func_L01_004126A8, a0);
+            func_L01_00404A10(func_L04_00523E58, a0);
         }
         break;
     case 2:
@@ -77,7 +77,7 @@ void func_L32_003B37A8(u8 *a0) {
         }
         if (0.0f < *(f32 *)(st + 0x3C)) {
             func_L30_0034C8A8(D_L32_001E2460, a0);
-            func_L01_00404A10(func_L01_004126A8, a0);
+            func_L01_00404A10(func_L04_00523E58, a0);
         }
         if (func_0038CAD0(st + 0x38) != 0) {
             func_003C2880(a0);

@@ -23,7 +23,7 @@ extern s32 func_L39_005E7598(s32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s
 extern void func_L01_00517538(s32, f32, f32);
 extern s32 func_003E8348(s32, s32);
 extern void func_L39_005E5118(void);
-extern void func_L01_00484A80(s32);
+extern void func_L01_00518D40(s32);
 extern s32 func_003E9270(s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E9138(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_L01_00516C78_005E4648(s32, s32, s32);
@@ -47,7 +47,7 @@ void func_L39_005E4648(void) {
     func_L01_00517538(0xD0005, a, a);
     func_003E8348(0x11, 0x1E0000);
     func_L39_005E5118();
-    func_L01_00484A80(0x1E0006);
+    func_L01_00518D40(0x1E0006);
     func_003E9270(0x1E0009, 0x706EC8FF, D_001D8394_sda + D_001D839C_sda, rowY_005E4648(1), 0.01953f, 0.040868f, 0.004f, 0.005f);
     func_003E9270(0x1E0008, 0x332299DE, (D_001D8394_sda + D_001D839C_sda + D_001D8398_sda) * 0.5f, rowY_005E4648(1), D_001D8398_sda - (D_001D8394_sda + D_001D839C_sda), D_001D83A0_sda, 0.004f, 0.005f);
     func_003E9138(0x1E0007, 0x332299DE, 0, D_001D8394_sda + D_001D839C_sda + 0.004f, rowY_005E4648(1), D_001D8398_sda - (D_001D8394_sda + D_001D839C_sda) - 0.008f, D_001D83A0_sda - 0.01f);

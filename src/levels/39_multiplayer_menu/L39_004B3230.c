@@ -362,7 +362,7 @@ extern s32 func_L39_004D58E0(void);
 extern s32 func_L39_004D58F0(void);
 extern void func_L39_004D5900(void);
 extern void func_L39_004D5928(void);
-extern void func_L01_004126A8(s32);
+extern void func_L01_00447450(s32);
 extern void func_L39_004B7A80(s32);
 extern s32 func_L39_004D0C78(void);
 extern void func_L39_004B76F8(void);
@@ -393,7 +393,7 @@ s32 func_L39_004B3B18(void) {
         func_001262A0(D_L39_00453FB0_004B3B18.sema[4]);
         if (D_L39_00453FB0_004B3B18.unk410 != 0) {
             func_001260B0(D_L39_00453FB0_004B3B18.unk41C);
-            func_L01_004126A8(D_L39_00453FB0_004B3B18.unk41C);
+            func_L01_00447450(D_L39_00453FB0_004B3B18.unk41C);
             func_00126070(D_L39_00453FB0_004B3B18.unk41C);
             if (D_L39_00453FB0_004B3B18.sema[7] > 0) {
                 func_00126270(D_L39_00453FB0_004B3B18.sema[7]);

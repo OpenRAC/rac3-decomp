@@ -5,7 +5,7 @@ extern f32 D_L32_001DD03C;
 extern void func_L32_0034A428(void *);
 extern s32 func_L32_0034A460(void *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L01_003E4008(void *);
+extern void func_L01_005195E0(void *);
 extern void func_L01_00404808(void *, void *);
 extern void func_L01_003B2DC8(void);
 extern s32 func_L01_004561B8(void *);
@@ -21,7 +21,7 @@ void func_L32_0034A198(u8 *a0) {
         if (func_L32_0034A460(a0) != 0) {
             func_L01_004450F0(a0, 2, -1);
         }
-        func_L01_003E4008(a0);
+        func_L01_005195E0(a0);
         func_L01_00404808(func_L01_003B2DC8, a0);
         break;
     case 2:

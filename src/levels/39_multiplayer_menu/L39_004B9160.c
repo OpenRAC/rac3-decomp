@@ -114,7 +114,7 @@ extern char D_L39_00442C50[];
 extern void func_L39_004BBE28(void *);
 extern void func_L39_004C46A8(void *);
 extern void func_L39_004C33C8(void);
-extern void func_L01_004126A8(s32);
+extern void func_L01_00447450(s32);
 extern void func_00126270(s32);
 extern s32 func_L39_004D0C78(void);
 
@@ -136,7 +136,7 @@ s32 func_L39_004B93F8(void) {
         }
         func_L39_004C33C8();
     }
-    func_L01_004126A8(D_L39_0046477C);
+    func_L01_00447450(D_L39_0046477C);
     D_L39_0046477C = -1;
     func_00126270(D_L39_00464780);
     D_L39_00464780 = -1;

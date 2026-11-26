@@ -79,7 +79,7 @@ extern void func_L39_005F3548(s32, s32, s32);
 extern void func_L39_0061C0E0(s32, s32);
 extern void func_L39_005D6468(s32, s32);
 extern void func_L01_00353C80(s32);
-extern s32 func_L01_0049F168(s32);
+extern s32 func_L01_004914D0(s32);
 extern void func_L01_00517748(s32);
 
 void func_L39_005EAF10(s32 a0) {
@@ -97,7 +97,7 @@ void func_L39_005EAF10(s32 a0) {
         func_L01_00353C80(a0);
     } else if (b & 0x910) {
         func_L39_005F3548(4, 0, 0);
-        func_L01_00517748(func_L01_0049F168(a));
+        func_L01_00517748(func_L01_004914D0(a));
         func_L01_00353C80(a0);
     }
 }

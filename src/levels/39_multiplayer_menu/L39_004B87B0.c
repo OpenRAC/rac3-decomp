@@ -118,7 +118,7 @@ INCLUDE_ASM("asm/levels", func_L39_004B8A30);
 extern s32 func_L39_004B80D8(void);
 extern s32 func_L39_004B8150(void);
 extern s32 func_L39_004C3D60(void *, u8 *, s32);
-extern long func_L01_0041A198(s32, u8 *, s32, s32);
+extern long func_L01_0047C518(s32, u8 *, s32, s32);
 extern s32 D_L39_00464788;
 extern void *D_L39_00464790;
 
@@ -138,7 +138,7 @@ s32 func_L39_004B9078(u8 *buf, s32 len) {
             }
         }
     } else {
-        r = func_L01_0041A198(D_L39_00464774, buf, len, 0);
+        r = func_L01_0047C518(D_L39_00464774, buf, len, 0);
         if (r < 0) {
             r = func_L39_004B95C0(*func_L01_003E4008());
         }

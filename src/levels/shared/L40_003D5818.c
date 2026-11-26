@@ -15,7 +15,7 @@ void func_L40_003D5818(s32 a0) {
 
 /* localdecomp:start func_L40_003D5840 */
 extern u8 D_L40_003BFE20[];
-extern s32 func_L39_0053D8E8(u8 *);
+extern s32 func_L39_0055DC90(u8 *);
 
 static __inline__ u32 Dec_003D5840(u8 *q) {
     u32 b;
@@ -51,7 +51,7 @@ s32 func_L40_003D5840(u8 *a0, u8 *a1) {
     u8 *e;
     u16 hit;
 
-    if (func_L39_0053D8E8(a1) == 0) {
+    if (func_L39_0055DC90(a1) == 0) {
         e = *(u8 **)(a0 + 0x2530);
         if (e != 0 && e[0x27B] != 0) {
             hit = 0;
@@ -399,8 +399,8 @@ typedef struct {
 } S_003D6070;
 extern f32 func_L01_0040E548(void *, void *);
 extern s32 func_L40_003D5840(u8 *, u8 *);
-extern void func_L39_0055DBE8(s32, s32);
-extern s32 func_L39_0053D938(s32);
+extern void func_L39_00560248(s32, s32);
+extern s32 func_L39_0055DCB8(s32);
 extern s32 *D_L40_00249330[] __attribute__((section(".sdata")));
 extern f32 D_L40_00246984;
 extern s32 D_001A5DF8[];
@@ -426,13 +426,13 @@ s32 func_L40_003D6070(u8 *p, s32 a1) {
             }
         }
         if (i < 8) {
-            func_L39_0055DBE8((s32)p, *e);
+            func_L39_00560248((s32)p, *e);
         }
         break;
     case 3:
         if (q->t0 > 0 && q->t1 > 0) {
             if (q->t0 < D_001A5DF8[0] - q->t1) {
-                if (func_L39_0053D938((s32)p) == 0) {
+                if (func_L39_0055DCB8((s32)p) == 0) {
                     func_L40_003D5818((s32)p);
                 }
             }

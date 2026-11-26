@@ -168,7 +168,7 @@ extern Hit_0034BF90 *func_L01_00447490(void *, s32, s32);
 extern void func_L01_0044ABD0(void *, void *);
 extern s32 func_L01_004AAC98(s32, s32, s32, s32);
 extern void func_003C4A40(void *, void *);
-extern void func_L01_003739B8(void *, void *);
+extern void func_L01_004D5C70(void *, void *);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_003C2F58(void *, s32, void *);
 extern int func_L30_0034D8D8(void *, float);
@@ -202,7 +202,7 @@ void func_L31_0034BF90(Moby_0034BF90 *m) {
                     v->b77 = 0xFF;
                     func_003C4A40(m, v->w70);
                     v->wD8 = D_L31_001DD258;
-                    func_L01_003739B8(m, hit);
+                    func_L01_004D5C70(m, hit);
                     if (m->b43 != 1) {
                         func_003C3A10(m, 1, 0, (D_L31_001DD1B0 * 5 + 2) / 6);
                     }

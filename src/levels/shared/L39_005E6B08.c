@@ -11,7 +11,7 @@ extern s32 D_L39_00243B90[][4] __attribute__((section(".sdata")));
 extern s32 func_L01_00517688(void);
 extern s32 func_L01_004910C0(s32);
 extern s32 func_L01_00517748(s32);
-extern s32 func_L01_0049F168(s32);
+extern s32 func_L01_004914D0(s32);
 extern void func_L01_00353C80(s32);
 extern s32 func_L39_005F3548(s32, s32, s32);
 extern void func_L39_0061C0E0(s32, s32);
@@ -37,7 +37,7 @@ void func_L39_005E6B08(s32 arg0, s32 arg1) {
         v = func_L01_00517688();
         func_L39_005F3548(4, 0, 0);
         func_L01_00517748(func_L01_004910C0(func_L01_00517688()));
-        func_L01_00353C80(func_L01_0049F168(v));
+        func_L01_00353C80(func_L01_004914D0(v));
     }
 }
 /* localdecomp:end func_L39_005E6B08 */

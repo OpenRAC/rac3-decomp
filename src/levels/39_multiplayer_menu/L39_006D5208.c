@@ -2211,14 +2211,14 @@ extern s32 D_0022F280[];
 void func_0011D534(s32 *, s32, s32);
 void func_001974D8(s32);
 void func_L39_006D8938(void *);
-void func_L01_004D3BD0(void *);
+void func_L01_004BF5B0(void *);
 
 void func_L39_006D8060(void *arg0, s32 arg1) {
     func_0011D534(D_0022F280, 0, 0x148);
     func_001974D8(0);
     func_L39_006D8938(arg0);
     if (arg1 & 1) {
-        func_L01_004D3BD0(arg0);
+        func_L01_004BF5B0(arg0);
     }
 }
 /* localdecomp:end func_L39_006D8060 */
@@ -2581,7 +2581,7 @@ typedef struct {
     u8 f7C;
 } S_006D8938;
 
-void func_L01_004D3BD0(void *);
+void func_L01_004BF5B0(void *);
 
 void func_L39_006D8938(void *arg0) {
     S_006D8938 *p = (S_006D8938 *)arg0;
@@ -2639,12 +2639,12 @@ void func_L39_006D8938(void *arg0) {
         p->f62 = 0;
     }
     if (p->f74) {
-        func_L01_004D3BD0(p->f70);
+        func_L01_004BF5B0(p->f70);
         p->f70 = 0;
         p->f74 = 0;
     }
     if (p->f7C) {
-        func_L01_004D3BD0(p->f78);
+        func_L01_004BF5B0(p->f78);
         p->f78 = 0;
         p->f7C = 0;
     }

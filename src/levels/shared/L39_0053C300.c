@@ -20,7 +20,7 @@ extern f32 func_L39_005B44C8(void);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void *func_L39_005CE670(void *, void *, s32, f32, f32, f32, u32, u32, s32);
-extern u32 func_L01_00480A78(u32, u32, f32);
+extern u32 func_L01_00447470(u32, u32, f32);
 extern void func_0038CF68(void *, void *, f32);
 extern u32 func_L01_00448D88(u32, s32);
 extern s32 func_L39_005B43C8(s32, s32);
@@ -82,8 +82,8 @@ void func_L39_0053C300(u8 *a0) {
         func_L39_005CE670(&v40, &v30, 0, func_L39_005B4410(0.35f, 1.25f), ground, 0.008f, (0x16 << 24) | (cb << 16) | (cg << 8) | cr, (cb << 16) | (cg << 8) | cr, 1);
     }
     for (j = 0; j < n2; j++) {
-        c1 = func_L01_00480A78(0x7F000000, (0x7F << 24) | (cb << 16) | (cg << 8) | cr, func_L39_005B4410(0.25f, 1.0f));
-        c2 = func_L01_00480A78(0, ((cb / 2) << 16) | ((cg / 2) << 8) | (cr / 2), func_L39_005B4410(0.5f, 1.0f));
+        c1 = func_L01_00447470(0x7F000000, (0x7F << 24) | (cb << 16) | (cg << 8) | cr, func_L39_005B4410(0.25f, 1.0f));
+        c2 = func_L01_00447470(0, ((cb / 2) << 16) | ((cg / 2) << 8) | (cr / 2), func_L39_005B4410(0.5f, 1.0f));
         v40.x = func_L39_005B4410(-3.0f, 3.0f);
         v40.y = func_L39_005B4410(-3.0f, 3.0f);
         v40.z = func_L39_005B4410(0.080000006f, 0.28000003f);

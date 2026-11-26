@@ -39,7 +39,7 @@ extern s32 func_003E8A08(s32, s32, s32);
 extern s32 func_003E8AE8(s32, s32, s32, s32, s32, s32);
 extern s32 func_L01_00518110(s32, s32, s32, s32);
 extern s32 func_003E8630(s32, s32);
-extern void func_L01_00484A80(s32);
+extern void func_L01_00518D40(s32);
 extern s32 func_003E8348(s32, s32);
 extern void *func_003E6C08();
 extern s32 func_003E6DE8(void *);
@@ -162,7 +162,7 @@ void func_L39_005D9908(s32 arg0) {
     func_L01_00518110(0x20013, 0x20016, 0x20017, 0x20018);
     func_003E8630(0x20001, 0x20013);
     func_003E8630(0x20000, 0x20001);
-    func_L01_00484A80(0x2000C);
+    func_L01_00518D40(0x2000C);
     func_003E5090(0x2000E);
     func_L39_00611AC8(0x2000E, func_00392A18(), 0x10);
     func_L01_005170B8(0x2000E, 0x331465B7);
@@ -176,8 +176,8 @@ void func_L39_005D9908(s32 arg0) {
     func_L01_00518110(0x2000C, 0x2000E, 0x2000D, 0x2000F);
     func_L01_00516D60(0x2000C, 0);
     func_003E8630(0x20000, 0x2000C);
-    func_L01_00484A80(0x20019);
-    func_L01_00484A80(0x2001A);
+    func_L01_00518D40(0x20019);
+    func_L01_00518D40(0x2001A);
     if (*D_L39_00241120 == 2) {
         e = 1.3461539f;
     }
