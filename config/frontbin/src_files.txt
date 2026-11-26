@@ -208,6 +208,8 @@ src/frontbin/3C03A8.c 003C03A8
 src/frontbin/3C08A8.c 003C08A8
 src/frontbin/3C0AD0.c 003C0AD0
 src/frontbin/3C0CA0.c 003C0CA0
+src/frontbin/3C0F60.c 003C0F60
+src/frontbin/3C12A8.c 003C12A8
 src/frontbin/3C1A80.c 003C1A80
 src/frontbin/3C24B0.c 003C24B0
 src/frontbin/3C25D8.c 003C25D8
