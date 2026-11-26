@@ -589,8 +589,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00385EE0` | levels | Codex wave 10 near miss | near miss: 86 words differ with the file's flags |
 | `func_L01_00386410` | levels | Codex wave 10 near miss | near miss: 274 words differ with the file's flags |
 | `func_L01_00389C28` | levels | Codex wave 10 near miss | near miss: 256 words differ with the file's flags |
-| `func_L01_0038F728` | levels | Codex wave 10 near miss | near miss: 342 words differ with the file's flags |
-| `func_L01_0038FCB8` | levels | Codex wave 10 near miss | near miss: 46 words differ with the file's flags |
 | `func_L01_00394AF0` | levels | Round 23 W1 near miss | 21 positional word differences with the existing flags after using the shared vector helpers and a local weapon-row table pointer. The two particle-call argument setup sequences still differ in register allocation and scheduling. The draft contains a switch. |
 | `func_L01_00397A28` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_0039A320` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |

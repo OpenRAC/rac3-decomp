@@ -85,7 +85,175 @@ void func_L01_0038F3F8(u8 *obj) {
 }
 /* localdecomp:end func_L01_0038F3F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038F728);
+/* localdecomp:start func_L01_0038F728 */
+typedef int u128_390A40 __attribute__((mode(TI)));
+typedef struct {
+    u128_390A40 rotation;
+    s32 unk_10;
+    s32 unk_14;
+    s32 unk_18;
+} BurstVars_390A40;
+typedef struct {
+    u8 pad_0[0x10];
+    u128_390A40 position;
+    s8 state;
+    u8 pad_21[0x30 - 0x21];
+    u8 unk_30;
+    u8 pad_31[0x68 - 0x31];
+    BurstVars_390A40 *vars;
+} Moby_390A40;
+
+
+typedef struct {
+    vu0_q start, end, velocity;
+    u8 *hit;
+    s32 *options;
+    s32 mode;
+    f32 radius, factor0, factor1;
+    s32 flags, unknown;
+    u8 pad50[8];
+    s32 field58;
+    u8 pad5C[4];
+} Move_0038F728;
+extern s32 D_L01_001D673C;
+__asm__(".extern D_L01_001D673C, 16");
+extern u8 *D_001A71A0[];
+extern vu0_q D_L01_001EAA20[];
+extern u8 D_L01_001D66B0[8];
+__asm__(".extern D_L01_001DDFE0_sda, 4");
+__asm__(".extern D_L01_001DDFE4_sda, 4");
+extern f32 D_L01_001DDFE0_sda __attribute__((section(".sdata")));
+extern f32 D_L01_001DDFE4_sda __attribute__((section(".sdata")));
+void func_L01_0038F728(u8 *obj) {
+    extern void func_L01_004471A8(void *, f32);
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_L01_0038FCB8(u8 *);
+    extern s32 func_00382468(s32);
+    extern void func_L01_004C7D98(void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern void func_L01_003900F8(vu0_v4 *);
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_L01_004CAC40(void *, void *);
+    extern void func_L01_004C8688(s32, void *, s32);
+    extern void func_L01_004C7D40(void *, void *, f32);
+    extern s32 func_L01_004C7E70(Move_0038F728 *, s32);
+    extern u8 *func_00382348(void *);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern s32 func_003A52A0(s32, s32, void *);
+    extern f32 func_00382538(void);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern u8 *func_L01_0046B288(void *, u32, u32, f32, f32, s32);
+    extern Moby_390A40 *func_L01_00390A40(u128_390A40 *, u128_390A40 *);
+    extern void func_L01_004C8668(s32);
+    extern void func_003C2880(u8 *);
+    extern f32 func_0038DAB8(f32, f32);
+    vu0_v4 old;
+    s32 options[2];
+    vu0_v4 direction;
+    Move_0038F728 move;
+    vu0_v4 point, normal, offset;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    func_L01_004471A8(obj, 1.0f);
+    if (func_L01_004CB2D8()) func_L01_004CAB30(obj + 0x10, obj + 0x10);
+    switch (obj[0x20]) {
+    case 0:
+        obj[0x20] = 1;
+    case 1:
+        func_L01_0038FCB8(obj);
+        if (!D_L01_001D673C && !func_L01_004CB2D8() && func_00382468(2)) {
+            func_L01_004C7D98(obj + 0x10, &direction);
+            func_0038CF68(&direction, &direction, -5.0f);
+            vec_add_ba(&direction, (obj + 0x10), &direction);
+            if (func_003D3CB0(obj + 0x10, &direction, 0, D_001A71A0[0], 0)) func_L01_003900F8((vu0_v4 *)D_L01_001EAA20);
+        }
+        old = *(vu0_v4 *)(obj + 0x10);
+        func_003C5180(&old, &direction, 1);
+        vec_add_ab((obj + 0x10), (obj + 0x10), vars);
+        func_L01_004CAB30(obj + 0x10, obj + 0x10);
+        func_L01_004CAC40(vars, vars);
+        func_L01_004C8688(*(s32 *)(vars + 0x34), vars, 0);
+        func_L01_004C7D40(obj + 0x10, vars, 0.0048f);
+        options[0] = 0;
+        options[1] = 0xCE3;
+        move.start = *(vu0_q *)&old;
+        move.end = *(vu0_q *)(obj + 0x10);
+        move.velocity = *(vu0_q *)vars;
+        move.hit = obj;
+        move.options = options;
+        move.mode = 2;
+        move.radius = 0.25f;
+        move.factor0 = D_L01_001DDFE0_sda;
+        move.factor1 = D_L01_001DDFE4_sda;
+        move.flags = 0;
+        move.unknown = 0;
+        move.field58 = 0;
+        if (func_L01_004C7E70(&move, -1) == 2) obj[0x20] = 2;
+        *(vu0_q *)(obj + 0x10) = move.end;
+        *(vu0_q *)vars = move.velocity;
+        *(vu0_q *)(vars + 0x20) = move.start;
+        if (move.hit && ((*(u8 **)(move.hit + 0x24))[0x46] == 5 ||
+            (*(u8 **)(move.hit + 0x24))[0x46] == 9 || (*(u16 *)(move.hit + 0x34) & 0x4000))) {
+            u8 *info = func_00382348(move.hit);
+            func_L01_004C7D98(move.hit + 0x10, &normal);
+            *(vu0_q *)&point = *(vu0_q *)(obj + 0x10);
+            if (info) {
+                func_0038CE20((f32 *)&offset, (f32 *)&normal, *(f32 *)(info + 0x10));
+                vec_add_ab(&point, &point, &offset);
+            }
+            func_0038CE20((f32 *)&normal, (f32 *)&normal, -3.0f);
+            obj[0x20] = 2;
+            vec_add_ab(&normal, &normal, &point);
+            *(vu0_q *)(obj + 0x10) = D_L01_001EAA20[0];
+            *(vu0_q *)(vars + 0x20) = D_L01_001EAA20[2];
+            func_0038CF68(vars + 0x20, vars + 0x20, 1.0f);
+            if (func_003D3CB0(&point, &normal, 6, move.hit, 0)) {
+                *(vu0_q *)(obj + 0x10) = D_L01_001EAA20[0];
+                *(vu0_q *)(vars + 0x20) = D_L01_001EAA20[2];
+                func_0038CF68(vars + 0x20, vars + 0x20, 1.0f);
+            }
+        }
+        break;
+    case 2:
+        func_003A52A0(0, 0, obj);
+        if (!D_L01_001D673C && !func_L01_004CB2D8()) {
+            s32 i;
+            for (i = 0; i < 1; i++) {
+                f32 angle = func_00382538();
+                f32 radius = func_003824E0(0, 0.6f);
+                f32 size = func_003824E0(0, 1.5f);
+                f32 lifetime = func_003824E0(1.5f, 5.5f);
+                s32 alpha = func_00382498(100, 160);
+                direction.x = func_0038D098(angle) * radius;
+                direction.y = func_0038D0B0(angle) * radius;
+                direction.z = 0;
+                vec_add_ba(&direction, &direction, (obj + 0x10));
+                func_L01_0046B288(&direction, 0x30305020, 0x182810, size, lifetime, alpha);
+                }
+        }
+        {
+            Moby_390A40 *burst = func_L01_00390A40((u128_390A40 *)(obj + 0x10), (u128_390A40 *)D_L01_001D66B0);
+            *(s32 *)((u8 *)burst + 0xB8) = *(s32 *)(vars + 0x30);
+        }
+        func_L01_004C8668(*(s32 *)(vars + 0x34));
+        func_003C2880(obj);
+        return;
+    }
+    *(f32 *)(obj + 0xF0) = func_0038DAB8(*(f32 *)(obj + 0xF0), *(f32 *)(vars + 0x10));
+    *(f32 *)(obj + 0xF4) = func_0038DAB8(*(f32 *)(obj + 0xF4), *(f32 *)(vars + 0x14));
+    func_L01_004471A8(obj, 0.2f);
+    if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
+        *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||
+        *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) {
+        func_L01_004C8668(*(s32 *)(vars + 0x34));
+        func_003C2880(obj);
+    }
+}
+/* localdecomp:end func_L01_0038F728 */
 
 /* localdecomp:start func_L01_0038FCA8 */
 void func_L01_0038FCA8(u8 *a) {
@@ -93,7 +261,64 @@ void func_L01_0038FCA8(u8 *a) {
 }
 /* localdecomp:end func_L01_0038FCA8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038FCB8);
+/* localdecomp:start func_L01_0038FCB8 */
+extern u8 *D_L01_00221098[];
+void func_L01_0038FCB8(u8 *obj) {
+    extern void func_00382580(void *, f32, f32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_00382468(s32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, s32, s32, s32, s32, s32, f32, f32, f32);
+    extern void func_L01_004C7D98(void *, void *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_00466F50(void *, void *, u32, f32, f32);
+    vu0_v4 position, velocity, offset, normal;
+    s32 i, j, k;
+    u8 *particle;
+    for (i = 0; i < 1; i++) {
+        func_00382580(&velocity, 0.035f, 0.05f);
+        func_0038CE20(&offset.x, &velocity.x, 10.0f);
+        vec_add_ab(&position, &offset, obj + 0x10);
+        particle = func_L01_004713C8(&position, &velocity, (func_00382498(10, 30) * 5 + 2) / 6, 0x5A182,
+                     func_00382498(-1, -3), 0x20, 0, 0, 94500.0f, 199500.0f, 0.0096f);
+        if (particle) {
+            particle[3] = func_00382468(2) ? 0x48 : 0x44;
+            particle[2] = *D_L01_00221098[0x5C / 4];
+        }
+    }
+    for (j = 0; j < 1; j++) {
+        func_00382580(&velocity, 0.01f, 0.04f);
+        func_0038CE20(&offset.x, &velocity.x, 10.0f);
+        vec_add_ab(&position, &offset, obj + 0x10);
+        particle = func_L01_004713C8(&position, &velocity, (func_00382498(10, 30) * 5 + 2) / 6, 0x5A182,
+                     func_00382498(-1, -3), 0x20, 0, 0, 73500.0f, 52500.0f, 0.0096f);
+        if (particle) {
+            particle[3] = func_00382468(2) ? 0x48 : 0x44;
+            particle[2] = *D_L01_00221098[0x1A4 / 4];
+        }
+    }
+    for (k = 0; k < 1; k++) {
+        func_00382580(&velocity, 0.01f, 0.03f);
+        func_0038CE20(&offset.x, &velocity.x, 10.0f);
+        vec_add_ab(&position, &offset, obj + 0x10);
+        particle = func_L01_004713C8(&position, &velocity, (func_00382498(10, 30) * 5 + 2) / 6, 0x5A182,
+                     func_00382498(-1, -3), 0x20, 0, 0, 73500.0f, 31500.001953125f, 0.0096f);
+        if (particle) {
+            particle[3] = func_00382468(2) ? 0x48 : 0x44;
+            particle[2] = *D_L01_00221098[0x88 / 4];
+        }
+    }
+    if (func_00382468(3) == 0) {
+        func_00382580(&velocity, 0.01f, 0.03f);
+        func_0038CE20(&offset.x, &velocity.x, 20.0f);
+        vec_add_ab(&position, &offset, obj + 0x10);
+        func_L01_004C7D98(obj + 0x10, &normal);
+        func_0038CF68(&normal, &normal, -func_003824E0(0.01f, 0.05f));
+        func_L01_00466F50(&position, &normal, 0x4005A182, -1.0f, -0.004f);
+    }
+}
+/* localdecomp:end func_L01_0038FCB8 */
 
 /* localdecomp:start func_L01_003900F8 */
 #include "vu0.h"
@@ -103,7 +328,7 @@ void func_L01_003900F8(vu0_v4 *origin) {
     extern s32 func_00382498(s32, s32);
     extern f32 func_0038D098(f32);
     extern f32 func_0038D0B0(f32 angle);
-    extern u8 *func_L01_0046B288(void *, u32, u32, s32, f32, f32);
+    extern u8 *func_L01_0046B288(void *, u32, u32, f32, f32, s32);
     extern s32 func_00382468(s32);
     vu0_v4 position;
     f32 angle, radius, a, b;
@@ -121,7 +346,7 @@ void func_L01_003900F8(vu0_v4 *origin) {
         position.y = func_0038D0B0(angle) * radius;
         position.z = 0.0f;
         vec_add_ba(&position, &position, origin);
-        particle = func_L01_0046B288(&position, 0x5005C162, 0x0005C162, life, a, b);
+        particle = func_L01_0046B288(&position, 0x5005C162, 0x0005C162, a, b, life);
         if (particle != 0) {
             particle[3] = func_00382468(3) ? 0x48 : 0x44;
         }
@@ -191,23 +416,6 @@ Moby_390240 *func_L01_00390240(void *owner, u128_390240 *position, u128_390240 *
 INCLUDE_ASM("asm/levels", func_L01_00390358);
 
 /* localdecomp:start func_L01_00390A40 */
-typedef int u128_390A40 __attribute__((mode(TI)));
-typedef struct {
-    u128_390A40 rotation;
-    s32 unk_10;
-    s32 unk_14;
-    s32 unk_18;
-} BurstVars_390A40;
-typedef struct {
-    u8 pad_0[0x10];
-    u128_390A40 position;
-    s8 state;
-    u8 pad_21[0x30 - 0x21];
-    u8 unk_30;
-    u8 pad_31[0x68 - 0x31];
-    BurstVars_390A40 *vars;
-} Moby_390A40;
-
 extern void *func_003C24B0(s32 class_id, s32 flags);
 
 /* infecto_burst_spawn: spawns the Infecto-Bomb's burst (class 0x188B) where the bomb lands,
