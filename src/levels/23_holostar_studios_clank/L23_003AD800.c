@@ -937,7 +937,7 @@ extern void func_0038CE20(void *, void *, f32);
 extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_0044ABD0(void *, void *);
-extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456BD0(void *, s32);
 
 
 void func_L23_003AF6E8(Moby_3AF6E8 *m)
@@ -992,7 +992,7 @@ void func_L23_003AF6E8(Moby_3AF6E8 *m)
         func_L01_004450F0(m, 20, -1);
     }
     func_L01_0044ABD0(m, v + 0x160);
-    func_L01_00404A10(m, 3);
+    func_L01_00456BD0(m, 3);
     *(struct Moby **)(v + 0x180) = D_001A4BE0.hero_moby;
     *(s16 *)(v + 0x184) = 1;
     *(u128_t *)(v + 0x170) = *(u128_t *)&D_001A4BE0.pos;

@@ -3,6 +3,7 @@
 /* declared by functions of L39_005DC4C0.c, which this file was cut from */
 extern u8 *D_L39_0024BF5C;
 extern void func_L01_00451388(u8 *, s32 *, s32 *);
+extern void func_L01_004512E8(u8 *, s32 *, s32 *);
 typedef struct {
     u8 pad[136];
     s32 f88[2];
@@ -106,7 +107,7 @@ void func_L39_005DD3C0(u8 *p)
             continue;
         }
         qzero(&tgt);
-        func_L01_00451388(m, (s32 *)&tgt.x, (s32 *)&tgt.y);
+        func_L01_004512E8(m, (s32 *)&tgt.x, (s32 *)&tgt.y);
         vec_sub_ab(&d, &tgt, &pos);
         func_0038CF68(&d, &d, 1.0f);
         {
@@ -129,7 +130,7 @@ void func_L39_005DD3C0(u8 *p)
         s32 j = ((s32 (*)(u8 *))func_L39_005DD258)(p);
         u8 *m = D_L39_0024BF5C + (((S_005DD290_e *)D_L39_00352B4C[0])->f40[j] << 8);
         qzero(&tgt);
-        func_L01_00451388(m, (s32 *)&tgt.x, (s32 *)&tgt.y);
+        func_L01_004512E8(m, (s32 *)&tgt.x, (s32 *)&tgt.y);
         vec_sub_ab(&d, &tgt, &pos);
         func_0038CF68(&d, &d, 1.0f);
         {
@@ -428,12 +429,12 @@ void func_L39_005DD810(void) {
         }
         idx = g->f2558->fC64;
         if (idx != -1) {
-            func_L01_00451388(D_L39_0024BF5C + (D_L39_00352940.f20C->f60[idx] << 8), (s32 *)&v10, (s32 *)&v14);
+            func_L01_004512E8(D_L39_0024BF5C + (D_L39_00352940.f20C->f60[idx] << 8), (s32 *)&v10, (s32 *)&v14);
             Mark_005DD810(0x50007, v10, v14);
         } else {
             c = g->f2558->fC60;
             if (c != -1) {
-                func_L01_00451388(D_L39_0024BF5C + (D_L39_00352940.f20C->f40[c] << 8), (s32 *)&v18, (s32 *)&v1C);
+                func_L01_004512E8(D_L39_0024BF5C + (D_L39_00352940.f20C->f40[c] << 8), (s32 *)&v18, (s32 *)&v1C);
                 Mark_005DD810(0x50007, v18, v1C);
             }
         }
@@ -482,9 +483,9 @@ void func_L39_005DD810(void) {
     }
     g2 = func_L39_0061BF38(i);
     if (g2->f2528 == 0) {
-        func_L01_00451388(g2->f2524, (s32 *)&v28, (s32 *)&v2C);
+        func_L01_004512E8(g2->f2524, (s32 *)&v28, (s32 *)&v2C);
     } else {
-        func_L01_00451388((u8 *)g2->f2528->f2D0, (s32 *)&v28, (s32 *)&v2C);
+        func_L01_004512E8((u8 *)g2->f2528->f2D0, (s32 *)&v28, (s32 *)&v2C);
     }
     func_L01_00516470(0x50008, v28 + 0.0035f, v2C + 0.002f);
     func_L01_00516AA0(0x50008, 1, 1);
@@ -510,7 +511,7 @@ void func_L39_005DD810(void) {
                 } else {
                     u8 g = D_L39_00499FF8[1]; u8 b = D_L39_00499FF8[2]; col = (b << 16) | (alpha | (g << 8)) | D_L39_00499FF8[0];
                 }
-                func_L01_00451388(D_L39_0024CE20[j]->f2524, (s32 *)&v30, (s32 *)&v34);
+                func_L01_004512E8(D_L39_0024CE20[j]->f2524, (s32 *)&v30, (s32 *)&v34);
                 func_L01_00516470(id, v30, v34);
                 func_L01_00517538(id, 0.035f, 0.0434f);
                 func_L01_005170B8(id, col);
@@ -551,7 +552,7 @@ void func_L39_005DD810(void) {
                     } else if (k == 1) {
                         col = 0x70000000 | (D_L39_00499FF8[2] << 16) | (D_L39_00499FF8[1] << 8) | D_L39_00499FF8[0];
                     }
-                    func_L01_00451388((u8 *)nv->f2D0, (s32 *)&v38, (s32 *)&v3C);
+                    func_L01_004512E8((u8 *)nv->f2D0, (s32 *)&v38, (s32 *)&v3C);
                     func_L01_00516470(id, v38, v3C);
                     func_L01_00517538(id, 0.05f, 0.062000003f);
                     func_L01_005170B8(id, col);

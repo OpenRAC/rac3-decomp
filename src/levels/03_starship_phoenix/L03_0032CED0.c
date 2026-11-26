@@ -155,7 +155,7 @@ extern s32 D_00142848[];
 extern u8 D_001A74A9[];
 s32 func_L01_004AAC98(s32, s32, s32, s32);
 void func_L01_004450F0(s32, s32, s32);
-void func_L01_003F1760(void);
+void func_L01_004126C8(void);
 
 void func_L03_0032D228(u8 *a0) {
     S_Foo_0032D228 *s = *(S_Foo_0032D228 **)(a0 + 0x68);
@@ -181,7 +181,7 @@ void func_L03_0032D228(u8 *a0) {
         } while (0);
     }
     D_001A74A9[0] = 0;
-    func_L01_003F1760();
+    func_L01_004126C8();
     s->f2 = 0xC8;
     func_L01_004450F0((s32) a0, 9, -1);
 }

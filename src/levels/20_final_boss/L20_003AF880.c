@@ -93,7 +93,7 @@ extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32
                               s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern void func_L01_00356C90(void *);
 extern void func_L01_003B1350(void *);
-extern void func_L01_003B1DB8(void *);
+extern void func_L01_003B84E8(void *);
 extern void func_L01_00404808(void *, void *);
 extern f32 func_L01_004395E0(void *);
 extern f32 func_L01_00443A18(f32, f32);
@@ -173,7 +173,7 @@ void func_L20_003AF880(Mo *m) {
     }
     if ((flag != 0) || ((D_001A4BE0.i[0x2808 / 4] != 0) && (D_001A4BE0.i[0x19E0 / 4] == 0))) {
         if ((func_00382468(10) == 0) && (m->b[0x95] == 2)) {
-            func_L01_003B1DB8(m);
+            func_L01_003B84E8(m);
         }
     }
     switch (m->b[0x95]) {
@@ -761,7 +761,7 @@ extern s32 func_L01_00447490(void *, s32, s32);
 extern void func_L01_00446A70(void *, s32, s32, f32, void *, void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
 extern s32 func_00382468(s32);
-extern void func_L01_003739B8(void *);
+extern void func_L01_003500C0(void *);
 extern void func_L02_0034C938(void *);
 extern void func_L01_0044FD88(void *, void *, s32, s32);
 extern void func_0038D308(void *, void *);
@@ -799,7 +799,7 @@ s32 func_L20_003B1E58(u8 *a0) {
         if (D_001CCFD0.i[0x6C / 4] == 0 && D_001CCFD0.i[0x24 / 4] == -1
             && D_001CCFD0.i[0x94 / 4] == 0 && *(s32 *)(p + 0x390) == 0
             && func_00382468(10) == 0) {
-            func_L01_003739B8(a0);
+            func_L01_003500C0(a0);
         }
         func_L02_0034C938(a0);
     }

@@ -502,7 +502,7 @@ extern s32 func_003A52A0(s32, s32, void *);
 extern s32 func_L01_00452FB0(void *, void *, s32, s32, s32);
 extern void func_L01_003A6BB0(void *);
 extern s32 func_L01_00452860(void *, void *, s32);
-extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456BD0(void *, s32);
 extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 
 s32 func_L11_003A41E0(u8 *a0)
@@ -538,14 +538,14 @@ die:
         return 1;
     }
     if (v[0x5F] != 0) {
-        func_L01_00404A10(a0, 5);
+        func_L01_00456BD0(a0, 5);
         if (a0[0x95] == 0) {
             func_L01_00456C98(a0, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
         } else {
             func_L01_00456C98(a0, *(s32 *)(v + 0x2C8), 0, 0, 0, 0, 3, 0, 0, 0, *(f32 *)(v + 0x2CC), 10.0f, 1.0f);
         }
     } else {
-        func_L01_00404A10(a0, 3);
+        func_L01_00456BD0(a0, 3);
         if (a0[0x95] == 0) {
             func_L01_00456C98(a0, *(s32 *)(v + 0x2C0), 0, 0, 0, 0, 1, 0, 0, 0, *(f32 *)(v + 0x2C4), 10.0f, 1.0f);
         } else {

@@ -1144,7 +1144,7 @@ extern f32 func_L01_0040E548(void *, void *);
 extern void func_L01_004472C0(void *);
 extern s32 func_L01_00452F78(void *, s32, s32, s32);
 void func_L23_003B6C90(u8 *a0);
-extern void func_L01_00404A10(void *, s32);
+extern void func_L01_00456BD0(void *, s32);
 extern void func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern u8 *func_00382348(s32);
 
@@ -1170,7 +1170,7 @@ void func_L23_003B6390(M_3B6390 *s)
     if (func_L01_00452F78(s, 0, 0, 0) != 0) {
         func_L23_003B6C90((u8 *)s);
     }
-    func_L01_00404A10(s, 3);
+    func_L01_00456BD0(s, 3);
     was = v->h234 == 1;
     if (s->b95 == 2) {
         func_L01_00456C98(s, v->w2D0, 0, 0, 0, 0, 1, 0, 0, 0, v->f2D4, 10.0f, 1.0f);

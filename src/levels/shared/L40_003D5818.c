@@ -118,7 +118,7 @@ extern Ent_003D59B0 D_L40_003C2ED0[];
 extern void func_L39_00662B18(void *, void *, s32);
 extern u8 *func_L39_0061BFB0(u32);
 extern void func_L39_005F3488(s32, s32, void *, s32);
-extern s32 func_L01_003F8470(void *);
+extern s32 func_L01_0051D4A8(void *);
 extern void func_L39_00673540(void *, s32, s32);
 extern s32 func_L39_00648AE0(u8 *, s32);
 extern s32 func_L39_00648840(void *, s32);
@@ -141,7 +141,7 @@ void func_L40_003D59B0(u8 *a0, s32 *a1) {
             if ((*(u32 *)r >> 28) == D_L40_001A5CD0.w8) {
                 func_L39_005F3488(0, 0, a0, 0x189C);
             }
-            if (func_L01_003F8470(a0) == 0) {
+            if (func_L01_0051D4A8(a0) == 0) {
                 func_L39_00673540(r + 0x1A40, s->w10, 0);
             }
             if (s->w1C == 0) {

@@ -437,7 +437,7 @@ typedef struct GunRow_00335558 {
 extern Row_00335558 D_L07_002B0EB0[];
 extern GunRow_00335558 D_L07_002C72C0[];
 extern u8 D_001425C0[];
-extern void func_L01_0047DA90(void);
+extern void func_L01_00480060(void);
 extern void func_L01_0047B798(s32, s32);
 extern void func_L01_0047B820(s32, s32);
 extern void func_L01_0047B9B8(s32);
@@ -448,7 +448,7 @@ void func_L07_00335558(Obj_00335558 *arg0) {
     Row_00335558 *row;
     GunRow_00335558 *gun;
 
-    func_L01_0047DA90();
+    func_L01_00480060();
     row = &D_L07_002B0EB0[s->bB0];
     gun = &D_L07_002C72C0[D_001425C0[row->w0]];
     func_L01_0047B798(gun->icon, 0);

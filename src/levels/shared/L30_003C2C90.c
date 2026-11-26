@@ -45,7 +45,7 @@ s32 func_L30_003C2D78(void) {
 
 /* localdecomp:start func_L30_003C2D80 */
 extern u8 *func_L01_003F34E0(s32, s32);
-extern void func_L01_003EC848(void *);
+extern void func_L01_003BE3A0(void *);
 extern void func_00382E10(void *, s32);
 extern u8 *D_L30_001DF728;
 __asm__(".extern D_L30_001DF728, 16");
@@ -109,7 +109,7 @@ void func_L30_003C2D80(u128_t *a, u128_t *b, s32 c, f32 f) {
     }
     s->f28 = 15.0f;
     *(u128_t *)(m + 0x30) = *(u128_t *)D_001A4C60;
-    func_L01_003EC848(m);
+    func_L01_003BE3A0(m);
     func_00382E10(m, 0);
 }
 /* localdecomp:end func_L30_003C2D80 */

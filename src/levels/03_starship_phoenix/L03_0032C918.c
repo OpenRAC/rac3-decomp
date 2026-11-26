@@ -136,7 +136,7 @@ s32 func_L03_0032E0D8(void *a, s32 b);
 void func_L01_00404808(void *a, void *b);
 void func_L03_003307D0(void *a);
 s32 func_L03_0032F660(void *a);
-void func_L01_003F1760(void);
+void func_L01_004126C8(void);
 
 void func_L03_0032CBD8(u8 *arg0) {
     u8 *s3 = *(u8 **)(arg0 + 0x68);
@@ -185,7 +185,7 @@ void func_L03_0032CBD8(u8 *arg0) {
     }
     if (D_001A4BE0.f25CC == 0x14 && s3[0xF5] == 0) {
         s3[0xF5] = 1;
-        func_L01_003F1760();
+        func_L01_004126C8();
     }
 }
 /* localdecomp:end func_L03_0032CBD8 */

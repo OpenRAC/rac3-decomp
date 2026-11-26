@@ -21,7 +21,7 @@ void func_L08_0038F5F8(f32 *m, f32 s) {
 #include "vu0.h"
 
 extern AimVector_0038F660 D_L08_001E1B80;
-extern void func_L01_0039C4D8(char *pkt);
+extern void func_L01_0040D198(char *pkt);
 extern long func_00389598(char *p);
 extern float func_0038D160(float a, float b);
 extern float func_0038CF38(void *p, float *v);
@@ -38,7 +38,7 @@ void func_L08_0038F660(char *pos, int a1, int a2, char *a3, int t0,
     float quat[4];
     float off[4];
     long r;
-    func_L01_0039C4D8(pkt);
+    func_L01_0040D198(pkt);
     r = func_00389598(a3);
     *(long *)(pkt + 136) = ((long)t0 << 2) | 0x8000000040L;
     *(long *)(pkt + 128) = 0xFF9000000260L;
