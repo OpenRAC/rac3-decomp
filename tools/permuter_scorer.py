@@ -65,12 +65,26 @@ def _target(w, i):
     return None
 
 
+def _level_setup(func):
+    """A level function (catalogue name), e.g. when this module is loaded into decomp-permuter's
+    process (PERMUTER_ALIGNED_SCORER): place it in UYA_TARGET's level, or its own, as
+    tools/check.py does, before any relocation is resolved (the level's names)."""
+    if re.match(r"func_L\d\d_[0-9A-Fa-f]{8}$", func) and func not in tf.LEVEL["places"]:
+        import io, contextlib
+        with contextlib.redirect_stdout(io.StringIO()):
+            tf.level_function([func], targets.get())
+
+
 def _retail_words(func, size):
     global _retail
     if func not in _cache:
-        if _retail is None:
-            _retail = tf.Retail(os.path.join(ROOT, targets.get().elf))
-        th = _words(_retail.read(int(func[5:13], 16), tf.retail_size(func, size)))
+        if func in tf.LEVEL["places"]:
+            # a level function (catalogue name): its place in the level tf.level_function() chose
+            th = _words(tf.Retail(targets.get().path("elf")).read(*tf.LEVEL["places"][func]))
+        else:
+            if _retail is None:
+                _retail = tf.Retail(os.path.join(ROOT, targets.get().elf))
+            th = _words(_retail.read(int(func[5:13], 16), tf.retail_size(func, size)))
         B = [_norm(w) for w in th]
         # jump-table address halves (lui 0x32 / addiu same reg) are relocations
         jr = set()
@@ -94,6 +108,7 @@ def score(o_path, func):
     os.chdir(ROOT)
     fh = open(o_path, "rb")
     try:
+        _level_setup(func)
         elf = ELFFile(fh)
         text = elf.get_section_by_name(".text").data()
         resolved, mask = tf.resolve_relocations(elf, text)

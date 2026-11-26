@@ -96,6 +96,23 @@ def check_permuter(path):
 # preparation (parent process)
 # --------------------------------------------------------------------------
 
+LEVEL_FUNC_RE = re.compile(r"func_L\d\d_[0-9A-Fa-f]{8}$")
+
+
+def level_setup(func, t):
+    """A level function (catalogue name func_LNN_XXXXXXXX, docs/build/levels.md): set check.py's
+    LEVEL for it in this process, at its place in level NN (or in `t` when that is a level that
+    has it), as tools/check.py does. Returns (the level's target name, its file's flags), or None
+    for a program function."""
+    if not LEVEL_FUNC_RE.match(func):
+        return None
+    import io, contextlib
+    import check as tf
+    with contextlib.redirect_stdout(io.StringIO()):
+        lt, flags = tf.level_function([func], t)
+    return lt.name, flags
+
+
 def prepare(src_text, func, target, toolchain, runner, mode=None, asm=None, no_context=False, cpp=None):
     """Everything a worker needs: base source, prelude hints, typedef
     attributes and the compile flags (flags_for(), then --mode/--as)."""
@@ -106,14 +123,19 @@ def prepare(src_text, func, target, toolchain, runner, mode=None, asm=None, no_c
         import targets
         import check as tf
         import permuter_setup as psu
-        targets.get(target)
+        t = targets.get(target)
+        level = level_setup(func, t)
+        if level:
+            target, flags = level
+        else:
+            flags = tf.flags_for(int(func[5:13], 16))
         cpp = cpp or psu.default_cpp(toolchain, runner)
         base, hints, attrs = psu.build_base(src_text, func, cpp, no_context, tf)
-        flags = tf.apply_overrides(tf.flags_for(int(func[5:13], 16)), mode, asm)
-        if "@ee29" in flags or "@ee296" in flags or "@eeas" in flags:
+        flags = tf.apply_overrides(flags, mode, asm)
+        if not level and ("@ee29" in flags or "@ee296" in flags or "@eeas" in flags):
             raise RuntimeError(f"{func} is in an @ee29/@ee296/@eeas range; the engine only drives SN ee-gcc")
         return dict(func=func, target=target, base=base, prelude="\n".join(h.strip() for h in hints) + "\n",
-                    attrs=attrs, flags=flags, toolchain=toolchain, runner=runner)
+                    attrs=attrs, flags=flags, toolchain=toolchain, runner=runner, level=bool(level))
     finally:
         os.chdir(cwd)
 
@@ -148,6 +170,8 @@ class _Compiler:
         for f in (s, o):
             if os.path.exists(f):
                 os.remove(f)
+        if self.cfg.get("level"):
+            return self._compile_level(c, o)
         p = subprocess.run(self.base + ["-S", "-I", "include", "-I", "."] + self.cc_flags + ["-o", s, c],
                            cwd=ROOT, capture_output=True, text=True)
         if p.returncode or not os.path.exists(s):
@@ -161,6 +185,26 @@ class _Compiler:
         if p.returncode or not os.path.exists(o):
             self.last_error = (p.stderr or p.stdout)[-2000:]
             return None
+        return o
+
+
+    def _compile_level(self, c, o):
+        """A level function: check.py's own compile (its level names, loop padding, div.s nops,
+        @ee29/@ee296/@eeas), with no context added, since base.c already holds the file's context.
+        base.c is preprocessed, so the "common.h" check.py would add is already in it."""
+        import io, contextlib
+        import check as tf
+        src = open(c).read()
+        open(c, "w").write("/* common.h: already preprocessed into base.c */\n" + src)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            got = tf.compile_c(c, self.cfg["flags"], _CArgs(self.cfg["toolchain"], self.cfg["runner"], True),
+                               name=self.cfg["func"])
+        if not got:
+            self.last_error = out.getvalue()[-2000:]
+            return None
+        shutil.move(got, o)
+        shutil.rmtree(os.path.dirname(got), ignore_errors=True)
         return o
 
 
@@ -191,6 +235,9 @@ def _worker(cfg, wid, outq, stop, seed):
         os.environ["UYA_TARGET"] = cfg["target"]
         if TOOLS not in sys.path:
             sys.path.insert(0, TOOLS)
+        if cfg.get("level"):
+            import targets
+            level_setup(cfg["func"], targets.get(cfg["target"]))
         sp, sh, sr = _import_permuter(cfg["permuter"])
         import random as _r
         _r.seed(seed)
@@ -448,18 +495,23 @@ def prepare_exhaustive(src_text, func, target, toolchain, runner, mode=None, asm
     try:
         import targets
         import check as tf
-        targets.get(target)
-        flags = tf.apply_overrides(tf.flags_for(int(func[5:13], 16)), mode, asm)
+        level = level_setup(func, targets.get(target))
+        if level:
+            target, flags = level
+        else:
+            flags = tf.flags_for(int(func[5:13], 16))
+        flags = tf.apply_overrides(flags, mode, asm)
         return dict(func=func, target=target, source=src_text, flags=flags, toolchain=toolchain,
-                    runner=runner, exhaustive=True, weights={})
+                    runner=runner, exhaustive=True, weights={}, level=bool(level))
     finally:
         os.chdir(cwd)
 
 
 class _CArgs:
-    def __init__(self, toolchain, runner):
+    def __init__(self, toolchain, runner, no_context=False):
         self.toolchain, self.runner = toolchain, runner
-        self.no_context, self.early_extern_sizes, self.ee29 = False, {}, None
+        self.no_context, self.early_extern_sizes, self.ee29 = no_context, {}, None
+        self.ee296, self.eeas = os.environ.get("UYA_EE296"), os.environ.get("UYA_EEAS")
 
 
 def _exh_score(job):
@@ -473,6 +525,9 @@ def _exh_score(job):
         import check as tf
         import permuter_scorer as ps
         import io, contextlib
+        if cfg.get("level"):
+            import targets
+            level_setup(cfg["func"], targets.get(cfg["target"]))
         d = tempfile.mkdtemp(prefix="fence_")
         path = os.path.join(d, "v.c")
         open(path, "w").write(text)
@@ -624,7 +679,32 @@ class ExhaustiveJob(Job):
 # command line
 # --------------------------------------------------------------------------
 
+def compile_level(cfg_path, c_path, o_path):
+    """compile.sh of a level function's tools/permuter_setup.py directory: one candidate through
+    check.py's compile, as the engine's workers do. Exit status 1 when it does not compile."""
+    cfg = json.load(open(cfg_path))
+    os.chdir(ROOT)
+    os.environ["UYA_TARGET"] = cfg["target"]
+    import targets
+    level_setup(cfg["func"], targets.get(cfg["target"]))
+    tmp = tempfile.mkdtemp(prefix="permc_")
+    try:
+        c = os.path.join(tmp, "in.c")
+        shutil.copyfile(c_path, c)
+        comp = _Compiler(cfg, tmp)
+        o = comp._compile_level(c, os.path.join(tmp, "out.o"))
+        if not o:
+            sys.stderr.write(comp.last_error)
+            return 1
+        shutil.copyfile(o, o_path)
+        return 0
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
+    if len(sys.argv) == 5 and sys.argv[1] == "--compile-level":
+        sys.exit(compile_level(*sys.argv[2:5]))
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("file")
     ap.add_argument("func", nargs="?")
@@ -644,7 +724,7 @@ def main():
     if not ok:
         sys.exit(msg)
     src = open(a.file).read()
-    func = a.func or re.search(r"\b(func_[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", src).group(1)
+    func = a.func or re.search(r"\b(func_(?:L\d\d_)?[0-9A-Fa-f]{8})\s*\([^;{]*\)\s*\{", src).group(1)
     cfg = prepare(src, func, a.target, a.toolchain, a.runner, a.mode, a.asm)
     cfg["permuter"] = perm
     cfg["weights"] = dict(ASM_PASS_WEIGHTS) if (a.asm_passes and has_asm) else {}
