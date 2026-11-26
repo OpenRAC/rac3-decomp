@@ -903,7 +903,57 @@ void func_003841B8(u8 *arg) {
 }
 /* localdecomp:end func_003841B8 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00384260);
+/* localdecomp:start func_00384260 */
+/* the copy of func_00384640 */
+#include "vu0.h"
+typedef struct { f32 strength, value; s32 timer, duration; } Shake_00384260;
+extern f32 D_001D57B4;
+__asm__(".extern D_001D57B4, 4");
+extern s32 func_0038CAD0(void *);
+extern f32 func_0038DB48(f32);
+extern void func_003C4CE8(void *, void *, f32);
+extern void func_0038D810(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+void func_00384260(s32 player, Shake_00384260 *shake, s32 mode) {
+    vu0_v4 v;
+    vu0_v4 matrix[3];
+    u8 *entry = (u8 *)&D_00222480[player];
+    f32 ratio, cube, elapsed, fade, angle;
+    if (*(u8 **)(entry + 0x50) && *(s16 *)(*(u8 **)(entry + 0x50) + 0x86) == 6) {
+        shake->timer = 0;
+        shake->duration = 0;
+    } else if (shake->timer != 0) {
+        if (shake->duration < shake->timer) shake->duration = shake->timer;
+        func_0038CAD0(&shake->timer);
+        ratio = (f32)shake->timer / (f32)shake->duration;
+        switch (mode) {
+        case 0:
+            shake->value = shake->strength * func_0038D098(func_0038DB48((f32)shake->timer * 2.0f)) * ratio * ratio;
+            func_0038CF68((s32)&v, (s32)(entry + 0x3A0), shake->value);
+            vec_add_ab(entry, entry, &v);
+            break;
+        case 1:
+            shake->value = shake->strength * func_0038D098(func_0038DB48((f32)shake->timer * 2.0f)) * ratio * ratio;
+            func_0038CF68((s32)&v, (s32)(entry + 0x380), shake->value);
+            vec_add_ab(entry, entry, &v);
+            break;
+        case 2:
+            cube = ratio * ratio * ratio;
+            elapsed = (f32)(shake->duration - shake->timer) / 50.33333206176758f;
+            fade = elapsed * 6.0f;
+            angle = D_001D57B4 * 0.01745329238474369f;
+            if (fade > 1.0f) fade = 1.0f;
+            shake->value = shake->strength * func_0038D0B0(func_0038DB48(elapsed * angle - angle * 8.0f)) * cube * fade;
+            func_003C4CE8(&v, entry + 0x380, shake->value);
+            func_0038D810(&v, matrix);
+            func_0038D5F0(entry + 0x380, matrix, entry + 0x380);
+            break;
+        }
+    } else {
+        shake->duration = 0;
+    }
+}
+/* localdecomp:end func_00384260 */
 
 typedef struct { u8 p0[0x86]; s16 h86; } P_37FF90;
 typedef struct { u8 p0[0x50]; P_37FF90 *p50; u8 p54[0x380 - 0x54]; u8 v380[0x20]; u8 v3A0[0x460 - 0x3A0]; } E_37FF90;
@@ -2424,9 +2474,121 @@ void func_003873C0(void) {
 }
 /* localdecomp:end func_003873C0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_00387B18);
+/* localdecomp:start func_00387B18 */
+typedef struct { s32 display, depth, draw, tex_base, f10, f14, f18, f1C, f20; } Vram_00387B18;
+typedef struct { u8 pad[0x150]; s16 display_width, display_height, psm, fbp0, storage_width, storage_height; } FsAa_00387B18;
+typedef struct { s32 x0, x1, y0, y1; } Rect_00387B18;
+typedef struct { u8 pad[0x240]; Rect_00387B18 scissor; } View_00387B18;
+typedef struct {
+    unsigned long pad0[2];
+    unsigned long frame1, pad18, frame2, pad28, zbuf1, pad38, zbuf2, pad48, xyoffset1, pad58, xyoffset2;
+} DrawEnv_00387B18;
+typedef struct { u8 b[0x60]; } LoadImage_00387B18;
 
-LINKER_REMNANT("asm/remnants", func_00387EE8);
+extern Vram_00387B18 D_001A1ED0_00387B18 __asm__("D_001A1ED0");
+extern FsAa_00387B18 D_001CFEC0_00387B18 __asm__("D_001CFEC0");
+extern s32 D_00143950[];
+extern s32 D_001D5520; __asm__(".extern D_001D5520, 16");
+extern DrawEnv_00387B18 D_00142120_00387B18 __asm__("D_00142120");
+extern unsigned long D_001422F0[];
+extern unsigned long D_00142360[];
+extern unsigned long D_001D5330[];
+extern u8 D_002276C0[];
+extern s32 D_001D4BB0; __asm__(".extern D_001D4BB0, 16");
+extern s32 D_001D4BB4; __asm__(".extern D_001D4BB4, 16");
+typedef struct { s32 width, height, half_width, half_height, left, top, right, bottom; } Extent_00387B18;
+extern Extent_00387B18 D_001D4BC0_00387B18 __asm__("D_001D4BC0") __attribute__((section(".sdata")));
+extern void func_0011F0A0(s32);
+extern s32 func_0012A9F0(s32, s32);
+extern void func_0012C9A0(LoadImage_00387B18 *, s16, s16, s16, s16, s16, s16, s16);
+extern void func_0012CCC8(LoadImage_00387B18 *, u8 *);
+extern void func_00391678(s32, s32, s32, s32, s32, s32);
+extern void func_003922B8(void);
+extern void func_00392350(s32);
+extern void func_00392290(void);
+extern void func_0038CB78(void *, s32, s32);
+extern void func_003D9338(void);
+
+/* the front end's copy of func_L39_00587A30 (from rac2-decomp's func_0027B440, SetPalMode) */
+void func_00387B18(s32 clear) {
+    LoadImage_00387B18 image;
+    s32 n;
+    s32 i;
+    unsigned long zbuf;
+    unsigned long frame;
+
+    func_0011F0A0(0);
+    if (D_00143950[0] != 0) {
+        D_001A1ED0_00387B18.draw = 0x100000;
+        D_001A1ED0_00387B18.depth = 0x1E0000;
+        D_001A1ED0_00387B18.display = 0;
+        D_001A1ED0_00387B18.tex_base = 0x2C0000;
+        func_00391678(0x200, 0x1C0, 0x200, 0x200, 4, 0);
+    } else if (D_001D5520 != 0) {
+        D_001A1ED0_00387B18.draw = 0x118000;
+        D_001A1ED0_00387B18.depth = 0x1E8000;
+        D_001A1ED0_00387B18.display = 0;
+        D_001A1ED0_00387B18.tex_base = 0x2C0000;
+        func_00391678(0x200, 0x1A0, 0x280, 0x1C0, 0, 0);
+    } else {
+        D_001A1ED0_00387B18.draw = 0x118000;
+        D_001A1ED0_00387B18.depth = 0x1E8000;
+        D_001A1ED0_00387B18.display = 0;
+        D_001A1ED0_00387B18.tex_base = 0x2C0000;
+        func_00391678(0x200, 0x1A0, 0x200, 0x1C0, 0, 0);
+    }
+    D_001A1ED0_00387B18.f10 = D_001A1ED0_00387B18.tex_base;
+    D_001A1ED0_00387B18.f14 = D_001A1ED0_00387B18.tex_base + 0x1000;
+    D_001A1ED0_00387B18.f18 = D_001A1ED0_00387B18.tex_base + 0x1400;
+    D_001A1ED0_00387B18.f1C = D_001A1ED0_00387B18.tex_base + 0x1800;
+    D_001A1ED0_00387B18.f20 = D_001A1ED0_00387B18.tex_base + 0x1C00;
+    D_001D4BC0_00387B18.width = D_001CFEC0_00387B18.display_width;
+    D_001D4BC0_00387B18.height = D_001CFEC0_00387B18.display_height;
+    D_001D4BC0_00387B18.half_width = D_001D4BC0_00387B18.width >> 1;
+    D_001D4BC0_00387B18.half_height = D_001D4BC0_00387B18.height >> 1;
+    D_001D4BC0_00387B18.left = (0x800 - D_001D4BC0_00387B18.half_width) << 4;
+    D_001D4BC0_00387B18.top = (0x800 - D_001D4BC0_00387B18.half_height) << 4;
+    D_001D4BC0_00387B18.right = (D_001D4BC0_00387B18.half_width + 0x800) << 4;
+    D_001D4BC0_00387B18.bottom = (D_001D4BC0_00387B18.half_height + 0x800) << 4;
+    ((View_00387B18 *)&D_00225900)->scissor.x0 = 0;
+    ((View_00387B18 *)&D_00225900)->scissor.x1 = D_001D4BC0_00387B18.width - 1;
+    ((View_00387B18 *)&D_00225900)->scissor.y0 = 0;
+    ((View_00387B18 *)&D_00225900)->scissor.y1 = D_001D4BC0_00387B18.height - 1;
+    frame = (D_001A1ED0_00387B18.depth >> 13) | ((unsigned long)(D_001D4BC0_00387B18.width >> 6) << 16);
+    D_00142120_00387B18.frame1 = frame;
+    zbuf = (D_001A1ED0_00387B18.draw >> 13) | 0x1000000;
+    D_00142120_00387B18.frame2 = frame;
+    D_00142120_00387B18.xyoffset1 = D_001D4BC0_00387B18.left | ((unsigned long)D_001D4BC0_00387B18.top << 32);
+    D_00142120_00387B18.zbuf1 = zbuf;
+    D_00142120_00387B18.zbuf2 = zbuf;
+    D_00142120_00387B18.xyoffset2 = D_001D4BC0_00387B18.left | ((unsigned long)D_001D4BC0_00387B18.top << 32);
+    D_001D5330[2] = ((View_00387B18 *)&D_00225900)->scissor.x0 | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.x1 << 16) | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.y0 << 32) | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.y1 << 48);
+    D_00142360[0] = zbuf | ((unsigned long)0x8000 << 17);
+    D_001422F0[0] = zbuf;
+    D_001D5330[4] = ((View_00387B18 *)&D_00225900)->scissor.x0 | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.x1 << 16) | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.y0 << 32) | ((unsigned long)((View_00387B18 *)&D_00225900)->scissor.y1 << 48);
+    if (clear) {
+        D_001D4BB0 = D_001A1ED0_00387B18.tex_base;
+        D_001D4BB4 = D_001A1ED0_00387B18.tex_base;
+        func_0011F0A0(0);
+        func_0012A9F0(0, 0);
+        func_0011F0A0(0);
+        func_003922B8();
+        func_00392350(0);
+        func_0011F0A0(0);
+        func_0012A9F0(0, 0);
+        func_00392290();
+        func_0038CB78(D_002276C0, 0, 0x1000);
+        n = (D_001CFEC0_00387B18.storage_width * D_001CFEC0_00387B18.storage_height) >> 10;
+        for (i = 0; i < n; i++) {
+            func_0012C9A0(&image, i << 4, 1, 0, 0, 0, 32, 32);
+            func_0011F0A0(0);
+            func_0012CCC8(&image, D_002276C0);
+            func_0012A9F0(0, 0);
+        }
+    }
+    func_003D9338();
+}
+/* localdecomp:end func_00387B18 */
 
 /* PAL: func_00387EF0 zeroes a set of globals.  Retail reaches the twelve
    word-sized ones through lui $at, %hi(X) + sw $zero, %lo(X)($at), the
