@@ -83,6 +83,15 @@ An alias is for code the catalogue counts as one function but that in some level
         func_L01_00301558(a0, D_L01_001D66B0, a1);
     }
 
+**Multiplayer twins that differ.** Levels 39 to 53 keep their own rows for a few functions whose
+single-player twin has other bytes there (`func_L39_005A8D48`/`005A8D90` against
+`func_L01_00436070`/`004360B8`: the struct they index is 0x30 smaller; `func_L39_006073C8`/`006073F0`
+against `func_L01_004D2470`/`004D2498`: 0x45E0 instead of 0x4610; `func_L40_004D5970` against
+`func_L01_004CE720`). They are different functions, not one row with a wrong cell
+(`config/levels/split_places.tsv`), so a caller that exists only in the multiplayer levels names the
+multiplayer row (`func_L39_005A8D48`, never `func_L01_00436070`), and the maps' copies share that
+row with level 39. A caller shared with the story levels reaches the right copy through its alias.
+
 **Checking one function** (as `tools/check.py` for the core programs): the file's flags
 (`config/levels/text_parts.txt`) and its context (the file's prelude and earlier declarations),
 diffed against the function's place in its canonical level NN (the one in its name), or in the
