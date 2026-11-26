@@ -269,7 +269,162 @@ void func_L01_00397278(V3_00397278 *origin, u32 color, u32 alpha, int tex, int f
 }
 /* localdecomp:end func_L01_00397278 */
 
-INCLUDE_ASM("asm/levels", func_L01_003973F8);
+/* localdecomp:start func_L01_003973F8 */
+#include "vu0.h"
+typedef union { vu0_q q; f32 f[4]; } V_310DB8;
+typedef struct {
+    V_310DB8 pos[4];
+    u32 color[4];
+    f32 uv[4][2];
+    u8 tail[0x20];
+} Poly_310DB8;
+extern vu0_v4 D_L01_001E29C0;
+void func_L01_003973F8(Vec4 *start_,Vec4 *points_,f32 phase,u32 color,s32 count,f32 width,f32 step)
+{
+    V_310DB8 *start=(V_310DB8 *)start_;
+    V_310DB8 *points=(V_310DB8 *)points_;
+    extern void func_003D93B0(void *,s32,s32,s32);
+    extern s32 func_0013D3E0(void);
+    extern void func_0038CF68(void *,void *,f32);
+    extern void func_0038CE90(void *,void *,void *);
+    extern void func_0038CE20(f32 *,f32 *,f32);
+    extern void func_0038D028(void *,void *,void *);
+    extern void func_003D2DA0_003973F8(void *,s32,s32);
+    V_310DB8 origin;
+    Poly_310DB8 outer,inner;
+    V_310DB8 matrix[4];
+    V_310DB8 offset,offset2;
+    s32 i,next;
+    s32 bytes;
+    f32 u,v,u2,v2;
+    origin.q=start->q;
+    start=&origin;
+    func_003D93B0(&outer,43,1,128);
+    func_003D93B0(&inner,43,1,128);
+    offset2.q=offset.q=0;
+    width*=0.25f;
+    outer.color[0]=outer.color[1]=color;
+    inner.color[0]=inner.color[1]=color;
+    outer.color[2]=outer.color[3]=color;
+    inner.color[2]=inner.color[3]=color;
+    offset.f[3]=1.0f;
+    offset2.f[3]=1.0f;
+    offset.f[2]=width;
+    offset2.f[2]=width+width;
+    if ((func_0013D3E0()&1)==0) {
+        outer.uv[0][0]=phase+0.0f;
+        outer.uv[0][1]=0.0f;
+        outer.uv[1][0]=phase+0.0f;
+        outer.uv[1][1]=1.0f;
+        outer.uv[2][0]=step+phase;
+        outer.uv[2][1]=0.0f;
+        outer.uv[3][0]=step+phase;
+        outer.uv[3][1]=1.0f;
+        inner.uv[0][0]=phase+0.0f;
+        inner.uv[0][1]=0.0f;
+        inner.uv[1][0]=phase+0.0f;
+        inner.uv[1][1]=1.0f;
+        inner.uv[2][0]=step+phase;
+        inner.uv[2][1]=0.0f;
+        inner.uv[3][0]=step+phase;
+        inner.uv[3][1]=1.0f;
+    } else {
+        outer.uv[0][0]=phase+0.0f;
+        outer.uv[0][1]=1.0f;
+        outer.uv[1][0]=phase+0.0f;
+        outer.uv[1][1]=0.0f;
+        outer.uv[2][0]=step+phase;
+        outer.uv[2][1]=1.0f;
+        outer.uv[3][0]=step+phase;
+        outer.uv[3][1]=0.0f;
+        inner.uv[0][0]=phase+0.0f;
+        inner.uv[0][1]=1.0f;
+        inner.uv[1][0]=phase+0.0f;
+        inner.uv[1][1]=0.0f;
+        inner.uv[2][0]=step+phase;
+        inner.uv[2][1]=1.0f;
+        inner.uv[3][0]=step+phase;
+        inner.uv[3][1]=0.0f;
+    }
+    vec_sub_ba(&matrix[0],points,start);
+    func_0038CF68(&matrix[0],&matrix[0],1.0f);
+    vec_sub_ba(&matrix[1],&D_L01_001E29C0,start);
+    func_0038CE90(&matrix[2],&matrix[1],&matrix[0]);
+    i=0;
+    bytes=count<<4;
+    func_0038CF68(&matrix[2],&matrix[2],1.0f);
+    func_0038CE90(&matrix[1],&matrix[0],&matrix[2]);
+    matrix[3].q=start->q;
+    outer.pos[0].q=offset.q;
+    inner.pos[0].q=offset2.q;
+    func_0038CE20(outer.pos[1].f,outer.pos[0].f,-1.0f);
+    func_0038CE20(inner.pos[1].f,inner.pos[0].f,-1.0f);
+    func_0038D028(&outer.pos[0],&outer.pos[0],matrix);
+    func_0038D028(&outer.pos[1],&outer.pos[1],matrix);
+    func_0038D028(&inner.pos[0],&inner.pos[0],matrix);
+    func_0038D028(&inner.pos[1],&inner.pos[1],matrix);
+    while (i<count-1) {
+        next=i+1;
+        vec_sub_ab(&matrix[0],points+i+1,points+i);
+        func_0038CF68(&matrix[0],&matrix[0],1.0f);
+        vec_sub_ab(&matrix[1],&D_L01_001E29C0,points+i);
+        func_0038CE90(&matrix[2],&matrix[1],&matrix[0]);
+        func_0038CF68(&matrix[2],&matrix[2],1.0f);
+        func_0038CE90(&matrix[1],&matrix[0],&matrix[2]);
+        offset.f[2]*=0.7f;
+        matrix[3].q=points[i].q;
+        offset2.f[2]=offset.f[2]+offset.f[2];
+        outer.pos[2].q=offset.q;
+        inner.pos[2].q=offset2.q;
+        func_0038CE20(outer.pos[3].f,outer.pos[2].f,-1.0f);
+        func_0038CE20(inner.pos[3].f,inner.pos[2].f,-1.0f);
+        func_0038D028(&outer.pos[2],&outer.pos[2],matrix);
+        func_0038D028(&outer.pos[3],&outer.pos[3],matrix);
+        func_0038D028(&inner.pos[2],&inner.pos[2],matrix);
+        func_0038D028(&inner.pos[3],&inner.pos[3],matrix);
+        u=step*(f32)next; v=u+step;
+        if (u>=1.0f) {u-=1.0f;v-=1.0f;}
+                outer.uv[0][0]=u+phase;outer.uv[1][0]=u+phase;
+        outer.uv[2][0]=v+phase;outer.uv[3][0]=v+phase;
+        inner.uv[0][0]=u+phase;inner.uv[1][0]=u+phase;
+        inner.uv[2][0]=v+phase;inner.uv[3][0]=v+phase;
+        func_003D2DA0_003973F8(&outer,0,0);
+        func_003D2DA0_003973F8(&inner,0,0);
+        if (i!=0) {
+            outer.color[0]=outer.color[1]=color|0x7F000000;
+            inner.color[0]=inner.color[1]=color|0x3F000000;
+        }
+        i=next;
+        outer.pos[0].q=outer.pos[2].q;
+        outer.pos[1].q=outer.pos[3].q;
+        inner.pos[0].q=inner.pos[2].q;
+        inner.pos[1].q=inner.pos[3].q;
+        outer.color[2]=outer.color[3]=color|0x7F000000;
+        inner.color[2]=inner.color[3]=color|0x3F000000;
+    }
+    matrix[3].q=((V_310DB8 *)(bytes+(s32)points))[-1].q;
+    offset.f[2]*=0.7f;
+    offset2.f[2]=offset.f[2]+offset.f[2];
+    inner.pos[2].q=offset2.q;
+    outer.pos[2].q=offset.q;
+    func_0038CE20(outer.pos[3].f,outer.pos[2].f,-1.0f);
+    func_0038CE20(inner.pos[3].f,inner.pos[2].f,-1.0f);
+    func_0038D028(&outer.pos[2],&outer.pos[2],matrix);
+    func_0038D028(&outer.pos[3],&outer.pos[3],matrix);
+    func_0038D028(&inner.pos[2],&inner.pos[2],matrix);
+    func_0038D028(&inner.pos[3],&inner.pos[3],matrix);
+    u2=step*(f32)(i+1);v2=u2+step;
+    outer.color[2]=outer.color[3]=color;
+    inner.color[2]=inner.color[3]=color;
+    if (u2>=1.0f) {u2-=1.0f;v2-=1.0f;}
+    outer.uv[0][0]=u2+phase;outer.uv[1][0]=u2+phase;
+    outer.uv[2][0]=v2+phase;outer.uv[3][0]=v2+phase;
+    inner.uv[0][0]=u2+phase;inner.uv[1][0]=u2+phase;
+    inner.uv[2][0]=v2+phase;inner.uv[3][0]=v2+phase;
+    func_003D2DA0_003973F8(&outer,0,0);
+    func_003D2DA0_003973F8(&inner,0,0);
+}
+/* localdecomp:end func_L01_003973F8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00397A28);
 
@@ -477,7 +632,154 @@ void func_L01_0039AB60(f32 *origin) {
 }
 /* localdecomp:end func_L01_0039AB60 */
 
-INCLUDE_ASM("asm/levels", func_L01_0039AEB8);
+/* localdecomp:start func_L01_0039AEB8 */
+typedef struct {
+    vu0_v4 m[4];
+    s32 col[4];
+    f32 uv[8];
+    long x70, x78, x80, x88;
+} __attribute__((aligned(16))) Q_003BE190;
+
+extern void func_0038CE20_0039AEB8(void *, void *, f32);
+extern void func_003D2DA0_0039AEB8(void *, void *, s32);
+extern long func_00389598_0039AEB8(s32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038CEA8(void *);
+extern void func_003A9440(s32, unsigned long);
+
+void func_L01_0039AEB8(u8 *pv, s32 a1, s32 a2, f32 w0, f32 w1, f32 k, s32 n, u32 c0, u32 c1) {
+    Q_003BE190 q1;
+    Q_003BE190 q2;
+    vu0_v4 perp;
+    vu0_v4 r;
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 v;
+    vu0_v4 w;
+    vu0_v4 t;
+    vu0_v4 u;
+    vu0_v4 c;
+    vu0_v4 s;
+    vu0_v4 *p = pv;
+    s32 col0;
+    s32 col1;
+    f32 len;
+    f32 m0;
+    f32 m1;
+    f32 l0;
+    f32 l1;
+    s32 i;
+
+    q1.x78 = func_00389598_0039AEB8(0xE);
+    col0 = c0 | (a1 << 24);
+    q1.x88 = 0x8000000048L;
+    q1.x80 = 0xFF9000000260L;
+    q1.x70 = 0;
+    q1.col[0] = q1.col[1] = q1.col[2] = q1.col[3] = col0;
+    q2.x78 = func_00389598_0039AEB8(0x10);
+    q2.x88 = q1.x88;
+    q2.x80 = q1.x80;
+    q2.x70 = q1.x70;
+    col1 = c1 | (a2 << 24);
+    q2.col[0] = q2.col[1] = q2.col[2] = q2.col[3] = col1;
+    q2.uv[0] = 0.0f;
+    q2.uv[1] = 0.0f;
+    q2.uv[2] = 0.0f;
+    q2.uv[3] = 1.0f;
+    q2.uv[4] = 1.0f;
+    q2.uv[5] = 0.0f;
+    q2.uv[6] = 1.0f;
+    q2.uv[7] = 1.0f;
+    q1.uv[0] = 0.0f;
+    q1.uv[1] = 0.0f;
+    q1.uv[2] = 0.0f;
+    q1.uv[3] = 1.0f;
+    q1.uv[4] = 1.0f;
+    q1.uv[5] = 0.0f;
+    q1.uv[6] = 1.0f;
+    q1.uv[7] = 1.0f;
+
+    vec_sub_ab(&a, &p[0], &D_L01_001E29C0);
+    vec_sub_ab(&b, &p[1], &p[0]);
+    func_0038CE90(&perp, &b, &a);
+    m0 = func_0038CEA8(&perp);
+    if (m0 != 0.0f) {
+        m0 = 1.0f / m0;
+    }
+    func_0038CE20_0039AEB8(&perp, &perp, w0 * m0);
+    vec_add_ba(&q1.m[0], &p[0], &perp);
+    vec_sub_ab(&q1.m[1], &p[0], &perp);
+
+    for (i = 1; i < n - 1; i++) {
+        vec_sub_ab(&a, &p[i], &D_L01_001E29C0);
+        vec_sub_ab(&b, &p[i + 1], &p[i]);
+        func_0038CE90(&perp, &b, &a);
+        m1 = func_0038CEA8(&perp);
+        if (m1 != 0.0f) {
+            m1 = 1.0f / m1;
+        }
+        func_0038CE20_0039AEB8(&perp, &perp, w0 * m1);
+        vec_add_ba(&q1.m[2], &p[i], &perp);
+        vec_sub_ab(&q1.m[3], &p[i], &perp);
+        if (i == 1) {
+            q1.col[0] = q1.col[1] = c0;
+        } else if (i == n - 2) {
+            q1.col[2] = q1.col[3] = c0;
+        } else if (i == 2) {
+            q1.col[0] = q1.col[1] = col0;
+        }
+        func_003D2DA0_0039AEB8(&q1, 0, 0);
+        q1.m[0] = q1.m[2];
+        q1.m[1] = q1.m[3];
+    }
+
+    for (i = 0; i < n - 1; i++) {
+        vec_sub_ab(&t, &p[i], &D_L01_001E29C0);
+        vec_sub_ab(&u, &p[i + 1], &D_L01_001E29C0);
+        l0 = func_0038CEA8(&t);
+        l1 = func_0038CEA8(&u);
+        if (l1 < l0) {
+            if (l1 == 0.0f) {
+                u = t;
+            } else {
+                func_0038CE20_0039AEB8(&u, &u, l0 / l1);
+            }
+        } else {
+            if (l0 == 0.0f) {
+                t = u;
+            } else {
+                func_0038CE20_0039AEB8(&t, &t, l1 / l0);
+            }
+        }
+        vec_add_ba(&v, &D_L01_001E29C0, &t);
+        vec_add_ab(&w, &D_L01_001E29C0, &u);
+        vec_sub_ba(&b, &w, &v);
+        func_0038CE20_0039AEB8(&s, &b, k);
+        vec_sub_ab(&v, &v, &s);
+        vec_add_ab(&w, &w, &s);
+        vec_sub_ab(&c, &D_L01_001E29C0, &v);
+        func_0038CE90(&perp, &c, &b);
+        len = func_0038CEA8(&perp);
+        if (len != 0.0f) {
+            len = 1.0f / len;
+        }
+        func_0038CE20_0039AEB8(&r, &perp, w1 * len);
+        vec_add_ba(&q2.m[0], &v, &r);
+        vec_sub_ab(&q2.m[1], &v, &r);
+        vec_add_ba(&q2.m[2], &w, &r);
+        vec_sub_ab(&q2.m[3], &w, &r);
+        if (i == 0) {
+            q2.col[0] = q2.col[1] = c1;
+        } else if (i == n - 2) {
+            q2.col[2] = q2.col[3] = c1;
+        } else if (i == 1) {
+            q2.col[0] = q2.col[1] = col1;
+        }
+        func_003D2DA0_0039AEB8(&q2, 0, 0);
+    }
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L01_0039AEB8 */
 
 /* localdecomp:start func_L01_0039B478 */
 typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec4_0039B478;
