@@ -1,24 +1,24 @@
-/* Unlinked regional matching draft. PAL: 36 to 35 words with diagnostic vf2 and divide row 2; prelude and threshold walk remain. */
-/* PAL near miss: 35 differing words with PROPOSED whole-file
- * -mvu0-use-vf0-vf2 flags and required divs_nops row
- * "func_L14_0035DBA8 2", not the centrally retained owning configuration.
- * Future integration requires the real two-argument declaration
- * void func_L14_0035DBA8(void *, void *);
- * and DE68 must call func_L14_0035DBA8(arg0, arg1), forwarding its defined
- * incoming second argument. These source/config changes are prerequisites,
- * not part of central draft-only retention.
- * P02: incomplete small-table declarations recover retail's
- * split-address unaligned copies; separate search/selection counters improve
- * allocation; typed choice/time stores recover the final GP-load ordering.
- * Retail/caller dataflow proves target is a defined second argument.
- * Existing three C neighbours check MATCH with explicit forwarding and vf2.
- * Original-source full level-14 baseline MATCHES with complete --setup.
- * Earlier failures without --setup were incomplete/stale setup artifacts,
- * not an upstream defect. This draft has not passed a full linked build.
- * P05: a typed local table pointer changes the table-index allocation
- * without changing the copied data or selected entry.
- * Remaining: pointer-table store ordering, search-loop strength reduction,
- * and d/mask/selection register choice. No new C promotion.
+/* PAL near miss: 20 differing words (35 before) with -mvu0-use-vf0-vf2 added to the
+ * file's flag line and a divs_nops row "func_L14_0035DBA8 2" (neither is applied: with the
+ * file's current line and no row it is 73). Prerequisites as before: the real two-argument
+ * declaration void func_L14_0035DBA8(void *, void *) and DE68 forwarding its second argument.
+ * Round 30 (W23b): the threshold walk is a goto loop with the byte offset k = i * 4 kept for
+ * both the threshold and the table read. With no loop notes loop.c leaves it alone, so there is
+ * no strength reduction, retail's top-tested shape, the sll in the beqz slot and both bc1f back
+ * edges with i++ in the slot. The back edges are conditional gotos, so no BARRIER sits before
+ * the j loop: an unconditional `goto loop` lets loop.c move the j loop's call/return block out
+ * of the loop, which costs 48+ words. The table is read as table.p directly (no tab pointer).
+ * Still differs:
+ *  - table pointer stores: retail sw p[2], p[0], p[3] before the vec block, ours p[0], p[2],
+ *    then p[3] after it. 24 explicit store orders through a copied temporary: 63-69.
+ *  - sel/d/mask registers (a3/t0/a2 in retail, a2/a3/t0 here) and the mask lhu, which retail
+ *    issues after the d subu. gcse PRE puts the load at the end of the preheader, after the
+ *    subu as in retail, but haifa sched1 (forward) issues it at t=5 in the div.s stall. With the
+ *    lhu early, mask's priority (3 refs / 35) falls below d (3/30) and sel (4/78). Retail needs
+ *    something that keeps the lhu after the subu (a barrier or a dependence). Not found: all
+ *    120 orders of the d / f / sel / mask / i statements give 20; mask as u32/s32, read inline in
+ *    the j loop, or read after loop 1: 20; real while/for/do forms of the walk: 73 (biv
+ *    eliminated, strength reduced).
  */
 #include "common.h"
 /* localdecomp:start func_L14_0035DBA8 */
@@ -57,12 +57,12 @@ void func_L14_0035DBA8(void *arg0, void *target) {
     S_35DBA8_b l2 = D_L14_001DD748[0];
     S_35DBA8_b l3 = D_L14_001DD750[0];
     S_35DBA8_p table = { { l0.b, l1.b, l2.b, l3.b } };
-    S_35DBA8_p *tab = &table;
     vu0_v4 v;
     u8 *s;
     u8 *sel;
     f32 f;
     s32 i;
+    s32 k;
     s32 j;
     s32 d;
     s32 b;
@@ -80,11 +80,13 @@ void func_L14_0035DBA8(void *arg0, void *target) {
     sel = l1.b;
     mask = *(u16 *)(a0 + 0x7C);
     i = 0;
-    while (i < 4) {
-        if (thr.v[i++] < f && f <= thr.v[i]) {
-            sel = tab->p[i - 1];
-            break;
-        }
+loop:
+    if (i < 4) {
+        k = i * 4;
+        i++;
+        if (!(*(f32 *)((u8 *)thr.v + k) < f)) goto loop;
+        if (!(f <= thr.v[i])) goto loop;
+        sel = *(u8 **)((u8 *)table.p + k);
     }
     for (j = 0; j < 4; j++) {
         b = sel[j];

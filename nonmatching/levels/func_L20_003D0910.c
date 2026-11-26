@@ -3,6 +3,13 @@
    (m+0x20: 2-34, jtbl_002C8CB0), then the 0x618/0x67C child updates. Written from retail with an m2c
    draft (Opus, 2026-11-08). No twin: states 16, 23 and 29 are three copies of the same charge/burst
    routine (light, 20-particle ring, sparks, 300-particle blast) with their own bones and constants.
+   Round 30 W19 (2026-11-26): measured with a banded Levenshtein over the two instruction columns of check.py --no-context
+   (branch targets / jal masked): 359 -> 194 edit distance (190 with the config/levels/divs_nops.txt row `func_L20_003D0910 2 2 0`, not committed: retail's nops before the three div.s) (5537 vs 5560 instructions). Levers found: D_L20_001D66B0 sized [8] (one `la`:
+   retail's adjacent lui/addiu, was unsized = split hi/lo, -52), the inner call of the 0.5f fe_func_003C41A0 arms first into a float local t5
+   (retail computes sp0+2 / pv+0x5C0 after it: ori $a0,$sp,8; -21). Burst loops (states 16/23/29): own counter `for (k = 0; k < 20; k++)` and D850 given sp30 (no p30 variable in the loop): k gets $fp (priority
+   floor_log2(refs)*refs/live from tools/regalloc.py-style -dlg: p30 4/182 = .0442 outranked k 7/330 = .0432; without p30 k wins, -13). Still open: state 16's loop keeps a p30 variable (k spilled to 0xB0 = the frame 0x150 slot, the other two states have k in $fp and a frame without the slot: retail spills &sp30 to 0xB0 and has k in $fp, 25 rows of sp offsets; a p30 variable used in the loop takes $fp from k: priority .0442 vs .0432, and with p30 defined after the D890 call gcse miscompiles it into an uninitialised lw), retail spills
+   p30 to 0xB0 (sw $t0 / lw $a1 in the loop) where mine recomputes addiu $a1,$sp,0x30; the two li 0x44,
+   the lq/sb/sh order in the 300-particle blast block.
    Near miss: mine 5549 retail 5560: exact-equal 5271 (94.8%), opcode-equal 5415 (97.4%), diffrows 397
    Needs on src/levels/20_final_boss/L20_003CE2D0.c (no other C function in the file):
    "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as" (the VU0 helpers' "j"
@@ -90,10 +97,10 @@ extern void func_L01_00456160(Mo *, Mo *);
 extern s32 func_L01_004561B8(Mo *);
 extern s32 func_L01_004561E0(Mo *);
 extern void func_L01_00456230(Mo *, s32);
-extern void func_L01_0045A748(Mo *, void *);
+extern s32 func_L01_0045A748(Mo *, void *);
 extern void func_L02_00431568(Mo *, void *, f32, f32, f32, f32, s32);
 extern void func_L01_0045AA30(Mo *, u128_t *);
-extern void func_L01_0045BD10(Mo *, f32);
+extern s32 func_L01_0045BD10(Mo *, f32);
 extern void func_L01_0045BD78(Mo *, f32, f32, f32, f32);
 extern s32 func_L01_0045BDE8(Mo *, s32);
 extern u8 *func_L01_004669B0(f32, f32, f32, f32, void *, s32, void *, u32, s32);
@@ -106,7 +113,7 @@ extern s32 func_L01_004AAC98(s32, s32, Mo *, s32);
 extern s32 func_L01_004BA800(void);
 extern void func_L01_004F50C8(void *, void *, s32, s32);
 
-extern u8 D_L20_001D66B0[];
+extern u8 D_L20_001D66B0[8];
 extern s32 D_L20_001D6694;
 extern s32 D_L20_001D67A8;
 extern s32 D_L20_001D67A8_d;
@@ -181,15 +188,21 @@ void func_L20_003D0910(Mo *m) {
     f32 sp90[4] __attribute__((aligned(16)));
     f32 spA0[4] __attribute__((aligned(16)));
 
+    f32 den;
+    f32 den2;
+    f32 den3;
     pv = m->pv[0x68/4];
+    den = 20.0f;
     if ((pv->mp[0x618/4] != 0) && (m->b[0x20] != 0x1B)) {
         pv->mp[0x618/4]->i[0x98/4] = pv->mp[0x618/4]->mp[0x24/4]->i[0x10/4];
         fe_func_003C7C38(pv->mp[0x618/4]);
     }
+    den2 = 20.0f;
     if ((pv->mp[0x67C/4] != 0) && (m->b[0x20] != 0x1B)) {
         pv->mp[0x67C/4]->i[0x98/4] = pv->mp[0x67C/4]->mp[0x24/4]->i[0x10/4];
         fe_func_003C7C38(pv->mp[0x67C/4]);
     }
+    den3 = 20.0f;
     if (func_L20_003D61B8(m) != 0) {
         fe_func_003C2880(m);
         return;
@@ -383,6 +396,7 @@ void func_L20_003D0910(Mo *m) {
     case 5:
         {
         f32 f;
+        f32 t5;
         func_L01_0045BD10(m, fe_func_0038D160(((Hero *)D_001A4BE0)->f[0x80/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0x84/4] - m->f[0x14/4]));
         if (func_L01_004561B8(m) != 0) {
             pv->q[0x5D0/16] = m->q[0x10/16];
@@ -407,12 +421,13 @@ void func_L20_003D0910(Mo *m) {
         if ((f > 115.0f) && (f < 124.0f)) {
             fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, pv->f[0x5D8/4] + 10.0f, 0.032f, 0.036000002f, 0.20000002f);
         } else if ((f > 124.0f) && (f < 135.0f)) {
-            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f), 0.060000002f, 0.060000002f, 0.40000004f);
+            t5 = fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f);
+            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, t5, 0.060000002f, 0.060000002f, 0.40000004f);
         } else {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, -fe_speed(3.5f));
+            fe_func_0038CF68(sp10, m->b + 0xD0, -(3.5f / den));
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -436,6 +451,7 @@ void func_L20_003D0910(Mo *m) {
     case 32:
         {
         f32 f;
+        f32 t5;
         func_L01_0045BD10(m, fe_func_0038D160(((Hero *)D_001A4BE0)->f[0x80/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0x84/4] - m->f[0x14/4]));
         if (func_L01_004561B8(m) != 0) {
             pv->q[0x5D0/16] = m->q[0x10/16];
@@ -460,12 +476,13 @@ void func_L20_003D0910(Mo *m) {
         if ((f > 115.0f) && (f < 124.0f)) {
             fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, pv->f[0x5D8/4] + 10.0f, 0.032f, 0.036000002f, 0.20000002f);
         } else if ((f > 124.0f) && (f < 135.0f)) {
-            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f), 0.040000003f, 0.060000002f, 0.3f);
+            t5 = fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f);
+            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, t5, 0.040000003f, 0.060000002f, 0.3f);
         } else {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, -fe_speed(7.0f));
+            fe_func_0038CF68(sp10, m->b + 0xD0, -(7.0f / den2));
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -496,6 +513,7 @@ void func_L20_003D0910(Mo *m) {
     case 6:
         {
         f32 f;
+        f32 t5;
         func_L01_0045BD10(m, fe_func_0038D160(((Hero *)D_001A4BE0)->f[0x80/4] - m->f[0x10/4], ((Hero *)D_001A4BE0)->f[0x84/4] - m->f[0x14/4]));
         if (func_L01_004561B8(m) != 0) {
             pv->q[0x5D0/16] = m->q[0x10/16];
@@ -520,12 +538,13 @@ void func_L20_003D0910(Mo *m) {
         if ((f > 115.0f) && (f < 124.0f)) {
             fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, pv->f[0x5D8/4] + 10.0f, 0.032f, 0.036000002f, 0.20000002f);
         } else if ((f > 124.0f) && (f < 135.0f)) {
-            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f), 0.040000003f, 0.060000002f, 0.3f);
+            t5 = fe_func_003C3D30(m->b + 0x10, 0, 0, 0.5f);
+            fe_func_003C41A0(sp0 + 2, pv->b + 0x5C0, t5, 0.040000003f, 0.060000002f, 0.3f);
         } else {
             pv->i[0x5C0/4] = 0;
         }
         if ((f > 115.0f) && (f < 135.0f)) {
-            fe_func_0038CF68(sp10, m->b + 0xD0, fe_speed(3.5f));
+            fe_func_0038CF68(sp10, m->b + 0xD0, 3.5f / den3);
             vec_add_ba(sp0, sp0, sp10);
             vec_sub_ba(sp10, sp0, m->b + 0x10);
             func_L01_0045AA30(m, sp10);
@@ -837,14 +856,14 @@ void func_L20_003D0910(Mo *m) {
             sp30[3] = 1.0f;
             *(u128_t *)sp70 = m->q[0xC0/16];
             *(u128_t *)sp80 = m->q[0xD0/16];
-            fe_func_0038D890(sp30, sp70, sp80, 0.34906584f);
+            fe_func_0038D890(p30, sp70, sp80, 0.34906584f);
             qzero(sp90);
             *(u128_t *)sp20 = *(u128_t *)sp30;
             fe_func_0038CE20(spA0, sp70, 0.4f);
             vec_add_ab(sp40, sp40, spA0);
+            p30 = sp30;
             ang = 0.0f;
-            k = 0x13;
-            do {
+            for (k = 0; k < 20; k++) {
                 s32 n;
                 s32 c;
                 u8 *p;
@@ -890,7 +909,7 @@ void func_L20_003D0910(Mo *m) {
                     fe_func_003C4840(sp10, sp70, ang);
                     fe_func_0038D850(sp20, p30, sp10);
                 }
-            } while (--k >= 0);
+            }
         }
         if (m->b[0x60] & 2) {
             if (pv->i[0x5EC/4] < 3) {
@@ -1041,6 +1060,7 @@ void func_L20_003D0910(Mo *m) {
             p30 = sp30;
             for (i = 0; i < 300; i++) {
                 s32 n;
+                s32 n2;
                 s32 c;
                 u8 *p;
                 fe_func_003C2F58(m, 3, sp20);
@@ -1059,8 +1079,8 @@ void func_L20_003D0910(Mo *m) {
                 } else if (pv->i[0x5E0/4] == 2) {
                     c = 0x7C30;
                 }
-                n = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
+                n2 = func_L01_00443A18(2.0f, 3.0f);
+                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];
@@ -1318,8 +1338,7 @@ void func_L20_003D0910(Mo *m) {
             fe_func_0038CE20(spA0, sp70, 0.4f);
             vec_add_ab(sp40, sp40, spA0);
             ang = 0.0f;
-            k = 0x13;
-            do {
+            for (k = 0; k < 20; k++) {
                 s32 n;
                 s32 c;
                 u8 *p;
@@ -1363,9 +1382,9 @@ void func_L20_003D0910(Mo *m) {
                 }
                 if (fabs_asm(ang) > 1e-05f) {
                     fe_func_003C4840(sp10, sp70, ang);
-                    fe_func_0038D850(sp20, p30, sp10);
+                    fe_func_0038D850(sp20, sp30, sp10);
                 }
-            } while (--k >= 0);
+            }
         }
         if (func_L01_0044E1B8(m, 127.0f) != 0) {
             if (pv->i[0x62C/4] != -1) {
@@ -1451,7 +1470,8 @@ void func_L20_003D0910(Mo *m) {
             pos = m->b + 0x10;
             for (i = 0; i < 1; i++) {
                 f32 w;
-                *(u128_t *)sp10 = ((Hero *)D_001A4BE0)->q[0xD0/16];
+                f32 v2;
+                *(u128_t *)sp10 = *(u128_t *)(D_001A4BE0 + 0xD0);
                 if (fe_func_0038CF38(pos, D_001A4BE0 + 0x80) > 6.0f) {
                     vec_sub_ba(sp20, m->b + 0x10, D_001A4BE0 + 0x80);
                     fe_func_0038CF68(sp20, sp20, 5.0f);
@@ -1463,8 +1483,10 @@ void func_L20_003D0910(Mo *m) {
                 }
                 vec_sub_ab(sp20, sp10, sp0);
                 sp20[2] = 0.0f;
-                fe_func_0038CF68(sp20, sp20, 0.20000002f);
-                sp20[2] = func_L01_00447878(sp0, sp10, 0, 0.20000002f, -w);
+                v2 = 0.20000002f;
+                fe_func_0038CF68(sp20, sp20, v2);
+                v2 = 0.20000002f;
+                sp20[2] = func_L01_00447878(sp0, sp10, 0, v2, -w);
                 fe_func_003A52A0(0x13, 0, m);
                 func_L20_003F9C10(m, sp20, sp0, w);
             }
@@ -1657,8 +1679,7 @@ void func_L20_003D0910(Mo *m) {
             fe_func_0038CE20(spA0, sp70, 0.4f);
             vec_add_ab(sp40, sp40, spA0);
             ang = 0.0f;
-            k = 0x13;
-            do {
+            for (k = 0; k < 20; k++) {
                 s32 n;
                 s32 c;
                 u8 *p;
@@ -1702,9 +1723,9 @@ void func_L20_003D0910(Mo *m) {
                 }
                 if (fabs_asm(ang) > 1e-05f) {
                     fe_func_003C4840(sp10, sp70, ang);
-                    fe_func_0038D850(sp20, p30, sp10);
+                    fe_func_0038D850(sp20, sp30, sp10);
                 }
-            } while (--k >= 0);
+            }
         }
         if (m->b[0x60] & 2) {
             if (m->b[0x43] != 0xB) {
@@ -1841,6 +1862,7 @@ void func_L20_003D0910(Mo *m) {
             p30 = sp30;
             for (i = 0; i < 300; i++) {
                 s32 n;
+                s32 n2;
                 s32 c;
                 u8 *p;
                 fe_func_003C2F58(m, 3, sp20);
@@ -1859,8 +1881,8 @@ void func_L20_003D0910(Mo *m) {
                 } else if (pv->i[0x5E0/4] == 2) {
                     c = 0x7C30;
                 }
-                n = func_L01_00443A18(2.0f, 3.0f);
-                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
+                n2 = func_L01_00443A18(2.0f, 3.0f);
+                p = func_L01_004713C8(sp20, p30, 0x32, fe_func_003824E0(0.8f, 1.25f) * 210000.0f * 1.25f * pv->f[0x2E8/4], c, n2, 0x30, 0x30, pv->f[0x2E8/4] * 4200.0f, 0.0f, 0);
                 if (p != 0) {
                     p[3] = 0x44;
                     p[2] = D_L20_00220258[0xD4/4][0];

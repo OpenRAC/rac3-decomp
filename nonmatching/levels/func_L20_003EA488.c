@@ -1,7 +1,16 @@
-/* PAL near miss: 20 differing instruction words with the owning file's flags,
- * improved from 27 by giving the second UV/colour loop its own counter.
- * Remaining differences: phase temporary f3 versus f1, the first draw loop's
- * pointer/count initialization order, and second UV-loop register allocation.
+/* PAL near miss: 14 aligned rows with the owning file's flags (was 20; 27 before a separate counter
+ * for the second UV/colour loop).
+ * Round 30 (W16): the phase temporary is now the block-scoped offset variable of each i-loop body
+ * (`off`: offset, then next phase), which drops the $f3 copy preference that global.c's
+ * expand_preferences merged into a separate `next` (next <- phase <- the vars+0x20 load in $f3):
+ * add.s $f1 / mov.s $f23, $f1 as retail (6 rows). Without that preference a separate next gets $f0.
+ * Remaining: (1) after the first i-loop retail sets $s0 = &matrix before $s1 = 23 (ours 23 first;
+ * a count-up for loop gives the order but swaps $s6/$s7, 19); (2) second UV loop: li 0x90 is a reload
+ * of the hoisted, unallocated constant (pseudo with REG_EQUIV, crosses calls): reload1.c picks spill
+ * registers round-robin, so $a0 vs retail's $t2 depends on how many reloads come before it; the col /
+ * uv1 / DF260 givs get $a2/$a1/$a0 against retail's $a1/$a0/$a2 (global.c priority = init order in
+ * the preheader after sched1; the six statement orders of the k-loop body and j/k/count counters
+ * give the same registers).
  * The owning source remains assembly.
  */
 #include "common.h"
@@ -46,7 +55,7 @@ void func_L20_003EA488(void *obj) {
     vu0_v4 axis, a,b;
     u8 *m = obj;
     u8 *vars = *(u8 **)(m+0x68);
-    f32 fade, phase, offset, angle, nextAngle, radius;
+    f32 fade, phase, angle, nextAngle, radius;
     s32 i,j,count,color;
     *(vu0_q *)&axis = 0;
     axis.z = 0.2617994f;
@@ -59,7 +68,7 @@ void func_L20_003EA488(void *obj) {
     if (fade > 1.0f) fade = 1.0f;
     else if (fade < 0.0f) fade = 0.0f;
     for (i=0; i<3; i++) {
-        f32 angle, nextAngle, radius;
+        f32 angle, nextAngle, radius, off;
         q[i].u78 = func_00389598(D_L20_001DF24C);
         q[i].u80 = 0xFF9000000260UL;
         q[i].u70 = 5;
@@ -75,25 +84,24 @@ void func_L20_003EA488(void *obj) {
         b.y = func_0038D0B0(nextAngle)*radius;
         b.z = 0;
         b.w = 1;
-        offset = phase * (D_L20_001DF258 + func_L01_00443A18(0.2f,0.6f));
+        off = phase * (D_L20_001DF258 + func_L01_00443A18(0.2f,0.6f));
         *(vu0_q *)&q[i].v[0] = *(vu0_q *)&a;
-        q[i].v[0].z = offset;
+        q[i].v[0].z = off;
         *(vu0_q *)&q[i].v[1] = *(vu0_q *)&a;
-        q[i].v[1].z = -offset;
+        q[i].v[1].z = -off;
         *(vu0_q *)&q[i].v[2] = *(vu0_q *)&b;
-        q[i].v[2].z = offset;
+        q[i].v[2].z = off;
         *(vu0_q *)&q[i].v[3] = *(vu0_q *)&b;
-        q[i].v[3].z = -offset;
+        q[i].v[3].z = -off;
         color = func_0038DBD8(D_L20_001DF248,D_L20_001DF244,(1.0f-phase)*fade);
         for (j=0;j<4;j++) {
             q[i].col[j] = color;
             q[i].uv[j][0] = D_L20_001DF260[j*2];
             q[i].uv[j][1] = D_L20_001DF264[j*2];
         }
-        { f32 next;
-        if (phase >= 0.666f) next = phase + -0.666f;
-        else next = phase + 0.333f;
-        phase = next; }
+        if (phase >= 0.666f) off = phase + -0.666f;
+        else off = phase + 0.333f;
+        phase = off;
     }
     count = 23;
     do {
@@ -103,7 +111,7 @@ void func_L20_003EA488(void *obj) {
         func_003D2DA0(&q[2],(s32)matrix,1);
     } while (--count >= 0);
     for (i=0;i<3;i++) {
-        f32 fi;
+        f32 fi, off;
         func_003D93B0(&q[i],D_L20_001DF24C,3,0x80);
         fi = i;
         radius = *(f32 *)(vars+0x1C) - fi * 0.05f;
@@ -117,15 +125,15 @@ void func_L20_003EA488(void *obj) {
         b.y = func_0038D0B0(nextAngle)*radius;
         b.z = 0;
         b.w = 1;
-        offset = phase * 0.75f;
+        off = phase * 0.75f;
         *(vu0_q *)&q[i].v[0] = *(vu0_q *)&a;
-        q[i].v[0].z = offset;
+        q[i].v[0].z = off;
         *(vu0_q *)&q[i].v[1] = *(vu0_q *)&a;
-        q[i].v[1].z = -offset;
+        q[i].v[1].z = -off;
         *(vu0_q *)&q[i].v[2] = *(vu0_q *)&b;
-        q[i].v[2].z = offset;
+        q[i].v[2].z = off;
         *(vu0_q *)&q[i].v[3] = *(vu0_q *)&b;
-        q[i].v[3].z = -offset;
+        q[i].v[3].z = -off;
         { s32 k;
         for (k=0;k<4;k++) {
             q[i].col[k] = 0x7F7F7F7F;
@@ -133,10 +141,9 @@ void func_L20_003EA488(void *obj) {
             q[i].uv[k][1] = D_L20_001DF264[k*2];
         }
         }
-        { f32 next;
-        if (phase >= 0.666f) next = phase + -0.666f;
-        else next = phase + 0.333f;
-        phase = next; }
+        if (phase >= 0.666f) off = phase + -0.666f;
+        else off = phase + 0.333f;
+        phase = off;
     }
     count = 23;
     do {

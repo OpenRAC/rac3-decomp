@@ -23,5 +23,3 @@ s32 *func_L01_003A0710(s32 a0, s32 a1, s32 *out) {
     }
 }
 /* localdecomp:end func_L01_003A0710 */
-
-INCLUDE_ASM("asm/levels", func_L01_003A0778);
