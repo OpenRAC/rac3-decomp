@@ -1,11 +1,11 @@
 /* func_00397FE8 (frontbin), boot_elf func_003983C8's draft with its names moved (config/frontend_pairs.tsv).
-   Near miss (FE-1, 2026-11-21): 2 differences. The EE hardware registers are written at their literal
-   addresses now (*(volatile u32 *)0x10000810 = 0x82 and 0x10000800 = 0, allowed by AGENTS.md), where the draft
-   had section(".data") volatile declarations; that took it from 21 differences to 2. Left: retail builds the
-   image address 0x01000000 with a single `lui $s1, 0x100`; the named D_01000000 gives lui plus `addiu $s1, $s1, 0`
-   (the %lo) and moves an addiu into a jal delay slot. The literal `(u8 *)0x01000000` (not hardware memory,
-   so not allowed) gives the lui alone but 7 differences in the load order of image+0x40 and +0x44.
-   With --no-context; in src/frontbin/397D48.c its prototype of func_00392A38 conflicts with the file's. */
+   Near miss (k6, 2026-11-26): MATCHES with --no-context, but only with the literal image address
+   `(u8 *)0x01000000`, which the rules do not allow (not hardware memory). Retail builds the address with a
+   single `lui $s1, 0x100` (no %lo), so the original had a constant there; a named D_01000000 always adds
+   `addiu $s1, $s1, 0` and gives 2 differences. Reading image+0x40/+0x44 into locals before the sentinel
+   store fixed the 7-difference load order the literal gave before. If a literal load address is ever
+   allowed, this (and boot_elf's twin func_003983C8) are matches.
+   In src/frontbin/397D48.c its prototype of func_00392A38 conflicts with the file's. */
 
 typedef struct { s32 state; u8 pad4[0xA9]; u8 mode; u8 padAE[9]; u8 language; } State_003983C8;
 typedef struct { u8 pad0[0x64C]; s32 base; u8 pad650[8]; s32 offset; s32 sectors; } Disc_003983C8;
@@ -102,7 +102,7 @@ void func_00397FE8(void)
     func_0012B300(0); func_0012B800(0);
     while (!func_00124308(D_001D5F08)) {}
     while (!func_001242B8()) {}
-    func_00121FE8(0); func_00124920(); image=(u8 *)D_01000000; func_00123B10(); func_00124970();
+    func_00121FE8(0); func_00124920(); image=(u8 *)0x01000000; func_00123B10(); func_00124970();
     func_00123EA0(); func_0012B300(0); func_0012B800(0); func_00397FC8(); func_001233F8();
     func_0013D290(1000, 1, &work);
     func_0011F0A0(0);
@@ -115,8 +115,11 @@ void func_00397FE8(void)
     func_0011F0A0(0);
     func_003A0760(heap, 0x1000000);
     result=func_00123B98(0,0x78000,0);
+    {
+    s32 entry=*(s32 *)(image+0x40)+(s32)image; s32 size=*(s32 *)(image+0x44);
     sentinel=0x8012FC00;
-    func_00397DF8(*(s32 *)(image+0x40)+(s32)image,*(s32 *)(image+0x44),result,0x51,(s32)&sentinel-1);
+    func_00397DF8(entry,size,result,0x51,(s32)&sentinel-1);
+    }
     func_003A8500(); func_0012B800(0); func_003A2BC0();
     savedHeap=D_00227580.heap;
     D_001A1ED0.a=0;

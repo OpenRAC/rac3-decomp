@@ -25,6 +25,13 @@
  * Next steps: (1) put the file under @ps2as (or cut), re-run check; (2) chase the three spots above, in order; spot 3 may need an
  * asm_filter fix by the maintainer.
  * Profile: -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
+ * k6 (2026-11-26): the index in a local before the stored 1 (`idx = f(); v = 1; D[idx] = v; func(1, v)`) removes
+ * spot 2 and the 1-word shift: now 8 aligned differences, spot 1 is only a0/a1 swapped (retail sets a1=1 first and
+ * stores a1; here a0=1 first and the store uses a0). 12 wordings tried (v/w locals, u8/s8 v, (v,1), (v,v), assignment
+ * as the argument, pointer to the slot): all store through a0. A (s32,s32) prototype is impossible: the second call
+ * passes only a0 (`func_L01_004D2110(0)`). Spot 3 (loop padding nop) unchanged.
+ * k6 permuter: the store and call inside `do { } while (0)` (a macro's shape) stores through a1 as retail: 4 aligned
+ * differences left, `addiu $v1, $gp, -0x4650` and `addiu $a1, $zero, 1` swapped, and spot 3.
  */
 #include "common.h"
 
@@ -59,7 +66,7 @@ extern void func_003E6FF0(s32, s32);
 
 void func_L39_005E0510(s32 arg0) {
     s32 i;
-    func_L01_004D2110(1, D_L39_00243970[func_L01_00517688()] = 1);
+    { s32 idx = func_L01_00517688(); s32 v = 1; do { D_L39_00243970[idx] = v; func_L01_004D2110(1, v); } while (0); }
     func_003B5060(0x30000);
     func_003B5060(0x3000c);
     func_003E5090(0x30001);
