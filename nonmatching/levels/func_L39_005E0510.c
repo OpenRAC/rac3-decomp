@@ -32,6 +32,8 @@
  * passes only a0 (`func_L01_004D2110(0)`). Spot 3 (loop padding nop) unchanged.
  * k6 permuter: the store and call inside `do { } while (0)` (a macro's shape) stores through a1 as retail: 4 aligned
  * differences left, `addiu $v1, $gp, -0x4650` and `addiu $a1, $zero, 1` swapped, and spot 3.
+ * Spot 3 was tools/asm_filter.py (an `li` of 0x30000 now counts as one lui, so the loop is padded to 6 as
+ * retail): with that fix 2 differences are left, the two-word swap only (still needs its file cut to @ps2as).
  */
 #include "common.h"
 

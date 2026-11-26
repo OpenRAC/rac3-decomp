@@ -1,21 +1,16 @@
-/* Unlinked regional matching draft. PAL: 313 to 25 words in all five placements; saved-register roles, argument slot and float results still differ. */
-#include "common.h"
-
+/* func_L09_003C6388: near miss (k6, 2026-11-26), 16 aligned differences in its file with the file's flags. From the
+   functional C with the two xyz subtractions through vec_sub_ab (retail has lqc2/lqc2/vsub/sqc2) and the origin pointer
+   passed as `po = &origin`. Left: register allocation only (retail copies &origin from $v1 into $s3 in the first
+   block, $s3/$s4 roles swapped in the second, `shot` multiply operand order, the 0x716/0x762 temporaries). */
 #include "vu0.h"
-typedef struct {
-    vu0_v4 pos;
-    u8 pad[0x24D4];
-    s32 mode;
-} World_003C6388;
+/* functional: high. Rewritten from the PAL assembly (NTSC draft differs: frame counter % 37, cooldown 8, scale 0.6f, other globals/callees); VU0 xyz subs as plain float ops. Compiles at level 09, same stack (0xA0); diffs are scheduling. Switch-free; D_001A4CC0+0x24E4 is the game-mode word the draft names as .state. */
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003C6388;
 extern s32 D_L09_001DFBC0;
-__asm__(".extern D_L09_001DFBC0, 4");
-extern s32 D_001D545C_sda;
-__asm__(".extern D_001D545C_sda, 4");
+extern s32 D_001D545C;
 extern f32 D_L09_001DA9F0;
-__asm__(".extern D_L09_001DA9F0, 4");
 extern u8 D_0014275B[];
 extern f32 D_L09_002F1D50[];
-extern World_003C6388 D_001A4CC0;
+extern V4_003C6388 D_001A4CC0;
 extern void func_003C2F58(void *, s32, void *);
 extern u8 *func_L01_004E9980(void *, f32, f32, f32, f32, s32, s32);
 extern f32 func_L01_0040E570(void *, void *);
@@ -32,12 +27,12 @@ extern void func_0038CF68(void *, void *, f32);
 extern s32 func_L01_0041A4F0(void);
 extern void func_003A52A0(s32, s32, void *);
 extern void func_L09_003DF890(void *, void *, void *, f32, s32);
-extern f32 func_L01_00448728(void *, f32, void *, f32, f32, f32, s32);
+extern void func_L01_00448728(void *, f32, void *, f32, f32, f32, s32);
 extern void func_0038D750(void *, s32, f32);
 
 void func_L09_003C6388(u8 *m) {
-    vu0_v4 temp, direction, origin, target;
-    vu0_v4 *op;
+    V4_003C6388 temp, direction, origin, target;
+    V4_003C6388 *po;
     u8 *p = *(u8 **)(m + 0x68);
     u8 *a, *b, *extra, *extra2;
     f32 yaw, accel, speed, limit, shot, turn, da, db;
@@ -46,24 +41,29 @@ void func_L09_003C6388(u8 *m) {
         return;
     }
     if (D_L09_001DFBC0 % 37 == 0) {
-        *(vu0_q *)&temp = *(vu0_q *)&D_001A4CC0.pos;
-        func_003C2F58(m, *(s16 *)(p + 0x762) ? 18 : 17, &origin);
-        op = &origin;
-        *(vu0_q *)&D_001A4CC0.pos = *(vu0_q *)&origin;
-        if (D_001A4CC0.mode == 49) {
+        temp = D_001A4CC0;
+        func_003C2F58(m, *(s16 *)(p + 0x762) ? 18 : 17, po = &origin);
+        D_001A4CC0 = origin;
+        if (*(s32 *)((u8 *)&D_001A4CC0 + 0x24E4) == 49) {
             a = func_L01_004E9980(&target, 18.0f, *(f32 *)(m + 0xF8), 2.3561945f, 0.5f, 5, 1);
             b = func_L01_004E9980(&target, 30.0f, *(f32 *)(p + 0x724), 2.3561945f, 0.5f, 5, 1);
-            if (!a) {
+            if (a == 0) {
                 *(u8 **)(p + 0x75C) = b;
-            } else if (!b || func_L01_0040E570(op, b + 0x10) > func_L01_0040E570(op, a + 0x10)) {
+            } else if (b == 0) {
                 *(u8 **)(p + 0x75C) = a;
             } else {
-                *(u8 **)(p + 0x75C) = b;
+                db = func_L01_0040E570(po, b + 0x10);
+                da = func_L01_0040E570(po, a + 0x10);
+                if (da < db) {
+                    *(u8 **)(p + 0x75C) = a;
+                } else {
+                    *(u8 **)(p + 0x75C) = b;
+                }
             }
         } else {
             *(u8 **)(p + 0x75C) = func_L01_004E9980(&target, 30.0f, *(f32 *)(p + 0x724), 2.3561945f, 0.5f, 5, 1);
         }
-        *(vu0_q *)&D_001A4CC0.pos = *(vu0_q *)&temp;
+        D_001A4CC0 = temp;
     }
     func_0038CB00(p + 0x716);
     if (*(u8 **)(p + 0x75C) != 0) {
@@ -82,25 +82,24 @@ void func_L09_003C6388(u8 *m) {
         limit = 300.0f;
         *(f32 *)(p + 0x764) = yaw;
         if (*(s16 *)(p + 0x716) <= 0 && *(u8 **)(p + 0x75C) != 0) {
-            op = &origin;
-            func_003C2F58(m, *(s16 *)(p + 0x762) ? 18 : 17, op);
+            func_003C2F58(m, *(s16 *)(p + 0x762) ? 18 : 17, po = &origin);
             extra2 = func_00382348(*(u8 **)(p + 0x75C));
-            *(vu0_q *)&target = *(vu0_q *)(*(u8 **)(p + 0x75C) + 0x10);
+            target = *(V4_003C6388 *)(*(u8 **)(p + 0x75C) + 0x10);
             if (extra2 != 0) {
                 target.z += *(f32 *)(extra2 + 0x10);
             }
-            vec_sub_ab(&direction, &target, op);
+            vec_sub_ab(&direction, &target, &origin);
             func_0038CF68(&direction, &direction, 0.6f);
             shot = 10.0f;
             if (func_L01_0041A4F0() != 0) {
-                if (D_001D545C_sda == 7 && D_0014275B[0] != 0) {
+                if (D_001D545C == 7 && D_0014275B[0] != 0) {
                     shot = D_L09_001DA9F0 * shot;
                 } else {
-                    shot = D_L09_002F1D50[D_001D545C_sda] * shot;
+                    shot = D_L09_002F1D50[D_001D545C] * shot;
                 }
             }
             func_003A52A0(3, 0, m);
-            func_L09_003DF890(m, op, &direction, shot, 0x10000);
+            func_L09_003DF890(m, &origin, &direction, shot, 0x10000);
             *(s16 *)(p + 0x716) = 8;
             *(u8 *)(p + 0x7AE) = 1;
             *(u16 *)(p + 0x762) ^= 1;
@@ -109,7 +108,8 @@ void func_L09_003C6388(u8 *m) {
         accel = 200.0f;
         speed = 5000.0f;
         limit = 60.0f;
-        if (--*(s16 *)(p + 0x760) <= 0) {
+        *(s16 *)(p + 0x760) = *(s16 *)(p + 0x760) - 1;
+        if (*(s16 *)(p + 0x760) <= 0) {
             turn = func_003824E0(-1.5707964f, 1.5707964f);
             if (turn > -0.5f && turn <= 0.0f) {
                 turn = -0.5f;
