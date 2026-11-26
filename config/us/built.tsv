@@ -6006,7 +6006,7 @@ levels	func_L01_0049EA38	34	-
 levels	func_L01_0049EE28	34	-
 levels	func_L01_0049F168	51	-
 levels	func_L01_0049F798	34	-
-levels	func_L01_0049F868	50	level_39: func_L01_00517918 should be 0x0060F8A8, the bytes make it 0x0060FA98
+levels	func_L01_0049F868	51	-
 levels	func_L01_0049F8A8	35	-
 levels	func_L01_0049F8C8	35	-
 levels	func_L01_0049F8E8	34	-
@@ -6631,7 +6631,7 @@ levels	func_L01_0051A838	51	-
 levels	func_L01_0051A8A0	51	-
 levels	func_L01_0051A970	51	-
 levels	func_L01_0051A9D8	51	-
-levels	func_L01_0051AA40	50	level_39: func_L01_00519990 is 0x00611480 here, 0x00611808 for func_L01_00519990
+levels	func_L01_0051AA40	51	-
 levels	func_L01_0051AB10	51	-
 levels	func_L01_0051AB78	51	-
 levels	func_L01_0051AC50	51	-
@@ -6681,7 +6681,7 @@ levels	func_L01_0051C4A8	51	-
 levels	func_L01_0051C5E8	51	-
 levels	func_L01_0051C650	51	-
 levels	func_L01_0051C6B8	51	-
-levels	func_L01_0051C7D0	50	level_39: func_L01_00519D18 is 0x00611808 here, 0x00611480 for func_L01_00519D18
+levels	func_L01_0051C7D0	51	-
 levels	func_L01_0051C8A0	51	-
 levels	func_L01_0051C908	51	-
 levels	func_L01_0051C970	51	-
@@ -7392,7 +7392,7 @@ levels	func_L04_00355400	1	-
 levels	func_L04_00355678	20	-
 levels	func_L04_00355BF8	23	-
 levels	func_L04_00355C60	23	-
-levels	func_L04_00355DE0	5	level_39: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_40: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_41: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_42: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_43: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_44: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_45: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_46: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_47: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_48: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_49: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_50: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_51: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_52: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_53: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_54: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298;level_55: D_001D52F0 should be 0x001D52F0, the bytes make it 0x00241298
+levels	func_L04_00355DE0	22	-
 levels	func_L04_0035A030	6	-
 levels	func_L04_0035A050	6	-
 levels	func_L04_0035A158	6	-
@@ -13179,13 +13179,14 @@ levels	func_L39_005E6118	17	-
 levels	func_L39_005E6B08	17	-
 levels	func_L39_005E6C78	17	-
 levels	func_L39_005E70E8	0	level_39: no object of the block alone checks MATCH;level_40: no object of the block alone checks MATCH;level_41: no object of the block alone checks MATCH;level_42: no object of the block alone checks MATCH;level_43: no object of the block alone checks MATCH;level_44: no object of the block alone checks MATCH;level_45: no object of the block alone checks MATCH;level_46: no object of the block alone checks MATCH;level_47: no object of the block alone checks MATCH;level_48: no object of the block alone checks MATCH;level_49: no object of the block alone checks MATCH;level_50: no object of the block alone checks MATCH;level_51: no object of the block alone checks MATCH;level_52: no object of the block alone checks MATCH;level_53: no object of the block alone checks MATCH;level_54: no object of the block alone checks MATCH;level_55: no object of the block alone checks MATCH
+levels	func_L39_005E7430	17	-
 levels	func_L39_005E74C8	17	-
 levels	func_L39_005E7598	17	-
 levels	func_L39_005E7A30	17	-
 levels	func_L39_005E7E30	17	-
 levels	func_L39_005E7FF8	17	-
 levels	func_L39_005E8058	17	-
-levels	func_L39_005E8108	0	level_39: no object of the block alone checks MATCH;level_40: no object of the block alone checks MATCH;level_41: no object of the block alone checks MATCH;level_42: no object of the block alone checks MATCH;level_43: no object of the block alone checks MATCH;level_44: no object of the block alone checks MATCH;level_45: no object of the block alone checks MATCH;level_46: no object of the block alone checks MATCH;level_47: no object of the block alone checks MATCH;level_48: no object of the block alone checks MATCH;level_49: no object of the block alone checks MATCH;level_50: no object of the block alone checks MATCH;level_51: no object of the block alone checks MATCH;level_52: no object of the block alone checks MATCH;level_53: no object of the block alone checks MATCH;level_54: no object of the block alone checks MATCH;level_55: no object of the block alone checks MATCH
+levels	func_L39_005E8108	17	-
 levels	func_L39_005E8598	17	-
 levels	func_L39_005E87E0	17	-
 levels	func_L39_005E89A0	17	-
@@ -13935,11 +13936,11 @@ levels	func_L39_0067F010	1	-
 levels	func_L39_0067F020	1	-
 levels	func_L39_0067F030	1	-
 levels	func_L39_0067F050	1	-
-levels	func_L39_0067F060	0	level_39: no object of the block alone checks MATCH
-levels	func_L39_0067F0A0	0	level_39: no object of the block alone checks MATCH
-levels	func_L39_0067F100	0	level_39: no object of the block alone checks MATCH
+levels	func_L39_0067F060	1	-
+levels	func_L39_0067F0A0	1	-
+levels	func_L39_0067F100	1	-
 levels	func_L39_0067F168	1	-
-levels	func_L39_0067F1B0	0	level_39: no object of the block alone checks MATCH
+levels	func_L39_0067F1B0	1	-
 levels	func_L39_0067F210	1	-
 levels	func_L39_0067F648	1	-
 levels	func_L39_0067F6E8	1	-
