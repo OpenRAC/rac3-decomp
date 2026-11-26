@@ -527,6 +527,8 @@ src/boot_elf/text/3D72A0.c 003D72A0
 src/boot_elf/text/3D7668.c 003D7668
 src/boot_elf/text/3D7C98.c 003D7C98
 src/boot_elf/text/3D80E8.c 003D80E8
+src/boot_elf/text/3D90A8.c 003D90A8
+src/boot_elf/text/3D9378.c 003D9378
 src/boot_elf/text/3D9730.c 003D9730
 src/boot_elf/text/3DA1E0.c 003DA1E0
 src/boot_elf/text/3DF0D0.c 003DF0D0

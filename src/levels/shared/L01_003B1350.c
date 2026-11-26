@@ -24,7 +24,7 @@ void func_L01_003B1358(u8 *obj) {
     extern f32 func_0038CF38(void *, void *);
     extern void func_L01_00446760(void *, void *, s32, void *, f32);
     extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
-    extern void func_L01_00404A10_003B1358(void (*)(char *), u8 *) __asm__("func_L01_00404A10");
+    extern void func_L01_00404A10_003B1358(void (*)(char *), u8 *);
     extern s32 func_L01_00456250(void *);
     extern void func_L01_003B1D10(s32, s32, s32);
     extern void func_L01_00456230(void *, s32);

@@ -247,6 +247,8 @@ src/frontbin/3D6BC0.c 003D6BC0
 src/frontbin/3D6EE8.c 003D6EE8
 src/frontbin/3D72B0.c 003D72B0
 src/frontbin/3D78E0.c 003D78E0
+src/frontbin/3D8CF0.c 003D8CF0
+src/frontbin/3D8FC0.c 003D8FC0
 src/frontbin/3D9378.c 003D9378
 src/frontbin/3D9E28.c 003D9E28
 src/frontbin/3DED18.c 003DED18

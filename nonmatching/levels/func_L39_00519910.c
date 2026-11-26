@@ -21,7 +21,7 @@ typedef struct N_00519910 {
 } N_00519910;
 extern N_00519910 *D_L39_0046F550 __attribute__((section(".data")));
 extern N_00519910 *D_L39_0046F554 __attribute__((section(".data")));
-extern N_00519910 *func_L39_00518FE0_00519910(s32) __asm__("func_L39_00518FE0");
+extern N_00519910 *func_L39_00518FE0_00519910(s32);
 extern void func_11D534(void *, s32, s32);
 s32 func_L39_00519910(s32 arg0, s32 arg1) {
     P_00519600 *p;

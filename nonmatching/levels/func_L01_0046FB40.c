@@ -10,7 +10,7 @@
 /* localdecomp:start func_L01_0046FB40 */
 extern u8 *D_L01_00221098[];
 extern s32 func_00382468(s32);
-extern u8 *func_L01_004618E0_0046FB40(s32) __asm__("func_L01_004618E0");
+extern u8 *func_L01_004618E0_0046FB40(s32);
 extern void func_L01_0046FD18(u8 *);
 u8 *func_L01_0046FB40(u128_t *src, f32 *pos, s32 life, s32 color, s32 b15, s32 alpha, s32 alpha2, s32 w,
                       f32 size, f32 size2, f32 f2C) {

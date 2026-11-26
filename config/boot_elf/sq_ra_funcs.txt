@@ -16,3 +16,4 @@ func_003C6A38
 func_003BDB58
 func_U_003BDA80
 func_003AC590
+func_003D90A8

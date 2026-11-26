@@ -1,10 +1,10 @@
 /* PAL near miss (k6 a6, 2026-11-26): func_L30_00343E10 (884 B, levels 30-36), written from retail.
- * 16 diff with --flags "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"
- * (its file's line needs -mvu0-use-vf0-vf2 for vec_add_ab) and the divs_nops row
- * `func_L30_00343E10 2 2 2 2 2` (added with this draft). Note the first branch stores the colour
- * without | 0x808080 (cross-jumped tail). What differs: k (func_L03_0034B148's result) and c (the
- * cosine) get $f24/$f25 the other way round (regalloc.py: k refs 4 live 84, c refs 4 live 93);
- * and the hE/hC loads of the last lerp are scheduled in another order. */
+ * 10 diff with --flags "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"
+ * (its file's line needs -mvu0-use-vf0-vf2 for vec_add_ab; func_L30_00344188 still matches with it) and the
+ * divs_nops row `func_L30_00343E10 2 2 2 2 2`. The first branch stores the colour without | 0x808080
+ * (a cross-jumped tail). Reusing c for case 2's square root fixes the $f24/$f25 swap of k and c
+ * (decomp-permuter found it); what differs: that sqrt.s now writes $f24 directly where retail has $f0, and
+ * the hE/hC loads of the last lerp are scheduled in another order. */
 #include "common.h"
 /* localdecomp:start func_L30_00343E10 */
 #include "vu0.h"
@@ -87,7 +87,8 @@ void func_L30_00343E10(M_00343E10 *m, P_00343E10 *p) {
         sq = sqrt_asm(w * w + h * h);
         rad = D_L30_001DCE90 * *(f32 *)(v + 0x160) * sq + sq;
     } else if (o[0x20] == 2) {
-        rad = sqrt_asm(w * w + h * h) * (D_L30_001DCE90 * (1.0f - *(f32 *)(v + 0x160)) + 1.0f);
+        c = sqrt_asm(w * w + h * h);
+        rad = c * (D_L30_001DCE90 * (1.0f - *(f32 *)(v + 0x160)) + 1.0f);
     } else {
         rad = 0.0f;
     }
