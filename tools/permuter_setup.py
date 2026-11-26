@@ -62,9 +62,11 @@ ATTR_RE = re.compile(r"__attribute__\s*\(\((?:[^()]|\([^()]*\))*\)\)")
 
 
 def _statements(text):
-    """Top-level statements (`typedef ...;`) with brace depth tracking."""
+    """Declarations that start a line (`typedef ...;`, `extern ...;`) with brace depth tracking.
+    An extern's attributes matter too: `__attribute__((section(".sdata")))` decides whether
+    the compiler treats a global as small data."""
     out, i, n = [], 0, len(text)
-    for m in re.finditer(r"(?m)^\s*typedef\b", text):
+    for m in re.finditer(r"(?m)^\s*(?:typedef|extern)\b", text):
         if m.start() < i:
             continue
         j, depth = m.start(), 0
@@ -83,7 +85,7 @@ def _statements(text):
 
 
 def typedef_attributes(text):
-    """{typedef name: [attribute, ...]} for every typedef that carries one."""
+    """{name: [attribute, ...]} for every typedef or extern declaration that carries one."""
     res = {}
     for st in _statements(text):
         found = ATTR_RE.findall(st)
@@ -97,7 +99,7 @@ def typedef_attributes(text):
 
 
 def reattach(attrs_path, c_path):
-    """Put recorded typedef attributes back into a permuter candidate."""
+    """Put recorded typedef and extern attributes back into a permuter candidate."""
     import json
     attrs = json.load(open(attrs_path))
     if not attrs:
