@@ -27,8 +27,10 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003824D0` | boot_elf | US draft of `func_003824F0` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_00382918` | boot_elf | US draft of `func_00382938` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_0038D348` | boot_elf | US draft of `func_0038D290` | symbols: func_0038D2DC |
+| `func_003931D0` | boot_elf | US draft of `func_00393110` | near miss: 7 diff with the file's flags (was 41) |
 | `func_00393548` | boot_elf | US draft of `func_00393488` | near miss: 5 diff with the file's flags (was 73) |
 | `func_00393728` | boot_elf | Codex wave 6 near miss | near miss: 56 words differ with the file's flags (replaces the earlier draft, US draft of `func_00393668`: 57 words differ) |
+| `func_00393898` | boot_elf | US draft of `func_003937D8` | near miss: 3 diff with the file's flags (was 8) |
 | `func_00393F38` | boot_elf | US draft of `func_00393E68` | near miss: 17 diff with the file's flags (was 34) |
 | `func_00395370` | boot_elf | US draft of `func_00395288` | flags: the US matched it with `@ps2as` and without `-mno-split-addresses` (a single-function override) |
 | `func_003A4688` | boot_elf | written from the assembly (Promises, 2026-11-22; retried three times on 2026-11-23), from Flavius's functional draft | near miss: 437 differences (tools/check.py --target boot_elf) with the file's flags (-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as), also 437 with --no-context (505 after the first retry, 726 before it; the functional draft: 781); frame 0x370 and pass 1's registers now follow retail. Blockers: retail strength-reduces &ch->timer in pass 1 (here computed at the call), and in pass 2 keeps a reduced channel pointer plus a separate 0x80-stepped offset for the callback arguments and i4C stores (the third retry's all-indexed, ch++ and mixed wordings give 457 to 553, see the draft's header); the bit test that retail writes as xori/andi/beql. The manager's first reads now go through a scoped pointer derived from the channel array (c0 = D_1A30B0.ch, then c0 - 0xC0), as retail computes them. VU0 through include/vu0.h's helpers plus ONE PROVISIONAL j-form block (retail's 0x2C0/0x2F0 words are VU0 reload spills); an s32 per-function alias for func_003A41C8, which the file declares void; D_2228D0/D_1A4F30 read as unsized arrays. NTSC-U's copy differs (config/us/map.tsv) |
@@ -36,6 +38,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_003B4218` | boot_elf | Codex wave 8 near miss | near miss: 176 words differ with the file's flags (replaces the earlier draft, US draft of `func_003B4068`: 241 words differ) |
 | `func_003B4C30` | boot_elf | US draft of `func_003B4A80` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B55D8` | boot_elf | frontbin's matched `func_003B5220` (`3B5220.c`), renamed (replaces the US draft of `func_003B5428`) | flags: MATCH with `@ps2as`, 153 differences with 3B3B08.c's flags (tools/check.py --target boot_elf, also --no-context; float constants via `$gp`). Recipe: 0x003B55D8-0x003B5890 as a file of its own with 3B3B08.c's flags plus `@ps2as` (like frontbin's `3B5220.c`) and a new file from 0x003B5890 with 3B3B08.c's flags; not done because that file would move `func_003B5C10` and `func_003B6128`, which another contributor's issue #3 comment claims |
+| `func_003B5C10` | boot_elf | US draft of `func_003B5A60` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B6128` | boot_elf | US draft of `func_003B5F78` | flags: the US matched it with `@ps2as` (a single-function override) |
 | `func_003B9650` | boot_elf | US draft of `func_003B9578` | flags: the US matched it with `@ps2as` and without `-fopt-stack` (a single-function override) |
 | `func_003C1638` | boot_elf | US draft of `func_003C1530` | symbols: func_003C1558 |
@@ -73,9 +76,13 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0046FB40` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 46 words differ: retail saves $s3 with sq (16-byte slot at 0x0) where this C gets sd, shifting the frame (details in the file header) |
 | `func_L01_003AE1A0` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 30 words differ: the colour bytes of the three func_L01_00304018 calls (details in the file header) |
 | `func_L30_00343E10` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 10 words differ with -mvu0-use-vf0-vf2 added to its file line: one sqrt.s destination register, one load order |
+| `func_L23_003B9B88` | levels | k6 Opus near miss (2026-11-26) | near miss: 54 differences (40 aligned) (tools/check |
+| `func_L23_003BA670` | levels | k6 Opus near miss (2026-11-26) | near miss: 71 differences (47 aligned) (tools/check |
+| `func_L30_00343E10` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 16 words differ with -mvu0-use-vf0-vf2 added to its file line: two float locals get $f24/$f25 swapped, one load order |
 | `func_L30_00347060` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 11 words differ with @ps2as added to its file line: the func_L03_0034B440 argument loads in the other order |
 | `func_L39_00519910` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 2 words differ: the list-head store and n->prev = 0 in the other order |
 | `func_L39_005001E8` | levels | k6-a3 from `nonmatching/functional/func_L39_005001E8.c` | MATCH with tools/check.py (level 39, the file's flags) only when the `(flags & 6) == 6` test is written `(flags & (v = 6)) == v` (retail loads the 6 first); plain spellings leave 3 raw rows. The rest is plain C (draft header: 14th case label for the jump table, case order, `(fl & 0x20) >> 5` on an `unsigned long`). |
+| `func_L39_00563E40` | levels | k6 Opus near miss (2026-11-26) | near miss: 148 differences (tools/check |
 | `func_L39_005771D0` | levels | k4 Sonnet first pass | near miss: 226 diff rows (79% instructions aligned) with the file's flags; prologue has two dead insns retail keeps, one delay-slot fill of a 0x240304 read differs |
 | `func_L39_005A3D9C` | levels | NTSC-U native C, from src/us/levels/ (NTSC-U names) | not a function: the corrected catalogue joins NTSC-U's 0x5A3D9C to `func_L39_005A3D20` (config/us/levels/boundaries.tsv; PAL's `func_L39_005A5990` takes in `func_L39_005A5A0C`); its C matched the 9 words as a function of their own, and writes a literal address |
 | `func_U_003B0C70` | frontbin | NTSC-U native draft at `0x003B0C70` | 2 differences: initial `lui` and stack adjustment reversed; rechecked 2026-10-31, three C forms unchanged, literal read gives 6 differences |
@@ -151,6 +158,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L39_005B25C8` | levels | no twin found (part3 best < 0.35, callee overlap none) | hand-written assembly (scratchpad save, addi, DMA regs); not C |
 | `func_L39_005DC648` | levels | k4 Sonnet first pass | near miss: 80 diff of 773 with the file's flags (UI build routine); only register numbers ($v0/$v1 swaps) and the order of the colour-word shifts differ |
 | `func_L39_00687450` | levels | from asm | 7 diff: s3/s4 swap, clamp movn vs movz |
+| `func_L39_00692918` | levels | k6 Opus near miss (2026-11-26) | near miss: 13 differences (tools/check |
 | `func_L40_0040D678` | levels | written from retail (2026-11-11) | 2 words: the $gp immediates of the frame counter loads in delay slots. Ps2EeAs writes such an access (size unknown) with addend -0x4000 and gp0 0x4000, which GNU ld, check.py and level_symbols.py do not apply; the C is retail's otherwise; details in the file header |
 | `func_L40_004250A0` | levels | written from retail by c9 (2026-11-14) | 5 words at all 10 places, case 2's last block: float register naming ($f3/$f4 for the load and the result, ours $f2). Needs `-mvu0-use-vf0-vf2 ... @ps2as` on src/levels/shared/L40_00424F88.c; details in the file header. Round 12: yy is one pseudo for the load and the result (f2); retail has f3 and f4 and an empty f2; separate temporaries 8-30 diff (header). |
 | `func_L40_0041B9F0` | levels | prep, no twin (opcode < 0.3) | m2c draft only, not compiling; COP2 blocks |
@@ -525,7 +533,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_00319F00` | levels | Codex wave 10 near miss | near miss: 140 words differ with the file's flags |
 | `func_L01_0031B4F8` | levels | Codex wave 10 near miss | near miss: 190 words differ with the file's flags |
 | `func_L01_0031DE80` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
-| `func_L01_0031E3B8` | levels | Codex wave 10 near miss | near miss: 113 words differ with the file's flags |
+| `func_L01_0031E3B8` | levels | k6 Opus near miss (2026-11-26) | near miss: 18 differences (tools/check |
 | `func_L01_00321A80` | levels | Codex wave 10 near miss | near miss: 168 words differ with the file's flags |
 | `func_L01_00340FB0` | levels | Codex wave 10 near miss | near miss: 92 words differ with the file's flags |
 | `func_L01_003415F8` | levels | Codex wave 10 near miss | near miss (shield_charger_fire): 2 words: the addiu of obj+0xE0 and obj+0xD0 after the func_0038D308 call in the other order; assigning them the other way round swaps their $s registers (round 14 E, 2026-11-24) |
@@ -591,7 +599,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_00135D50` | boot_elf | NTSC-U draft of `func_00135D50` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss: 7 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00135D50`) |
 | `func_00135DC8` | boot_elf | NTSC-U draft of `func_00135DC8` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss on NTSC-U, no count recorded (NTSC-U twin `func_00135DC8`) |
 | `func_00139A70` | boot_elf | Regional matching study (2026-11-24) | PAL: 187 to 130 words; reader and packet allocation and loop shape remain. |
-| `func_L01_0030E630` | levels | NTSC-U draft of `func_L01_0030E388` (Claude wave K) | near miss: 276 words differ on NTSC-U with the file's flags (NTSC-U twin `func_L01_0030E388`, whose code is not the PAL one) |
 | `func_L01_0031D188` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_00323080` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_0032EF88` | levels | NTSC-U draft of `func_L01_0032EA90` (Claude wave S/us) | flags: byte-exact on NTSC-U only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division`) (NTSC-U twin `func_L01_0032EA90`, whose code is not the PAL one) |
@@ -721,7 +728,7 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0048F390` | levels | batch 36 (Haiku, Sonnet) | 1 word: the `$gp` reload of `D_001D52FC` in the `bnez` delay slot, retail `-0x75B4($gp)`, `check.py` gives `0x4A4C($gp)`; a `_sda` name or `.extern` changes the code shape. |
 | `func_L01_00497580` | levels | batch 36 (Sonnet) | 1 word: the default assembler puts a `nop` after `lui $at,0x3B00; mtc1 $at,$f21` before the second `div.s`; retail has none. `@ps2as` gives 69 words. |
 | `func_L01_004A2E88` | levels | batch 36 (Sonnet) | 50 words: jump table and case bodies right; retail indexes the row as `base + idx*8` then `lw 0x6188(row)` and branches, this C folds 0x6188 into the symbol and uses `movz`/`movn`. |
-| `func_L39_0066ACA8` | levels | batch 36 (Sonnet) | 52 words, all register names: retail keeps the object in `$t0` and r/g/b in `$a1`/`$a2`/`$a3`; this C uses `$a2` and `$v0`/`$v1`/`$a3`. |
+| `func_L39_0066ACA8` | levels | k6 Opus near miss (2026-11-26) | near miss: 39 differences (tools/check |
 | `func_L39_006787B0` | levels | batch 36 (Sonnet) | 15 words, all in the dispatch: retail keeps the constant 1 in `$a2` and the value in `$v1`, and fills the first `beq` delay slot with `lui`. The three case bodies match. |
 | `func_L01_004A22C8` | levels | batch 36 (Sonnet) | Matches level 01; its 8th call (`func_L01_00516090` in 01) goes to a different catalogue function in levels 04, 12, 18, 26 and 29. |
 | `func_L01_004A2878` | levels | batch 36 (Sonnet) | Matches level 01; its 3rd call (`func_L01_00516090` in 01) goes to a different catalogue function in levels 04, 12, 18, 26 and 29. |

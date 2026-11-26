@@ -1,14 +1,12 @@
-/* PAL near miss (Codex wave 10): near miss: 113 words differ with the file's flags.
- * Worker's note: 114 diff; build/codex/w539/func_L01_0031E3B8-10.log; 10 attempts; fixed flags and complete VU blocks retain scalar interleaving and allocation differences; existing callee signatures preserved
- */
+/* PAL near miss (k6 Opus, 2026-11-26): 18 differences (tools/check.py, level 01, the file's flags), from 113: vec_sub_ab/vec_add_ba for the two VU0 blocks, the life range as one call with lo/hi set in the branches, a separate n and particle pointer in the second loop, a hoisted constant-1 local for the ninth argument of func_L01_004708C8. Left: register allocation only (loop 1 s5/s6 for smoke and the 0x1A4EC0 base, the first func_L01_004669B0 call's a0 move order, loop 2 color/at-copy/counter in s4/s0/s2 where retail has s2/s4/s0). A separate counter for loop 2 gives retail's loop-2 registers but moves loop 1's decrement (211). */
 #include "common.h"
+#include "vu0.h"
 /* localdecomp:start func_L01_0031E3B8 */
 typedef int Q_0031E3B8 __attribute__((mode(TI)));
 typedef union { Q_0031E3B8 q; f32 f[4]; } Vec_0031E3B8;
 typedef struct { u8 pad[0x16C]; u8 *colors; } Config_0031E3B8;
-extern Config_0031E3B8 D_L01_00221098[];
+extern Config_0031E3B8 D_L01_00221098_0031E3B8[];
 extern Vec_0031E3B8 D_001A4EC0[];
-extern Vec_0031E3B8 D_L01_001E29C0[];
 extern u8 D_001425C0[];
 void func_L01_0031E3B8(u8 *position, s32 unused, s32 flag, u8 *owner) {
     extern f32 func_003824E0(f32,f32);
@@ -19,13 +17,17 @@ void func_L01_0031E3B8(u8 *position, s32 unused, s32 flag, u8 *owner) {
     extern void func_00382760(f32 *,f32,f32,f32);
     extern void func_0038CF68(f32 *,s32,f32);
     extern s32 func_00382498(s32,s32);
-    extern u8 *func_L01_004708C8(f32 *,f32 *,u32,u32,s32,s32,s32,s32,s32,f32,f32);
+    extern u8 *func_L01_004708C8(void *,void *,s32,s32,f32,f32,s32,s32,s32,s32,s32);
     f32 velocity[4], at[4], smoke[4];
     s32 i;
     s32 life;
+    s32 n;
+    s32 one;
+    s32 lo, hi;
     s32 color;
     f32 size, heading, angle;
     u8 *particle;
+    u8 *smk;
     for(i=0;i<5;i++) {
         func_0038CE20(velocity,D_001A4EC0,-(func_003824E0(0.1f,1.5f)*0.020000001f));
         life=func_L01_00443A18(1.0f,2.0f);
@@ -45,23 +47,25 @@ void func_L01_0031E3B8(u8 *position, s32 unused, s32 flag, u8 *owner) {
             v[0xB]=particle[0xA];
         }
     }
+    one=1;
     color=1;
     if(((E240_321CB8 *)D_L01_002C5600)[D_001425C0[0x7F]].x1>=4) color=3;
     for(i=0;i<2;i++) {
         angle=func_003824E0(-0.9599310755729675f,-1.3962634f);
         heading=func_00382538();
         func_00382760(velocity,func_003824E0(0.0f,0.5f)*0.020000001f,heading,angle);
-        __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(*(Vec_0031E3B8 *)at) : "m"(*(Vec_0031E3B8 *)position),"m"(D_L01_001E29C0[0]) : "vf1","vf2");
+        vec_sub_ab(at, &D_L01_001E29C0, position);
         func_0038CF68(at,(s32)at,0.3f);
-        __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0" : "=m"(*(Vec_0031E3B8 *)position) : "m"(*(Vec_0031E3B8 *)at),"m"(*(Vec_0031E3B8 *)position) : "vf1","vf2");
+        vec_add_ba(position, position, at);
         size=func_003824E0(50000.0f,75000.0f);
         smoke[0]=*(f32 *)(position+0)+func_L01_00443A18(0.0f,0.02f);
         smoke[1]=*(f32 *)(position+4)+func_L01_00443A18(0.0f,0.02f);
         smoke[2]=*(f32 *)(position+8)+func_L01_00443A18(0.0f,0.02f);
-        if(flag) life=func_00382498(8,17);
-        else life=func_00382498(21,50);
-        particle=func_L01_004708C8(smoke,velocity,0x78FFFFFF,0x101E1E1E,life,1,1,-1,1,size,0.1f);
-        if(particle) particle[2]=D_L01_00221098[0].colors[color];
+        if(flag) { lo=8; hi=17; }
+        else { lo=21; hi=50; }
+        n=func_00382498(lo,hi);
+        smk=func_L01_004708C8(smoke,velocity,0x78FFFFFF,0x101E1E1E,size,0.1f,n,1,1,-1,one);
+        if(smk) smk[2]=D_L01_00221098_0031E3B8[0].colors[color];
     }
 }
 /* localdecomp:end func_L01_0031E3B8 */
