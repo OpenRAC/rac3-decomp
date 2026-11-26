@@ -1,18 +1,13 @@
-/* Near miss of func_003AC1D8 with its file's own flags: tools/check.py reports 27 diff
-   (the version it replaces: 30).
-   What differs: The C body now matches retail exactly (the mode-1 draw call is PAL's
-   func_0038FA18, not the US func_0038B1E8: that fixed the last 3 diffs, 30 -> 27). All 27
-   remaining diffs are the callee-saved save/restore area, which the file's own flags decide,
-   not the C: retail keeps the 10 saved registers ($s0-$s7, $fp, $ra) in 16-byte slots saved
-   with sq/lq (frame 0x2B0, slots 0x210..0x2A0 ascending, $ra highest), while -fopt-stack (SN-
-   only cc1 option "Optimise stack frame") packs the same 10 registers into 8-byte slots saved
-   with sd/ld (frame 0x260, slots 0x210..0x258); the three incoming...
-*/
+#include "common.h"
 
-/* func_003AC1D8 (frontbin, PAL 0x003AC1D8): US draft of rac3-uya-decomp func_003A6C30
-   (commit 13cf5c5) with PAL call targets.
-   PAL difference: the mode-1 draw call is func_0038FA18 (US func_0038B1E8); the mode-0 and
-   mode-2 calls are func_00391130 / func_003911B8 (US func_0038C8F8 / func_0038C980). */
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+/* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003AC1D8 */
 typedef struct {

@@ -101,6 +101,8 @@ src/frontbin/3ABA58.c 003ABA58
 src/frontbin/3ABBE8.c 003ABBE8
 src/frontbin/3ABD10.c 003ABD10
 src/frontbin/3ABD38.c 003ABD38
+src/frontbin/3AC1D8.c 003AC1D8
+src/frontbin/3AC638.c 003AC638
 src/frontbin/3ACBB8.c 003ACBB8
 src/frontbin/3ACC38.c 003ACC38
 src/frontbin/3AD270.c 003AD270
