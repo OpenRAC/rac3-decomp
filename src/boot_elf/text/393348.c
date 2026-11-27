@@ -74,12 +74,3 @@ u32 func_00393518(void) {
     return r;
 }
 /* localdecomp:end func_00393518 */
-
-typedef struct { u8 p0[0x14]; s32 a[8]; s32 b[16]; s32 c[1]; } S_38E930;
-typedef struct { u32 w0; u16 h4; u8 b6; u8 b7; } E_38E930;
-extern S_38E930 * volatile D_001D9EA0_00393548;
-extern E_38E930 *D_001D9EAC_00393548;
-extern volatile s32 D_001A1F08_00393548[];
-extern void func_003933B0_00393548();
-extern void func_00397D60(s32, s32, s32, s32, s32, s32);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00393548);

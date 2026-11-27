@@ -14,7 +14,6 @@ extern void func_003C0CA0();
 extern void func_003C12A8();
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C12A8);
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BBD98;
 typedef int Q_3BBD98 __attribute__((mode(TI)));
@@ -28,206 +27,73 @@ typedef struct {
 } L_3BBD98;
 /* PAL candidate for func_003C1490 (frontbin). The US draft called func_003A26D0;
    in PAL that callee is func_003A7AF8 (src/frontbin/3A53E8.c). */
-
-/* localdecomp:start func_003C1490 */
-extern void func_003A6790(void *);
-extern void func_003A7AF8(void *);
-extern void func_003A8450();
-void func_003C1490(u8 *p) {
-    if (p[0x95] < 11) return;
-    func_003A6790(p);
-    func_003A7AF8(p);
-    func_003A8450();
-}
-/* localdecomp:end func_003C1490 */
-
-/* localdecomp:start func_003C14D8 */
-typedef struct { u8 p0[0x34]; s32 f34; u8 p38[8]; s16 h40; } S_3BBFC8;
-extern u8 D_002D2008[];
-extern S_3BBFC8 D_00225700_003C14D8;
-extern void func_003BCAF8();
-extern void func_0038E150(s32);
-extern void func_00389240();
-extern void func_00389370();
-extern void func_0038E7E8_003C14D8(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32);
-void func_003C14D8(void) {
-    s32 v;
-    u8 *s;
-    S_3BBFC8 *g;
-    func_003BCAF8();
-    s = D_002D2008;
-    if (s[0x51] != 0) {
-        func_0038E150(1);
-        func_00389240(1);
-        g = &D_00225700_003C14D8;
-        v = 0xE0 - (g->h40 - g->f34) * 3;
-        if (v < 0) v = 0;
-        if (v > 0xC0) v = 0xC0;
-        if (v > 0) {
-            func_0038E7E8_003C14D8(70.0f, (f32)(*(s32 *)0x1D4BC4 - 0x5A), (v << 24) | 0xC37A33, s + 0x10, -1, 1.5f, 1.5f, 0, 1, (unsigned long)(s32)0x80000000, 2.0f, 2.0f);
+/* localdecomp:start func_003C12A8 */
+/* the copy of func_003C1660 */
+#include "vu0.h"
+extern void func_0038CF68(s32, s32, f32);
+extern u8 D_00222400[];
+typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_003C12A8;
+typedef int Q_003C12A8 __attribute__((mode(TI)));
+typedef struct {
+    V_003C12A8 l0;
+    V_003C12A8 v[4];
+    u32 col[4];
+    u8 pk[0x20];
+    unsigned long g[4];
+    V_003C12A8 a0,b0,c0,d0,e0,f0,o100,c110,v120,v130,v140;
+} L_003C12A8;
+extern u8 D_002D2008_003C12A8[];
+typedef struct { u8 pad[0x54]; u8 *moby; } G_003C12A8;
+extern G_003C12A8 D_00225700_003C12A8;
+extern V_003C12A8 D_001D8FD0_003C12A8[] __attribute__((section(".sdata")));
+extern u8 D_001D9010_003C12A8[] __attribute__((section(".sdata")));
+__asm__(".extern D_001D8FD0_003C12A8, 4");
+__asm__(".extern D_001D9010_003C12A8, 4");
+void func_003C12A8(u8 *moby)
+{
+    extern void func_003BC670_003C12A8(s32, void *);
+    extern void func_0038CD28_003C12A8(void *, void *, s32);
+    extern void func_003A9440_003C12A8(s32, unsigned long);
+    extern void func_0038CF68(s32, s32, f32);
+    extern void func_0038CE90_003C12A8(void *, void *, void *);
+    extern void func_0038CE20_a003C12A8(f32 *, void *, f32) __asm__("func_0038CE20");
+    extern void func_0038D028_003C12A8();
+    extern void func_003D2DA0_003C12A8();
+    extern void func_003C1490(u8 *);
+    L_003C12A8 s;
+    s32 i;
+    u8 *g = D_002D2008_003C12A8;
+    if (g[0x51] != 0) {
+        func_003BC670_003C12A8(*(s32 *)g, g + 8);
+        s.l0 = *(V_003C12A8 *)(moby + 0x10);
+        s.g[1] = *(unsigned long *)(g + 8);
+        s.g[2] = 0xFF9000000260UL;
+        s.g[3] = (0x8000UL << 24) | 0x44;
+        s.g[0] = 0;
+        func_0038CD28_003C12A8(s.pk, D_001D9010_003C12A8, 0x20);
+        func_003A9440_003C12A8(0x47, 0x5360B);
+        vec_sub_ba(&s.v120, &D_00222400[0], &s.l0);
+        func_0038CF68((s32)&s.v120, (s32)&s.v120, 1.0f);
+        s.v130.x = 0;
+        s.v130.y = 0;
+        s.v130.z = -1.0f;
+        s.v130.w = 0;
+        func_0038CE90_003C12A8(&s.v140, &s.v130, &s.v120);
+        s.b0 = s.v120;
+        s.c0 = s.v140;
+        s.a0 = s.v130;
+        s.e0 = s.v140;
+        s.f0 = s.v120;
+        func_0038CE20_a003C12A8((f32 *)&s.o100, &s.a0, -1.0f);
+        s.c110 = s.l0;
+        for (i = 0; i < 4; i++) {
+            s.col[i] = 0x80808080;
+            func_0038CE20_a003C12A8((f32 *)&s.v[i], &D_001D8FD0_003C12A8[i], 25.0f);
+            func_0038D028_003C12A8(&s.v[i], &s.v[i], &s.e0);
         }
-        func_00389370();
+        func_003D2DA0_003C12A8(s.v, 0, 0);
+        func_003A9440_003C12A8(0x47, 0x5360B);
     }
+    func_003C1490(D_00225700_003C12A8.moby);
 }
-/* localdecomp:end func_003C14D8 */
-
-/* localdecomp:start func_003C15C8 */
-extern s16 D_0016C5AC[];
- 
-void func_003C15C8(void) {
-    func_003BDF40();
-    func_003BC768();
-    func_003C0CA0();
-    D_0016C5AC[0] = 1;
-}
-/* localdecomp:end func_003C15C8 */
-
-extern s32 func_00381FF0(s32);
-extern void func_003BBA08(s32, s32);
-extern void func_003BC408(s32, s32);
-extern s32 func_0011B754(void *, s32);
-extern u8 D_001D9088;
-extern volatile s32 D_001D4B4C;
-typedef struct { u8 n0[0x10]; u8 n1[0x10]; u8 n2[0x10]; s32 f30, f34, f38, f3C, f40, f44, f48, f4C, f50; u8 p54[0xC]; s8 f60; } S_BC0F0;
-extern S_BC0F0 D_002D2060[];
-typedef struct { u8 pad[0x1AF8]; s32 f1AF8; u8 p2[0x1B14-0x1AFC]; s32 f1B14, f1B18, f1B1C; } S_BC0F0b;
-extern S_BC0F0b D_001A4BE0[];
-/* localdecomp:start func_003C1600 */
-__asm__(".extern D_001D4B4C, 16");
-s32 func_003C1600(s32 arg0, s32 arg1) {
-    S_BC0F0 *p = D_002D2060;
-    S_BC0F0b *q;
-    func_0011B754(p->n0, func_00381FF0(0x1645));
-    func_0011B754(p->n1, func_00381FF0(0x1646));
-    func_0011B754(p->n2, func_00381FF0(0xF07));
-    p->f30 = 0;
-    q = D_001A4BE0;
-    p->f34 = q->f1B14;
-    p->f38 = q->f1B1C;
-    p->f3C = q->f1B18;
-    p->f40 = arg1;
-    if (arg1 != 0 && q->f1AF8 != 0) {
-        p->f40 = 0;
-    }
-    D_002D2060->f44 = arg0;
-    D_002D2060->f60 = 0;
-    func_003BBA08(0, 0);
-    if (D_002D2060->f40 == 0) {
-        D_002D2060->f48 = 0;
-        D_002D2060->f4C = 0x32;
-        D_002D2060->f50 = 0;
-        D_001D4B4C = 0;
-    } else {
-        D_002D2060->f48 = 0;
-        D_002D2060->f4C = 0x32;
-        func_003BC408(3, (s32)&D_001D9088);
-    }
-    return 1;
-}
-/* localdecomp:end func_003C1600 */
-
-/* localdecomp:start func_003C1728 */
-/* D_002D2060 (S_BC0F0, above) seen with its float fields as floats: f30 and f50 are written with swc1. */
-typedef struct { u8 n[0x30]; f32 f30; s32 f34, f38, f3C, f40, f44, f48, f4C; f32 f50; u8 p54[0xC]; u8 f60; } T_3C1728;
-extern s32 D_001D9094;
-extern f32 D_001D9044;
-extern u8 *D_001D52FC;
-__asm__(".extern D_001D52FC, 16");
-extern void func_003BB848(s32);
-extern s32 func_0038CAD0(void *);
-extern s32 func_003BDF18();
-extern void func_003BB968();
-extern s32 func_003BE300(void);
-extern void func_003BB8F0(s32, f32);
-extern f32 func_0038DAB8(f32, f32);
-s32 func_003C1728(void) {
-    s32 done = 0;
-
-    if (((T_3C1728 *)D_002D2060)->f60 == 0) {
-        func_003BB848(2);
-        ((T_3C1728 *)D_002D2060)->f60 = 1;
-    }
-    if (((T_3C1728 *)D_002D2060)->f40) {
-        switch (((T_3C1728 *)D_002D2060)->f48) {
-        case 0:
-            ((T_3C1728 *)D_002D2060)->f30 = 1.0f - (f32)((T_3C1728 *)D_002D2060)->f4C / 50.0f;
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                ((T_3C1728 *)D_002D2060)->f48 = 1;
-                ((T_3C1728 *)D_002D2060)->f4C = 75;
-            }
-            break;
-        case 1:
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                ((T_3C1728 *)D_002D2060)->f48 = 2;
-                ((T_3C1728 *)D_002D2060)->f4C = ((T_3C1728 *)D_002D2060)->f34 * 3;
-            }
-            break;
-        case 2:
-            ((T_3C1728 *)D_002D2060)->f30 = 1.0f;
-            if ((((T_3C1728 *)D_002D2060)->f34 * 3 - ((T_3C1728 *)D_002D2060)->f4C) % D_001D9094 == 0) {
-                func_003BB848(0);
-            }
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                ((T_3C1728 *)D_002D2060)->f48 = 3;
-                ((T_3C1728 *)D_002D2060)->f4C = 75;
-                func_003BB848(1);
-            }
-            break;
-        case 3:
-            ((T_3C1728 *)D_002D2060)->f30 = 1.0f;
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                ((T_3C1728 *)D_002D2060)->f48 = 4;
-                ((T_3C1728 *)D_002D2060)->f4C = 100;
-            }
-            if (*(u32 *)(D_001D52FC + 0x1C4) & 0x40) {
-                ((T_3C1728 *)D_002D2060)->f4C = 0;
-            }
-            break;
-        case 4:
-            if (func_003BDF18()) {
-                func_003BB968();
-            }
-            if (func_003BE300()) {
-                if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                    ((T_3C1728 *)D_002D2060)->f48 = 5;
-                    ((T_3C1728 *)D_002D2060)->f4C = 50;
-                }
-            }
-            break;
-        case 5:
-            done = (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C) == 1);
-            ((T_3C1728 *)D_002D2060)->f30 = (f32)((T_3C1728 *)D_002D2060)->f4C / 50.0f;
-            func_003BB8F0(2, ((T_3C1728 *)D_002D2060)->f30);
-            break;
-        }
-    } else {
-        switch (((T_3C1728 *)D_002D2060)->f48) {
-        case 0:
-            ((T_3C1728 *)D_002D2060)->f30 = 1.0f - (f32)((T_3C1728 *)D_002D2060)->f4C / 50.0f;
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                ((T_3C1728 *)D_002D2060)->f48 = 1;
-                ((T_3C1728 *)D_002D2060)->f4C = 100;
-            }
-            break;
-        case 1:
-            ((T_3C1728 *)D_002D2060)->f30 = 1.0f;
-            if (func_003BE300()) {
-                if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C)) {
-                    ((T_3C1728 *)D_002D2060)->f48 = 2;
-                    ((T_3C1728 *)D_002D2060)->f4C = 50;
-                }
-            }
-            break;
-        case 2:
-            if (func_0038CAD0(&((T_3C1728 *)D_002D2060)->f4C) == 1) {
-                done = 1;
-            }
-            ((T_3C1728 *)D_002D2060)->f30 = (f32)((T_3C1728 *)D_002D2060)->f4C / 50.0f;
-            break;
-        }
-        ((T_3C1728 *)D_002D2060)->f50 = func_0038DAB8(((T_3C1728 *)D_002D2060)->f50, D_001D9044);
-    }
-    return done;
-}
-/* localdecomp:end func_003C1728 */
-INCLUDE_RODATA("asm/nonmatchings/text/rodata", D_0031C9B8);
+/* localdecomp:end func_003C12A8 */

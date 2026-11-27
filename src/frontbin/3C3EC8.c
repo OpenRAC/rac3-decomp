@@ -10,7 +10,6 @@ extern void (*D_00226A00[])(s32);
 extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003C3EC8);
 
 extern s32 D_001D99C0;
 extern s32 D_001D99A8;
@@ -19,3 +18,26 @@ extern f32 D_001D99BC;
 extern f32 D_001D99B0[];
 extern s32 func_00381D50();
 extern f32 func_0038CF38();
+/* localdecomp:start func_003C3EC8 */
+/* the copy of func_003C4280 */
+extern f32 D_001D99B8_003C3EC8 __attribute__((section(".data")));
+f32 func_003C3EC8(f32 *p, void *out) {
+    f32 t;
+    if (D_001D99C0 != 0) {
+        t = p[2];
+        if (((s32 (*)(f32 *, f32, f32, f32))func_00381D50)(&t, p[0], p[1], p[2]) != 0) return t;
+    }
+    if (D_001D99A8 != 0) {
+        if (__builtin_fabsf(p[2] - D_001D99B8_003C3EC8) < 0.5f && func_0038CF38(p, D_001D99B0) < D_001D99BC) {
+            if (out != 0) {
+                __asm__ __volatile__("vmr32.xyzw $vf1, $vf0\n\tsqc2 $vf1, 0(%0)" : : "r"(out) : "memory");
+            }
+            return D_001D99B8_003C3EC8;
+        }
+    }
+    if (out != 0) {
+        __asm__ __volatile__("vmr32.xyzw $vf1, $vf0\n\tsqc2 $vf1, 0(%0)" : : "r"(out) : "memory");
+    }
+    return p[2];
+}
+/* localdecomp:end func_003C3EC8 */
