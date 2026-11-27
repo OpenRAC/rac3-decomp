@@ -407,6 +407,7 @@
 #define func_003A35C0 func_003A8B10
 #define func_003A3A00 func_003A8F50
 #define func_003A3B50 func_003A90A0
+#define func_003A3C80 func_003A91D0
 #define func_003A3E38 func_003A9388
 #define func_003A3E40 func_003A9390
 #define func_003A3EE8 func_003A9438

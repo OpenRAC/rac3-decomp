@@ -529,6 +529,118 @@ void func_003877A0(void) {
 }
 /* localdecomp:end func_003877A0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_00387EF8);
+/* localdecomp:start func_00387EF8 */
+typedef struct { s32 display, depth, draw, tex_base, f10, f14, f18, f1C, f20; } Vram_00387EF8;
+typedef struct { u8 pad[0x150]; s16 display_width, display_height, psm, fbp0, storage_width, storage_height; } FsAa_00387EF8;
+typedef struct { s32 x0, x1, y0, y1; } Rect_00387EF8;
+typedef struct { u8 pad[0x240]; Rect_00387EF8 scissor; } View_00387EF8;
+typedef struct {
+    unsigned long pad0[2];
+    unsigned long frame1, pad18, frame2, pad28, zbuf1, pad38, zbuf2, pad48, xyoffset1, pad58, xyoffset2;
+} DrawEnv_00387EF8;
+typedef struct { u8 b[0x60]; } LoadImage_00387EF8;
 
-LINKER_REMNANT("asm/boot_elf/remnants", func_003882C8);
+extern Vram_00387EF8 D_001A1ED0_00387EF8 __asm__("D_001A1ED0");
+extern FsAa_00387EF8 D_001CFEC0_00387EF8 __asm__("D_001CFEC0");
+extern s32 D_00143950[];
+extern s32 D_001D5520; __asm__(".extern D_001D5520, 16");
+extern DrawEnv_00387EF8 D_00142120_00387EF8 __asm__("D_00142120");
+extern unsigned long D_001422F0[];
+extern unsigned long D_00142360[];
+extern unsigned long D_001D5330[];
+extern u8 D_002276C0[];
+extern s32 D_001D4BB0; __asm__(".extern D_001D4BB0, 16");
+extern s32 D_001D4BB4; __asm__(".extern D_001D4BB4, 16");
+typedef struct { s32 width, height, half_width, half_height, left, top, right, bottom; } Extent_00387EF8;
+extern Extent_00387EF8 D_001D4BC0_00387EF8 __asm__("D_001D4BC0") __attribute__((section(".sdata")));
+extern void func_0011F0A0(s32);
+extern s32 func_0012A9F0(s32, s32);
+extern void func_0012C9A0(LoadImage_00387EF8 *, s16, s16, s16, s16, s16, s16, s16);
+extern void func_0012CCC8(LoadImage_00387EF8 *, u8 *);
+extern void func_00391A58(s32, s32, s32, s32, s32, s32);
+extern void func_00392698(void);
+extern void func_00392730(s32);
+extern void func_00392670(void);
+extern void func_0038CF58(void *, s32, s32);
+extern void func_003D96F0(void);
+
+/* boot_elf's copy of frontbin's func_00387B18 and func_L39_00587A30 (rac2-decomp's func_0027B440, SetPalMode) */
+void func_00387EF8(s32 clear) {
+    LoadImage_00387EF8 image;
+    s32 n;
+    s32 i;
+    unsigned long zbuf;
+    unsigned long frame;
+
+    func_0011F0A0(0);
+    if (D_00143950[0] != 0) {
+        D_001A1ED0_00387EF8.draw = 0x100000;
+        D_001A1ED0_00387EF8.depth = 0x1E0000;
+        D_001A1ED0_00387EF8.display = 0;
+        D_001A1ED0_00387EF8.tex_base = 0x2C0000;
+        func_00391A58(0x200, 0x1C0, 0x200, 0x200, 4, 0);
+    } else if (D_001D5520 != 0) {
+        D_001A1ED0_00387EF8.draw = 0x118000;
+        D_001A1ED0_00387EF8.depth = 0x1E8000;
+        D_001A1ED0_00387EF8.display = 0;
+        D_001A1ED0_00387EF8.tex_base = 0x2C0000;
+        func_00391A58(0x200, 0x1A0, 0x280, 0x1C0, 0, 0);
+    } else {
+        D_001A1ED0_00387EF8.draw = 0x118000;
+        D_001A1ED0_00387EF8.depth = 0x1E8000;
+        D_001A1ED0_00387EF8.display = 0;
+        D_001A1ED0_00387EF8.tex_base = 0x2C0000;
+        func_00391A58(0x200, 0x1A0, 0x200, 0x1C0, 0, 0);
+    }
+    D_001A1ED0_00387EF8.f10 = D_001A1ED0_00387EF8.tex_base;
+    D_001A1ED0_00387EF8.f14 = D_001A1ED0_00387EF8.tex_base + 0x1000;
+    D_001A1ED0_00387EF8.f18 = D_001A1ED0_00387EF8.tex_base + 0x1400;
+    D_001A1ED0_00387EF8.f1C = D_001A1ED0_00387EF8.tex_base + 0x1800;
+    D_001A1ED0_00387EF8.f20 = D_001A1ED0_00387EF8.tex_base + 0x1C00;
+    D_001D4BC0_00387EF8.width = D_001CFEC0_00387EF8.display_width;
+    D_001D4BC0_00387EF8.height = D_001CFEC0_00387EF8.display_height;
+    D_001D4BC0_00387EF8.half_width = D_001D4BC0_00387EF8.width >> 1;
+    D_001D4BC0_00387EF8.half_height = D_001D4BC0_00387EF8.height >> 1;
+    D_001D4BC0_00387EF8.left = (0x800 - D_001D4BC0_00387EF8.half_width) << 4;
+    D_001D4BC0_00387EF8.top = (0x800 - D_001D4BC0_00387EF8.half_height) << 4;
+    D_001D4BC0_00387EF8.right = (D_001D4BC0_00387EF8.half_width + 0x800) << 4;
+    D_001D4BC0_00387EF8.bottom = (D_001D4BC0_00387EF8.half_height + 0x800) << 4;
+    ((View_00387EF8 *)&D_00225900)->scissor.x0 = 0;
+    ((View_00387EF8 *)&D_00225900)->scissor.x1 = D_001D4BC0_00387EF8.width - 1;
+    ((View_00387EF8 *)&D_00225900)->scissor.y0 = 0;
+    ((View_00387EF8 *)&D_00225900)->scissor.y1 = D_001D4BC0_00387EF8.height - 1;
+    frame = (D_001A1ED0_00387EF8.depth >> 13) | ((unsigned long)(D_001D4BC0_00387EF8.width >> 6) << 16);
+    D_00142120_00387EF8.frame1 = frame;
+    zbuf = (D_001A1ED0_00387EF8.draw >> 13) | 0x1000000;
+    D_00142120_00387EF8.frame2 = frame;
+    D_00142120_00387EF8.xyoffset1 = D_001D4BC0_00387EF8.left | ((unsigned long)D_001D4BC0_00387EF8.top << 32);
+    D_00142120_00387EF8.zbuf1 = zbuf;
+    D_00142120_00387EF8.zbuf2 = zbuf;
+    D_00142120_00387EF8.xyoffset2 = D_001D4BC0_00387EF8.left | ((unsigned long)D_001D4BC0_00387EF8.top << 32);
+    D_001D5330[2] = ((View_00387EF8 *)&D_00225900)->scissor.x0 | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.x1 << 16) | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.y0 << 32) | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.y1 << 48);
+    D_00142360[0] = zbuf | ((unsigned long)0x8000 << 17);
+    D_001422F0[0] = zbuf;
+    D_001D5330[4] = ((View_00387EF8 *)&D_00225900)->scissor.x0 | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.x1 << 16) | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.y0 << 32) | ((unsigned long)((View_00387EF8 *)&D_00225900)->scissor.y1 << 48);
+    if (clear) {
+        D_001D4BB0 = D_001A1ED0_00387EF8.tex_base;
+        D_001D4BB4 = D_001A1ED0_00387EF8.tex_base;
+        func_0011F0A0(0);
+        func_0012A9F0(0, 0);
+        func_0011F0A0(0);
+        func_00392698();
+        func_00392730(0);
+        func_0011F0A0(0);
+        func_0012A9F0(0, 0);
+        func_00392670();
+        func_0038CF58(D_002276C0, 0, 0x1000);
+        n = (D_001CFEC0_00387EF8.storage_width * D_001CFEC0_00387EF8.storage_height) >> 10;
+        for (i = 0; i < n; i++) {
+            func_0012C9A0(&image, i << 4, 1, 0, 0, 0, 32, 32);
+            func_0011F0A0(0);
+            func_0012CCC8(&image, D_002276C0);
+            func_0012A9F0(0, 0);
+        }
+    }
+    func_003D96F0();
+}
+/* localdecomp:end func_00387EF8 */

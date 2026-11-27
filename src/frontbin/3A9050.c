@@ -225,7 +225,7 @@ void func_003A9150(void) {
 }
 /* localdecomp:end func_003A9150 */
 
-extern s32 D_001D8014_003A91D0;
+extern volatile s32 D_001D8014_003A91D0;
 extern s32 D_001DA060_g_003A91D0;
 extern s32 D_001DA060_003A91D0;
 extern s32 D_001DA058_003A91D0;
@@ -237,14 +237,11 @@ extern void func_12D938();
 extern void func_11F0A0();
 extern void func_003D9DA8();
 extern void func_003A9150();
-/* US draft of func_003A91D0 (rac3-uya-decomp func_003A3C80, commit 13cf5c5), names moved to PAL addresses
-   where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
-
-
 /* localdecomp:start func_003A91D0 */
 __asm__(".extern D_001D8014_003A91D0, 4");
 __asm__(".extern D_001DA060_g_003A91D0, 4");
-extern s32 D_001D8014_003A91D0;
+/* DMA busy flags: the DMA interrupt handler func_003A9B40 clears their bits. */
+extern volatile s32 D_001D8014_003A91D0;
 extern s32 D_001DA060_g_003A91D0;
 extern s32 D_001DA060_003A91D0;
 extern s32 D_001DA058_003A91D0;
@@ -284,7 +281,7 @@ void func_003A91D0(void) {
             func_003A9150();
         }
     } else {
-        *(volatile s32 *)&D_001D8014_003A91D0 = 0;
+        D_001D8014_003A91D0 = 0;
         func_003D9DA8();
     }
 }

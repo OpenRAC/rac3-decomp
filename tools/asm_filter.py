@@ -118,6 +118,14 @@ def insn_count(lines, noreorder=True, small=frozenset(), ps2as=False, defined=fr
                 n += 1  # low half zero: a single lui
                 continue
             return None
+        if m and m.group(1) == "la" and ps2as and not noreorder:
+            # Ps2EeAs expands `la $r, SYM` of a global it doesn't know is small to
+            # lui + addiu, as it does the loads and stores above.
+            lm = re.match(r"^\$\w+\s*,\s*([A-Za-z_][\w.$]*)(\s*[+-]\s*(\d+|0x[0-9a-fA-F]+))?\s*$", m.group(2))
+            if lm and lm.group(1) not in small and lm.group(1) not in defined:
+                n += 2
+                continue
+            return None
         if not m or not SIMPLE_OPS.match(m.group(1)):
             return None
         ops = m.group(2)
