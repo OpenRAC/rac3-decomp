@@ -919,7 +919,229 @@ void func_L01_00346C18(u8 *self) {
 }
 /* localdecomp:end func_L01_00346C18 */
 
-INCLUDE_ASM("asm/levels", func_L01_00346CC8);
+/* localdecomp:start func_L01_00346CC8 */
+__asm__(".extern D_L01_001DD310, 4");
+__asm__(".extern D_L01_001DD314, 4");
+__asm__(".extern D_L01_001DD318, 4");
+__asm__(".extern D_L01_001DD320, 4");
+__asm__(".extern D_L01_001DD3A8, 4");
+__asm__(".extern D_L01_001DD3AC, 4");
+__asm__(".extern D_L01_001DD3B0, 4");
+__asm__(".extern D_L01_001DD3B4, 4");
+__asm__(".extern D_L01_001DD308, 4");
+__asm__(".extern D_L01_001DD30C, 4");
+__asm__(".extern D_L01_001DD32C, 4");
+__asm__(".extern D_L01_001DD330, 4");
+__asm__(".extern D_L01_001DD334, 4");
+__asm__(".extern D_L01_001DD338, 4");
+__asm__(".extern D_L01_001DD360, 4");
+__asm__(".extern D_L01_001DD364, 4");
+__asm__(".extern D_L01_001DD368, 4");
+__asm__(".extern D_L01_001DD378, 4");
+__asm__(".extern D_L01_001DD37C, 4");
+__asm__(".extern D_L01_001DD388, 4");
+__asm__(".extern D_L01_001DD38C, 4");
+__asm__(".extern D_L01_001DD3BC, 4");
+__asm__(".extern D_L01_001DD3C0, 4");
+extern f32 D_L01_001DD310;
+extern f32 D_L01_001DD314;
+extern f32 D_L01_001DD318;
+extern f32 D_L01_001DD320;
+extern f32 D_L01_001DD3A8;
+extern f32 D_L01_001DD3AC;
+extern f32 D_L01_001DD3B0;
+extern f32 D_L01_001DD3B4;
+extern s32 D_L01_001DD308;
+extern s32 D_L01_001DD30C;
+extern s32 D_L01_001DD32C;
+extern s32 D_L01_001DD330;
+extern s32 D_L01_001DD334;
+extern s32 D_L01_001DD338;
+extern s32 D_L01_001DD360;
+extern s32 D_L01_001DD364;
+extern s32 D_L01_001DD368;
+extern s32 D_L01_001DD378;
+extern s32 D_L01_001DD37C;
+extern s32 D_L01_001DD388;
+extern s32 D_L01_001DD38C;
+extern s32 D_L01_001DD3BC;
+extern s32 D_L01_001DD3C0;
+extern u8 D_001425C0[];
+extern s32 D_L01_001E1A04;
+extern u8 D_L01_001E29C0[];
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_00346CC8;
+
+/* Spawns a shot of the current weapon level (tier tables set per level) at a0 heading a1. */
+u8 *func_L01_00346CC8(u8 *a0, u8 *a1, s32 a2, s32 a3) {
+    extern s32 func_L01_00457458(s32, s32);
+    extern u8 *func_003C24B0(s32, s32);
+    extern void func_L01_004CABD8(void *, void *, void *);
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_L01_00347640(u8 *, void *);
+    extern void func_L01_00348A98(u8 *);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_L01_003476D8(u8 *, void *);
+    Vec_00346CC8 tmp, tmp2;
+    Vec_00346CC8 *pos;
+    u8 *o, *v;
+    struct WeaponRow *row;
+    s32 c, life, n;
+    f32 f;
+
+    if (a2 == -1) return 0;
+    if (func_L01_00457458(0xC04, a2) == 0) return 0;
+    o = func_003C24B0(0xCF7, 0x80);
+    if (o != 0) {
+        v = *(u8 **)(o + 0x68);
+        c = D_L01_002C5600_00344D68[D_001425C0[0x6F]].level;
+        if (c == 0) {
+            D_L01_001DD310 = 0.10000000149011612f;
+            D_L01_001DD314 = 1.0f;
+            D_L01_001DD318 = 1.0f;
+            D_L01_001DD320 = 0.30000001192092896f;
+            D_L01_001DD32C = 0x408000;
+            D_L01_001DD330 = 0x10FF10;
+            D_L01_001DD334 = 0xFF00FF00;
+            D_L01_001DD338 = 0x80408000;
+            D_L01_001DD360 = 0x404010;
+            D_L01_001DD364 = 0x7FFF00;
+            D_L01_001DD368 = 0x40;
+            D_L01_001DD378 = 0x7FFF00;
+            D_L01_001DD37C = 0xFF7F00;
+            D_L01_001DD388 = 0x20FFFF;
+            D_L01_001DD38C = 0xFF00;
+        } else if (c == 1) {
+            D_L01_001DD310 = 0.15000000596046448f;
+            D_L01_001DD314 = 3.0f;
+            D_L01_001DD318 = 3.0f;
+            D_L01_001DD320 = 0.44999998807907104f;
+            D_L01_001DD32C = 0x804000;
+            D_L01_001DD330 = 0xFF1010;
+            D_L01_001DD334 = -0x100;
+            D_L01_001DD338 = 0x80404000;
+            D_L01_001DD360 = 0x804020;
+            D_L01_001DD364 = 0x804020;
+            D_L01_001DD368 = 0x40;
+            D_L01_001DD378 = 0x804020;
+            D_L01_001DD37C = 0x804020;
+            D_L01_001DD388 = 0x7F7F7F;
+            D_L01_001DD38C = 0x804020;
+        } else if (c == 2) {
+            D_L01_001DD310 = 0.20000000298023224f;
+            D_L01_001DD314 = 4.0f;
+            D_L01_001DD318 = 4.0f;
+            D_L01_001DD320 = 0.44999998807907104f;
+            D_L01_001DD32C = 0xFF8040;
+            D_L01_001DD330 = 0xFF8040;
+            D_L01_001DD334 = -0x100;
+            D_L01_001DD338 = 0x80404000;
+            D_L01_001DD360 = 0xFF2080;
+            D_L01_001DD364 = 0xFF2080;
+            D_L01_001DD368 = 0x40;
+            D_L01_001DD378 = 0xFF2040;
+            D_L01_001DD37C = 0xFF2040;
+            D_L01_001DD388 = 0xFF2040;
+            D_L01_001DD38C = 0xFF7F00;
+            D_L01_001DD3BC = 0xFF8040;
+            D_L01_001DD3C0 = 0xFF4020;
+            D_L01_001E1A04 = 0x36;
+            D_L01_001DD3A8 = 0.30000001192092896f;
+            D_L01_001DD3AC = 0.5f;
+            D_L01_001DD3B0 = 0.75f;
+            D_L01_001DD3B4 = 1.25f;
+        } else if (c == 3) {
+            D_L01_001DD310 = 0.20000000298023224f;
+            D_L01_001DD314 = 5.0f;
+            D_L01_001DD318 = 5.0f;
+            D_L01_001DD320 = 0.44999998807907104f;
+            D_L01_001DD32C = 0x4080;
+            D_L01_001DD330 = 0x1010FF;
+            D_L01_001DD334 = 0xFF00FFFF;
+            D_L01_001DD338 = 0x80004040;
+            D_L01_001DD360 = 0x104040;
+            D_L01_001DD364 = 0xFF;
+            D_L01_001DD368 = 0x40;
+            D_L01_001DD378 = 0x4040;
+            D_L01_001DD37C = 0xFF;
+            D_L01_001DD388 = 0xFFFF;
+            D_L01_001DD38C = 0xFF;
+            D_L01_001DD3BC = 0x307F7F;
+            D_L01_001DD3C0 = 0x30307F;
+            D_L01_001E1A04 = 0x36;
+            D_L01_001DD3A8 = 0.30000001192092896f;
+            D_L01_001DD3AC = 0.5f;
+            D_L01_001DD3B0 = 0.75f;
+            D_L01_001DD3B4 = 1.25f;
+        } else if (c >= 4) {
+            D_L01_001DD310 = 0.20000000298023224f;
+            D_L01_001DD314 = 5.0f;
+            D_L01_001DD318 = 5.0f;
+            D_L01_001DD320 = 0.44999998807907104f;
+            D_L01_001DD32C = 0x4080;
+            D_L01_001DD330 = 0x1010FF;
+            D_L01_001DD334 = 0xFF00FFFF;
+            D_L01_001DD338 = 0x80004040;
+            D_L01_001DD360 = 0x104040;
+            D_L01_001DD364 = 0xFF;
+            D_L01_001DD368 = 0x40;
+            D_L01_001DD378 = 0x4040;
+            D_L01_001DD37C = 0xFF;
+            D_L01_001DD388 = 0xFFFF;
+            D_L01_001DD38C = 0xFF;
+            D_L01_001DD3BC = 0x307F7F;
+            D_L01_001DD3C0 = 0x30307F;
+            D_L01_001E1A04 = 9;
+            D_L01_001DD3A8 = 0.30000001192092896f;
+            D_L01_001DD3AC = 0.5f;
+            D_L01_001DD3B0 = 0.75f;
+            D_L01_001DD3B4 = 1.25f;
+        }
+        *(s16 *)(o + 0x32) = o[0x30] = 0xFF;
+        o[0x31] = 1;
+        pos = (Vec_00346CC8 *)(o + 0x10);
+        *pos = *(Vec_00346CC8 *)a0;
+        o[0x20] = 0;
+        func_L01_004CABD8(v, a1, a0);
+        row = &D_L01_002C5600_00344D68[D_001425C0[0x6F]];
+        f = row->shot_speed * 0.020000001415610313f;
+        *(s16 *)(v + 0x1A) = a2;
+        n = (s32)(128.0f / f);
+        life = (n * 5 + 2) / 6;
+        *(s32 *)(v + 0x10) = life;
+        *(f32 *)(v + 0x14) = 1.0f / (f32)life;
+        {
+            char *p = func_L01_00457480(0xC04, a2);
+            *(s16 *)(v + 0x22) = (D_L01_001DD30C * 5 + 2) / 6;
+            *(char **)(v + 0x1C) = p;
+        }
+        *(s16 *)(v + 0x20) = 0;
+        *(s32 *)(v + 0x28) = a3;
+        *(f32 *)(v + 0x24) = 1.0f / (f32)*(s16 *)(v + 0x22);
+        func_003C5180(pos, &tmp, 1);
+        func_0038CE20(&tmp, &tmp, -1.0f);
+        func_L01_00347640(o, &tmp);
+        if ((u32)D_L01_001DD308 >= 4) D_L01_001DD308 = 0;
+        {
+            s32 next = (D_L01_001DD308 + 1) % 3;
+            *(s16 *)(v + 0x18) = D_L01_001DD308;
+            D_L01_001DD308 = next;
+        }
+        func_L01_00348A98(o);
+        if (a3 == 1) {
+            *(Vec_00346CC8 *)(v + 0x40) = *(Vec_00346CC8 *)D_L01_001E29C0;
+            func_0038CF68(v + 0x30, D_L01_001E29C0 + 0x20, func_0038CEA8(a1));
+        }
+        if (a3 == 2) {
+            *(Vec_00346CC8 *)&tmp2 = *(Vec_00346CC8 *)a0;
+            vec_add_ab(pos, a0, a1);
+            if (func_L01_003476D8(o, &tmp2)) o[0x20] = a3;
+        }
+    }
+    return o;
+}
+/* localdecomp:end func_L01_00346CC8 */
 
 /* localdecomp:start func_L01_00347348 */
 extern S_00341C10 D_L01_002C5600[];

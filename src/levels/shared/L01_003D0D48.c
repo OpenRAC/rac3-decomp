@@ -2035,7 +2035,290 @@ u8 *func_L01_003D6218(void *position, void *rotation, s32 lifetime, s32 owner, s
 }
 /* localdecomp:end func_L01_003D6218 */
 
-INCLUDE_ASM("asm/levels", func_L01_003D6398);
+/* localdecomp:start func_L01_003D6398 */
+#include "structs/weapon.h"
+typedef struct {
+    vu0_v4 velocity;
+    vu0_v4 spin;
+    s16 timer;
+    s16 cooldown;
+    s32 big;
+    s32 effect;
+} Vars_003D6398;
+typedef struct {
+    vu0_q start, end, velocity;
+    u8 *hit;
+    s32 *options;
+    s32 mode;
+    f32 radius, factor0, factor1;
+    s32 flags, unknown;
+    s32 field50;
+    s32 field54;
+    s32 field58;
+    f32 field5C;
+} Move_003D6398;
+typedef struct {
+    vu0_v4 dir;
+    u8 *owner;
+    s32 flags;
+    u8 kind, count;
+    s16 oclass;
+    f32 damage;
+    s32 field20;
+} Hit_003D6398;
+typedef struct { s32 w[3]; } Options_003D6398;
+extern Options_003D6398 D_L01_001DF428;
+extern f32 D_L01_001DF400;
+__asm__(".extern D_L01_001DF400, 4");
+extern f32 D_L01_001DF40C;
+__asm__(".extern D_L01_001DF40C, 4");
+extern f32 D_L01_001DF410;
+__asm__(".extern D_L01_001DF410, 4");
+extern f32 D_L01_001DF420;
+__asm__(".extern D_L01_001DF420, 4");
+/* A weapon projectile's update (34 places): in flight it moves, spins and sweeps for collisions,
+ * steers toward the nearest enemy when its weapon row's level is 2 or more, and explodes on a hit;
+ * at that level it also trails particles every frame. */
+void func_L01_003D6398(u8 *self) {
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_L01_004CAB30(void *, void *);
+    extern void func_L01_004C8688(s32, void *, s32);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_004C7D40(void *, void *, f32);
+    extern s32 func_L01_004C7E70(Move_003D6398 *, s32);
+    extern s32 func_L01_004CB018(s32);
+    extern void func_0038D850(void *, void *, void *);
+    extern u8 *func_00382348(void *);
+    extern s32 func_003C4B50(void *);
+    extern f32 func_0038CF00(void *, void *);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_0038CE90(void *, void *, void *);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern s32 func_0038CB00(void *);
+    extern void func_L01_00446978(void *, void *);
+    extern void func_L01_004C8668(s32);
+    extern void func_L01_004C7D98(void *, void *);
+    extern s32 func_003D4D00(void *, s32, void *, s32, f32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+    extern u8 *func_L01_004669B0(void *, s32, void *, u32, s32, f32, f32, f32, f32);
+    extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32,
+                                 s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
+                                 s32, s32);
+    extern u8 *D_L01_001EEA80[];
+    extern u8 *D_L01_00221098[];
+    vu0_v4 dir;
+    vu0_v4 pos;
+    Vars_003D6398 *vars = *(Vars_003D6398 **)(self + 0x68);
+
+    func_003C5180(self + 0x10, &dir, 1);
+    func_L01_004CAB30(self + 0x10, self + 0x10);
+    if (self[0x20] == 0) {
+        {
+            Options_003D6398 options;
+            Move_003D6398 move;
+            s32 hits, surface, collided;
+            f32 radius;
+
+            pos = *(vu0_v4 *)(self + 0x10);
+            vec_add_ab(self + 0x10, self + 0x10, &vars->velocity);
+            func_L01_004C8688(vars->effect, vars, 0);
+            func_0038CF68(&vars->velocity, &vars->velocity, func_0038CEA8(&vars->velocity) * 0.995f);
+            func_L01_004C7D40(self + 0x10, &vars->velocity, 0.00584f);
+            options = D_L01_001DF428;
+            move.start = *(vu0_q *)&pos;
+            move.end = *(vu0_q *)(self + 0x10);
+            move.velocity = *(vu0_q *)&vars->velocity;
+            move.options = options.w;
+            move.mode = 3;
+            move.radius = D_L01_001DF40C;
+            move.factor0 = (D_L01_001DF400 - 1.0f) * 1.2f + 1.0f;
+            move.factor1 = 1.5f;
+            move.field5C = 0.09f;
+            move.hit = self;
+            move.flags = 0;
+            move.unknown = 0;
+            move.field58 = 1;
+            move.field50 = 1;
+            hits = func_L01_004C7E70(&move, -1);
+            surface = func_L01_004CB018(move.field54);
+            *(vu0_q *)(self + 0x10) = move.end;
+            *(vu0_q *)&vars->velocity = move.velocity;
+            func_0038D850(self + 0xC0, self + 0xC0, &vars->spin);
+            func_0038D850(self + 0xD0, self + 0xD0, &vars->spin);
+            func_0038D850(self + 0xE0, self + 0xE0, &vars->spin);
+            if (hits > 0) {
+                if ((D_L01_002C5600 + D_001425C0[0x8F])->b1 >= 2) {
+                    s32 n = func_003D4D00(self + 0x10, 1, (void *)D_001A71A0, 0, 7.0f);
+                    s32 best = -1;
+                    if (n != 0) {
+                        f32 nearest = 10000.0f;
+                        s32 i;
+                        for (i = 0; i < n; i++) {
+                            u8 *t = D_L01_001EEA80[i];
+                            u8 *h;
+                            if (t[0x31] != 0 && !func_003C4B50(t) && (h = func_00382348(t)) != 0 &&
+                                !(*(f32 *)h <= 0.0f) && t != 0 && *(u8 **)(t + 0x24) != 0 &&
+                                (*(u8 **)(t + 0x24))[0x46] == 5) {
+                                f32 d = func_0038CF00(t + 0x10, self + 0x10);
+                                if (d < nearest) {
+                                    nearest = d;
+                                    best = i;
+                                }
+                            }
+                        }
+                        if (best >= 0) {
+                            u8 *t = D_L01_001EEA80[best];
+                            u8 *h = func_00382348(t);
+                            vu0_v4 axis, turn, side, to, part, aim;
+                            f32 len;
+                            axis = *(vu0_v4 *)(t + 0x10);
+                            if (D_L01_001D673C) {
+                                func_0038CE20(&turn, t + 0xE0, *(f32 *)(h + 0x10));
+                                vec_add_ab(&axis, &axis, &turn);
+                            } else {
+                                axis.z += *(f32 *)(h + 0x10);
+                            }
+                            func_0038CE20(&turn, &dir, func_0038CE68(&dir, &vars->velocity));
+                            vec_sub_ab(&side, &vars->velocity, &turn);
+                            len = func_0038CEA8(&side);
+                            if (len != 0.0f) {
+                                f32 dot;
+                                vec_sub_ba(&to, &axis, self + 0x10);
+                                dot = func_0038CE68(&to, &dir);
+                                func_0038CE20(&part, &dir, dot);
+                                vec_sub_ab(&aim, &to, &part);
+                                if (len < 0.080000006f) {
+                                    len = 0.080000006f;
+                                }
+                                func_0038CF68(&aim, &aim, len);
+                                vec_add_ab(&vars->velocity, &aim, &turn);
+                            }
+                        }
+                    }
+                }
+                {
+                vu0_v4 axis, turn;
+                f32 angle, speed;
+                axis = vars->velocity;
+                axis.z = 0.0f;
+                func_0038CE90(&axis, &axis, &dir);
+                func_0038CF68(&axis, &axis, 1.0f);
+                angle = func_L01_00443A18(0.0f, 0.5235988f);
+                if (fabs_asm(angle) < 1e-05f) {
+                    func_003C4840(&turn, &dir, angle);
+                    func_0038D850(&axis, &axis, &turn);
+                }
+                speed = ((f32)vars->timer + 1.0f) * 0.017453292f * 0.020000001f;
+                func_003C4840(&vars->spin, &axis, func_003824E0(speed, speed));
+                func_003A52A0(0, 0, self);
+                if (func_0038CEA8(&vars->velocity) <= 0.010000001f) {
+                    vars->timer = 0;
+                }
+                }
+            }
+            {
+                Hit_003D6398 hit;
+                hit.owner = self;
+                hit.flags = 0x01030000;
+                hit.field20 = 1;
+                collided = 0;
+                hit.damage = ((struct WeaponRow *)(D_L01_002C5600 + D_001425C0[0x8F]))->damage;
+                hit.dir = vars->velocity;
+                func_0038CF68(&hit.dir, &hit.dir, 1.0f);
+                hit.kind = 3;
+                hit.dir.w = 5627.925f;
+                hit.count = 1;
+                hit.oclass = *(s16 *)(self + 0xAA);
+                radius = 2.0f;
+                if (vars->big) {
+                    radius = 8.0f;
+                }
+                if (func_0038CB00(&vars->timer) || (hits > 0 && (u32)(surface - 1) < 2)) {
+                    collided = 1;
+                } else if (vars->cooldown == 0) {
+                    s32 n = func_003D4D00(self + 0x10, 1, (void *)D_001A71A0, 0, radius);
+                    s32 i;
+                    for (i = 0; i < n; i++) {
+                        u8 *t = D_L01_001EEA80[i];
+                        u8 *h = func_00382348(t);
+                        if (func_003C4B50(t) || (h != 0 && 0.0f < *(f32 *)h && *(s16 *)(h + 6) == 0)) {
+                            s16 c = *(s16 *)(t + 0xAA);
+                            if (c != 0x189B && c != 0x1BC3) {
+                                func_L01_00446978(t, &hit);
+                                collided = 1;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (--vars->cooldown < 0) {
+                        vars->cooldown = 0;
+                    }
+                }
+                if (collided) {
+                    func_003A52A0(1, 0, self);
+                    func_L01_003303B8(self + 0x10, 0, 5, 5, 5, 10, 0, 3, 0.3f, 0.0f, 0.0f, 0.0f,
+                                      0, 0, 0, 0, 0, 0, 0x10000, (s32)D_L01_001DAFEC, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF,
+                                      0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+                    func_L01_004C8668(vars->effect);
+                    func_003C2880(self);
+                    return;
+                }
+            }
+        }
+    }
+    {
+        f32 scale = D_L01_001DF410;
+        if (vars->big) {
+            scale = D_L01_001DF420;
+        }
+        if (!D_L01_001D673C && !D_L01_001D6740) {
+            func_L01_004471A8(self, scale);
+        }
+    }
+    if ((D_L01_002C5600 + D_001425C0[0x8F])->b1 >= 2) {
+        vu0_v4 vel;
+        u8 *p;
+        s32 i;
+        for (i = 0; i < 1; i++) {
+            u32 color;
+            u8 *q;
+            pos = *(vu0_v4 *)(self + 0x10);
+            pos.x += func_003824E0(-0.02f, 0.02f);
+            pos.y += func_003824E0(-0.02f, 0.02f);
+            pos.z += func_003824E0(-0.02f, 0.02f);
+            func_L01_004C7D98(self + 0x10, &vel);
+            func_0038CE20(&vel, &vel, func_003824E0(0.4f, 1.0f) * 0.020000001f);
+            if (func_00382468(4)) {
+                color = func_00382498(0x40, 0x64) | 0x5F404000;
+            } else {
+                color = (func_00382498(0x96, 0x64) << 16) | 0x5F002C2C;
+            }
+            q = func_L01_004713C8(&pos, &vel, (func_00382498(10, 15) * 5 + 2) / 6, color, 1, 0x4F, 0,
+                                  58800.0f, 27299.998f, 0.0f, 0);
+            if (q != 0) {
+                q[2] = *D_L01_00221098[0x5B];
+            }
+        }
+        func_L01_004C7D98(self + 0x10, &vel);
+        func_0038CE20(&vel, &vel, func_003824E0(0.4f, 1.0f) * 0.020000001f);
+        pos.x += func_003824E0(-0.02f, 0.02f);
+        pos.y += func_003824E0(-0.02f, 0.02f);
+        pos.z += func_003824E0(-0.02f, 0.02f);
+        {
+            s32 count = func_00382468(5) + 1;
+            f32 size = func_003824E0(0.25f, 0.4f) * 210000.0f;
+            p = func_L01_004669B0(&pos, count, &vel, func_00382498(0x40, 0x50) | 0x404000, 0, 0.0f, 0.99f, 0.995f, size);
+        }
+        if (p != 0) {
+            p[3] = func_00382468(2) ? 0x44 : 0x48;
+            *(s16 *)(p + 0xA) = 2;
+        }
+    }
+}
+/* localdecomp:end func_L01_003D6398 */
 
 /* localdecomp:start func_L01_003D6F10 */
 typedef struct { vu0_v4 axis; vu0_v4 normal; vu0_v4 points[8]; f32 radius; u8 padA4[0x1A]; u8 mode; } Vars_003D6F10;

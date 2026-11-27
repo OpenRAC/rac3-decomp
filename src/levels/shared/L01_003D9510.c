@@ -1113,7 +1113,310 @@ INCLUDE_ASM("asm/levels", func_L01_003DCAA0);
 
 LINKER_REMNANT("asm/levels", func_L01_003DD0F0);
 
-INCLUDE_ASM("asm/levels", func_L01_003DD0F8);
+/* localdecomp:start func_L01_003DD0F8 */
+#include "structs/weapon.h"
+typedef vu0_v4 V_003DD0F8;
+typedef int Q_003DD0F8 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad_0[0x10];
+    V_003DD0F8 pos;
+    u8 state;
+    u8 pad_21[0x31 - 0x21];
+    u8 b31;
+    u8 pad_32[0x34 - 0x32];
+    u16 flags;
+} Tg_003DD0F8;
+typedef struct {
+    u8 pad_0[0x10];
+    Q_003DD0F8 pos;
+} Owner_003DD0F8;
+typedef struct {
+    f32 aim_x, aim_y, aim_z;
+    Owner_003DD0F8 *owner;   /* 0x0C */
+    Q_003DD0F8 hist[4];      /* 0x10 */
+    V_003DD0F8 sun;          /* 0x50 */
+    Tg_003DD0F8 *target;     /* 0x60 */
+    u8 pad_64[4];
+    f32 speed;               /* 0x68 */
+    f32 turn;                /* 0x6C */
+    f32 spin_rate;           /* 0x70 */
+    s16 timer;               /* 0x74 */
+    u8 pad_76;
+    u8 trail;                /* 0x77 */
+    f32 spin;                /* 0x78 */
+    u8 pad_7C[4];
+    Q_003DD0F8 dir;          /* 0x80 */
+    u8 pad_90[0x10];
+    s32 sound;               /* 0xA0 */
+    s32 shadow;              /* 0xA4 */
+    s16 life;                /* 0xA8 */
+    u8 pad_AA[0xBC - 0xAA];
+    s32 sun_pending;         /* 0xBC */
+} Shot_003DD0F8;
+typedef struct {
+    u8 pad_0[0x10];
+    Q_003DD0F8 pos;
+    u8 pad_20[0x34 - 0x20];
+    u16 flags;
+    u8 pad_36[0x68 - 0x36];
+    Shot_003DD0F8 *pvar;
+    u8 pad_6C[0xAA - 0x6C];
+    s16 oclass;
+    u8 pad_AC[0xBC - 0xAC];
+    u8 hit;
+    u8 pad_BD[0xC0 - 0xBD];
+    V_003DD0F8 right;        /* 0xC0 */
+    V_003DD0F8 fwd;          /* 0xD0 */
+    V_003DD0F8 up;           /* 0xE0 */
+    u8 pad_F0[8];
+    f32 yaw;                 /* 0xF8 */
+} M_003DD0F8;
+typedef struct {
+    V_003DD0F8 v;
+    s32 moby;
+    s32 flags;
+    u8 b18;
+    u8 b19;
+    s16 oclass;
+    f32 damage;
+    s32 w20;
+    u8 pad_24[0xC];
+} Dmg_003DD0F8;
+typedef struct {
+    u8 pad_0[0x18];
+    void *moby;
+    s32 w1C;
+    Q_003DD0F8 pos;
+    u8 pad_30[0x10];
+    V_003DD0F8 normal;
+} Hit_003DD0F8;
+typedef struct {
+    u8 pad_0[0x25C0];
+    void *body;
+} Hero_003DD0F8;
+typedef struct { u8 b[0x80]; } Snd80_003DD0F8;
+extern Hit_003DD0F8 D_L01_001EAA00_003DD0F8;
+extern V_003DD0F8 D_L01_001E29C0_003DD0F8;
+extern Hero_003DD0F8 D_001A4BE0_003DD0F8;
+extern Snd80_003DD0F8 D_001A30B0_003DD0F8[];
+extern struct WeaponRow D_L01_002C5600_003DD0F8[];
+extern s16 D_L01_001E0140[] __attribute__((section(".sdata")));
+
+static __inline__ void qcopy_003DD0F8(void *d, void *s) {
+    *(Q_003DD0F8 *)d = *(Q_003DD0F8 *)s;
+}
+
+/* ryno_missile_v2_update: the v1 missile's update (func_L01_00384518) with the trail history, the
+ * sun spawn and the seeker blast. */
+void func_L01_003DD0F8(M_003DD0F8 *m) {
+    extern void func_003C5180(void *, void *, s32);
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern u8 *func_00382348(void *);
+    extern void func_L01_004C8688(s32, void *, s32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D850(void *, void *, void *);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_004CB128(void *, void *, s32);
+    extern void func_L01_003DEFE8(void *);
+    extern void func_L01_0044BEC8(void *, s16 *);
+    extern void func_L01_003DE418();
+    extern void func_L01_003DE488();
+    extern void func_L01_00404A10(void *, void *);
+    extern void func_L01_003DE1D8();
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_003C3D30(void *, s32, s32, f32);
+    extern void func_L01_003DDDA8();
+    extern void func_L01_004C8668(s32);
+    extern void func_003C2880(void *);
+    extern s32 func_0038CB00(s16 *);
+    extern f32 func_0038CF38(void *, void *);
+    extern void func_003A4F28(s32);
+    V_003DD0F8 start;
+    V_003DD0F8 out[2];
+    V_003DD0F8 q;
+    V_003DD0F8 d;
+    V_003DD0F8 e;
+    V_003DD0F8 f;
+    Dmg_003DD0F8 dmg;
+    V_003DD0F8 dir;
+    V_003DD0F8 n;
+    V_003DD0F8 v;
+    void *skip;
+    Shot_003DD0F8 *w;
+    Tg_003DD0F8 *t;
+    f32 *info;
+    s32 ok;
+    s32 i;
+
+    w = m->pvar;
+    t = w->target;
+    *(Q_003DD0F8 *)&start = m->pos;
+    skip = 0;
+    func_003C5180(&m->pos, out, 1);
+    if (func_L01_004CB2D8() != 0) {
+        func_L01_004CAB30(&m->pos, &m->pos);
+    }
+    if (func_0038CAD0(&w->life) == 0) {
+        m->pos = w->owner->pos;
+        return;
+    }
+    for (i = 3; i > 0; i--) {
+        func_0038CDF8(&w->hist[i], &w->hist[i], &w->hist[i - 1], 0.2f);
+    }
+    w->hist[0] = m->pos;
+    if (t != 0) {
+        info = (f32 *)func_00382348(t);
+        if ((t->flags & 2) || t->state == 0xFE || t->state == 0xFD || t->b31 == 0 || (info != 0 && *info <= 0.0f)) {
+            w->target = 0;
+            t = 0;
+        }
+    }
+    func_L01_004C8688(w->shadow, &w->dir, 0);
+    qcopy_003DD0F8(&m->right, &w->dir);
+    func_0038CE90(&m->fwd, &m->right, out);
+    func_0038CF68(&m->fwd, &m->fwd, 1.0f);
+    func_0038CE90(&m->up, &m->fwd, &m->right);
+    if (t != 0) {
+        w->aim_x = out[1].x;
+        w->aim_y = out[1].y;
+        w->aim_z = out[1].z;
+    }
+    if (fabs_asm(w->turn) > 0.0031f) {
+        *(Q_003DD0F8 *)&q = *(Q_003DD0F8 *)&m->right;
+        func_003C4840(&d, &m->fwd, w->turn * 0.017453292f);
+        func_0038D850(&m->right, &m->right, &d);
+        func_0038D850(&m->up, &m->up, &d);
+        func_003C4840(&d, &q, w->spin);
+        func_0038D850(&m->right, &m->right, &d);
+        func_0038D850(&m->fwd, &m->fwd, &d);
+        func_0038D850(&m->up, &m->up, &d);
+        func_003C4840(&d, &m->right, w->spin);
+        func_0038D850(&m->fwd, &m->fwd, &d);
+        func_0038D850(&m->up, &m->up, &d);
+        w->spin = func_0038DAB8(w->spin, w->spin_rate * 0.017453292f);
+    }
+    m->right.w = m->fwd.w = m->up.w = 0.0f;
+    if (t != 0) {
+        func_0038CE20(&q, &m->right, w->speed);
+        vec_add_ab(&m->pos, &m->pos, &q);
+        if (func_0038CF00(&t->pos, &m->pos) < 5.0f) {
+            func_L01_004CB128(&e, t, 0);
+            vec_sub_ab(&d, &e, &m->pos);
+            func_0038CF68(&q, &d, w->speed);
+            vec_add_ab(&m->pos, &m->pos, &q);
+            func_L01_004CAB30(&m->pos, &m->pos);
+        }
+    } else if ((D_L01_002C5600_003DD0F8 + D_001425C0[0x97])->level >= 4) {
+        func_0038CE20(&q, &m->right, w->speed);
+        vec_add_ab(&m->pos, &m->pos, &q);
+        vec_sub_ab(&d, &w->sun, &m->pos);
+        func_0038CF68(&q, &d, w->speed);
+        vec_add_ab(&m->pos, &m->pos, &q);
+        func_L01_004CAB30(&m->pos, &m->pos);
+        if (w->sun_pending != 0) {
+            w->sun_pending = 0;
+            func_L01_003DEFE8(&w->sun);
+        }
+    } else {
+        func_0038CE20(&q, &m->right, w->speed);
+        vec_add_ab(&m->pos, &m->pos, &q);
+    }
+    if (((f32 *)&m->pos)[0] < 2.0f || ((f32 *)&m->pos)[0] > 1021.0f || ((f32 *)&m->pos)[1] < 2.0f
+        || ((f32 *)&m->pos)[1] > 1021.0f || ((f32 *)&m->pos)[2] < 2.0f || ((f32 *)&m->pos)[2] > 1021.0f) {
+        func_L01_0044BEC8(m, D_L01_001E0140);
+        func_003C2880(m);
+        return;
+    }
+    func_L01_003DE418(m, &d);
+    if (++w->trail >= 4) {
+        func_L01_00404A10(func_L01_003DE488, m);
+    }
+    if ((D_L01_002C5600_003DD0F8 + D_001425C0[0x97])->level >= 2) {
+        func_L01_003DE1D8(m, &start);
+    }
+    *(Q_003DD0F8 *)&e = m->pos;
+    func_0038CE20(&f, out, -0.3f);
+    vec_add_ab(&f, &m->pos, &f);
+    if (func_003D3CB0(&e, &f, 2, 0, 0) != 0) {
+        func_0038CE20(&e, out, 0.3f);
+        vec_add_ab(&m->pos, &D_L01_001EAA00_003DD0F8.pos, &e);
+    }
+    dmg.moby = (s32)m;
+    dmg.flags = 0x1030000;
+    dmg.w20 = 1;
+    dmg.damage = (D_L01_002C5600_003DD0F8 + D_001425C0[0x97])->damage;
+    if (m->flags & 0x100) {
+        *(Q_003DD0F8 *)&dir = *(Q_003DD0F8 *)&q;
+    } else {
+        dir.x = func_0038D098(m->yaw);
+        dir.y = func_0038D0B0(m->yaw);
+        dir.z = 0.0f;
+    }
+    dir.w = 5627.925f;
+    dir.z = 1.5f;
+    *(Q_003DD0F8 *)&dmg.v = *(Q_003DD0F8 *)&dir;
+    func_0038CF68(&dmg.v, &dmg.v, 1.0f);
+    dmg.v.w = 5627.925f;
+    dmg.b18 = 3;
+    dmg.oclass = m->oclass;
+    dmg.b19 = 1;
+    if (func_003D3CB0(&start, &m->pos, 0, D_001A4BE0_003DD0F8.body, 0) != 0) {
+        if (D_L01_001EAA00_003DD0F8.moby != 0) {
+            if (D_L01_001EAA00_003DD0F8.moby != D_001A4BE0_003DD0F8.body && D_L01_001EAA00_003DD0F8.moby != w->owner) {
+                skip = m;
+                m->hit = 2;
+                m->pos = D_L01_001EAA00_003DD0F8.pos;
+            }
+        } else if (D_L01_001EAA00_003DD0F8.w1C > 0) {
+            m->hit = 1;
+            m->pos = D_L01_001EAA00_003DD0F8.pos;
+        }
+    }
+    if (m->hit != 0) {
+        ok = 1;
+        qcopy_003DD0F8(&m->pos, &D_L01_001EAA00_003DD0F8.pos);
+        func_003C5180(&m->pos, &n, 1);
+        if (D_L01_001EAA00_003DD0F8.moby != 0 && D_L01_001EAA00_003DD0F8.w1C <= 0) {
+            vec_sub_ab(&v, &D_L01_001E29C0_003DD0F8, &m->pos);
+            func_0038CF68(&v, &v, 1.0f);
+        } else {
+            func_0038CF68(&v, &D_L01_001EAA00_003DD0F8.normal, 1.0f);
+            if (fabs_asm(func_0038CE68(&v, &n)) >= 0.1f) {
+                ok = 0;
+            }
+        }
+        if (ok) {
+            func_003C3D30(&m->pos, 0, 0, 0.5f);
+        }
+        func_L01_003DDDA8(m, &n, skip);
+        func_L01_0044BEC8(m, D_L01_001E0140);
+        func_L01_004C8668(w->shadow);
+        func_003C2880(m);
+        return;
+    }
+    if (func_0038CB00(&w->timer) == 0 && !(func_0038CF38(&m->pos, D_001A4C60) > 60.0f)) {
+        return;
+    }
+    if (w->sound != -1) {
+        Snd80_003DD0F8 *s = &D_001A30B0_003DD0F8[w->sound];
+        if (*(void **)&s->b[0xDC] == m && s->b[0xD0] != 0) {
+            func_003A4F28(w->sound);
+        }
+    }
+    w->sound = -1;
+    func_L01_0044BEC8(m, D_L01_001E0140);
+    func_L01_004C8668(w->shadow);
+    func_003C2880(m);
+}
+/* localdecomp:end func_L01_003DD0F8 */
 
 /* localdecomp:start func_L01_003DD9C8 */
 #include "vu0.h"

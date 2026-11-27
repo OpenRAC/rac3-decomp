@@ -141,7 +141,364 @@ typedef struct {
 } V_003CB9B0;
 
 
-INCLUDE_ASM("asm/levels", func_L01_003CFB08);
+/* localdecomp:start func_L01_003CFB08 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;              /* 0x10 */
+    u8 state;                /* 0x20 */
+    u8 pad21[0x30 - 0x21];
+    u8 b30;                  /* 0x30 */
+    u8 pad31[0xC0 - 0x31];
+    vu0_v4 mtx[3];           /* 0xC0 */
+    u8 padF0[0xF8 - 0xF0];
+    f32 fF8;                 /* 0xF8 */
+} Self_003CFB08;
+
+typedef struct {
+    s32 i0;                  /* 0x00 */
+    u8 pad4[0x24 - 0x4];
+    s32 i24;                 /* 0x24 */
+    s32 i28;                 /* 0x28 */
+    s32 i2C;                 /* 0x2C */
+    u8 pad30[0x38 - 0x30];
+    s32 i38;                 /* 0x38 */
+    u8 pad3C[0x40 - 0x3C];
+    s32 i40;                 /* 0x40 */
+    s32 i44;                 /* 0x44 */
+    u8 pad48[0x4C - 0x48];
+    s32 sound;               /* 0x4C */
+    u8 pad50[0x54 - 0x50];
+    f32 f54;                 /* 0x54 */
+    u8 pad58[0x60 - 0x58];
+    s32 i60;                 /* 0x60 */
+    s32 i64;                 /* 0x64 */
+    s32 i68;                 /* 0x68 */
+    s32 i6C;                 /* 0x6C */
+    u8 pad70[0xB0 - 0x70];
+    u8 bB0;                  /* 0xB0 */
+    u8 bB1;                  /* 0xB1 */
+    u8 padB2[0xB4 - 0xB2];
+    s32 iB4;                 /* 0xB4 */
+    s32 iB8;                 /* 0xB8 */
+    u8 padBC[0x130 - 0xBC];
+    f32 f130;                /* 0x130 */
+    f32 f134;                /* 0x134 */
+    u8 pad138[0x140 - 0x138];
+    vu0_v4 v140;             /* 0x140 */
+    vu0_v4 v150;             /* 0x150 */
+} Obj_003CFB08;
+
+typedef struct { u8 pad[0xAA]; u16 oClass; } Moby_003CFB08;
+
+typedef struct {
+    u8 pad_0[0x80];
+    vu0_v4 pos;                /* 0x80 */
+    u8 pad_90[0x33C - 0x90];
+    f32 f33C;                  /* 0x33C */
+    u8 pad_340[0x35C - 0x340];
+    Moby_003CFB08 *m35C;       /* 0x35C */
+    s32 i360;                  /* 0x360 */
+    u8 pad_364[0x36E - 0x364];
+    s16 h36E;                  /* 0x36E */
+    u8 pad_370[0x25C4 - 0x370];
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x2850 - 0x25C8];
+    s32 i2850;                 /* 0x2850 */
+} Hero_003CFB08;
+
+typedef struct { u8 pad[0x30]; vu0_v4 pos; u8 pad40[0x30]; vu0_v4 v70; } Ent_003CFB08;
+typedef struct { u8 pad[0x10]; vu0_v4 pos; u8 pad20[0x14]; u16 flags; u8 pad36[0x100 - 0x36]; } Spot_003CFB08;
+typedef struct { u8 pad[0xD0]; u8 playing; u8 padD1[0xDC - 0xD1]; void *owner; } Chan_003CFB08;
+
+extern Hero_003CFB08 D_001A4BE0_003CFB08;
+extern u8 D_001A30B0_003CFB08[];
+extern Ent_003CFB08 *D_L01_001E0100_003CFB08;
+extern Spot_003CFB08 *D_L01_001E001C_003CFB08;
+extern s32 D_L01_001DFB40;
+extern f32 D_L01_001DF2A8, D_L01_001DF2BC, D_L01_001DF2C0, D_L01_001DF2C4;
+__asm__(".extern D_L01_001DF2A8, 4");
+__asm__(".extern D_L01_001DF2BC, 4");
+__asm__(".extern D_L01_001DF2C0, 4");
+__asm__(".extern D_L01_001DF2C4, 4");
+
+#define HERO D_001A4BE0_003CFB08
+#define CHAN(h) ((Chan_003CFB08 *)(D_001A30B0_003CFB08 + (h) * 0x80))
+
+/* Update of a Veldin-style interactive object: a 12-state machine (0 init, 1 wait for its trigger,
+ * 2 arm and check the hero's zone, 3-9 activation and cool-down phases, 10 a looping sound while the
+ * hero rides it, 11 wait for the linked spot, 12 shut down). Each state ends by setting the next one
+ * (func_L01_004450F0). */
+void func_L01_003CFB08(Self_003CFB08 *self) {
+    extern s32 func_L01_003D0530();
+    extern s32 func_L01_003D06E0();
+    extern void func_L01_003D0850();
+    extern void func_L01_003D09D0();
+    extern void func_L01_003D0B70();
+    extern void func_L01_003D0BD0();
+    extern void func_L01_003D0D48();
+    extern void func_L01_003D1210();
+    extern void func_L01_003D1848();
+    extern void func_L01_003D18C0();
+    extern void func_L01_003D1A50();
+    extern void func_L01_003D1C60();
+    extern void func_L01_003D2158();
+    extern void func_L01_003D2278();
+    extern void func_L01_003D22A8();
+    extern void func_L01_003D3090();
+    extern s32 func_0038CAD0(void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_003C2880(void *);
+    extern s32 func_00382380(void *, s32, s32);
+    extern void func_003A4F28(s32);
+    extern void func_L01_0043B510(s32);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern void func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
+    extern s32 func_L01_004561B8(void *);
+    extern s32 func_L01_004AAC98(s32, s32, void *, s32);
+    extern void func_L01_004F50C8(void *, void *, s32, s32);
+    extern s32 func_L01_005003D0(s32, s32);
+    extern void func_L01_00511A40(void *, s32, f32);
+    Obj_003CFB08 *obj = (Obj_003CFB08 *)*(void **)((u8 *)self + 0x68);
+    vu0_v4 v;
+    vu0_v4 *m;
+    Ent_003CFB08 *ent;
+    s32 t;
+    s32 state;
+    s32 h1, h2, h3;
+    s32 idx;
+    f32 d;
+
+    if (self->state == 0) {
+        func_L01_003D0530(self, obj);
+        return;
+    }
+    switch (self->state) {
+    case 1:
+        if ((obj->i2C == -1 && obj->i40 == -1) || func_L01_003D06E0(self, obj)) {
+            func_L01_004450F0(self, 2, -1);
+        }
+        break;
+    case 2:
+        t = HERO.state;
+        if (t == 0x74 || t == 0x31 || t == 0x65) {
+            break;
+        }
+        if (obj->iB4 == D_L01_001DFB40 - 1) {
+        if (obj->i6C != -1 && func_00382380(&HERO.pos, obj->i6C, 0)) {
+            ent = &D_L01_001E0100_003CFB08[obj->i68];
+            if (obj->i60) {
+                func_L01_003D2158(self, obj);
+                func_L01_004F50C8(&ent->pos, &ent->v70, 0x74, 1);
+                func_L01_003D1848(self, obj);
+                func_L01_003D09D0(self, obj);
+                func_L01_003D1C60(self, obj);
+                func_L01_003D0B70(self, obj);
+                func_L01_003D0BD0(self, obj);
+                func_L01_004450F0(self, 6, -1);
+                break;
+            }
+            if (obj->i64 != -1) {
+                func_L01_003D2158(self, obj);
+            }
+            func_L01_004F50C8(&ent->pos, &ent->v70, 0xB0, 1);
+            func_L01_003D1848(self, obj);
+            func_L01_003D09D0(self, obj);
+            func_L01_003D0B70(self, obj);
+            self->b30 = 0xFF;
+            obj->i38 = 0;
+            obj->v150 = obj->v140;
+            obj->f134 = obj->f54;
+            obj->i44 = 0;
+            func_L01_004450F0(self, 9, -1);
+            break;
+        }
+        if (func_00382380(&HERO.pos, obj->i0, 0)) {
+            func_L01_003D1848(self, obj);
+            func_L01_003D09D0(self, obj);
+            func_L01_003D1A50(self, obj);
+            func_L01_003D0B70(self, obj);
+            func_L01_004450F0(self, 3, -1);
+        }
+        } else {
+            if ((obj->i6C != -1 && func_00382380(&HERO.pos, obj->i6C, 0)) || func_00382380(&HERO.pos, obj->i0, 0)) {
+                func_L01_003D22A8(self);
+            }
+            obj->iB4 = D_L01_001DFB40;
+            obj->bB1 = 0;
+        }
+        break;
+    case 3:
+        t = func_L01_004561B8(self);
+        m = self->mtx;
+        if (t) {
+            if (obj->i28 != -1) {
+                obj->f130 = func_0038CE68(&D_L01_001E001C_003CFB08[obj->i28].pos, m);
+            } else {
+                obj->f130 = func_0038CE68(&self->pos, m);
+            }
+        }
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D09D0(self, obj);
+        func_L01_003D18C0(self, obj);
+        d = func_0038CE68(&HERO.pos, m) - obj->f130;
+        if (D_L01_001DF2BC < d) {
+            func_0038CE20(&v, m, 20.0f);
+            vec_add_ab(&v, &v, &D_L01_001E0100_003CFB08[obj->i0].pos);
+            func_L01_00511A40(&v, 0, self->fF8);
+            func_L01_003D0850(self, obj);
+            func_L01_004450F0(self, 4, -1);
+        }
+        break;
+    case 4:
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D18C0(self, obj);
+        d = func_0038CE68(&HERO.pos, self->mtx) - obj->f130;
+        if (D_L01_001DF2C0 < d || (obj->i60 && D_L01_001DF2C4 < d)) {
+            func_L01_005003D0(0x69, 1);
+            func_L01_004450F0(self, 5, -1);
+        }
+        break;
+    case 5:
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D18C0(self, obj);
+        if (HERO.pos.z < D_L01_001E0100_003CFB08[obj->i0].pos.z && 3.0f < HERO.f33C) {
+            func_L01_005003D0(0xB0, 1);
+            self->b30 = 0xFF;
+            func_L01_004450F0(self, 10, -1);
+            obj->v150 = obj->v140;
+            obj->f134 = obj->f54;
+            obj->i38 = 0;
+            obj->i44 = 0;
+        }
+        break;
+    case 6:
+        if (func_L01_004561B8(self)) {
+            if (obj->i28 != -1) {
+                obj->f130 = func_0038CE68(&D_L01_001E001C_003CFB08[obj->i28].pos, self->mtx);
+            } else {
+                obj->f130 = func_0038CE68(&self->pos, self->mtx);
+            }
+            obj->iB4 = 0x43;
+        }
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D09D0(self, obj);
+        func_L01_003D18C0(self, obj);
+        if (func_0038CAD0(&obj->iB4)) {
+            func_0038CE20(&v, self->mtx, 20.0f);
+            vec_add_ab(&v, &v, &D_L01_001E0100_003CFB08[obj->i0].pos);
+            func_L01_00511A40(&v, 0, self->fF8);
+            func_L01_004450F0(self, 7, -1);
+        }
+        break;
+    case 7:
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D09D0(self, obj);
+        func_L01_003D18C0(self, obj);
+        d = func_0038CE68(&HERO.pos, self->mtx) - obj->f130;
+        if (D_L01_001DF2C0 < d || (obj->i60 && D_L01_001DF2C4 < d)) {
+            func_L01_005003D0(0x69, 1);
+            func_L01_004450F0(self, 8, -1);
+        }
+        break;
+    case 8:
+        func_L01_003D1848(self, obj);
+        func_L01_003D0BD0(self, obj);
+        func_L01_003D09D0(self, obj);
+        func_L01_003D18C0(self, obj);
+        if (HERO.pos.z < D_L01_001E0100_003CFB08[obj->i0].pos.z && 3.0f < HERO.f33C) {
+            func_L01_003D2278(self, obj);
+            func_L01_005003D0(0xB0, 1);
+            self->b30 = 0xFF;
+            func_L01_004450F0(self, 9, -1);
+            obj->v150 = obj->v140;
+            obj->f134 = obj->f54;
+            obj->i38 = 0;
+            obj->i44 = 0;
+        }
+        break;
+    case 9:
+        func_L01_003D1848(self, obj);
+        if (func_L01_004561B8(self)) {
+            obj->iB4 = obj->iB8;
+            func_L01_003D1A50(self, obj);
+        }
+        func_L01_003D09D0(self, obj);
+        func_L01_003D18C0(self, obj);
+        func_L01_003D1210(self, obj);
+        func_L01_003D0D48(self, obj, 1);
+        if (func_0038CAD0(&obj->iB4)) {
+            func_L01_003D0850(self, obj);
+            func_L01_004450F0(self, 10, -1);
+        }
+        break;
+    case 10:
+        func_L01_00452560(0, 5, 0, 1, 0, 0, 0);
+        func_L01_003D1848(self, obj);
+        state = HERO.state;
+        if (state != 0xB0 && state != 0x16 && state != 0x39) {
+            if (obj->i24 != -1 && HERO.i2850 > 0) {
+                func_L01_0043B510(obj->i24);
+            }
+            func_L01_003D0D48(self, obj, 0);
+            h1 = obj->sound;
+            if (h1 != -1 && CHAN(h1)->owner == self && CHAN(h1)->playing) {
+                func_003A4F28(h1);
+            }
+            obj->sound = -1;
+            func_L01_004450F0(self, 12, -1);
+            break;
+        }
+        func_L01_003D1210(self, obj);
+        if (D_L01_001DF2A8 < HERO.f33C ||
+            (HERO.m35C != 0 && (u32)(HERO.m35C->oClass - 0x191F) < 2)) {
+            func_L01_003D0D48(self, obj, 1);
+            h2 = obj->sound;
+            if (h2 == -1 || CHAN(h2)->owner != self || !CHAN(h2)->playing) {
+                obj->sound = func_L01_004AAC98(2, 4, self, 0x1D84);
+            }
+        } else {
+            func_L01_003D0D48(self, obj, 0);
+            h3 = obj->sound;
+            if (h3 != -1 && CHAN(h3)->owner == self && CHAN(h3)->playing) {
+                func_003A4F28(h3);
+            }
+            obj->sound = -1;
+        }
+        func_L01_003D3090(self, obj);
+        func_L01_003D18C0(self, obj);
+        break;
+    case 11:
+        idx = obj->i40;
+        if (idx != -1) {
+            if (((Spot_003CFB08 *)((u8 *)D_L01_001E001C_003CFB08 + (idx << 8)))->flags & 2) {
+                func_L01_004450F0(self, 1, -1);
+            }
+        } else {
+            func_L01_004450F0(self, 1, -1);
+        }
+        break;
+    case 12:
+        if (HERO.i360 != 0 && HERO.h36E == 0) {
+            if (obj->bB0 != 0 || obj->i40 != -1) {
+                func_L01_004450F0(self, 11, -1);
+            } else {
+                func_003C2880(self);
+            }
+        } else {
+            func_L01_00452560(0, 5, 0, 1, 0, 0, 0);
+        }
+        break;
+    }
+}
+/* localdecomp:end func_L01_003CFB08 */
 
 /* localdecomp:start func_L01_003D0530 */
 typedef struct {

@@ -912,7 +912,318 @@ void func_L01_003ECDD0(Obj_003ECDD0 *obj)
 }
 /* localdecomp:end func_L01_003ECDD0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003ED1F8);
+/* localdecomp:start func_L01_003ED1F8 */
+/* rac3's cam_path_update_cinematic: rac2's PAL cam_path_update_cinematic_pal
+ * (rac2 src/pal/levels/shared/L00_0042EA98-cc.c) with rac3's skip flags (0x54/0x55), the
+ * end-of-run states 5 and 6 and the target moby's callback. */
+typedef struct { s32 unused[4]; f32 vals[9]; } CamK_003ED1F8;
+typedef struct { u8 pad[0x60]; f32 vals[8]; s32 ids[8]; } CamKeys_003ED1F8;
+extern char *D_L01_001DF804;
+extern s32 D_L01_001DFD38;
+extern f32 D_L01_001DF950;
+__asm__(".extern D_L01_001DF950, 16");
+extern s32 D_L01_001DF95C;
+extern u8 D_L01_001D667B_003ECDD0;
+extern char *D_L01_001E001C;
+extern u8 D_L01_001E2DC0[];
+extern G_003ECDD0 D_L01_001E7580;
+extern f32 D_L01_001E7630[];
+extern u8 D_001A4EC0[];
+extern u8 *D_L01_0021F6C0[];
+extern void func_003873C0();
+extern void func_L01_003ECB58(void);
+extern s32 func_0038CB00(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern f32 func_0038CF00(void *, void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern f32 func_003C3BE8(f32, f32, f32);
+extern s32 func_003A0EC0(s32, s32, s32, s32, s32);
+extern void func_L01_003EC9E0(s32);
+extern void func_L01_003F5498(s32, f32);
+extern void func_L01_003F55D0(s32, s32, f32, f32);
+extern void func_L01_00404AD8(void *, void *);
+extern s32 (**func_L01_0043B568(s32, s32, s32))(void *);
+extern s32 func_L01_00476498(void *, void *, s32 *, f32 *, s32, f32);
+extern void func_L01_005003D0(s32, s32);
+
+void func_L01_003ED1F8(char *moby) {
+    f32 va[4] __attribute__((aligned(16)));
+    f32 v1[4] __attribute__((aligned(16)));
+    f32 v2[4] __attribute__((aligned(16)));
+    f32 v3[4] __attribute__((aligned(16)));
+    s32 ia;
+    f32 ib;
+    char *vars;
+    char *motion;
+    CamK_003ED1F8 *k;
+    u8 *cam_def;
+    char *path;
+
+    vars = *(char **)(moby + 0x70);
+    motion = vars + 0x40;
+    k = (CamK_003ED1F8 *)(vars + 0x58);
+    cam_def = *(u8 **)(D_L01_001DF804 + *(s16 *)(moby + 0x84) * 0x20 + 0x1C);
+    D_L01_001DFD38 = 1;
+
+    if (*(s16 *)(motion + 0x14) == 0) {
+        char *a;
+        char *b;
+        char *position;
+        char *target_moby;
+        f32 *look_offset;
+        if (cam_def[0x54] == 0) {
+            D_L01_001DF950 += 0.05f;
+        }
+        if (1.0f <= D_L01_001DF950 || cam_def[0x54] != 0) {
+            a = D_L01_0021F6C0[*(s32 *)(cam_def + 0x20)];
+            b = D_L01_0021F6C0[*(s32 *)(cam_def + 0x24)];
+            position = moby + 0x30;
+            D_L01_001DF950 = 1.0f;
+            a = a + 0x10;
+            D_L01_001DF95C = cam_def[0x56] == 0;
+            *(s16 *)(motion + 0x14) = 1;
+            *(vu0_q *)position = *(vu0_q *)a;
+            if (*(s32 *)(cam_def + 0x28) >= 0) {
+                target_moby = D_L01_001E001C + (*(s32 *)(cam_def + 0x28) << 8);
+                look_offset = (f32 *)(cam_def + 0x2C);
+                v1[0] = look_offset[0];
+                v1[1] = look_offset[1];
+                v1[2] = look_offset[2];
+                v1[3] = 0.0f;
+                func_0038D000(v1, v1, D_L01_001E2DC0 + *(s32 *)(moby + 0x94) * 0x460);
+                vec_add_ba(v2, target_moby + 0x10, v1);
+                vec_sub_ab(va, v2, position);
+            } else {
+                vec_sub_ab(va, b + 0x10, position);
+            }
+            func_0038CE20(v1, D_001A4EC0, -1.0f);
+            func_0038CF68(moby, va, 1.0f);
+            func_0038CE90(moby + 0x10, moby, v1);
+            func_0038CF68(moby + 0x10, moby + 0x10, 1.0f);
+            func_0038CE90(moby + 0x20, moby + 0x10, moby);
+        }
+        return;
+    }
+    if (*(s16 *)(motion + 0x14) == 2) {
+        f32 x;
+        f32 aa;
+        f32 bb;
+        if (cam_def[0x55] == 0) {
+            D_L01_001DF950 += 0.05f;
+        }
+        if (1.0f <= D_L01_001DF950 || cam_def[0x55] != 0) {
+            if (cam_def[0x55] == 0) {
+                D_L01_001DF950 = 1.0f;
+            }
+            *(s16 *)(motion + 0x14) = 3;
+            x = k->vals[8] * 0.5f;
+            aa = func_0038D0B0(x);
+            bb = func_0038D098(x);
+            D_L01_001E7630[0] = aa / bb;
+            func_003873C0();
+            cam_def[0x39] = 1;
+            *(s16 *)(moby + 0x7E) = 4;
+            if (cam_def[0x41] == 0) {
+                func_L01_005003D0(0, 1);
+            }
+            if (*(s16 *)(cam_def + 0x46) != -1) {
+                func_003A0EC0(0, 2, 0, 0, 0);
+            }
+            D_L01_001D667B_003ECDD0 = 0;
+            if (*(s32 *)(cam_def + 0x4C) != -1) {
+                func_L01_003EC9E0(*(s32 *)(cam_def + 0x4C));
+            } else {
+                if (cam_def[0x55] == 0) {
+                    func_L01_003F5498(0, 12.0f);
+                }
+                D_L01_001DF95C = 0;
+            }
+            if (cam_def[0x55] != 0 && *(s32 *)(cam_def + 0x58) != 0) {
+                func_L01_003F55D0(0, 1, 3.0f, 10.0f);
+            }
+        }
+        if (cam_def[0x45] != 0) {
+            func_L01_00404AD8(func_L01_003ECB58, 0);
+        }
+        if (cam_def[0x40] == 0) {
+            return;
+        }
+    } else if (*(s16 *)(motion + 0x14) == 3) {
+        return;
+    } else if (*(s16 *)(motion + 0x14) == 1) {
+        if (cam_def[0x54] == 0) {
+            D_L01_001DF950 -= 0.05f;
+        }
+        if (D_L01_001DF950 < 0.0f) {
+            D_L01_001DF950 = 0.0f;
+        }
+        if (*(s32 *)(cam_def + 0x48) != 0 || *(s16 *)(cam_def + 0x46) != -1) {
+            *(s16 *)(motion + 0x14) = (*(s16 *)(cam_def + 0x46) == -1 || *(s32 *)(cam_def + 0x48) < *(s16 *)(cam_def + 0x46)) ? 5 : 6;
+        }
+    } else if (*(s16 *)(motion + 0x14) == 5) {
+        if (cam_def[0x54] == 0) {
+            D_L01_001DF950 -= 0.05f;
+        }
+        if (D_L01_001DF950 < 0.0f) {
+            D_L01_001DF950 = 0.0f;
+        }
+        if (func_0038CB00(motion + 0x16) != 0) {
+            if (*(s16 *)(cam_def + 0x46) == -1 || *(s16 *)(cam_def + 0x46) < *(s32 *)(cam_def + 0x48)) {
+                *(s16 *)(motion + 0x14) = 4;
+                *(s16 *)(motion + 0x16) = (*(s16 *)(cam_def + 0x3A) * 5 + 2) / 6;
+            } else {
+                *(s16 *)(motion + 0x14) = 6;
+                *(s16 *)(motion + 0x16) = ((*(s16 *)(cam_def + 0x46) - *(s32 *)(cam_def + 0x48)) * 5 + 2) / 6;
+            }
+        }
+        if (cam_def[0x45] != 0) {
+            func_L01_00404AD8(func_L01_003ECB58, 0);
+        }
+        if (*(s32 *)(cam_def + 0x5C) != -1) {
+            char *target = D_L01_001E001C + (*(s32 *)(cam_def + 0x5C) << 8);
+            s32 (**cb)(void *) = func_L01_0043B568(*(s16 *)(target + 0xAA), 0, 4);
+            if (cb != 0) {
+                (*cb)(target);
+            }
+        }
+        return;
+    } else if (*(s16 *)(motion + 0x14) == 6) {
+        if (cam_def[0x54] == 0) {
+            D_L01_001DF950 -= 0.05f;
+        }
+        if (D_L01_001DF950 < 0.0f) {
+            D_L01_001DF950 = 0.0f;
+        }
+        if (func_0038CB00(motion + 0x16) != 0) {
+            func_L01_003F55D0(0, 1, 3.0f, 10.0f);
+            func_003A0EC0(4, 2, 0xC, 0, 0);
+            if (*(s32 *)(cam_def + 0x48) < *(s16 *)(cam_def + 0x46)) {
+                *(s16 *)(motion + 0x14) = 4;
+                *(s16 *)(motion + 0x16) = (*(s16 *)(cam_def + 0x3A) * 5 + 2) / 6;
+            } else {
+                *(s16 *)(motion + 0x14) = 5;
+                *(s16 *)(motion + 0x16) = ((*(s32 *)(cam_def + 0x48) - *(s16 *)(cam_def + 0x46)) * 5 + 2) / 6;
+            }
+        }
+        if (cam_def[0x45] != 0) {
+            func_L01_00404AD8(func_L01_003ECB58, 0);
+        }
+        if (*(s16 *)(cam_def + 0x46) < *(s32 *)(cam_def + 0x48)) {
+            if (*(s32 *)(cam_def + 0x5C) != -1) {
+                char *target = D_L01_001E001C + (*(s32 *)(cam_def + 0x5C) << 8);
+                s32 (**cb)(void *) = func_L01_0043B568(*(s16 *)(target + 0xAA), 0, 4);
+                if (cb != 0) {
+                    (*cb)(target);
+                }
+            }
+            return;
+        }
+    }
+
+    {
+        f32 d;
+        f32 travelled;
+        s32 finished;
+        s32 i;
+        CamKeys_003ED1F8 *keys;
+
+        path = D_L01_0021F6C0[*(s32 *)(cam_def + 0x20)];
+        *(vu0_q *)va = *(vu0_q *)(moby + 0x30);
+        finished = func_L01_00476498(path, moby + 0x30, (s32 *)motion, (f32 *)(motion + 4), 0, *(f32 *)(cam_def + 0x3C) * 0.020000001f);
+        if (*(s16 *)(motion + 0x16) != 0) {
+            if (func_0038CB00(motion + 0x16) != 0) {
+                finished = 1;
+            } else if (cam_def[0x40] != 0) {
+                s16 s = *(s16 *)(motion + 0x16);
+                if (s < (20 * 5 + 2) / 6) {
+                    finished = 1;
+                }
+            }
+        }
+        if (cam_def[0x39] != 0) {
+            finished = 1;
+        }
+        if (finished != 0) {
+            *(s16 *)(motion + 0x14) = 2;
+            if (cam_def[0x40] == 0) {
+                return;
+            }
+        }
+        keys = (CamKeys_003ED1F8 *)cam_def;
+        i = 0;
+        while (i < 7 && keys->ids[i] >= 0 && keys->ids[i + 1] >= 0) {
+            if (*(s32 *)motion >= keys->ids[i] && *(s32 *)motion < keys->ids[i + 1]) {
+                f32 sum = 0.0f;
+                f32 fv = *(f32 *)(motion + 4);
+                f32 total;
+                f32 r;
+                f32 m;
+                f32 aa;
+                f32 bb;
+                s32 j;
+                s32 j2;
+                for (j = keys->ids[i]; j < *(s32 *)motion; j++) {
+                    sum = sum + *(f32 *)(path + j * 16 + 0x1C);
+                }
+                total = sum;
+                sum = sum + fv;
+                for (j2 = *(s32 *)motion; j2 < keys->ids[i + 1]; j2++) {
+                    total = total + *(f32 *)(path + j2 * 16 + 0x1C);
+                }
+                r = func_003C3BE8(keys->vals[i], keys->vals[i + 1], sum / total);
+                m = r * 0.017453292f;
+                m = m * 0.5f;
+                aa = func_0038D0B0(m);
+                bb = func_0038D098(m);
+                D_L01_001E7580.fB0 = aa / bb;
+                func_003873C0();
+            }
+            i++;
+        }
+        d = func_0038CF00(va, moby + 0x30);
+        travelled = *(f32 *)(motion + 0x10) + d;
+        *(f32 *)(motion + 0x10) = travelled;
+        if (*(s32 *)(cam_def + 0x28) >= 0) {
+            char *target_moby = D_L01_001E001C + (*(s32 *)(cam_def + 0x28) << 8);
+            f32 *look_offset = (f32 *)(cam_def + 0x2C);
+            v2[0] = look_offset[0];
+            v2[1] = look_offset[1];
+            v2[2] = look_offset[2];
+            v2[3] = 0.0f;
+            func_0038D000(v2, v2, D_L01_001E2DC0 + *(s32 *)(moby + 0x94) * 0x460);
+            vec_add_ba(v3, target_moby + 0x10, v2);
+            vec_sub_ab(v1, v3, moby + 0x30);
+        } else {
+            char *h;
+            d = (travelled / *(f32 *)(motion + 8)) * *(f32 *)(motion + 0xC);
+            h = D_L01_0021F6C0[*(s32 *)(cam_def + 0x24)];
+            ia = 0;
+            ib = 0.0f;
+            func_L01_00476498(h, v2, &ia, &ib, 0, d);
+            vec_sub_ab(v1, v2, moby + 0x30);
+        }
+        func_0038CE20(v2, D_001A4EC0, -1.0f);
+        func_0038CF68(moby, v1, 1.0f);
+        func_0038CE90(moby + 0x10, moby, v2);
+        func_0038CF68(moby + 0x10, moby + 0x10, 1.0f);
+        func_0038CE90(moby + 0x20, moby + 0x10, moby);
+    }
+    if (cam_def[0x45] != 0) {
+        func_L01_00404AD8(func_L01_003ECB58, 0);
+    }
+    if (*(s32 *)(cam_def + 0x5C) != -1) {
+        char *target = D_L01_001E001C + (*(s32 *)(cam_def + 0x5C) << 8);
+        s32 (**cb)(void *) = func_L01_0043B568(*(s16 *)(target + 0xAA), 0, 4);
+        if (cb != 0) {
+            (*cb)(target);
+        }
+    }
+}
+/* localdecomp:end func_L01_003ED1F8 */
 
 /* localdecomp:start func_L01_003EDC90 */
 extern s32 func_L01_003ECA48(u8 *m);

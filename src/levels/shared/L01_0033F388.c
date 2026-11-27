@@ -220,4 +220,193 @@ void func_L01_0033F530(M_0033F530 *m) {
 }
 /* localdecomp:end func_L01_0033F530 */
 
-INCLUDE_ASM("asm/levels", func_L01_0033F920);
+/* localdecomp:start func_L01_0033F920 */
+typedef unsigned int MeshQuad_0033F920 __attribute__((mode(TI)));
+typedef union { MeshQuad_0033F920 q; f32 v[4]; } MeshVector_0033F920;
+typedef struct { f32 x, y, z; } MeshPoint_0033F920;
+extern s32 D_L01_001DD0F8;
+__asm__(".extern D_L01_001DD0F8, 4");
+extern s32 D_L01_001DD0FC[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DD110;
+__asm__(".extern D_L01_001DD110, 4");
+extern s32 D_L01_001DD114[] __attribute__((section(".sdata")));
+extern s32 D_L01_001DD118;
+__asm__(".extern D_L01_001DD118, 4");
+extern f32 D_L01_001DD11C;
+__asm__(".extern D_L01_001DD11C, 4");
+extern f32 D_L01_001DD120;
+__asm__(".extern D_L01_001DD120, 4");
+extern f32 D_L01_001DD124;
+__asm__(".extern D_L01_001DD124, 4");
+extern u32 D_L01_001DD128;
+__asm__(".extern D_L01_001DD128, 4");
+extern s8 D_L01_001DD12F[] __attribute__((section(".sdata")));
+extern f32 D_L01_002B1570[][3];
+extern f32 D_L01_002B1C60[][3];
+extern f32 D_L01_002B1F30[][2];
+extern f32 D_L01_002B23D0[][2];
+extern u32 D_L01_002B25B0[];
+extern u32 D_L01_002B2800[];
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038C750(void);
+extern void func_003D3A24(s32, void *, s32, void *, s32);
+
+#define MeshStorePoint_0033F920(point, value) \
+    (point)->x = (value)->v[0]; \
+    (point)->y = (value)->v[1]; \
+    (point)->z = (value)->v[2]
+
+/* Draws the four-sided glowing mesh that faces the camera, as eight flipped copies of two vertex
+ * sets, fading with opacity: rac2's mesh_draw_four_signs_pal (rac2 src/pal/levels/shared/
+ * L00_003B7FC0-cc-g8.c), with PAL's x1.2 scroll rate. */
+void func_L01_0033F920(void *object, f32 opacity)
+{
+    MeshVector_0033F920 transform[4];
+    MeshPoint_0033F920 positions[148];
+    f32 uv[148][2];
+    MeshVector_0033F920 temp;
+    s32 alpha;
+    u8 *origin;
+
+    D_L01_001DD11C += D_L01_001DD120 * 1.2f;
+    if (D_L01_001DD11C >= 7.0f) D_L01_001DD11C -= 7.0f;
+    origin = (u8 *)object + 0x10;
+    func_003A9440(6, func_00389598(D_L01_001DD118));
+    func_003A9440(0x42, 0x8000000048UL);
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_0038C750();
+    vec_sub_ba(&transform[0], D_L01_001E29C0, origin);
+    func_0038CF68(&transform[0], &transform[0], 1.0f);
+    func_0038CE90(&transform[1], &transform[0], D_001A4EC0);
+    func_0038CF68(&transform[1], &transform[1], -1.0f);
+    func_0038CE90(&transform[2], &transform[1], &transform[0]);
+    transform[3].q = *(MeshQuad_0033F920 *)origin;
+    {
+    s32 i;
+    for (i = 0; i < 148; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = D_L01_002B1570[i][1] * D_L01_001DD124;
+        temp.v[2] = D_L01_002B1570[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B1F30[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B1F30[i][0];
+        if (D_L01_002B25B0[i] & 0xFF000000) {
+            alpha = (s32)((f32)D_L01_001DD12F[0] * opacity);
+            if (alpha < 1) alpha = 1;
+            D_L01_002B25B0[i] = (alpha << 24) | D_L01_001DD128;
+        } else {
+            D_L01_002B25B0[i] = D_L01_001DD128;
+        }
+    }
+    func_003D3A24(D_L01_001DD0F8, positions, D_L01_001DD110, uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 60; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = D_L01_002B1C60[i][1] * D_L01_001DD124;
+        temp.v[2] = D_L01_002B1C60[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B23D0[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B23D0[i][0];
+        if (D_L01_002B2800[i] & 0xFF000000) {
+            alpha = (s32)((f32)D_L01_001DD12F[0] * opacity);
+            if (alpha < 1) alpha = 1;
+            D_L01_002B2800[i] = (alpha << 24) | D_L01_001DD128;
+        } else {
+            D_L01_002B2800[i] = D_L01_001DD128;
+        }
+    }
+    func_003D3A24(D_L01_001DD0FC[0], positions, D_L01_001DD114[0], uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 148; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = -D_L01_002B1570[i][1] * D_L01_001DD124;
+        temp.v[2] = D_L01_002B1570[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B1F30[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B1F30[i][0];
+    }
+    func_003D3A24(D_L01_001DD0F8, positions, D_L01_001DD110, uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 60; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = -D_L01_002B1C60[i][1] * D_L01_001DD124;
+        temp.v[2] = D_L01_002B1C60[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B23D0[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B23D0[i][0];
+    }
+    func_003D3A24(D_L01_001DD0FC[0], positions, D_L01_001DD114[0], uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 148; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = D_L01_002B1570[i][1] * D_L01_001DD124;
+        temp.v[2] = -D_L01_002B1570[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B1F30[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B1F30[i][0];
+    }
+    func_003D3A24(D_L01_001DD0F8, positions, D_L01_001DD110, uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 60; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = D_L01_002B1C60[i][1] * D_L01_001DD124;
+        temp.v[2] = -D_L01_002B1C60[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B23D0[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B23D0[i][0];
+    }
+    func_003D3A24(D_L01_001DD0FC[0], positions, D_L01_001DD114[0], uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 148; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = -D_L01_002B1570[i][1] * D_L01_001DD124;
+        temp.v[2] = -D_L01_002B1570[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B1F30[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B1F30[i][0];
+    }
+    func_003D3A24(D_L01_001DD0F8, positions, D_L01_001DD110, uv, 1);
+    }
+    {
+    s32 i;
+    for (i = 0; i < 60; ++i) {
+        temp.v[0] = 0.0f;
+        temp.v[1] = -D_L01_002B1C60[i][1] * D_L01_001DD124;
+        temp.v[2] = -D_L01_002B1C60[i][0] * D_L01_001DD124;
+        temp.v[3] = 1.0f;
+        func_0038D028(&temp, &temp, transform);
+        MeshStorePoint_0033F920(&positions[i], &temp);
+        uv[i][0] = D_L01_002B23D0[i][1] + D_L01_001DD11C;
+        uv[i][1] = D_L01_002B23D0[i][0];
+    }
+    func_003D3A24(D_L01_001DD0FC[0], positions, D_L01_001DD114[0], uv, 1);
+    }
+}
+/* localdecomp:end func_L01_0033F920 */
