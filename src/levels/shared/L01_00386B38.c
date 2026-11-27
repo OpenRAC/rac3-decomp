@@ -482,7 +482,85 @@ Moby_00389B00 *func_L01_00389B00(s128 *position, void *direction, s128 *rotation
 }
 /* localdecomp:end func_L01_00389B00 */
 
-INCLUDE_ASM("asm/levels", func_L01_00389C28);
+/* localdecomp:start func_L01_00389C28 */
+#include "vu0.h"
+typedef struct { vu0_v4 old, normal, copy, center, spawn; } Work_00389C28;
+extern u8 D_L01_001D66B0[] __attribute__((section(".sdata")));
+extern u8 *D_L01_0022116C[];
+extern u8 *D_L01_00221098[];
+void func_L01_00389C28(u8 *obj) {
+    extern void func_003C5180(void *, void *, s32);
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    extern s32 func_0038CAD0(void *);
+    extern void func_003C2880(u8 *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_00382468(s32);
+    extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+    extern void func_L01_0038A0F8(void *);
+    extern void func_L01_00404A10(void (*)(void *), void *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    Work_00389C28 w;
+    u8 *vars=*(u8 **)(obj+0x68);
+    u8 *p;
+    s32 spin, life, i;
+    f32 t, angle, size;
+    *(vu0_q *)&w.old=*(vu0_q *)(obj+0x10);
+    func_003C5180(obj+0x10,&w.normal,1);
+    *(vu0_q *)&w.copy=*(vu0_q *)(obj+0x10);
+    if (func_L01_004CB2D8()) {
+        func_L01_004CAB30(obj+0x10,obj+0x10);
+        func_L01_004CAB30(vars+0x50,vars+0x50);
+        func_L01_004CAB30(vars,vars);
+    }
+    if (obj[0x20]==0) {
+        vec_add_ab(vars+0x50, vars+0x50, vars+0x20);
+        if (func_0038CAD0(vars+0x38)) {
+            func_003C2880(obj);
+            return;
+        }
+        func_0038CF68(&w.center,vars+0x20,-0.5f);
+        vec_add_ab(&w.center, obj+0x10, &w.center);
+        spin=func_00382468(255);
+        func_L01_004CB2D8();
+        p=func_L01_0046FB40(&w.center,D_L01_001D66B0,2,0x802020,spin,32,16,420000.0f,420000.0f,0.0f,2);
+        if (p) p[2]=*D_L01_0022116C[0];
+        spin=(spin+128)%255;
+        p=func_L01_0046FB40(&w.center,D_L01_001D66B0,2,0x802020,spin,32,16,420000.0f,420000.0f,0.0f,2);
+        if (p) p[2]=*D_L01_0022116C[0];
+        func_L01_00404A10(func_L01_0038A0F8,obj);
+        for (i=1;i>=0;i--) {
+            u8 *first;
+            u8 *second;
+            t=func_003824E0(0.0f,1.0f);
+            func_0038CDF8(&w.spawn,vars,&w.center,t);
+            spin=func_00382468(255);
+            angle=-(*(f32 *)(vars+0x60)*180.0f/3.1415927f);
+            t*=20.0f;
+            t-=angle;
+            angle*=0.01f;
+            life=t;
+            size=1.8f-angle*5.0f;
+            if (life>=10) life=9;
+            else if (life<2) life=2;
+            w.spawn.x+=func_L01_00443A18(0.0f,0.04f);
+            w.spawn.y+=func_L01_00443A18(0.0f,0.04f);
+            w.spawn.z+=func_L01_00443A18(0.0f,0.04f);
+            life=(life*5+2)/6;
+            first=func_L01_0046FB40(&w.spawn,vars+0x20,life,0x808080,spin,48,0,size*210000.0f,size*0.2f*210000.0f,0.0f,2);
+            if (first) first[2]=D_L01_00221098[91][1];
+            size*=0.5f;
+            second=func_L01_0046FB40(&w.spawn,vars+0x20,life,0x808080,spin,48,0,size*210000.0f,size*0.2f*210000.0f,0.0f,2);
+            if (second) second[2]=D_L01_00221098[91][1];
+        }
+    }
+    if (*(f32 *)(obj+0x10)<2.0f || *(f32 *)(obj+0x10)>1021.0f ||
+        *(f32 *)(obj+0x14)<2.0f || *(f32 *)(obj+0x14)>1021.0f ||
+        *(f32 *)(obj+0x18)<2.0f || *(f32 *)(obj+0x18)>1021.0f) func_003C2880(obj);
+}
+/* localdecomp:end func_L01_00389C28 */
 
 /* localdecomp:start func_L01_0038A0F8 */
 #include "vu0.h"
@@ -826,7 +904,140 @@ void func_L01_0038ACE8(Obj3899C0 *obj) {
 }
 /* localdecomp:end func_L01_0038ACE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0038AD40);
+/* localdecomp:start func_L01_0038AD40 */
+#include "vu0.h"
+typedef int u128_4C4A18 __attribute__((mode(TI)));
+typedef struct {
+    u128_4C4A18 pos;
+    f32 x10;
+    f32 x14;
+    f32 x18;
+    u8 *x1C;
+} E_4C4A18;
+typedef struct {
+    u8 pad0[872];
+    s16 x368;
+    u8 pad36A[8790];
+    u8 *x25C0;
+} S_4C4A18;
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec4_004C4AD8;
+typedef struct {
+    u8 p0[0x10];
+    Vec4_004C4AD8 x10;
+} O_004C4AD8;
+typedef struct {
+    u8 p0[0xE0];
+    Vec4_004C4AD8 xE0;
+} P_004C4AD8;
+typedef struct {
+    Vec4_004C4AD8 x0;
+    f32 x10;
+    f32 x14;
+    f32 x18;
+    O_004C4AD8 *x1C;
+} T_004C4AD8;
+typedef struct { u8 pad[0x368]; s16 state; u8 gap[0x25C0-0x36A]; u8 *camera; s32 mode; u8 gap2[0x25ED-0x25C8]; u8 disabled; } Hero_004C7438;
+extern S_4C4A18 D_001A4BE0_0038AD40;
+extern s32 D_L01_001D6740;
+extern s32 D_L01_001D673C;
+extern u8 *D_001D52FC;
+extern Vec4_004C4AD8 D_L01_001E29E0_0038AD40;
+void func_L01_0038AD40(Vec4_004C4AD8 *out, Vec4_004C4AD8 *pos, u8 *moby, u8 *camera,
+                     f32 minimum, f32 maximum, f32 speed, f32 acceleration) {
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003C5180(u128_4C4A18 *, E_4C4A18 *, s32);
+    extern void func_L01_005003D0(s32, s32);
+    extern s32 func_003A3BB8(s32, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038CE68(Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern void func_0038CE90(Vec4_004C4AD8 *, Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D098(f32);
+    extern void func_0038D810(Vec4_004C4AD8 *, Vec4_004C4AD8 *);
+    extern void func_0038D5F0(Vec4_004C4AD8 *, Vec4_004C4AD8 *, Vec4_004C4AD8 *);
+    extern f32 func_0038CEA8(void *);
+    extern f32 func_L01_004451A8(f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern u8 *func_00382348(void *);
+    Vec4_004C4AD8 v, temp, direction, target, delta, correction;
+    Vec4_004C4AD8 from, to, accel, result;
+    Vec4_004C4AD8 basis[4];
+    Vec4_004C4AD8 quat, axis, unit, rotated[3], matrix[3], point;
+    f32 distance, denominator, plane, angle, t, inv;
+    f32 *data;
+    if (camera) {
+        *(u128_4C4A18 *)&basis[0] = *(u128_4C4A18 *)(camera+0x10);
+        *(u128_4C4A18 *)&basis[1] = *(u128_4C4A18 *)(camera+0xC0);
+        *(u128_4C4A18 *)&basis[2] = *(u128_4C4A18 *)(camera+0xD0);
+        *(u128_4C4A18 *)&basis[3] = *(u128_4C4A18 *)(camera+0xE0);
+    } else {
+        *(u128_4C4A18 *)&basis[0] = *(u128_4C4A18 *)(D_001A4BE0_0038AD40.x25C0+0x10);
+        *(u128_4C4A18 *)&basis[1] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0038AD40+0x6C0);
+        *(u128_4C4A18 *)&basis[2] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0038AD40+0x6D0);
+        *(u128_4C4A18 *)&basis[3] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0038AD40+0x6E0);
+    }
+    out->x=1; out->y=0; out->z=0; out->w=0;
+    if (D_001A4BE0_0038AD40.x368 && !D_L01_001D6740)
+        func_0038CE20(&direction,(Vec4_004C4AD8 *)(D_001A4BE0_0038AD40.x25C0+0xE0),-1.0f);
+    else func_003C5180((u128_4C4A18 *)&basis[0],(E_4C4A18 *)&direction,0);
+    distance=maximum;
+    if (!moby) {
+        if (((Hero_004C7438 *)&D_001A4BE0_0038AD40)->mode==1) func_L01_005003D0(29,1);
+        if ((*(s32 *)(D_001D52FC+0x1A0)&func_003A3BB8(4,0)) && !((Hero_004C7438 *)&D_001A4BE0_0038AD40)->disabled) {
+            func_0038CF68(&unit,&D_L01_001E29E0_0038AD40,1.0f);
+            angle=func_0038CE68(&unit,(T_004C4AD8 *)&direction);
+            func_0038CE20(&temp,&direction,angle);
+            vec_sub_ab(&v, &unit, &temp);
+            func_0038CF68(&v,&v,1.0f);
+            func_0038CE90(&axis,&unit,(T_004C4AD8 *)&v);
+            angle=func_0038CE68(&unit,(T_004C4AD8 *)&v)*0.5f;
+            func_0038CE20(&quat,&axis,func_0038D0B0(angle));
+            quat.w=func_0038D098(angle);
+            func_0038D810(&quat,matrix);
+            func_0038D5F0(rotated,matrix,&D_L01_001E29E0_0038AD40);
+            plane=-func_0038CE68(&basis[0],(T_004C4AD8 *)&direction);
+            func_0038CF68(&point,&D_L01_001E29E0_0038AD40,1.0f);
+            denominator=func_0038CE68(&direction,(T_004C4AD8 *)&point);
+            if (denominator>0.0f) {
+                func_0038CE20(&point,&point,(func_0038CE68(&direction,(T_004C4AD8 *)((u8 *)&D_L01_001E29E0_0038AD40-0x20))+plane)/denominator);
+                vec_sub_ba(&point, (u8 *)&D_L01_001E29E0_0038AD40 - 0x20, &point);
+                vec_sub_ba(&point, &point, (u8 *)&D_L01_001E29E0_0038AD40 - 0x20);
+                angle=func_0038CE68(&point,(T_004C4AD8 *)&direction);
+                func_0038CE20(&temp,&direction,angle);
+                vec_sub_ab(&v, &point, &temp);
+                distance=func_0038CEA8(&v);
+                if (maximum<distance) distance=maximum;
+                else if (distance<minimum) distance=minimum;
+            }
+            distance=maximum*func_L01_004451A8(distance/maximum);
+            func_0038D000(out,out,rotated);
+        } else func_0038D000(out,out,&basis[1]);
+        func_0038CF68(out,out,distance);
+        vec_add_ba(&target, out, &basis[0]);
+    } else {
+        *(u128_4C4A18 *)&target=*(u128_4C4A18 *)(moby+0x10);
+    }
+    vec_sub_ab(&delta, &target, pos);
+    angle=func_0038CE68(&delta,(T_004C4AD8 *)&direction);
+    func_0038CE20(&temp,&direction,angle);
+    vec_sub_ba(&v, &delta, &temp);
+    func_0038CF68(out,&v,speed);
+    t=func_0038CEA8(&v)/speed;
+    inv=1.0f/t;
+    angle=func_0038CE68(pos,(T_004C4AD8 *)&direction);
+    func_0038CE20(&from,&direction,angle);
+    angle=func_0038CE68(&target,(T_004C4AD8 *)&direction);
+    func_0038CE20(&to,&direction,angle);
+    func_0038CE20(&accel,&direction,acceleration*(t*t)*0.5f);
+    vec_sub_ba(&result, &from, &to);
+    vec_add_ba(&result, &result, &accel);
+    func_0038CE20(&result,&result,-1.0f);
+    func_0038CE20(&correction,&result,inv);
+    vec_add_ab(out, out, &correction);
+}
+/* localdecomp:end func_L01_0038AD40 */
 
 /* localdecomp:start func_L01_0038B280 */
 #include "vu0.h"

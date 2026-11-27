@@ -534,7 +534,327 @@ void func_L01_0036E120(u8 *a0) {
 }
 /* localdecomp:end func_L01_0036E120 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036E578);
+/* localdecomp:start func_L01_0036E578 */
+#include "vu0.h"
+typedef struct {
+    u8 pad_0[0x80];
+    vu0_v4 pos;                /* 0x80 */
+    u8 pad_90[0x6F0 - 0x90];
+    vu0_v4 aim;                /* 0x6F0 */
+    u8 pad_700[0xBD8 - 0x700];
+    u8 *last_lockon;           /* 0xBD8 */
+    u8 pad_BDC[0x1210 - 0xBDC];
+    s32 fire_button;           /* 0x1210 */
+    u8 pad_1214[0x1220 - 0x1214];
+    s32 i1220;                 /* 0x1220 */
+    u8 pad_1224[0x1430 - 0x1224];
+    u8 *lockon_target;         /* 0x1430 */
+    u8 pad_1434[0x16B0 - 0x1434];
+    s32 i16B0;                 /* 0x16B0 */
+    u8 pad_16B4[0x16D4 - 0x16B4];
+    s32 i16D4;                 /* 0x16D4 */
+    s32 i16D8;                 /* 0x16D8 */
+    u8 pad_16DC[0x25C0 - 0x16DC];
+    u8 *moby;                  /* 0x25C0 */
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x25E9 - 0x25C8];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x25ED - 0x25EA];
+    u8 no_firing;              /* 0x25ED */
+    u8 pad_25EE[0x2874 - 0x25EE];
+    s16 h2874;                 /* 0x2874 */
+    u8 pad_2876[0x28BC - 0x2876];
+    s32 aiming_fire_wait;      /* 0x28BC */
+} Hero_0036E578;
+typedef struct {
+    f32 timer;                 /* 0x00 */
+    u8 pad_4[0xC - 4];
+    f32 spin;                  /* 0x0C */
+    u8 *target;                /* 0x10 */
+    s32 lose_wait;             /* 0x14 */
+    f32 radius;                /* 0x18 */
+    s16 light;                 /* 0x1C */
+    s16 flash;                 /* 0x1E */
+    u8 *last;                  /* 0x20 */
+    s32 lock_wait;             /* 0x24 */
+    s32 aiming;                /* 0x28 */
+    s32 rumble;                /* 0x2C */
+} Vars_0036E578;
+typedef struct { u8 pad_0; u8 kind; u8 pad_2[0x50 - 2]; f32 rate; u8 pad_54[0xF0 - 0x54]; } Row_0036E578;
+typedef struct { f32 r, g, b, pad; vu0_v4 pos; } Light_0036E578;
+extern Hero_0036E578 D_001A4BE0_0036E578;
+extern u8 *D_001D52FC;
+extern u8 D_00142A60[];
+extern s32 D_L01_001D6694;
+extern s32 D_L01_001E1D24;
+extern u8 D_L01_002B3940[];
+extern Row_0036E578 D_L01_002C5600_0036E578[];
+extern u8 *D_L01_001EEA80[];
+extern Light_0036E578 D_L01_001F1B40[];
+extern vu0_v4 D_L01_001E29C0_0036E578;
+
+void func_L01_0036E578(u8 *self)
+{
+    extern s32 func_L01_0040E050(void *);
+    extern void func_L01_005003D0(s32, s32);
+    extern void func_L01_00444F38(u8 *, s32, s32, s32, s32);
+    extern u32 func_L01_004CB1F0(f32, f32);
+    extern void func_L01_003F6F20(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+    extern u8 *func_L01_00450BB0(void *, void *, f32, f32, f32, f32, f32, s32);
+    extern u8 *func_00382348(void *);
+    extern s32 func_0038CAD0(void *);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_L01_004CB128(void *, void *, s32);
+    extern void func_003C3A10(void *, s32, s32, s32);
+    extern s32 func_L01_005118D0(s32, s32);
+    extern s32 func_003D4D00(void *, s32, void *, s32, f32);
+    extern s32 func_003C4B50(void *);
+    extern s32 func_003A52A0(s32, s32, void *);
+    extern void func_L01_004EA7D8(s32);
+    extern s32 func_L01_003F2058(void *, s32);
+    extern s32 func_L01_005119E0(s32);
+    extern void func_L01_003F2278(s32, s32);
+    extern s32 func_L01_00424CB0(void *, f32, f32, f32, f32, f32);
+    extern void func_0038CB00(void *);
+    extern void func_L01_00424D88(s32);
+    extern void func_L01_0036F120(u8 *);
+    Vars_0036E578 *v;
+    u8 *target;
+    u8 *info;
+    u8 *c;
+    s32 i;
+    s32 n;
+    s32 can_fire;
+    f32 d;
+    f32 cone;
+    f32 cone2;
+    f32 cr;
+    f32 cg;
+    f32 cb;
+    vu0_v4 a;
+    vu0_v4 b;
+    vu0_v4 w;
+    vu0_v4 pos;
+    vu0_v4 off;
+    vu0_v4 off2;
+
+    v = *(Vars_0036E578 **)(self + 0x68);
+    if (self[0x20] == 0) {
+        self[0x20] = 1;
+        v->light = -1;
+        v->lock_wait = 4;
+        v->rumble = -1;
+        v->flash = 0;
+        v->target = 0;
+        v->last = 0;
+        v->aiming = 0;
+    }
+    if ((D_L01_002C5600_0036E578 + D_001425C0[0x3F])->kind >= 2)
+        D_00142A60[0x3F] |= 2;
+    if ((D_L01_002C5600_0036E578 + D_001425C0[0x3F])->kind >= 3)
+        D_00142A60[0x3F] |= 0x20;
+    func_L01_0036DEB0(self);
+    func_L01_0040E050(&v->timer);
+    if (D_001A4BE0_0036E578.state == 1)
+        func_L01_005003D0(0x1D, 1);
+    if (self[0x42] == self[0x43] && (self[0x60] & 2))
+        func_L01_00444F38(self, 1, 0, 2, 0);
+    if (D_001A4BE0_0036E578.lockon_target != 0)
+        D_001A4BE0_0036E578.last_lockon = D_001A4BE0_0036E578.lockon_target;
+    {
+        u8 kind = (D_L01_002C5600_0036E578 + D_001425C0[0x3F])->kind;
+        if (kind == 2)
+            *(s16 *)(self + 0x7C) = 3;
+        else if (kind == 1)
+            *(s16 *)(self + 0x7C) = kind;
+        else if (kind >= 3)
+            *(s16 *)(self + 0x7C) = 7;
+    }
+    if ((D_001A4BE0_0036E578.state == 0x1D && (*(u16 *)(D_001A4BE0_0036E578.moby + 0x34) & 1)) ||
+        D_001A4BE0_0036E578.i16B0 != 0) {
+        if (v->aiming == 0) {
+            v->target = 0;
+            v->lock_wait = 4;
+        }
+        v->aiming = 1;
+        func_L01_003F6F20(0, self, func_L01_004CB1F0(0.97f, 150.0f), 0, 0x44, -1, 4, 1.0f, 0.0f, 90.0f, 0.5f, 0.5f,
+                          40.0f, 40.0f);
+        cone = cone2 = 0.06981317f;
+        if (D_001A4BE0_0036E578.h2874 != 0 && D_001A4BE0_0036E578.i16B0 != 2) {
+            func_0038CE20(&a, self + 0xD0, -1.0f);
+        } else {
+            vu0_v4 *p = &D_001A4BE0_0036E578.aim;
+            a = *p;
+        }
+        func_0038CE20(&b, D_001A4BE0_0036E578.moby + 0xE0, 0.75f);
+        vec_add_ab(&b, &D_001A4BE0_0036E578.pos, &b);
+    } else {
+        D_001A4BE0_0036E578.i16D4 = 0;
+        D_001A4BE0_0036E578.i16D8 = 0;
+        v->aiming = 0;
+        cone = 0.31415927f;
+        cone2 = 0.29670596f;
+        if (D_001A4BE0_0036E578.h2874 != 0 && D_001A4BE0_0036E578.i16B0 != 2) {
+            func_0038CE20(&a, self + 0xD0, -1.0f);
+        } else {
+            vu0_v4 *p = &D_001A4BE0_0036E578.aim;
+            a = *p;
+        }
+        func_0038CE20(&b, D_001A4BE0_0036E578.moby + 0xE0, 0.75f);
+        vec_add_ab(&b, &D_001A4BE0_0036E578.pos, &b);
+    }
+    target = func_L01_00450BB0(&b, &a, cone, cone2, 30.0f, cone, cone, 1);
+    if (v->target != 0) {
+        info = func_00382348(v->target);
+        c = v->target;
+        if (c == 0 || c[0x20] == 0xFE || c[0x20] == 0xFD || *(u8 **)(c + 0x24) == 0 ||
+            (*(u8 **)(c + 0x24))[0x46] != 5 || (info != 0 && *(f32 *)info <= 0.0f) || c[0x31] == 0 ||
+            D_001A4BE0_0036E578.h2874 != 0) {
+            v->target = 0;
+            v->lock_wait = 4;
+        } else if (target != v->target) {
+            if (func_0038CAD0(&v->lose_wait) != 0) {
+                v->target = 0;
+                v->lock_wait = 4;
+            }
+        } else {
+            v->lose_wait = 4;
+            if (D_001A4BE0_0036E578.i16B0 == 0) {
+                d = func_0038CF00(&D_L01_001E29C0_0036E578, target + 0x10) / 150.0f;
+                func_L01_004CB128(&w, target, 0);
+                v->spin = func_0038DAB8(v->spin, 0.034906585f);
+                func_L01_003F6F20(0, self, 0xFF0FFF0F, &w, 0x26, -1, 4, fabs_asm(0.9f - d * 0.65f), -v->spin, 90.0f,
+                                  0.5f, 0.5f, 40.0f, 40.0f);
+            }
+            D_001A4BE0_0036E578.last_lockon = target;
+        }
+    } else if (target == v->last) {
+        if (func_0038CAD0(&v->lock_wait) != 0) {
+            v->target = target;
+            v->lose_wait = 4;
+            {
+                u8 *ri = func_00382348(target);
+                if (ri == 0)
+                    v->radius = 0.1f;
+                else
+                    v->radius = *(f32 *)(ri + 0x10);
+            }
+        }
+    } else {
+        v->lock_wait = 4;
+    }
+    v->last = target;
+    target = v->target;
+    can_fire = 1;
+    if (D_001A4BE0_0036E578.state == 0x1D) {
+        if (func_0038CAD0(&D_001A4BE0_0036E578.aiming_fire_wait) == 0)
+            can_fire = 0;
+    } else {
+        D_001A4BE0_0036E578.aiming_fire_wait = 0x21;
+    }
+    if (D_L01_001D6694 != 2 && v->timer == 0.0f && D_001A4BE0_0036E578.no_firing == 0 && self[0x42] < 2 &&
+        D_001A4BE0_0036E578.i1220 >= 0x17 &&
+        ((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0036E578.fire_button) ||
+         ((*(s32 *)(D_001D52FC + 0x1A0) & 8) && D_001A4BE0_0036E578.state == 0x1D)) &&
+        can_fire) {
+        if (self[0x43] == 0)
+            func_003C3A10(self, 1, 0, 3);
+        if (func_L01_005118D0(-1, 1)) {
+            D_L01_001E1D24 = 1;
+            if (target == 0) {
+                func_0038CE20(&pos, self + 0xD0, -1.0f);
+                vec_add_ab(&pos, &pos, self + 0x10);
+                func_0038CE20(&off, self + 0xC0, 0.275f);
+                vec_add_ab(&pos, &pos, &off);
+                n = func_003D4D00(&pos, 1, D_001A4BE0_0036E578.moby, 0, 1.0f);
+                if (n != 0) {
+                    for (i = 0; i < n; i++) {
+                        u8 *m = D_L01_001EEA80[i];
+                        u8 *mi = func_00382348(m);
+                        u8 *t;
+                        if (m[0x31] != 0 && *(s16 *)(m + 0x32) > 0 && m != 0 && m[0x20] != 0xFE &&
+                            m[0x20] != 0xFD && *(s16 *)(m + 0xAA) != 0xC87 && *(s16 *)(m + 0xAA) != 0xECC &&
+                            *(s16 *)(m + 0xAA) != 0x1D61 && *(s16 *)(m + 0xAA) != 0x1BAE && mi != 0 &&
+                            (0.0f < *(f32 *)mi || func_003C4B50(m) != 0)) {
+                            t = *(u8 **)(m + 0x24);
+                            if (t == 0 || t[0x46] != 5) {
+                                target = D_L01_001EAA00.hit;
+                                v->target = target;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            v->flash = 0xC;
+            func_L01_0036E120(self);
+            func_003A52A0(0, 0, self);
+            func_L01_0036F120(self);
+            func_L01_004EA7D8(-1);
+            func_003C3A10(self, 2, 0, 0);
+            if ((D_L01_002C5600_0036E578 + D_001425C0[0x3F])->kind >= 4)
+                *(f32 *)(self + 0x48) = 2.0f;
+            v->rumble = func_L01_003F2058(D_L01_002B3940, 0);
+            v->timer = 1.0f / (D_L01_002C5600_0036E578 + D_001425C0[0x3F])->rate;
+        } else if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_0036E578.fire_button) || D_L01_001E1D24 == 1) {
+            func_003A52A0(1, 0, self);
+            D_L01_001E1D24 = 0;
+        }
+        if (!(((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0036E578.fire_button) ||
+               ((*(s32 *)(D_001D52FC + 0x1A0) & 8) && D_001A4BE0_0036E578.state == 0x1D)) &&
+              func_L01_005119E0(-1) && D_001A4BE0_0036E578.b25E9 != 0) &&
+            v->rumble >= 0) {
+            func_L01_003F2278(v->rumble, 0);
+            v->rumble = -1;
+        }
+    }
+    if (self[0x42] != 2 && v->flash > 0) {
+        n = v->flash;
+        if (n > 10) {
+            f32 t = (f32)(12 - n);
+            cr = t * 0.5f;
+            cb = t * 0.5f * 0.5f;
+            cg = t * 0.8f * 0.5f;
+        } else {
+            f32 t = (f32)n;
+            cr = t * 0.1f;
+            cg = t * 0.8f * 0.1f;
+            cb = t * 0.5f * 0.1f;
+        }
+        if (D_001A4BE0_0036E578.h2874 != 0) {
+            func_0038CE20(&off, self + 0xD0, -1.0f);
+            func_003C2F58((s32)self, 0, &pos);
+        } else {
+            off = D_001A4BE0_0036E578.aim;
+            func_003C2F58((s32)self, 0, &pos);
+        }
+        vec_add_ab(&pos, &pos, &off);
+        func_0038CE20(&off2, D_001A4BE0_0036E578.moby + 0xE0, 0.3f);
+        vec_add_ab(&pos, &pos, &off2);
+        if (v->light == -1) {
+            v->light = func_L01_00424CB0(&pos, 8.0f, 0.0f, cr, cg, cb);
+        } else {
+            Light_0036E578 *l = &D_L01_001F1B40[v->light];
+            l->pos = pos;
+            l->pos.w = 8.0f;
+            l->r = cr;
+            l->g = cg;
+            l->b = cb;
+        }
+        func_0038CB00(&v->flash);
+    } else if (v->light != -1) {
+        func_L01_00424D88(v->light);
+        v->light = -1;
+        v->flash = 0;
+    }
+    if (self[0x43] == 2) {
+        if (v->light != -1)
+            func_L01_00424D88(v->light);
+        v->light = -1;
+        v->flash = 0;
+    }
+}
+/* localdecomp:end func_L01_0036E578 */
 
 LINKER_REMNANT("asm/levels", func_L01_0036F118);
 
@@ -593,7 +913,203 @@ void func_L01_0036F120(u8 *moby) {
 }
 /* localdecomp:end func_L01_0036F120 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036F330);
+/* localdecomp:start func_L01_0036F330 */
+#include "vu0.h"
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec_0036F330;
+typedef struct { s32 w[6]; } Skip_0036F330;
+typedef struct {
+    u8 pad_0[0x1D8];
+    s32 i1D8;                  /* 0x1D8 */
+    u8 pad_1DC[0x6F0 - 0x1DC];
+    Vec_0036F330 aim;          /* 0x6F0 */
+    u8 pad_700[0x1210 - 0x700];
+    s32 fire_button;           /* 0x1210 */
+    u8 pad_1214[0x1220 - 0x1214];
+    s32 i1220;                 /* 0x1220 */
+    u8 pad_1224[0x1430 - 0x1224];
+    u8 *lockon_target;         /* 0x1430 */
+    u8 pad_1434[0x25C0 - 0x1434];
+    u8 *moby;                  /* 0x25C0 */
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x25E9 - 0x25C8];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x25ED - 0x25EA];
+    u8 no_firing;              /* 0x25ED */
+    u8 pad_25EE[0x28BC - 0x25EE];
+    s32 aiming_fire_wait;      /* 0x28BC */
+} Hero_0036F330;
+typedef struct {
+    u8 pad_0[0x10];
+    u8 landing[0x10];          /* 0x10 */
+    f32 timer;                 /* 0x20 */
+    s32 w24;                   /* 0x24 */
+    s32 w28;                   /* 0x28 */
+    s32 rumble;                /* 0x2C */
+} Vars_0036F330;
+typedef struct {
+    u8 pad_0[0x10];
+    Vec_0036F330 pos;          /* 0x10 */
+    u8 phase;                  /* 0x20 */
+    u8 pad_21[0x42 - 0x21];
+    u8 b42;                    /* 0x42 */
+    u8 b43;                    /* 0x43 */
+    u8 pad_44[0x60 - 0x44];
+    u8 b60;                    /* 0x60 */
+    u8 pad_61[0x68 - 0x61];
+    Vars_0036F330 *vars;       /* 0x68 */
+    u8 pad_6C[0x7C - 0x6C];
+    s16 h7C;                   /* 0x7C */
+} Moby_0036F330;
+typedef struct { u8 pad_0; u8 kind; u8 pad_2[0x50 - 2]; f32 rate; u8 pad_54[0xF0 - 0x54]; } Row_0036F330;
+extern Hero_0036F330 D_001A4BE0_0036F330;
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern u8 D_001425C0[];
+extern u8 D_00142A60[];
+extern u8 D_L01_001DAFF0_0036F330;
+extern s32 D_L01_001D673C_0036F330;
+extern s32 D_L01_001E1D28;
+extern f32 D_L01_001DD900;
+__asm__(".extern D_L01_001DD900, 4");
+extern f32 D_L01_001DD904;
+__asm__(".extern D_L01_001DD904, 4");
+extern f32 D_L01_001DD908;
+__asm__(".extern D_L01_001DD908, 4");
+extern f32 D_L01_001DD90C;
+__asm__(".extern D_L01_001DD90C, 4");
+extern Skip_0036F330 D_L01_001DD910;
+extern Skip_0036F330 D_L01_001DD928;
+extern u8 D_L01_002B39C0[];
+extern Row_0036F330 D_L01_002C5600_0036F330[];
+
+void func_L01_0036F330(Moby_0036F330 *m)
+{
+    extern void func_003C2F58(s32, s32, void *);
+    extern void func_L01_00444F38(u8 *, s32, s32, s32, s32);
+    extern f32 *func_00382348(void *);
+    extern f32 func_0038CF00(void *, void *);
+    extern s32 func_0038CAD0(void *);
+    extern u8 *func_L01_004501E8(void *, void *, f32, f32, f32, f32, void *, s32, s32, s32, f32, s32, void *, s32, s32, s32);
+    extern void func_L01_0036FA50(void *, void *, void *, void *, f32, f32, f32, f32);
+    extern s32 func_L01_004C7A18(f32, void *, void *, void *, void *, void *, s32, s32);
+    extern void func_L01_004EAA80(void);
+    extern s32 func_L01_005118D0(s32, s32);
+    extern void func_L01_004EA7D8(s32);
+    extern s32 func_L01_003F2058(void *, s32);
+    extern void func_0038D890(void *, void *, void *, f32);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_00362610(void *, void *, void *, s32, s32);
+    extern void func_003A52A0(s32, s32, void *);
+    extern s32 func_L01_005119E0(s32);
+    extern void func_L01_003F2278(s32, s32);
+    extern void func_L01_0040E050(void *);
+    extern void func_L01_00404A10(void *, void *);
+    extern void func_L01_0036F9F8();
+    Vars_0036F330 *vars = m->vars;
+    u8 *target;
+    Vec_0036F330 pos;
+    union { Skip_0036F330 skip; Vec_0036F330 dir; } u;
+    s32 at;
+    s32 at2;
+    s32 can_fire;
+    u8 kind;
+
+    func_003C2F58((s32)m, 0, &pos);
+    if (m->b42 == m->b43 && (m->b60 & 2))
+        func_L01_00444F38((u8 *)m, 1, 0, 2, 0);
+    target = 0;
+    if ((D_L01_002C5600_0036F330 + D_001425C0[0x77])->kind >= 2)
+        D_00142A60[0x77] |= 0x20;
+    if (D_001A4BE0_0036F330.lockon_target != 0 && D_001A4BE0_0036F330.lockon_target[0x20] != 0xFE &&
+        D_001A4BE0_0036F330.lockon_target[0x20] != 0xFD) {
+        f32 *health = func_00382348(D_001A4BE0_0036F330.lockon_target);
+        if (health != 0 && 0.0f < *health &&
+            func_0038CF00(D_001A4BE0_0036F330.lockon_target + 0x10, &m->pos) < D_L01_001DD900)
+            target = D_001A4BE0_0036F330.lockon_target;
+    }
+    kind = (D_L01_002C5600_0036F330 + D_001425C0[0x77])->kind;
+    if (kind == 2)
+        m->h7C = 3;
+    else if (kind == 1)
+        m->h7C = kind;
+    else if (kind >= 3)
+        m->h7C = 7;
+    can_fire = 1;
+    if (D_001A4BE0_0036F330.state == 0x1D || D_001A4BE0_0036F330.state == 1) {
+        if (func_0038CAD0(&D_001A4BE0_0036F330.aiming_fire_wait) == 0)
+            can_fire = 0;
+    } else {
+        D_001A4BE0_0036F330.aiming_fire_wait = 0x21;
+        if (target == 0) {
+            u.skip = D_L01_001DD910;
+            target = func_L01_004501E8(&pos, &D_001A4BE0_0036F330.aim, 0.39269909262657166f, 1.5707963705062866f,
+                                       11.100000381469727f, 0.0f, &at, 0, 0, 0, 0.0f, 0, &u.skip, 1, -1, 0);
+        }
+    }
+    if (D_L01_001DAFF0_0036F330 != 0 && D_001D545C == 5) {
+        u.skip = D_L01_001DD928;
+        target = func_L01_004501E8(&pos, &D_001A4BE0_0036F330.aim, 0.8726646304130554f, 1.0471975803375244f,
+                                   30.0f, 0.0f, &at2, 0, 0, 0, 0.0f, 0, &u.skip, 1, -1, 0);
+        D_L01_001DD900 = 30.0f;
+        D_L01_001DD90C = 20.0f;
+    } else if (D_L01_001D673C_0036F330 != 0) {
+        D_L01_001DD900 = 6.0f;
+        D_L01_001DD90C = 12.5f;
+    } else {
+        D_L01_001DD900 = 12.0f;
+        D_L01_001DD90C = 12.5f;
+    }
+    func_L01_0036FA50(&u.dir, &pos, target, 0, D_L01_001DD904, D_L01_001DD900,
+                      D_L01_001DD90C * 0.020000001415610313f, D_L01_001DD908 * 0.0004000000189989805f);
+    vars->w24 = func_L01_004C7A18(0.0052000004798173904f, &pos, &u.dir, vars, vars->landing, m, 0, 0);
+    switch (m->phase) {
+    case 0:
+        m->phase = 1;
+        vars->rumble = -1;
+        vars->timer = 0.0f;
+        vars->w28 = 0;
+    case 1:
+        if (D_001A4BE0_0036F330.i1D8 >= 0x12)
+            func_L01_004EAA80();
+        if (can_fire && vars->timer == 0.0f && D_001A4BE0_0036F330.no_firing == 0 &&
+            (*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0036F330.fire_button) &&
+            D_001A4BE0_0036F330.i1220 >= 0x13) {
+            if (func_L01_005118D0(-1, 1)) {
+                D_L01_001E1D28 = 1;
+                func_L01_004EA7D8(-1);
+                vars->rumble = func_L01_003F2058(D_L01_002B39C0, 0);
+                func_L01_00444F38((u8 *)m, 2, 0, 2, 0);
+                if (target != 0 && *(s16 *)(target + 0xAA) == 0x1A13 && D_L01_001DAFF0_0036F330 != 0) {
+                    vec_sub_ab(&u.dir, target + 0x10, &pos);
+                    func_0038CF68(&u.dir, &u.dir, 0.7000000476837158f);
+                    func_0038D890(&u.dir, &u.dir, D_001A4BE0_0036F330.moby + 0xD0, -0.15707963705062866f);
+                }
+                if (D_L01_001DAFF0_0036F330 == 0) {
+                    if (func_0038CEA8(&u.dir) > 0.6000000238418579f)
+                        func_0038CF68(&u.dir, &u.dir, 0.4400000274181366f);
+                }
+                func_L01_00362610(&pos, &u.dir, m, 0, 0);
+                func_003A52A0(0, 0, m);
+                vars->timer = 1.0f / (D_L01_002C5600_0036F330 + D_001425C0[0x77])->rate;
+            } else if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_0036F330.fire_button) || D_L01_001E1D28 == 1) {
+                func_003A52A0(1, 0, m);
+                D_L01_001E1D28 = 0;
+            }
+            if (!((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_0036F330.fire_button) && func_L01_005119E0(-1) &&
+                  D_001A4BE0_0036F330.b25E9 != 0) && vars->rumble >= 0) {
+                func_L01_003F2278(vars->rumble, 0);
+                vars->rumble = -1;
+            }
+        }
+        break;
+    }
+    func_L01_0040E050(&vars->timer);
+    func_L01_00404A10(func_L01_0036F9F8, m);
+}
+/* localdecomp:end func_L01_0036F330 */
 
 /* localdecomp:start func_L01_0036F9F8 */
 

@@ -974,7 +974,189 @@ void func_L01_002FBB10(Obj_002FBB10 *obj) {
 }
 /* localdecomp:end func_L01_002FBB10 */
 
-INCLUDE_ASM("asm/levels", func_L01_002FBCD0);
+/* localdecomp:start func_L01_002FBCD0 */
+typedef struct {
+    vu0_v4 vertices[4];
+    u32 colors[4];
+    f32 uv[4][2];
+    unsigned long tag[4];
+} Quad_002FBCD0;
+typedef struct { s32 a, b; } Pair_002FBCD0;
+typedef struct { f32 x, y, z; } Pos_002FBCD0;
+extern u8 D_001A4BE0[];
+extern vu0_v4 D_L01_001E29C0;
+extern vu0_v4 D_L01_001DC360[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001DC3A0[] __attribute__((section(".sdata")));
+extern f32 D_L01_001DC3E0[][2] __attribute__((section(".sdata")));
+extern f32 D_L01_001DC400;
+extern f32 D_L01_001DC404;
+extern f32 D_L01_001DC408;
+extern f32 D_L01_001DC40C;
+__asm__(".extern D_L01_001DC400, 4");
+__asm__(".extern D_L01_001DC360, 8");
+__asm__(".extern D_L01_001DC3A0, 8");
+__asm__(".extern D_L01_001DC3E0, 8");
+__asm__(".extern D_L01_001DC404, 4");
+__asm__(".extern D_L01_001DC408, 4");
+__asm__(".extern D_L01_001DC40C, 4");
+extern Pair_002FBCD0 D_L01_001DC410[];
+extern Pair_002FBCD0 D_L01_001DC418[];
+extern Pos_002FBCD0 D_L01_0026E180[];
+extern vu0_v4 D_L01_002A4400[];
+extern f32 D_L01_002A5040[][2];
+extern u32 D_L01_002A5660[];
+void func_L01_002FBCD0(u8 *self) {
+    extern s32 func_L01_00513EF0(void);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern void func_L01_0043A860(void *, s32, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038D2A0(void *);
+    extern void func_0038D640(void *, void *, void *);
+    extern unsigned long func_00389598(s32);
+    extern void func_003D2DA0(void *, void *, s32);
+    extern void func_003A9440(s32, unsigned long);
+    extern void func_0038C750(void);
+    extern void func_003D3A24(s32, void *, void *, void *, s32);
+    extern f32 func_003824E0(f32, f32);
+    Quad_002FBCD0 quad;
+    vu0_v4 matrix[4];
+    vu0_v4 from;
+    vu0_v4 to;
+    vu0_v4 up;
+    vu0_v4 offset;
+    vu0_v4 view[4];
+    vu0_v4 local[4];
+    vu0_v4 glow[4];
+    unsigned long color;
+    u8 *vars;
+    u8 *game;
+    u8 *target;
+    f32 angle;
+    s32 i;
+    s32 j;
+
+    game = D_001A4BE0;
+    target = *(u8 **)(game + 0x12F0);
+    vars = *(u8 **)(self + 0x68);
+    if (target == 0) {
+        return;
+    }
+    if (*(s16 *)(target + 0xAA) != 0x260 && *(s16 *)(target + 0xAA) != 0x96C) {
+        return;
+    }
+    quad.tag[2] = 0xFF9000000260UL;
+    quad.tag[3] = 0x8000000048UL;
+    quad.tag[0] = 0;
+    if (func_L01_00513EF0() == 2) {
+        angle = func_0038DAB8(*(f32 *)(game + 0x1580), *(s32 *)(vars + 4) ? 1.5707964f : -1.5707964f);
+        offset.x = func_0038D098(angle) * D_L01_001DC408;
+        offset.y = func_0038D0B0(angle) * D_L01_001DC408;
+        offset.z = 0;
+        angle = func_0038DAB8(*(f32 *)(game + 0x1580), 3.1415927f);
+        up.x = func_0038D098(angle) * D_L01_001DC400;
+        up.y = func_0038D0B0(angle) * D_L01_001DC400;
+        up.z = 0;
+        vec_add_ab(&up, &up, game + 0x80);
+        vec_add_ab(&up, &up, &offset);
+        up.z += D_L01_001DC404;
+        to = up;
+        from = up;
+        to.z += D_L01_001DC40C;
+    } else if (*(s32 *)(vars + 4) != 0) {
+        *(Pair_002FBCD0 *)&up = D_L01_001DC410[0];
+        func_L01_0043A860(target, 2, &up, &from);
+    } else {
+        *(Pair_002FBCD0 *)&up = D_L01_001DC418[0];
+        func_L01_0043A860(target, 2, &up, &from);
+    }
+    *(vu0_q *)&up = 0;
+    up.y = 1.0f;
+    vec_sub_ab(&matrix[2], &from, &to);
+    func_0038CF68(&matrix[2], &matrix[2], 1.0f);
+    matrix[2].w = 0;
+    func_0038CE90(&matrix[0], &up, &matrix[2]);
+    func_0038CF68(&matrix[0], &matrix[0], 1.0f);
+    matrix[0].w = 0;
+    func_0038CE90(&matrix[1], &matrix[2], &matrix[0]);
+    matrix[3] = to;
+    matrix[1].w = 0;
+    matrix[3].w = 1.0f;
+    *(vu0_v4 *)(self + 0xC0) = matrix[0];
+    *(vu0_v4 *)(self + 0xD0) = matrix[1];
+    *(vu0_v4 *)(self + 0xE0) = matrix[2];
+    *(vu0_v4 *)(self + 0x10) = matrix[3];
+    color = 0x80800000;
+    color |= 0x8080;
+    func_0038D2A0(local);
+    local[3].x = 0;
+    local[3].y = 0;
+    local[3].z = -0.075f;
+    local[3].w = 1.0f;
+    func_0038D640(view, matrix, local);
+    quad.tag[1] = func_00389598(12);
+    for (i = 0; i < 4; i++) {
+        quad.colors[i] = color;
+        if (i == 0 || i == 2) {
+            func_0038CE20((f32 *)&quad.vertices[i], (f32 *)&D_L01_001DC360[i], *(f32 *)(vars + 0x2C));
+        } else {
+            func_0038CE20((f32 *)&quad.vertices[i], (f32 *)&D_L01_001DC360[i], *(f32 *)(vars + 0x2C));
+            quad.vertices[i].z -= func_003824E0(0.0f, 0.1f);
+        }
+        quad.uv[i][0] = D_L01_001DC3E0[i][0];
+        quad.uv[i][1] = D_L01_001DC3E0[i][1];
+    }
+    func_003D2DA0(&quad, view, 0);
+    for (i = 0; i < 4; i++) {
+        if (i == 0 || i == 2) {
+            func_0038CE20((f32 *)&quad.vertices[i], (f32 *)&D_L01_001DC3A0[i], *(f32 *)(vars + 0x2C));
+        } else {
+            func_0038CE20((f32 *)&quad.vertices[i], (f32 *)&D_L01_001DC3A0[i], *(f32 *)(vars + 0x2C));
+            quad.vertices[i].z -= func_003824E0(0.0f, 0.1f);
+        }
+    }
+    func_003D2DA0(&quad, view, 0);
+    quad.tag[1] = func_00389598(11);
+    func_0038CE20((f32 *)&glow[3], (f32 *)&matrix[2], -0.13f);
+    vec_add_ab(&glow[3], &glow[3], &matrix[3]);
+    vec_sub_ab(&glow[0], &D_L01_001E29C0, &glow[3]);
+    func_0038CF68(&glow[0], &glow[0], 1.0f);
+    func_0038CE90(&glow[1], &glow[0], D_001A4BE0 + 0x2E0);
+    func_0038CF68(&glow[1], &glow[1], -1.0f);
+    func_0038CE90(&glow[2], &glow[1], &glow[0]);
+    quad.colors[0] = quad.colors[1] = quad.colors[2] = quad.colors[3] = 0x7F2020FF;
+    for (j = 0; j < 4; j++) {
+        func_0038CE20((f32 *)&quad.vertices[j], (f32 *)&D_L01_001DC360[j], 0.1f);
+        func_0038D028(&quad.vertices[j], &quad.vertices[j], glow);
+    }
+    func_003D2DA0(&quad, 0, 0);
+    func_003A9440(6, func_00389598(10));
+    func_003A9440(0x42, quad.tag[3]);
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_003A9440(0x4A, 0);
+    func_0038C750();
+    for (i = 0; i < 196; i++) {
+        f32 v;
+        func_0038CE20((f32 *)&offset, (f32 *)&D_L01_002A4400[i], *(f32 *)(vars + 0x20));
+        func_0038D028(&offset, &offset, matrix);
+        D_L01_0026E180[i].x = offset.x;
+        D_L01_0026E180[i].y = offset.y;
+        D_L01_0026E180[i].z = offset.z;
+        v = D_L01_002A5040[i][1] - 0.025f;
+        D_L01_002A5040[i][1] = v;
+        if (v < -7.0f) {
+            D_L01_002A5040[i][1] = v + 7.0f;
+        }
+    }
+    func_003D3A24(0x94, D_L01_0026E180, D_L01_002A5660, D_L01_002A5040, 1);
+    func_003D3A24(0x32, (u8 *)D_L01_0026E180 + 0x6D8, (u8 *)D_L01_002A5660 + 0x248, (u8 *)D_L01_002A5040 + 0x490, 1);
+}
+/* localdecomp:end func_L01_002FBCD0 */
 
 /* localdecomp:start func_L01_002FC3E8 */
 #include "vu0.h"
