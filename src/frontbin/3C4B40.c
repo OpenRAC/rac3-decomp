@@ -58,9 +58,9 @@ LINKER_REMNANT("asm/remnants", func_003C4C98);
 /* localdecomp:start func_003C4CE8 */
 #include "vu0.h"
 extern void func_0038CF68(s32 a, s32 b, f32 x);
-void func_003C4CE8(void *a, f32 f) {
+void func_003C4CE8(void *a, void *b, f32 f) {
     f32 r;
-    ((void (*)(void *, f32))func_0038CF68)(a, f);
+    func_0038CF68((s32)a, (s32)b, f);
     r = 1.0f - f * f;
     r = sqrt_asm(r);
     *(f32*)((u8*)a + 0xC) = r;

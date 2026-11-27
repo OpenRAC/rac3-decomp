@@ -220,8 +220,6 @@ void func_00397FE8(void)
     extern s32 func_0013A880(void);
     extern s32 func_0013A8E8(void);
     extern void func_0038CB78(void *, s32, s32);
-    extern void func_0012C9A0(void *, s16, s16, s32, s32, s32, s16, s16);
-    extern void func_0012CCC8(void *, void *);
     extern s32 func_0012A9F0(s32, s32);
     extern void func_003822C8(void);
     extern s32 func_00398470(s32);
