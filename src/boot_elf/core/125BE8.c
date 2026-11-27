@@ -96,12 +96,7 @@ int func_00124920(void);
 int func_00124970(void);
 extern s32 func_00125A70_00125B68();
 
-/* localdecomp:start func_00125BE8 */
-/* Ported from rac5-sm-decomp/src/boot/TimerUSec2BusClock.c. */
-u64 func_00125BE8(u32 sec, u32 usec) {
-    return (u64)sec * 0x08CA0000u + (u64)usec * 0x08CA0000u / 1000000u;
-}
-/* localdecomp:end func_00125BE8 */
+INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125BE8);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125C58);
 
