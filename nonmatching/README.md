@@ -503,7 +503,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_002FC910` | levels | Codex wave 10 near miss | near miss: 4 words differ with the file's flags |
 | `func_L01_00308E88` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_00309708` | levels | Codex wave 10 near miss | near miss: 119 words differ with the file's flags |
-| `func_L01_00309D28` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_003186A8` | levels | Codex wave 10 near miss | near miss: 23 words differ with the file's flags |
 | `func_L01_00319F00` | levels | Codex wave 10 near miss | near miss: 140 words differ with the file's flags |
 | `func_L01_0031B4F8` | levels | Codex wave 10 near miss | near miss: 190 words differ with the file's flags |
@@ -517,7 +516,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0034E080` | levels | Codex wave 10 near miss | near miss: 230 words differ with the file's flags |
 | `func_L01_0034EAA0` | levels | Codex wave 10 draft, k6 agent 4 (2026-11-26) | near miss: 33 aligned diffs with divs_nops `func_L01_0034EAA0 2 2`: the particle loop's hoisted constants and their registers; see the header |
 | `func_L01_00363690` | levels | Codex wave 10 near miss | near miss: 310 words differ with the file's flags |
-| `func_L01_00369700` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_0036AA60` | levels | Codex wave 10 near miss | near miss: 6 words differ with the file's flags |
 | `func_L01_0036AB88` | levels | Codex wave 10 near miss | near miss: 237 words differ with the file's flags |
 | `func_L01_003739C0` | levels | Codex wave 10 near miss | near miss: 349 words differ with the file's flags |
@@ -712,7 +710,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L33_0034F250` | levels | sonnet-b30-j3b near miss (round 19) | 14 raw words differ: a particle's per-frame update, written with typed P/Q structs and the vu0.h helper vec_add_ab. (1) `move $a0, $sp` (the &v argument of func_L33_00344F88) sits after the first store (`swc1 $f0, 0x10($s0)`) in retail, first in ours; (2) the 1.0f constant is $f5 and n+1 is $f4 in retail, the other way round in ours; (3) the last block's `lh q->h8` goes to $a1 in retail, to $v1 in ours. Needs the file line `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (a cut of L33_0034E8C0.c: retail's lui/ori/mtc1 float constants) and the row `func_L33_0034F250 0 2 2` in config/levels/divs_nops.txt. Tried: statement-order permutations of the join block, n/n+1 as separate variables or temporaries, block-local n, call-argument locals, the orders of the final loads. |
 | `func_L01_003241A0` | levels | opus-w3 near miss | near miss: 14 words differ with the file's flags (plus -mvu0-use-vf0-vf2 and a divs_nops row) |
 | `func_L01_003E4F20` | levels | sol-round3-c near miss | near miss: 261 words differ with the file's flags |
-| `func_L01_00454728` | levels | sol-round3-b near miss | near miss: 819 words differ with the file's flags |
 | `func_L07_0037F620` | levels | sonnet-w6 near miss | near miss: 273 words differ with the file's flags |
 | `func_U_L23_00446600` | levels | NTSC-U native, 220 bytes | 2 differences: target-pointer and packed-colour stores reversed; u16 lifetime without PAL scaling |
 | `func_L23_003099D0` | levels | Regional matching study (2026-11-24) | PAL: 337 to 322 words with diagnostic vf2 and Ps2EeAs; VU add/store sequence and scheduling remain. |

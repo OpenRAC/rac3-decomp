@@ -10,7 +10,312 @@ typedef struct {
     s16 h152;
 } S_1CFEC0;
 
-INCLUDE_ASM("asm/levels", func_L01_0037EFC8);
+/* localdecomp:start func_L01_0037EFC8 */
+#include "vu0.h"
+#include "structs/weapon.h"
+typedef int Q_0037EFC8 __attribute__((mode(TI)));
+typedef vu0_v4 V_0037EFC8;
+typedef struct {
+    V_0037EFC8 pos;            /* 0x00 */
+    struct { u8 pad[0x20]; u8 state; } *target; /* 0x10 */
+    f32 max;                   /* 0x14 */
+    f32 left;                  /* 0x18 */
+    s16 h1C;                   /* 0x1C */
+    s16 h1E;                   /* 0x1E */
+    u8 pad_20[0x44 - 0x20];
+    s32 timer;                 /* 0x44 */
+    f32 yaw;                   /* 0x48 */
+    f32 pitch;                 /* 0x4C */
+    u8 f50[4];                 /* 0x50 */
+    f32 spin;                  /* 0x54 */
+} Vars_0037EFC8;
+typedef struct {
+    u8 pad_0[0x10];
+    V_0037EFC8 pos;            /* 0x10 */
+    u8 state;                  /* 0x20 */
+    u8 pad_21[0x68 - 0x21];
+    Vars_0037EFC8 *vars;       /* 0x68 */
+    u8 pad_6C[0x7C - 0x6C];
+    s16 h7C;                   /* 0x7C */
+    u8 pad_7E[0xC0 - 0x7E];
+    V_0037EFC8 vC0;            /* 0xC0 */
+    V_0037EFC8 dir;            /* 0xD0 */
+} M_0037EFC8;
+typedef struct {
+    u8 pad_0[0x6C0];
+    V_0037EFC8 v6C0;
+    u8 pad_6D0[0x1210 - 0x6D0];
+    u32 buttons;               /* 0x1210 */
+    u8 pad_1214[0x1224 - 0x1214];
+    s32 w1224;                 /* 0x1224 */
+    u8 pad_1228[0x16B0 - 0x1228];
+    s32 mode;                  /* 0x16B0 */
+    u8 pad_16B4[0x25C0 - 0x16B4];
+    struct { u8 pad[0x34]; u16 flags; } *camera; /* 0x25C0 */
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[4];
+    u32 w25CC;                 /* 0x25CC */
+    u8 pad_25D0[0x25E9 - 0x25D0];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x2874 - 0x25EA];
+    s16 h2874;                 /* 0x2874 */
+    u8 pad_2876[0x28BC - 0x2876];
+    s32 wait;                  /* 0x28BC */
+} Hero_0037EFC8;
+typedef struct {
+    f32 f0, f4, f8, fC;
+    V_0037EFC8 pos;
+} Slot_0037EFC8;
+typedef struct {
+    u8 pad_0[0xD0];
+    u8 bD0;
+    u8 pad_D1[0xDC - 0xD1];
+    M_0037EFC8 *owner;
+} Snd_0037EFC8;
+extern Hero_0037EFC8 D_001A4BE0_0037EFC8;
+extern struct WeaponRow D_L01_002C5600[];
+extern u8 D_001425C0[];
+extern u8 D_L01_001E2880[];
+extern V_0037EFC8 D_L01_001E29C0_0037EFC8;
+extern Slot_0037EFC8 D_L01_001F1B40[];
+extern u8 D_001A30B0_0037EFC8[];
+extern V_0037EFC8 D_L01_001DDBA0 __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001DDBA0, 8");
+__asm__(".extern D_L01_001DDB88, 4");
+__asm__(".extern D_L01_001DDBBC, 4");
+__asm__(".extern D_L01_001DDB90, 4");
+__asm__(".extern D_L01_001DDB8C, 4");
+__asm__(".extern D_L01_001DDB98, 4");
+__asm__(".extern D_L01_001DDBB0, 4");
+extern s32 D_L01_001E1DC0, D_L01_001E1DC4, D_L01_001E1DC8, D_L01_001E1DCC;
+extern f32 D_L01_001DDB88, D_L01_001DDB98, D_L01_001DDB9C, D_L01_001DDBBC;
+extern s32 D_L01_001DDB8C, D_L01_001DDB90, D_L01_001DDB94, D_L01_001DDBB0;
+extern struct { u8 pad[0x1A0]; u32 mask; } *D_001D52FC_sda;
+
+/* a held beam weapon's update (level-dependent tint, aim from the camera or the hero, lock-on via
+   func_L01_0037E8F0, the drain on the locked target and its kill, the beam light slot in D_L01_001F1B40) */
+void func_L01_0037EFC8(M_0037EFC8 *m) {
+    extern void func_0038CB00(void *);
+    extern s32 func_0038CAD0(void *);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_L01_005003D0(s32, s32);
+    extern void func_0038D590(void *, void *);
+    extern void func_0038D5B0(void *, void *);
+    extern void func_0038D028(void *, void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_0038CED8(void *);
+    extern f32 func_0038CF00(void *, void *);
+    extern f32 func_0038DAB8(f32, f32);
+    extern s32 func_L01_0037E8F0(void *, void *, void *, void *);
+    extern void func_L01_004CB128(void *, s32, s32);
+    extern void func_L01_003F6F20(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+    extern void func_L01_004EA7D8(s32);
+    extern f32 *func_00382348(s32);
+    extern f32 func_003C4088(f32, f32, f32);
+    extern s32 func_L01_00451D38(void *, s32, s32, f32);
+    extern void func_L01_00421988(s32, s32, s32, s32, f32);
+    extern s32 func_003A52A0(s32, s32, void *);
+    extern void func_L01_003DA3F0(void *, void *);
+    extern void func_L01_0039FBD0(void *);
+    extern void func_L01_003D3EE0(void *);
+    extern void func_L01_0037F948(void *);
+    extern s32 func_L01_00424B88(void *, u32, f32, f32);
+    extern s32 func_L01_004AA710(void *, s32);
+    extern void func_003A4F28(s32);
+    extern void func_L01_004EAA80(void);
+    extern void func_L01_00424D88(s32);
+    V_0037EFC8 aim;
+    V_0037EFC8 tmp[3];
+    f32 mat[16] __attribute__((aligned(16)));
+    Vars_0037EFC8 *vars;
+    s32 holding;
+    s32 active;
+    s32 target;
+    u32 level;
+    u32 lv;
+    f32 dist, ang, sc, x, y, z;
+    f32 *rec;
+
+    holding = 0;
+    if (D_001A4BE0_0037EFC8.w1224 == 3) {
+        holding = 1;
+    }
+    vars = m->vars;
+    if (m->state == 0) {
+        m->state = 1;
+        D_L01_001E1DCC = D_L01_001E1DC4 = -1;
+        D_L01_001E1DC8 = 0;
+    }
+    level = (D_L01_002C5600 + D_001425C0[0x8F])->level;
+    if (level == 3) {
+        m->h7C = 7;
+    }
+    if (level == 2) {
+        m->h7C = 3;
+    } else if (level == 1) {
+        m->h7C = 1;
+    }
+    func_0038CB00(&vars->h1C);
+    active = 1;
+    if (D_001A4BE0_0037EFC8.state == 0x1D) {
+        if (func_0038CAD0(&D_001A4BE0_0037EFC8.wait) == 0) {
+            active = 0;
+        }
+    } else {
+        D_001A4BE0_0037EFC8.wait = 0x21;
+    }
+    func_0038D000(vars, &D_L01_001DDBA0, &m->vC0);
+    vec_add_ab(&vars->pos, &vars->pos, &m->pos);
+    if (D_001A4BE0_0037EFC8.state == 1) {
+        func_L01_005003D0(0x1D, 1);
+    }
+    *(Q_0037EFC8 *)&aim = 0;
+    if (D_001A4BE0_0037EFC8.state == 0x1D && (D_001A4BE0_0037EFC8.camera->flags & 1)) {
+        func_0038D590(&tmp[0], D_L01_001E2880);
+        func_0038D5B0(mat, &tmp[0]);
+        aim.z = 1.0f;
+        func_0038D028(&aim, &aim, mat);
+    } else if (D_001A4BE0_0037EFC8.h2874 == 1) {
+        func_0038CE20(&aim, &m->dir, -1.0f);
+    } else {
+        aim.x = 1.0f;
+        func_0038D000(&aim, &aim, &D_001A4BE0_0037EFC8.v6C0);
+    }
+    vars->yaw = func_0038D160(aim.x, aim.y);
+    vars->pitch = func_0038D160(func_0038CED8(&aim), aim.z);
+    *(Q_0037EFC8 *)&tmp[0] = *(Q_0037EFC8 *)&vars->pos;
+    target = func_L01_0037E8F0(m, &tmp[0], &vars->yaw, &vars->pitch);
+    if (target != 0) {
+        func_L01_004CB128(&tmp[0], target, 0);
+        if (D_001A4BE0_0037EFC8.state != 0x1D && D_001A4BE0_0037EFC8.mode == 0) {
+            dist = func_0038CF00(&D_L01_001E29C0_0037EFC8, &tmp[0]) / 150.0f;
+            ang = func_0038DAB8(vars->spin, 0.034906585f);
+            dist *= 0.65f;
+            vars->spin = ang;
+            func_L01_003F6F20(0, m, 0xFF0FFF0F, &tmp[0], 0x26, -1, 4, fabs_asm(0.9f - dist), -ang, 90.0f, 0.5f, 0.5f, 40.0f, 40.0f);
+        }
+    }
+    if (D_001A4BE0_0037EFC8.w25CC < 2 && (D_001D52FC_sda->mask & D_001A4BE0_0037EFC8.buttons) != 0 && active != 0) {
+        if (D_001A4BE0_0037EFC8.b25E9 == 0) {
+            func_L01_004EA7D8(-1);
+        }
+        if (vars->h1E == 0) {
+            vars->h1E = 1;
+        }
+        if (vars->h1C == 0) {
+            vars->h1C = 12;
+        }
+        func_0038CAD0(&vars->timer);
+        if (vars->target != 0) {
+            if (vars->target->state == 0xFE) {
+                vars->target = 0;
+                vars->timer = 0;
+            } else if (vars->target->state == 0xFD) {
+                vars->target = 0;
+                vars->timer = 0;
+            }
+        }
+        if (target != 0 || vars->timer != 0) {
+            if (target != 0) {
+                rec = func_00382348(target);
+                if (target != (s32)vars->target && vars->timer == 0) {
+                    vars->target = (void *)target;
+                    vars->max = (f32)((s16 *)rec)[2];
+                    vars->left = rec[0];
+                    vars->timer = 25;
+                    if (vars->max <= 1.0f) {
+                        vars->left = 0.0f;
+                    }
+                }
+            }
+            D_L01_001DDB88 = (D_L01_002C5600 + D_001425C0[0x8F])->damage;
+            vars->left = vars->left - D_L01_001DDB88 * 0.020000001f;
+            if (vars->left < 0.0f) {
+                vars->left = 0.0f;
+            }
+            D_L01_001DDBBC = vars->left / vars->max;
+        } else {
+            D_L01_001DDBBC = 1.0f;
+        }
+        ang = func_003C4088(D_L01_001DDB98, D_L01_001DDB9C, D_L01_001DDBBC);
+        func_L01_00421988(1, func_L01_00451D38(vars->f50, D_L01_001DDB90, D_L01_001DDB94, ang * 0.017453292f * 0.020000001f), 0, 0, D_L01_001DDBBC);
+        if (vars->target != 0 && vars->left <= 0.0f) {
+            func_003A52A0(1, 0, m);
+            lv = (D_L01_002C5600 + D_001425C0[0x8F])->level;
+            if (lv == 3) {
+                func_L01_0039FBD0(vars->target);
+            } else if (lv >= 4) {
+                if (D_L01_001DDBB0 != 0) {
+                    func_L01_003DA3F0(vars->target, &m->pos);
+                } else {
+                    func_L01_0039FBD0(vars->target);
+                }
+            } else {
+                func_L01_003D3EE0(vars->target);
+            }
+            D_L01_001DDB8C++;
+            vars->target = 0;
+        }
+        func_L01_0037F948(m);
+        if (D_L01_001E1DC4 == -1) {
+            D_L01_001E1DC4 = func_L01_00424B88(&m->pos, (D_L01_002C5600 + D_001425C0[0x8F])->level >= 4 ? 0x204080 : 0x804020, 7.5f, 0.0f);
+        }
+        if (D_L01_001E1DC4 >= 0) {
+            D_L01_001E1DC8 = 17;
+            func_0038CF68(&tmp[0], &m->dir, -0.5f);
+            vec_add_ab(&tmp[1], &vars->pos, &tmp[0]);
+            D_L01_001F1B40[D_L01_001E1DC4].pos.x = tmp[1].x;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.y = tmp[1].y;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.z = tmp[1].z;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.w = 7.5f;
+        }
+        if (func_L01_004AA710(m, D_L01_001E1DCC) == 0) {
+            D_L01_001E1DCC = func_003A52A0(0, 4, m);
+        }
+    } else {
+        vars->target = 0;
+        vars->h1E = 0;
+        vars->timer = 0;
+        D_L01_001E1DC0 = 1;
+        if (D_L01_001E1DC4 >= 0) {
+            func_0038CF68(&tmp[0], &m->dir, -0.5f);
+            sc = (f32)D_L01_001E1DC8 * 0.05f;
+            vec_add_ab(&tmp[1], &vars->pos, &tmp[0]);
+            x = tmp[1].x;
+            y = tmp[1].y;
+            z = tmp[1].z;
+            D_L01_001F1B40[D_L01_001E1DC4].f4 = sc;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.x = x;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.y = y;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.z = z;
+            D_L01_001F1B40[D_L01_001E1DC4].pos.w = 7.5f;
+            D_L01_001F1B40[D_L01_001E1DC4].f8 = sc * 0.25f;
+            D_L01_001F1B40[D_L01_001E1DC4].f0 = sc;
+            if (func_0038CAD0(&D_L01_001E1DC8) != 0) {
+                func_L01_00424D88(D_L01_001E1DC4);
+                D_L01_001E1DC4 = -1;
+            }
+            if (D_L01_001E1DC4 >= 0 && D_L01_001E1DC8 == 0) {
+                func_L01_00424D88(D_L01_001E1DC4);
+                D_L01_001E1DC4 = -1;
+            }
+        }
+        if (D_L01_001E1DCC >= 0) {
+            if (D_L01_001E1DCC != -1 && ((Snd_0037EFC8 *)(D_001A30B0_0037EFC8 + D_L01_001E1DCC * 128))->owner == m && ((Snd_0037EFC8 *)(D_001A30B0_0037EFC8 + D_L01_001E1DCC * 128))->bD0 != 0) {
+                func_003A4F28(D_L01_001E1DCC);
+            }
+            D_L01_001E1DCC = -1;
+        }
+        func_L01_004EAA80();
+    }
+    if (holding && D_L01_001E1DC4 >= 0) {
+        func_L01_00424D88(D_L01_001E1DC4);
+        D_L01_001E1DC4 = -1;
+    }
+}
+/* localdecomp:end func_L01_0037EFC8 */
 
 /* localdecomp:start func_L01_0037F860 */
 typedef int Q_0037F860 __attribute__((mode(TI)));

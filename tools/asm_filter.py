@@ -214,6 +214,14 @@ def sq_rewrite(lines, ps2as=False):
     saves = [s for s in saves if s[1] or (s[2], s[3]) in stored]
     regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
     offs = sorted({s[3] for s in saves})
+    if regs and len(regs) != len(offs):
+        # A callee-saved register can also be stored as data (func_L01_003225F8 keeps a
+        # 64-bit constant in $20 and writes it into two locals with sd): count only the
+        # stores whose slot the function also loads back into the same register.
+        loaded = {(s[2], s[3]) for s in saves if not s[1]}
+        saves = [s for s in saves if (s[2], s[3]) in loaded]
+        regs = sorted({s[2] for s in saves}, key=SAVE_ORDER.index)
+        offs = sorted({s[3] for s in saves})
     if not regs or len(regs) != len(offs):
         return lines
     new_off = dict(zip(regs, offs))

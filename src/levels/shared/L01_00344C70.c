@@ -150,7 +150,7 @@ extern void func_003C2F58(s32 a, s32 b, void *c);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern s32 func_003C4B50(void *);
 extern s32 func_003D3CB0(void *, void *, s32, s32, void *);
-extern s32 func_L01_00345C08(void *);
+extern void func_L01_00345C08(void *);
 extern void func_L01_00348160_00344D68(s32);
 extern s32 func_L01_003F2058(void *, void *);
 extern void func_L01_003F2278(s32, s32);
@@ -560,7 +560,163 @@ block_113:
 }
 /* localdecomp:end func_L01_00344D68 */
 
-INCLUDE_ASM("asm/levels", func_L01_00345C08);
+/* localdecomp:start func_L01_00345C08 */
+typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_00345C08;
+extern u8 D_001425C0[];
+extern u8 D_001A4BE0[];
+#define G_345C08 (*(GS_4BE0 *)&D_001A4BE0)
+#define ROW_345C08 (*(struct WeaponRow *)((u8 *)D_L01_002C5600_00344D68 + D_001425C0[0x6F] * 0xF0))
+extern u8 D_L01_001E2DC0[];
+extern u8 D_L01_001E2A40[];
+extern u8 D_001A57B8[];
+extern u8 D_L01_001D66B0[] __attribute__((section(".sdata")));
+
+extern s32 D_L01_001DAFEC;
+void func_L01_00345C08(void *arg) {
+    u8 *self = arg;
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern s32 func_L01_00424B88(f32, f32, void *, s32);
+    extern void func_L01_004CAC78(void *, void *, f32, f32, f32);
+    extern void func_L01_00457588(u8 *, void *, void *, f32);
+    extern void func_L01_00446780(u8 *, void *, s32, s32, s32, s32, f32, f32, f32);
+    extern u8 *func_L01_00346CC8(u8 *, u8 *, s32, s32);
+    extern void func_L01_0037D920(u8 *, void *, void *, void *, s32, s32, s32, f32);
+    extern void func_00382580(void *, f32, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_00474078(void *, void *, s32, f32, f32, f32, f32, s32, s32, s32, s32);
+    extern u8 *func_L01_0046B458(void *position, s32 life, f32 size, f32 start_size, s32 colour, s32 roll_kind, s32 spin, void *velocity, f32 unk, s32 delay);
+    extern u8 *func_L01_00470C78(u8 *, s32, f32, f32, s32, s32, s32, void *, s32, s32, s32, s32);
+    Vec_00345C08 q10, q20, q30, q40, q50;
+    u8 *v = *(u8 **)(self + 0x68);
+    u8 *fp, *t, *r;
+    f32 f20, f;
+    s32 mode, w, tier;
+    s32 c16, c17;
+
+    f20 = ROW_345C08.shot_speed * 0.020000001415610313f;
+    if (G_345C08.f2874 == 1) {
+        func_003C2F58((s32)self, 1, &q10);
+        func_0038CF68(&q20, self + 0xD0, -f20);
+    } else if (G_345C08.f16B0 != 0) {
+        func_003C2F58((s32)self, 1, &q10);
+        func_0038CF68(&q20, D_L01_001E2DC0, f20);
+    } else {
+        func_003C2F58((s32)self, 1, &q10);
+        func_0038CF68(&q20, &G_345C08.f6F0, f20);
+    }
+    fp = (u8 *)&q20;
+    mode = 0;
+    *(s32 *)(v + 0x10) = func_L01_00424B88(10.0f, 0.0f, &q10, 0xFF0000FF);
+    *(s32 *)(v + 0x14) = 0x19;
+    w = G_345C08.f25C4;
+    if (w == 1 || w == 0x1D) {
+        if (G_345C08.f25E5 != 0) {
+            mode = 2;
+            func_L01_004CAC78(fp, &q10, f20, 128.0f, 0.3490658402442932f);
+            goto have_flag;
+        }
+    }
+    if (G_345C08.fBD8 != 0) func_L01_00457588((u8 *)G_345C08.fBD8, &q10, fp, f20);
+have_flag:
+    if (D_L01_001DAFEC != 0) {
+        t = *(u8 **)(v + 0x2C);
+        if ((t != 0 && G_345C08.f16B0 != 0) ||
+            (G_345C08.fBD8 != 0 && G_345C08.f16B0 == 0)) {
+            if (t != 0) q30 = *(Vec_00345C08 *)(t + 0x10);
+            else q30 = *(Vec_00345C08 *)D_001A57B8;
+            vec_sub_ab(&q40, &q30, &q10);
+            func_0038CF68(&q50, fp, 1.0f);
+            f = func_0038CE68(&q50, &q40);
+            func_0038CE20(fp, &q50, f + 3.0f);
+            mode = 2;
+        }
+    }
+    func_0038CE20(&q30, self + 0xD0, -1.5f);
+    vec_add_ab(&q30, &q30, self + 0x10);
+    func_0038CE20(&q40, self + 0xC0, 0.2750000059604645f);
+    vec_add_ab(&q30, &q30, &q40);
+    func_L01_00446780(self, &q10, 0x10000, 0, 1, 0, 1.5f, ROW_345C08.damage, 1.0f);
+    r = func_L01_00346CC8((u8 *)&q10, fp, *(s32 *)(v + 0x18), mode);
+    if (r != 0) *(u8 **)(r + 0xB8) = self;
+
+    w = G_345C08.f25C4;
+    if ((w != 1 && w != 0x1D) || G_345C08.f25E5 == 0) {
+        c16 = 0xBF204080;
+        c17 = 0xBF2040A0;
+        tier = ROW_345C08.level;
+        if (tier == 0) {
+            {
+            s32 cnt;
+            for (cnt = 0; cnt < 10; cnt++) {
+                    func_00382580(&q50, 0.10000000894069672f, 0.20000001788139343f);
+                    func_L01_00474078(&q10, &q50, (func_00382498(10, 25) * 5 + 2) / 6, 0.07500000298023224f, 0.25f, 0.5f, 0.5f, 0x80408020, 0xFF00, 0, 0);
+            }
+            }
+            c16 = 0xBF408020;
+            c17 = 0xBF406020;
+        }
+        if (ROW_345C08.level == 1) {
+            {
+            s32 cnt;
+            for (cnt = 0; cnt < 10; cnt++) {
+                    func_00382580(&q50, 0.10000000894069672f, 0.20000001788139343f);
+                    func_L01_00474078(&q10, &q50, (func_00382498(10, 25) * 5 + 2) / 6, 0.07500000298023224f, 0.25f, 0.5f, 0.5f, 0x80804020, 0xFF0000, 0, 0);
+            }
+            }
+            c16 = 0xBF804020;
+            c17 = 0xBF604020;
+        }
+        if (ROW_345C08.level == 2) {
+            c16 = 0xBF804020;
+            c17 = 0xBF204080;
+            {
+            s32 cnt;
+            for (cnt = 0; cnt < 10; cnt++) {
+                    func_00382580(&q50, 0.10000000894069672f, 0.20000001788139343f);
+                    func_L01_00474078(&q10, &q50, (func_00382498(10, 25) * 5 + 2) / 6, 0.07500000298023224f, 0.25f, 0.5f, 0.5f, 0xBF1432A0, 0xFF, 0, 0);
+            }
+            }
+        }
+        if (ROW_345C08.level == 3) {
+            c16 = 0xBF204080;
+            c17 = 0xBF2040A0;
+            {
+            s32 cnt;
+            for (cnt = 0; cnt < 12; cnt++) {
+                    func_00382580(&q50, 0.10000000894069672f, 0.20000001788139343f);
+                    func_L01_00474078(&q10, &q50, (func_00382498(10, 25) * 5 + 2) / 6, 0.07500000298023224f, 0.25f, 0.5f, 0.5f, 0xBF1414A0, 0xFF, 0, 0);
+            }
+            }
+        }
+        if (ROW_345C08.level >= 4) {
+            c16 = 0xBF804020;
+            c17 = 0xBF604020;
+            {
+            s32 cnt;
+            for (cnt = 0; cnt < 14; cnt++) {
+                    func_00382580(&q50, 0.10000000894069672f, 0.20000001788139343f);
+                    func_L01_00474078(&q10, &q50, (func_00382498(10, 25) * 5 + 2) / 6, 0.07500000298023224f, 0.25f, 0.5f, 0.5f, 0xBF1414A0, 0xFF, 0, 0);
+            }
+            }
+        }
+        func_L01_0046B458(&q10, 0xE, 5.25f, 0.10000000149011612f, c16, 2, 1, D_L01_001D66B0, 0.0f, 1);
+        func_L01_0046B458(&q10, 0xE, 3.75f, 0.10000000149011612f, c17, 2, -1, D_L01_001D66B0, 0.0f, 1);
+        func_L01_0046B458(&q10, 0xE, 2.625f, 0.10000000149011612f, 0xC0FFFFFF, 2, 1, D_L01_001D66B0, 0.0f, 1);
+        func_L01_0046B458(&q10, 0xE, 1.875f, 0.10000000149011612f, 0xB0FFFFFF, 2, -1, D_L01_001D66B0, 0.0f, 1);
+        func_L01_00470C78((u8 *)&q10, 0x11, 1.0800000429153442f, 0.8400000333786011f, 0x46787878, 2, 2, D_L01_001D66B0, 0, 2, 6, 1);
+        func_L01_00470C78((u8 *)&q10, 0x11, 2.0400002002716064f, 0.8400000333786011f, 0x46787878, 2, -1, D_L01_001D66B0, 1, 2, 6, 1);
+        func_L01_00470C78((u8 *)&q10, 0x11, 2.4000000953674316f, 1.8000000715255737f, 0x2D787878, 2, 1, D_L01_001D66B0, 1, 2, 6, 1);
+    } else {
+            if (G_345C08.f16B0 != 0 || w == 0x1D) {
+                struct WeaponRow *row = &ROW_345C08;
+                func_L01_0037D920(self, D_L01_001E2A40, fp, D_L01_001E2A40 + 0x380,
+                                  (row->level >= 3) ? 0x110000 : 0x10000, 0, 1, row->damage);
+            }
+    }
+}
+/* localdecomp:end func_L01_00345C08 */
 
 /* localdecomp:start func_L01_00346620 */
 extern void func_003C2F58(s32 a, s32 b, void *c);

@@ -202,7 +202,7 @@ extern P_0053DC78 *func_00382348(void *);
 extern void func_L01_00451F60(s32, s32, s32);
 extern s32 func_0038CAD0(void *);
 extern u8 *func_L39_0061BF38(s32);
-extern void func_L39_0053E300(void);
+extern void func_L39_0053E300();
 extern s32 func_L01_00445AD0(s32, s32, s32);
 
 void func_L39_0053DC78(O_0053DC78 *a0) {

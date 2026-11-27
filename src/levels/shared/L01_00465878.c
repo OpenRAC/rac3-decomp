@@ -1805,7 +1805,121 @@ u8 *func_L01_00469C18(Q_00469C18 *pos, Q_00469C18 *vel, u8 type, s32 value) {
 }
 /* localdecomp:end func_L01_00469C18 */
 
-INCLUDE_ASM("asm/levels", func_L01_00469D88);
+/* localdecomp:start func_L01_00469D88 */
+#include "vu0.h"
+typedef struct { vu0_v4 v; f32 x10; s16 h14; s16 h16; u8 b18; u8 b19; u8 pad1A[2]; s32 x1C; } Motion_00469D88;
+typedef struct { u8 pad0[2]; u8 b2; u8 pad3; u32 x4; u8 b8; u8 pad9; s16 hA; f32 fC; vu0_v4 pos; Motion_00469D88 e; } Puff_00469D88;
+typedef struct { vu0_v4 v; s32 x10; s32 x14; s32 x18; f32 x1C; s32 x20; } Coll_00469D88;
+
+extern u8 *D_L01_002210C8[];
+extern s32 func_0038CB00(u8 *);
+extern void func_003CD250(u8 *);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern u8 *func_L01_00469C18(vu0_q *, vu0_q *, u8, s32);
+extern s32 func_00382468(s32);
+extern s32 func_003D3CB0(void *, void *, s32, s32, void *);
+
+/* The scratch c is read by func_0038CE20 before any field is set (retail's own uninitialised
+ * read): the same as rac2 src/pal/game/002C19C0-flags.c part_update_fading_split_spark_pal,
+ * whose FastVecScale(&c, &c, 0.01f) is the precedent. */
+void func_L01_00469D88(Puff_00469D88 *m)
+{
+    Motion_00469D88 *e = &m->e;
+    vu0_v4 v, p;
+    Coll_00469D88 c;
+    Puff_00469D88 *child;
+    f32 r, nr, a, s, lo, hi, sign;
+    s32 hit;
+    u8 fl;
+    u8 *tab;
+
+    if (m->hA != 0 && func_0038CB00((u8 *)&m->hA)) {
+        e->b18 |= 0x88;
+        r = m->fC / 900000.0f;
+        m->fC *= 0.8f;
+        func_0038CE20(&v, e, func_003824E0(0.5f, 0.7f));
+        nr = -r;
+        p.x = m->pos.x + func_003824E0(nr, r);
+        p.y = m->pos.y + func_003824E0(nr, r);
+        p.z = m->pos.z + func_003824E0(nr, r);
+        v.x += func_003824E0(-e->v.x * 0.2f, e->v.x * 0.2f);
+        v.y += func_003824E0(-e->v.y * 0.2f, e->v.y * 0.2f);
+        v.z += func_003824E0(-e->v.z * 0.2f, 0.0f);
+        child = (Puff_00469D88 *)func_L01_00469C18((vu0_q *)&p, (vu0_q *)&v, (e->b18 & 0x10) | 0x88, e->x1C);
+        if (child) {
+            child->hA = 2;
+            child->fC = m->fC;
+        }
+        func_0038CE20(e, e, func_003824E0(0.5f, 0.7f));
+        e->v.x += func_003824E0(-e->v.x * 0.2f, e->v.x * 0.2f);
+        e->v.y += func_003824E0(-e->v.y * 0.2f, e->v.y * 0.2f);
+        e->v.z += func_003824E0(-e->v.z * 0.2f, 0.0f);
+        m->pos.x += func_003824E0(nr, r);
+        m->pos.y += func_003824E0(nr, r);
+        m->pos.z += func_003824E0(nr, r);
+    }
+    hit = 0;
+    tab = D_L01_002210C8[0];
+    { s32 index = m->b2 - tab[0];
+    m->b2 = tab[(m->hA + e->h16 + index) & 7]; }
+    vec_add_ab(&v, &m->pos, e);
+    if (e->h14 > 2) {
+        vec_sub_ab(&p, &m->pos, e);
+    } else {
+        p = m->pos;
+    }
+    func_0038CE20(&c, &c, 0.01f);
+    fl = e->b18;
+    if (fl & 8) {
+        if (!(m->x4 & 0xFF000000)) goto kill;
+        e->b18 = fl | 8;
+        if (!func_00382468(3) && !(e->b18 & 0x10)) hit = func_003D3CB0(&p, &v, 0, e->x1C, 0) != 0;
+    } else {
+        c.x10 = e->x1C;
+        c.x1C = 1.0f;
+        c.v = e->v;
+        c.x14 = 1;
+        c.x20 = 1;
+        if (!func_00382468(3) && !(e->b18 & 0x10)) hit = func_003D3CB0(&p, &v, 0, e->x1C, &c) != 0;
+    }
+    if (hit) e->b18 |= 8;
+    else m->pos = v;
+    if (e->b18 & 8) {
+        e->h16++;
+        m->fC -= 26000.002f;
+        if (m->fC <= 0.0f) {
+        kill:
+            func_003CD250((u8 *)m);
+            return;
+        }
+    } else {
+        m->fC += 20800.002f;
+    }
+    a = (f32)e->h14 / 15.0f * 0.0064000003f + 0.08f;
+    if (a < 0.0f) a = 0.0f;
+    if (0.08f < a) a = 0.08f;
+    if (e->b18 & 8) a /= (f32)e->h16 / 7.0f + 1.0f;
+    m->x4 = (m->x4 & 0xFFFFFF) | ((s32)(a * 256.0f) << 24);
+    e->v.z += 0.011520001f;
+    if (e->h14 > 21 || (e->b18 & 8)) {
+        e->v.x *= 0.95f;
+        e->v.y *= 0.95f;
+    }
+    { u8 f2 = e->b18;
+    sign = -1.0f;
+    if (f2 & 1) sign = 1.0f;
+    if (f2 & 8) {
+        e->v.z += 0.011520001f;
+        e->x10 += sign * -0.012f / (f32)e->h16;
+    } else {
+        e->x10 += sign * -0.012f;
+    } }
+    if (1.0f < e->x10) e->x10 -= 1.0f;
+    if (e->x10 < 0.0f) e->x10 += 1.0f;
+    m->b8 = (s32)(e->x10 * 256.0f);
+}
+/* localdecomp:end func_L01_00469D88 */
 
 LINKER_REMNANT("asm/levels", func_L01_0046A428);
 
