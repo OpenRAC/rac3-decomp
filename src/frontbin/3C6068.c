@@ -1,15 +1,21 @@
 #include "common.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
-extern f32 func_003824E0(f32, f32);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_003C6068();
 /* --- end of declarations from other files --- */
 
+typedef struct { u8 key; u8 b1; u8 pad[2]; f32 f4, f8, fC, f10, f14, f18, f1C; } E3C;
+typedef struct { u8 pad[0x14]; E3C *e; } P3C;
+typedef struct { u8 pad[0xC]; u8 n; u8 pad2[0x3B]; P3C *arr[1]; } S3C;
+typedef struct { u8 pad[0x24]; S3C *set; } O3C;
+extern s32 func_00382468();
+extern f32 func_003824E0(f32, f32);
 /* localdecomp:start func_003C6068 */
 /* the copy of func_003C6420 */
 s32 func_003C6068(O3C *obj, s32 key, s32 *idx, f32 *o1, f32 *o2, f32 *o3, f32 *o4, f32 *o5, f32 *o6, f32 *o7, u8 *o8) {

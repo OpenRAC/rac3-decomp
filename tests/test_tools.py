@@ -92,6 +92,20 @@ class SourceListTest(unittest.TestCase):
         self.assertEqual(srcfiles.file_for_address(files, 0x1FF), "a.c")
         self.assertEqual(srcfiles.file_for_address(files, 0x200), "b.c")
 
+    def test_asm_label_declares_its_c_name(self):
+        st = 'extern s32 func_003E9808_a003B5C10(s32) __asm__("func_003E9808");'
+        self.assertEqual(srcfiles.declared_names(st), {"func_003E9808_a003B5C10"})
+
+    def test_refresh_keeps_a_prelude_without_section(self):
+        import split_text
+        text = ('#include "common.h"\n\ntypedef struct { s32 a; } T_1;\nextern T_1 D_00100000;\n'
+                '/* localdecomp:start func_00100000 */\ns32 func_00100000(void) { return D_00100000.a; }\n'
+                '/* localdecomp:end func_00100000 */\n')
+        prelude, _, chunks = srcfiles.split_file(split_text.with_section(text))
+        out = split_text.render([], chunks, prelude)
+        self.assertIn("typedef struct { s32 a; } T_1;", out)
+        self.assertIn(srcfiles.EXT_BEGIN, out)
+
 
 class FlagTableTest(unittest.TestCase):
     def write(self, text):

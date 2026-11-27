@@ -3,22 +3,46 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
-extern void func_0038DAB8(f32, f32);
-extern f32 func_0038CE68(void *, void *);
-extern f32 func_0038D160(f32, f32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern f32 func_0038CED8(f32 *);
-extern f32 func_0038DAB8(f32, f32);
-extern void func_003C4E80(void *a, void *b);
 extern f32 func_003C50E8(s32 a, s32 b, s32 c);
 /* --- end of declarations from other files --- */
 
+typedef int Q_3BFEF0 __attribute__((mode(TI)));
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_3BFEF0;
+typedef struct { f32 m[4][4]; s32 c[4]; f32 uv[8]; long gs[4]; } P_3BFEF0;
+extern V_3BFEF0 D_00222400;
+extern f32 D_001D9180[2];
+extern void func_0038D028();
+extern void func_003D2DA0();
+typedef struct {
+    u8 p0[7]; u8 f7; u8 p8[9]; u8 f11; u8 f12; u8 p13; u8 f14; u8 p15; u8 f16; u8 f17; u8 p18[4];
+    f32 f1C; f32 f20; f32 f24; f32 f28; f32 f2C; f32 f30; f32 f34; u16 f38; u8 p3A[0x12];
+    f32 f4C; f32 f50; f32 f54; u8 p58[8]; f32 f60; f32 f64; u8 p68[4]; s8 f6C; s8 f6D; s8 f6E; s8 f6F;
+    u8 p70[2]; s8 f72; s8 f73; u8 p74[2]; u8 f76; u8 p77; u8 f78; u8 f79; u8 f7A; u8 p7B[5];
+    f32 f80; f32 f84; f32 f88; u8 p8C[4]; f32 f90; f32 f94;
+} E_3C0188;
+typedef struct { u8 p0[0x1C]; f32 *f1C; } T_3C0188;
+typedef struct {
+    u8 p0[0x34]; u16 f34; u8 p36[0xE]; f32 f44; u8 p48[4]; f32 f4C; u8 p50[0x18]; T_3C0188 *f68; u8 p6C[0x2C]; s32 f98;
+} O_3C0188;
+extern s32 D_001D5BEC_003C56E0;
+extern void func_003C4E80(void *, void *);
+extern f32 func_0038CE68(void *, void *);
+extern void func_003C6368(void *, f32 *, f32 *, f32, f32, f32);
+extern f32 func_0038CED8(f32 *);
+extern s32 func_003C6068();
+extern void func_003C62C8();
+extern f32 func_0038D160(f32, f32);
+extern void func_0038CFB8(void);
+typedef struct { f32 x, y, z, w; } V4_3C0188;
+typedef int Q_3C0188 __attribute__((mode(TI)));
 /* localdecomp:start func_003C56E0 */
 /* the copy of func_003C5A98 */
 extern void func_003C3A10(void *, s32, s32, s32);
+extern f32 func_0038DAB8(f32, f32);
 extern void func_003C4A40(void *, void *);
 extern void func_0038CF68_a003C56E0(s32, s32, f32) __asm__("func_0038CF68");
 extern f32 func_0038CEA8_a003C56E0(s32) __asm__("func_0038CEA8");
@@ -211,7 +235,7 @@ s32 func_003C56E0(O_3C0188 *obj, E_3C0188 *e, f32 *v, s32 mode, s32 idx) {
                 e->f80 = v[0] * a;
                 e->f84 = v[1] * a;
                 e->f88 = v[2] * b;
-                e->f64 = ((f32 (*)(f32, f32))func_0038DAB8)(func_0038D160(v[0], v[1]), 3.1415901f);
+                e->f64 = func_0038DAB8(func_0038D160(v[0], v[1]), 3.1415901f);
             }
             if (e->f76 != 0 && mode < 4) {
                 e->f4C = 0.0f;

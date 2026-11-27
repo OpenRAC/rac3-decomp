@@ -146,10 +146,22 @@ def split(text_path, files, root):
     return write_files([(rel, per[rel], None) for rel, _ in files], root, default_nl)
 
 
+def with_section(text):
+    """`text` with an empty declarations section after its #include when it has none and
+    declares things before its first block: those declarations then belong to the first
+    block, as in a file that has the section, instead of being dropped by render()."""
+    if sf.EXT_END in text or not text.startswith(HEADER):
+        return text
+    prelude, _, _ = sf.split_file(text)
+    if not prelude[len(HEADER):].strip():
+        return text
+    return HEADER + "\n" + sf.EXT_BEGIN + "\n" + sf.EXT_END + "\n" + text[len(HEADER):]
+
+
 def refresh(files, root):
     per_file = []
     for rel, _ in files:
-        prelude, _, chunks = sf.split_file(sf.read_source(rel, root))
+        prelude, _, chunks = sf.split_file(with_section(sf.read_source(rel, root)))
         per_file.append((rel, chunks, prelude))
     before = {rel: sf.read_source(rel, root) for rel, _ in files}
     results = write_files(per_file, root)
@@ -193,7 +205,7 @@ def refresh_one(rel, files=None, root=sf.ROOT):
     """Recompute one file's declarations from other files. True if it changed."""
     files = files or sf.read_file_list()
     text = sf.read_source(rel, root)
-    prelude, _, chunks = sf.split_file(text)
+    prelude, _, chunks = sf.split_file(with_section(text))
     ext = external_declarations(earlier_statements(rel, files, root), file_needs(chunks))
     new = render(ext, chunks, prelude)
     if new != text:
