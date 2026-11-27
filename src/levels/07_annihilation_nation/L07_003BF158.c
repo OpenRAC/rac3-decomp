@@ -267,4 +267,112 @@ void func_L07_003BF8A8(void *arg0) {
 }
 /* localdecomp:end func_L07_003BF8A8 */
 
-INCLUDE_ASM("asm/levels", func_L07_003BFAE8);
+/* localdecomp:start func_L07_003BFAE8 */
+#include "vu0.h"
+typedef struct { f32 x, y, z; } V3_003BFAE8;
+extern V3_003BFAE8 D_L07_002A2A90[];
+static __inline__ void put_003BFAE8(V3_003BFAE8 *d, vu0_v4 *s) {
+    d->x = s->x;
+    d->y = s->y;
+    d->z = s->z;
+}
+extern f32 D_L07_002A2B50[];
+extern u32 D_L07_001E16C8[] __attribute__((section(".sdata")));
+
+void func_L07_003BFAE8(void *arg0, f32 t, f32 scale, u8 mode)
+{
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_003C4088(f32, f32, f32);
+    extern void func_0038D750(void *, s32, f32);
+    extern void func_0038D810(void *, void *);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038C750(void);
+    extern long func_00389598(s32);
+    extern void func_003A9440(s32, unsigned long);
+    extern void func_003D3A24(s32, void *, void *, void *, s32);
+    vu0_v4 rot;
+    vu0_v4 mat[3];
+    vu0_v4 offset;
+    vu0_v4 radial;
+    vu0_v4 temp;
+    u8 *original = arg0;
+    u8 *self;
+    f32 blend, height, r0, r1, a0, a1, f0, f1, position, sign, negh, phase, x;
+    f32 s, radius, angle, fade, u;
+    u32 color, edge;
+    s32 i;
+    vu0_v4 *matrix;
+    u32 *colors;
+
+    blend = (1.0f - func_0038D098(t * 3.1415927f)) * 0.5f;
+    height = func_003C4088(12.0f, 8.0f, t) * scale;
+    r0 = func_003C4088(1.8f, 1.0f, t);
+    r1 = func_003C4088(3.0f, 6.0f, t);
+    a0 = func_003C4088(1.5707964f, 1.3089969f, blend);
+    a1 = func_003C4088(1.5707964f, 0.0f, blend);
+    position = 0.0f;
+    f1 = func_003C4088(-0.5f, 4.0f, t);
+    if (t < 0.5f) {
+        color = ((s32)(t * 2.0f * 128.0f) << 24) | 0x808080;
+    } else {
+        color = ((s32)((1.0f - t) * 2.0f * 128.0f) << 24) | 0x808080;
+    }
+    x = t * 2.3f * t * 2.0f;
+    phase = x - cvtsw_asm(cvtws_asm(x));
+    sign = 1.0f;
+    if (mode) {
+        sign = -1.0f;
+    }
+    negh = -height;
+    self = original;
+    i = 0;
+    matrix = mat;
+    edge = 0x808080;
+    colors = D_L07_001E16C8;
+    for (; i < 8; i++) {
+        func_0038D750(&rot, 2, *(f32 *)(self + 0xF8));
+        func_0038D810(&rot, matrix);
+        s = (1.0f - func_0038D098(position * 3.1415927f)) * 0.5f;
+        radius = func_003C4088(r0, r1, s);
+        angle = func_003C4088(a0, a1, s);
+        fade = func_003C4088(0.12f, f1, position);
+        *(vu0_q *)&offset = 0;
+        offset.x = negh * position;
+        offset.y = sign * fade;
+        func_0038D000(&offset, &offset, matrix);
+        *(vu0_q *)&temp = 0;
+        temp.y = sign * radius * func_0038D098(angle);
+        temp.z = radius * func_0038D0B0(angle);
+        radial = temp;
+        func_0038D000(&radial, &radial, matrix);
+        vec_add_ba(&temp, original + 0x10, &offset);
+        u = s * 2.3f - phase;
+        D_L07_002A2B50[i * 4 + 1] = 1.0f;
+        put_003BFAE8(&D_L07_002A2A90[i * 2], &temp);
+        vec_add_ab(&temp, &temp, &radial);
+        put_003BFAE8(&D_L07_002A2A90[i * 2 + 1], &temp);
+        D_L07_002A2B50[i * 4] = u;
+        D_L07_002A2B50[i * 4 + 2] = u;
+        D_L07_002A2B50[i * 4 + 3] = 0.0f;
+        if (i == 0 || i == 7) {
+            colors[0] = edge;
+        } else {
+            colors[0] = color;
+        }
+        colors[1] = edge;
+        if (**(u8 ***)(self + 0x68) != 0) {
+            self = **(u8 ***)(self + 0x68);
+            position = 0.0f;
+        } else {
+            position += 0.16666667f;
+        }
+        colors += 2;
+    }
+    func_0038C750();
+    func_003A9440(6, func_00389598(0x65));
+    func_003A9440(8, 4);
+    func_003A9440(0x42, 0x8000000044UL);
+    func_003D3A24(16, D_L07_002A2A90, D_L07_001E16C8, D_L07_002A2B50, 1);
+}
+/* localdecomp:end func_L07_003BFAE8 */
