@@ -98,6 +98,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 tools/check.py FILE.c [func_XXXXXXXX]` | compiles a snippet with its file's flags and diffs it against retail |
 | `python3 tools/check.py FILE.c func_LNN_XXXXXXXX [--target level_MM]` | the same for a level function, at its place in level NN (or MM) |
 | `python3 tools/todo.py [--target NAME]` | the functions still to match, sorted by what they need |
+| `python3 tools/idioms.py query func_X` | for each block of the function, the C that gave its shapes in the matched functions (docs/matching/IDIOMS.md; `build` first) |
 | `python3 tools/port_verify.py --target NAME` | after a build: every function's bytes against retail |
 | `python3 tests/check_repository.py` | source checks of every program, tables, progress, no game data (CI) |
 | `python3 -m unittest discover -s tests` | the tools' unit tests (CI) |

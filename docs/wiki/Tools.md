@@ -20,6 +20,7 @@ Every script in `tools/`, plus localdecomp and the Makefile, and what each is fo
 | Match a function in a browser | [localdecomp](#localdecomp) |
 | Match a function on the command line | [`check.py`](#try_funcpy) |
 | Check a function exactly as the full build compiles it | [`try_in_context.py`](#try_in_contextpy) |
+| Find which C gave an assembly shape in the functions already matched | [`idioms.py`](#idiomspy) (docs/matching/IDIOMS.md) |
 | Get unstuck on a register or ordering near miss | [`permuter_setup.py`](#permuter_setuppy) with [`permuter_scorer.py`](#permuter_scorerpy) |
 | Study a VU0/MMI leaf as an asm draft (not committable) | [`gen_asm_func.py`](#gen_asm_funcpy) |
 | Check my changes before a PR | [`pr_check.py`](#pr_checkpy), then [`make`](#make-and-buildpy) |
@@ -105,6 +106,26 @@ It doesn't catch everything. Several times a callee prototype that `split_text.p
 ```
 python tools/try_in_context.py scratch/func_003AED08.c
 ```
+
+### idioms.py
+
+The idiom cookbook: which C gives which assembly shape, mined from the matched C in `src/`. `build`
+compiles every source file with its own flags plus `-g`, keeps the functions whose code is still
+retail's, and maps each instruction to its C statement (or to the inline helper in `include/vu0.h` it
+came from); the fragments are normalised (register classes, immediate buckets, relocations; names out of
+the C) and stored with counts and real examples in `build/idioms/db.json.gz`.
+
+```
+python3 tools/idioms.py build -j 8                      # about 5 minutes on 8 jobs; --shard I/N splits it over machines
+python3 tools/idioms.py query func_L01_005138F8         # or asm/.../func_X.s, or --snippet "sltu $2,$4,$5; movn $3,$4,$2"
+python3 tools/idioms.py report                          # docs/matching/IDIOMS.md
+```
+
+`query` cuts the function into blocks and each block into data-flow groups (what one C statement's code
+looks like after scheduling) and lists, for each group, the known shapes (exact, the same instructions in
+another order, or the known parts that hold its telling instructions: movn, branch-likely, div.s, sltu,
+...) with the C forms behind them. It helps where the difference is which instructions gcc chose; it
+cannot settle a scheduling or register-allocation tie, which no C idiom encodes (use the permuter).
 
 ### permuter_setup.py
 
