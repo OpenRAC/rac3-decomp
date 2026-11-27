@@ -2572,6 +2572,7 @@ extern void func_L01_004EF6F0(V_504FE0 *from, V_504FE0 *to, s32 a2, f32 length, 
 extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
 extern s32 func_003D5630(void);
 extern s32 func_L01_004F4E70(s32 a0, s32 a1);
+extern s32 func_L01_005003D0(s32, s32);
 
 /* from rac2-decomp's func_L00_002C8E10 */
 /* hero_enter_water: puts a hero in water into surface idle (54), or surfaces one rising under
