@@ -468,7 +468,7 @@ extern G2_37EE80 *D_001D9E50;
 extern A_37EE80 D_001A4BE0_00383128;
 extern E_37EE80 D_00222480_00383128[];
 extern u8 D_002225D0[];
-extern s32 func_00382380(void *, s32, s32);
+extern s32 func_00382380_00383128(void *, s32, s32);
 /* localdecomp:start func_00383128 */
 s32 func_00383128(s32 idx, u8 *o, u8 *t) {
     u8 *s = o + 0x74;
@@ -493,7 +493,7 @@ s32 func_00383128(s32 idx, u8 *o, u8 *t) {
     case 4: {
         T_37EE80 *e = ((R_37EE80 *)(D_001D9A84_00383128 + *(s16 *)(o + 0x84) * 32))->f1C;
         if (t != 0 && *(s16 *)(t + 0x7E) == 0 && !(s[8] > t[0x7C])) break;
-        { u8 *p = D_002225D0 + idx * 0x460; if (func_00382380(p + 0x40, e->fC, 0) != 0) return 1; }
+        { u8 *p = D_002225D0 + idx * 0x460; if (func_00382380_00383128(p + 0x40, e->fC, 0) != 0) return 1; }
         break;
     }
     case 7: {
