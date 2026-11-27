@@ -987,7 +987,6 @@ s32 func_L06_00353AC8(void *a0, void *a1, f32 lo, f32 hi) {
 /* localdecomp:start func_L06_00353B90 */
 extern void func_L06_00353210(u8 *, s32 *, s32);
 extern f32 func_0038CF38(void *, void *);
-extern void func_L06_00353480(void *, void *, s32, f32, f32, s32, void *);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00353B90;
 s32 func_L06_00353B90(u8 **a0, void *a1, s32 *a2, f32 *a3) {
     V_00353B90 tmp;
