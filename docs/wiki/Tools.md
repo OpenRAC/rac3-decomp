@@ -16,6 +16,7 @@ Every script in `tools/`, plus localdecomp and the Makefile, and what each is fo
 |---|---|
 | Pick a function to work on | [`todo.py`](#triagepy) |
 | Find functions a sister decompilation already has in C | [`sister_twins.py`](#sister_twinspy) |
+| Find the same routine, edited, in another game's C | [`xgame_index.py`](#xgame_indexpy) |
 | Match a function in a browser | [localdecomp](#localdecomp) |
 | Match a function on the command line | [`check.py`](#try_funcpy) |
 | Check a function exactly as the full build compiles it | [`try_in_context.py`](#try_in_contextpy) |
@@ -199,6 +200,20 @@ columns, and why a twin's C must still pass `check.py` in rac3's file.
 ```
 python tools/sister_twins.py --sister rac1=../rac1-decomp --sister rac2=../rac2-decomp --sister rac4=../rac4-decomp --sister sac=../rac-sac-decomp --sister rac5=../rac5-sm-decomp
 python tools/sister_twins.py --check-mask      # the mask against splat's relocations in asm/
+```
+
+### xgame_index.py
+
+Indexes every function of rac1, rac2, rac3 and rac4 (matched or not) by fingerprints that survive
+other addresses, registers and constants: opcodes, control flow, call pattern, constants, field
+offsets and frame size. `query` ranks one function's counterparts in every game, matched C first.
+`sweep` writes `build/xgame_sweep.tsv`, the best matched counterpart of every rac3 PAL function
+still in assembly. See [docs/contributing/cross-game-index.md](../contributing/cross-game-index.md).
+
+```
+python tools/xgame_index.py build
+python tools/xgame_index.py query func_L01_0044AF78
+python tools/xgame_index.py sweep
 ```
 
 On 2026-10-07 (`python tools/todo.py --target all`): frontbin 72 left (41 plain, 9 switch, 11 vu0, 11 mmi; one of the plain is `func_003ECDF0`, a data blob), boot_elf 650 (434 plain, 43 sibcall, 21 switch, 41 vu0, 29 mmi, 2 sys, 80 odd), i5bootn 42 (36 plain, 3 sibcall, 1 switch, 1 mmi, 1 odd).

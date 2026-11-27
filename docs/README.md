@@ -25,6 +25,7 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 | [permuter.md](contributing/permuter.md) | Using decomp-permuter |
 | [large-function-families.md](contributing/large-function-families.md) | Per-level copies of large functions: match one, port it to the rest |
 | [sister-twins.md](contributing/sister-twins.md) | Functions still in assembly that a sister decompilation already has in C (`tools/sister_twins.py`) |
+| [cross-game-index.md](contributing/cross-game-index.md) | The same routine in any game, matched or not, with a score per fingerprint (`tools/xgame_index.py`) |
 
 ## game/: how the game works
 

@@ -1,5 +1,8 @@
 # Twins in the sister decompilations
 
+For routines that were edited between games (not equal word for word), see
+[cross-game-index.md](cross-game-index.md).
+
 `tools/sister_twins.py` lists the rac3 functions still in assembly whose code is a function another
 OpenRAC decompilation has already matched in C. These sisters are
 [rac1-decomp](https://github.com/OpenRAC/rac1-decomp), [rac2-decomp](https://github.com/OpenRAC/rac2-decomp),
