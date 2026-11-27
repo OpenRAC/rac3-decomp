@@ -1,6 +1,5 @@
 #include "common.h"
 
-/* localdecomp:start func_L39_004B5910 */
 u32 func_L39_004B5910(u32 x) {
     u32 r;
     u32 t;
@@ -15,6 +14,16 @@ u32 func_L39_004B5910(u32 x) {
     r |= t;
     return r;
 }
-/* localdecomp:end func_L39_004B5910 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B5938);
+u32 func_L39_004B5938(u32 x) {
+    u32 r;
+    u32 t;
+    do { r = (x << 8) & 0xFF00; } while (0);
+    t = x >> 8;
+    t &= 0xFF;
+    if (x == 0 && (t & 0x100) != 0) {
+        return r | t;
+    } else {
+        return r | t;
+    }
+}
