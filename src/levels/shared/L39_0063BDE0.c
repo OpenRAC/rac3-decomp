@@ -111,7 +111,99 @@ void func_L39_0063BF40(Obj006396F8 *o)
 }
 /* localdecomp:end func_L39_0063BF40 */
 
-INCLUDE_ASM("asm/levels", func_L39_0063C000);
+/* localdecomp:start func_L39_0063C000 */
+/* The multiplayer copy of func_L01_00510478: the player is an argument, a 0.01 floor on the
+ * height left, a z lift before the first collision probe. */
+#include "vu0.h"
+typedef struct { f32 f[4]; } __attribute__((aligned(16))) Vec4_0063C000;
+extern f32 D_L39_0025F760[];
+
+f32 func_L39_0063C000(u8 *hero, f32 time, f32 gravity, f32 height)
+{
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_L01_0044A850(void *, void *);
+    extern s32 func_003D3CB0(void *, void *, s32, s32, s32);
+    extern f32 func_L39_00632678(u8 *, void *);
+    extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+    Vec4_0063C000 delta, direction, curve, start;
+    f32 root0, root1, root2, root3, root4, root5;
+
+    switch (hero[0x1A06]) {
+    case 0:
+        if (height < 0.0f) {
+            func_0038CE20(&delta, hero + 0x120, time);
+            delta.f[2] -= (time * time + time) * 0.5f * gravity;
+            vec_add_ba(&delta, &delta, hero + 0xA0);
+            direction = *(Vec4_0063C000 *)(hero + 0xA0);
+            func_L01_0044A850(&direction, &delta);
+            direction = *(Vec4_0063C000 *)(hero + 0xA0);
+            direction.f[2] += *(f32 *)(hero + 0x1F4) * 2.9f;
+            if (func_003D3CB0(&direction, &delta, 0x22, 0, 0)) {
+                height = D_L39_0025F760[2];
+            }
+        }
+        if (height > 0.0f) {
+            f32 half;
+            f32 c = *(f32 *)(hero + 0xA8) - height;
+            if (c < 0.01f) {
+                return 0.0f;
+            }
+            half = gravity * -0.5f;
+            if (func_L01_004461B8(half, *(f32 *)(hero + 0x128) - half, c, &root0, &root1) > 0 && root0 > 0.0f) {
+                return root0;
+            }
+        }
+        break;
+    case 1:
+        direction = *(Vec4_0063C000 *)(hero + 0x230);
+        func_0038CF68(&direction, &direction, gravity);
+        func_0038CE20(&direction, &direction, -1.0f);
+        func_0038CE20(&delta, hero + 0x120, time);
+        func_0038CE20(&curve, &direction, (time * time + time) * 0.5f * gravity);
+        vec_add_ba(&delta, &curve, &delta);
+        vec_add_ab(&delta, hero + 0xA0, &delta);
+        start = *(Vec4_0063C000 *)(hero + 0xA0);
+        func_L01_0044A850(&start, &delta);
+        if (func_003D3CB0(hero + 0xA0, &delta, 0x22, 0, 0)) {
+            f32 half, b, c;
+            half = gravity * -0.5f;
+            b = func_L39_00632678(hero, hero + 0x120) - half;
+            c = func_L39_00632678(hero, hero + 0xA0);
+            c -= func_L39_00632678(hero, D_L39_0025F760);
+            if (func_L01_004461B8(half, b, c, &root2, &root3) > 0 && root2 > 0.0f) {
+                return root2;
+            }
+        }
+        break;
+    case 2:
+        curve.f[2] = 100.0f;
+        curve.f[1] = 100.0f;
+        curve.f[0] = 100.0f;
+        vec_sub_ab(&direction, hero + 0xA0, &curve);
+        func_0038CF68(&direction, &direction, gravity);
+        func_0038CE20(&direction, &direction, -1.0f);
+        func_0038CE20(&delta, hero + 0x120, time);
+        func_0038CE20(&curve, &direction, (time * time + time) * 0.5f * gravity);
+        vec_add_ba(&delta, &curve, &delta);
+        vec_add_ab(&delta, hero + 0xA0, &delta);
+        start = *(Vec4_0063C000 *)(hero + 0xA0);
+        func_L01_0044A850(&start, &delta);
+        if (func_003D3CB0(hero + 0xA0, &delta, 0x22, 0, 0)) {
+            f32 half, b, c;
+            half = gravity * -0.5f;
+            b = func_L39_00632678(hero, hero + 0x120) - half;
+            c = func_L39_00632678(hero, hero + 0xA0);
+            c -= func_L39_00632678(hero, D_L39_0025F760);
+            if (func_L01_004461B8(half, b, c, &root4, &root5) > 0 && root4 > 0.0f) {
+                return root4;
+            }
+        }
+        break;
+    }
+    return time;
+}
+/* localdecomp:end func_L39_0063C000 */
 
 /* localdecomp:start func_L39_0063C468 */
 typedef union Buf_0063C468 {

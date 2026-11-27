@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): still 6 rows. Swept 144 forms (four spellings of e, three of the product, three of h, the inner call in place or in x, and three statement orders) and both other float positions in func_L03_0034B148's prototype: none below 6. Permuter (box1, 6000 iterations): no change. */
 /* func_L24_003A9C10 (524 B, 4 places): PAL near miss, k6 agent 4 (2026-11-26), written from the asm in the
  * style of the matched vidcomic particle updaters (func_L32_003B43F8, func_L30_003502D0). check.py at level 24:
  * 6 positional diffs, 131 = 131 words. Lever: `on = b->f4` read into a local before the `c && on` test (reorg

@@ -1,12 +1,12 @@
-/* PAL near miss (haiku-w4; round 14): 227 words with -mvu0-use-vf0-vf2 added to its file's flags
-   (L01_0035E450.c lacks it; without it the vu0.h helper does not compile), 41 ignoring registers
-   (253 of retail's 257 instructions). Round 14 replaced the hand-written VU0 block with
-   vec_add_ba from include/vu0.h. What still differs: retail keeps &previous (sp+0x90) in $s0 and
-   copies obj+0x10 through $v1 into $s6; the hero global is a pointer whose %lo is added at each
-   use (reload rematerializing a spilled constant pseudo: only the %hi stays in $fp), where this C
-   folds the offsets (D_001A4BE0 written directly) or keeps the whole address in $fp (a `hero`
-   local, 228 words); the hit test has beql/lq where this C has beqz; and the registers follow.
-   A `prev = &previous` pointer local gives 217 words but 58 ignoring registers. */
+/* PAL near miss (k8-a6, 2026-11-27): 11 aligned instruction edits with its file's flags (227 raw words
+   before; the raw count is dominated by a 3-word shift). Written after func_L01_0035B710 (the same
+   bullet update in level 1's own file): &previous through a pointer local (retail's $s0), the hit
+   record and its position through pointer locals, the tail as `if (n < 151 && !(dist > 6400)) break;`.
+   All registers now match retail's. Left: (1) retail computes obj+0x10 into $v1 and copies it into
+   $s6 (one word more); (2) the hero global: retail keeps only %hi(D_001A4BE0) in $fp and adds the
+   %lo at each use (lw 0x25C0 / +0x80 through the sum), a pseudo reload rematerialises; here the
+   `hero` local keeps the whole address in $fp (direct D_001A4BE0 uses fold the %lo into the load
+   offsets instead); these give the 3-word shift and the branch offsets. */
 #include "common.h"
 #include "vu0.h"
 typedef struct {
@@ -57,10 +57,12 @@ void func_L01_0035E710(u8 *obj) {
     u8 *v = *(u8 **)(obj + 0x68);
     u8 *hero;
     u8 *position;
+    S_38C110v *pv;
     switch (obj[0x20]) {
     case 0:
         position = obj + 0x10;
-        previous = *(S_38C110v *)(obj + 0x10);
+        pv = &previous;
+        *pv = *(S_38C110v *)(obj + 0x10);
         vec_add_ba(obj + 0x10, v, obj + 0x10);
         if (func_L01_004CB2D8()) func_L01_004CAB30(position, position);
         if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
@@ -68,12 +70,13 @@ void func_L01_0035E710(u8 *obj) {
             *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) goto destroy;
         ++*(s32 *)(v + 0x14);
         hero = D_001A4BE0;
-        *(s32 *)(*(u8 **)(D_001A4BE0 + 0x25C0) + 0x98) = 0;
-        if (func_003D3CB0(&previous, position, 0x20, obj, 0)) {
-            u8 *hit = (u8 *)D_L01_001EAA00.moby;
-            if (hit == 0 || hit != *(u8 **)(v + 0x1C)) {
+        *(s32 *)(*(u8 **)(hero + 0x25C0) + 0x98) = 0;
+        if (func_003D3CB0(pv, position, 0x20, obj, 0)) {
+            CollHit_3631C8 *t = &D_L01_001EAA00;
+            if (t->moby == 0 || (u8 *)t->moby != *(u8 **)(v + 0x1C)) {
+                s128 *tv = (s128 *)((u8 *)t + 0x20);
+                *(s128 *)(obj + 0x10) = *tv;
                 obj[0x20] = 1;
-                *(s128 *)(obj + 0x10) = *(s128 *)((u8 *)&D_L01_001EAA00 + 0x20);
                 push = *(S_38C110v *)v;
                 func_0038CE20((s128 *)&push, (s128 *)&push, 3.0f);
                 push.w = 5627.9248046875f;
@@ -81,18 +84,18 @@ void func_L01_0035E710(u8 *obj) {
                 info.source_class = *(u16 *)(obj + 0xAA);
                 info.b19 = 1;
                 info.b18 = 0;
-                if (D_L01_001EAA00.moby != 0) {
-                    if ((u8 *)D_L01_001EAA00.moby != *(u8 **)(v + 0x1C))
-                        func_003D4D00((u8 *)&D_L01_001EAA00 + 0x20, 0, 1.0f, obj, &info);
+                if (t->moby != 0) {
+                    if ((u8 *)t->moby != *(u8 **)(v + 0x1C))
+                        func_003D4D00(tv, 0, 1.0f, obj, &info);
                 } else {
-                    func_003D4D00((u8 *)&D_L01_001EAA00 + 0x20, 0, 0.6f, obj, &info);
+                    func_003D4D00(tv, 0, 0.6f, obj, &info);
                 }
             }
         }
-        { u8 *m = *(u8 **)(D_001A4BE0 + 0x25C0);
+        { u8 *m = *(u8 **)(hero + 0x25C0);
           *(s32 *)(m + 0x98) = *(s32 *)(*(u8 **)(m + 0x24) + 0x10); }
-        if (*(s32 *)(v + 0x14) >= 151 || func_L01_0040E548(position, D_001A4BE0 + 0x80) > 6400.0f) goto destroy;
-        break;
+        if (*(s32 *)(v + 0x14) < 151 && !(func_L01_0040E548(position, hero + 0x80) > 6400.0f)) break;
+        goto destroy;
     case 1:
         if (((Gun_00361AC0 *)((s32)D_L01_002C5600 + D_00142617[0] * 0xF0))->kind >= 2) {
             func_L01_0035EB20(obj + 0x10);

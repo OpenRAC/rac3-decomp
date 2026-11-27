@@ -1,3 +1,9 @@
+/* k8 agent 3 (2026-11-26): 2 aligned differences now (tools/check.py --as ps2as, level 40). A permuter run found
+ * the lever for isTen: declared `short` (it was int), gcc keeps it as retail's `move $s5,$s6; movn $s5,$zero,$v0`
+ * and the register swap goes away. Left: the argument order of func_L01_00447490(m, mask, 0): retail sets $a2 = 0
+ * before the movn and puts `move $a0,$s2` in the jal's delay slot; ours sets $a0 first and puts `move $a2,$zero`
+ * in the slot. Same 2 with: old = 0.0f before/inside/after the mask block, one = 1 first, the mask as a ternary or
+ * if/else, the third argument as isTen = 0 or result, a local copy of m, mode as unsigned (u8: 3). */
 /* func_L40_0048C560 (1536 B, 14 places): PAL near miss, k6 agent 4 (2026-11-26), from the Codex wave 7 draft.
  * check.py --as ps2as at level 40: 18 aligned diffs, 383 of 384 words (the file holds only this function, so
  * its line can take @ps2as: SN's assembler builds the 0x45AFDF66 constant inline as retail, the default
@@ -51,7 +57,7 @@ int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int f
  extern void func_L01_00454370(M_0048C560 *, A_0048C560 *);
  extern void func_003C4A40(M_0048C560 *, A_0048C560 *);
  float v[4] __attribute__((aligned(16)));
- int result=0, isTen; float old, damage; int one;
+ int result=0; short isTen; float old, damage; int one;
  H_0048C560 *h; void *extra; C_0048C560 *c;
  if (!(m->flags34 & 0x20)) return 0;
  h=m->state->health; extra=m->state->extra;

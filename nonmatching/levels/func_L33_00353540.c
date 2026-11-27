@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): (@ps2as on the file line) still 10 rows. The greg dump gives the cause of the f25/f26 swap: e is used 3 times across 109 insns, g 2 times across 70, so g's priority (2/70) beats e's (3/109) and g takes the first register; retail needs the opposite. Moving e's statement anywhere else breaks the schedule (99-176). Permuter (box1): no legal improvement (its best duplicates the tail into an if/else). */
 /* Vidcomic 2 animation draft: 112 differing words with the owning file's
  * current flags; 10 with @ps2as (not applied to the owning file).
  * Typed input/output fields reproduce the store ordering around the random

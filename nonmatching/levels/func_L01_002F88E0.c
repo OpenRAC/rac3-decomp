@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): still 1 row. The RTL dump shows row's init as (set r117 (lo_sum r118 D_L01_002BE708)) without a REG_EQUAL note; cse still folds lo_sum(high X, X) to X, so const_arg0 is known and fold_rtx swaps the plus. */
 /* bolt_pickup_collect, PAL near miss: 1 word with the file's flags (round 14, agent C rechecked):
  * retail `addu $s0, $s0, $v0` (row + func_L01_002F94F8()*28), this C `addu $s0, $v0, $s0`.
  * Cause (cse dump): cse puts an operand with a known constant value second in a commutative plus;

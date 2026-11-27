@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): still 5 rows (4 aligned). Tried: all 84 float positions of func_L01_0046B458's three f32 parameters (and the matching call order), the D_L01_001DC2E4 / D_L01_001D66B0 / D_001DC30C_sda arguments through block locals in every order, D_L01_001DC2E4 through its alias or an unsized array (gcc then splits it and its lui goes to the top: 10). sched1 dump: the four argument loads issue one per cycle in luid order (= argument order), so a1's gp load precedes a2's. Permuter (box1, 6000 iterations): no change from 40. */
 /* PAL near miss (Codex wave 10): near miss: 5 words differ with the file's flags.
  * Worker's note: 5 differing words /121; build/codex/w553/func_L01_002F9310.a07.log; first effect-call argument load order (0x68-0x78); three distinct wordings retain identical residual; type contract compiles cleanly: build/codex/w553/func_L01_002F9310.contract.log
  */

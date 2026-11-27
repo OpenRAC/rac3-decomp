@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): in snippet mode check.py does not carry the file's earlier `.extern` hints, so this draft reads 92 rows there; with the 16 hints of L01_00328598.c's earlier blocks copied in (or spliced into the file and checked with --no-context) it is the 14 rows below. Permuter (box1, 2800 iterations, base 140): no change. */
 /* PAL near miss (Sonnet round 20, b33 h3d, from H3c's 144-diff attempt): 14 differing words, ALL of them float register numbers of one run of loads in the last block (the camera-object marker).
  * Needs the divs_nops row `func_L01_003287D8 2` (the `nop; nop; div.s` of `1.0f / D_L01_001DCA44`). Check: splice this block in place of the INCLUDE_ASM of func_L01_003287D8 in
  * src/levels/shared/L01_00328598.c (the file line is unchanged: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as, the externs it needs are declared by the first function's block) and run
@@ -14,6 +15,22 @@
  * gives retail's 4C/k pair the first register, which no spelling of the expression (50 forms: operand orders, compound assignments, locals, cast pointers, struct-typed D_4C/D_50) moved. */
 #include "common.h"
 /* localdecomp:start func_L01_003287D8 */
+__asm__(".extern D_L01_001DC0E8, 16");
+__asm__(".extern D_L01_001DC0EC, 16");
+__asm__(".extern D_L01_001DCA34, 4");
+__asm__(".extern D_L01_001DCA38, 4");
+__asm__(".extern D_L01_001DCA44, 4");
+__asm__(".extern D_L01_001DCA48, 4");
+__asm__(".extern D_L01_001DCA4C, 4");
+__asm__(".extern D_L01_001DCA50, 4");
+__asm__(".extern D_L01_001DCA54, 4");
+__asm__(".extern D_L01_001DCA58, 4");
+__asm__(".extern D_L01_001DCA5C, 4");
+__asm__(".extern D_L01_001DCA60, 4");
+__asm__(".extern D_L01_001DCA64, 4");
+__asm__(".extern D_L01_001DCA68, 4");
+__asm__(".extern D_L01_001DCA80, 4");
+__asm__(".extern D_L01_001DCA88, 8");
 typedef union {
     vu0_v4 v;
     s32 w[4];

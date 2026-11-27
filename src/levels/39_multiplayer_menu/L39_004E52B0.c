@@ -1,0 +1,755 @@
+#include "common.h"
+
+/* SSLeay / OpenSSL RC2 (rc2_cbc.c: RC2_cbc_encrypt, then RC2_encrypt and RC2_decrypt with
+ * their rounds written out), built with -O0 as retail's $fp frames and stack homes show. */
+typedef unsigned short RC2_INT_4E6030;
+typedef struct { RC2_INT_4E6030 data[64]; } RC2_KEY_4E6030;
+
+/* localdecomp:start func_L39_004E52B0 */
+void func_L39_004E6030(unsigned long *d, RC2_KEY_4E6030 *key);
+void func_L39_004E7E58(unsigned long *d, RC2_KEY_4E6030 *key);
+
+#define c2l(c, l) (l = ((unsigned long)(*((c)++))), \
+                   l |= ((unsigned long)(*((c)++))) << 8L, \
+                   l |= ((unsigned long)(*((c)++))) << 16L, \
+                   l |= ((unsigned long)(*((c)++))) << 24L)
+
+#define c2ln(c, l1, l2, n) { \
+        c += n; \
+        l1 = l2 = 0; \
+        switch (n) { \
+        case 8: l2 = ((unsigned long)(*(--(c)))) << 24L; \
+        case 7: l2 |= ((unsigned long)(*(--(c)))) << 16L; \
+        case 6: l2 |= ((unsigned long)(*(--(c)))) << 8L; \
+        case 5: l2 |= ((unsigned long)(*(--(c)))); \
+        case 4: l1 = ((unsigned long)(*(--(c)))) << 24L; \
+        case 3: l1 |= ((unsigned long)(*(--(c)))) << 16L; \
+        case 2: l1 |= ((unsigned long)(*(--(c)))) << 8L; \
+        case 1: l1 |= ((unsigned long)(*(--(c)))); \
+        } \
+    }
+
+#define l2c(l, c) (*((c)++) = (unsigned char)(((l)) & 0xff), \
+                   *((c)++) = (unsigned char)(((l) >> 8L) & 0xff), \
+                   *((c)++) = (unsigned char)(((l) >> 16L) & 0xff), \
+                   *((c)++) = (unsigned char)(((l) >> 24L) & 0xff))
+
+#define l2cn(l1, l2, c, n) { \
+        c += n; \
+        switch (n) { \
+        case 8: *(--(c)) = (unsigned char)(((l2) >> 24L) & 0xff); \
+        case 7: *(--(c)) = (unsigned char)(((l2) >> 16L) & 0xff); \
+        case 6: *(--(c)) = (unsigned char)(((l2) >> 8L) & 0xff); \
+        case 5: *(--(c)) = (unsigned char)(((l2)) & 0xff); \
+        case 4: *(--(c)) = (unsigned char)(((l1) >> 24L) & 0xff); \
+        case 3: *(--(c)) = (unsigned char)(((l1) >> 16L) & 0xff); \
+        case 2: *(--(c)) = (unsigned char)(((l1) >> 8L) & 0xff); \
+        case 1: *(--(c)) = (unsigned char)(((l1)) & 0xff); \
+        } \
+    }
+
+void func_L39_004E52B0(const unsigned char *in, unsigned char *out, long length,
+                       RC2_KEY_4E6030 *ks, unsigned char *iv, int encrypt) {
+    register unsigned long tin0, tin1;
+    register unsigned long tout0, tout1, xor0, xor1;
+    register long l = length;
+    unsigned long tin[2];
+
+    if (encrypt) {
+        c2l(iv, tout0);
+        c2l(iv, tout1);
+        iv -= 8;
+        for (l -= 8; l >= 0; l -= 8) {
+            c2l(in, tin0);
+            c2l(in, tin1);
+            tin0 ^= tout0;
+            tin1 ^= tout1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_004E6030(tin, ks);
+            tout0 = tin[0];
+            l2c(tout0, out);
+            tout1 = tin[1];
+            l2c(tout1, out);
+        }
+        if (l != -8) {
+            c2ln(in, tin0, tin1, l + 8);
+            tin0 ^= tout0;
+            tin1 ^= tout1;
+            tin[0] = tin0;
+            tin[1] = tin1;
+            func_L39_004E6030(tin, ks);
+            tout0 = tin[0];
+            l2c(tout0, out);
+            tout1 = tin[1];
+            l2c(tout1, out);
+        }
+        l2c(tout0, iv);
+        l2c(tout1, iv);
+    } else {
+        c2l(iv, xor0);
+        c2l(iv, xor1);
+        iv -= 8;
+        for (l -= 8; l >= 0; l -= 8) {
+            c2l(in, tin0);
+            tin[0] = tin0;
+            c2l(in, tin1);
+            tin[1] = tin1;
+            func_L39_004E7E58(tin, ks);
+            tout0 = tin[0] ^ xor0;
+            tout1 = tin[1] ^ xor1;
+            l2c(tout0, out);
+            l2c(tout1, out);
+            xor0 = tin0;
+            xor1 = tin1;
+        }
+        if (l != -8) {
+            c2l(in, tin0);
+            tin[0] = tin0;
+            c2l(in, tin1);
+            tin[1] = tin1;
+            func_L39_004E7E58(tin, ks);
+            tout0 = tin[0] ^ xor0;
+            tout1 = tin[1] ^ xor1;
+            l2cn(tout0, tout1, out, l + 8);
+            xor0 = tin0;
+            xor1 = tin1;
+        }
+        l2c(xor0, iv);
+        l2c(xor1, iv);
+    }
+    tin0 = tin1 = tout0 = tout1 = xor0 = xor1 = 0;
+    tin[0] = tin[1] = 0;
+}
+/* localdecomp:end func_L39_004E52B0 */
+
+/* localdecomp:start func_L39_004E6030 */
+/* RC2_encrypt */
+void func_L39_004E6030(unsigned long *d, RC2_KEY_4E6030 *key) {
+    RC2_INT_4E6030 t, x0, x1, x2, x3;
+    RC2_INT_4E6030 *p0;
+    unsigned long l;
+    p0 = key->data;
+    l = d[0];
+    x0 = l;
+    x1 = l >> 16;
+    l = d[1];
+    x2 = l;
+    x3 = l >> 16;
+    x0 += p0[0];
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[1];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[2];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[3];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[4];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[5];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[6];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[7];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[8];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[9];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[10];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[11];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[12];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[13];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[14];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[15];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[16];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[17];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[18];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[19];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += x2 & x1;
+    x3 += ~x2 & x0;
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += p0[x3 & 0x3f];
+    x1 += p0[x0 & 0x3f];
+    x2 += p0[x1 & 0x3f];
+    x3 += p0[x2 & 0x3f];
+    x0 += p0[20];
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[21];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[22];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[23];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[24];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[25];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[26];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[27];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[28];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[29];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[30];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[31];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[32];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[33];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[34];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[35];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[36];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[37];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[38];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[39];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[40];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[41];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[42];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[43];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += x2 & x1;
+    x3 += ~x2 & x0;
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += p0[x3 & 0x3f];
+    x1 += p0[x0 & 0x3f];
+    x2 += p0[x1 & 0x3f];
+    x3 += p0[x2 & 0x3f];
+    x0 += p0[44];
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[45];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[46];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[47];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[48];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[49];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[50];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[51];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[52];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[53];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[54];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[55];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[56];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[57];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[58];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[59];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += (x2 & x1) + (~x2 & x0);
+    x0 += p0[60];
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    x0 += (x3 & x2) + (~x3 & x1);
+    x1 += p0[61];
+    t = x0 << 1;
+    x0 >>= 15;
+    x0 |= t;
+    x1 += (x0 & x3) + (~x0 & x2);
+    x2 += p0[62];
+    t = x1 << 2;
+    x1 >>= 14;
+    x1 |= t;
+    x2 += (x1 & x0) + (~x1 & x3);
+    x3 += p0[63];
+    t = x2 << 3;
+    x2 >>= 13;
+    x2 |= t;
+    x3 += x2 & x1;
+    x3 += ~x2 & x0;
+    t = x3 << 5;
+    x3 >>= 11;
+    x3 |= t;
+    d[0] = x0 | ((unsigned long)x1 << 16);
+    d[1] = x2 | ((unsigned long)x3 << 16);
+}
+/* localdecomp:end func_L39_004E6030 */
+
+/* localdecomp:start func_L39_004E7E58 */
+/* RC2_decrypt */
+void func_L39_004E7E58(unsigned long *d, RC2_KEY_4E6030 *key) {
+    RC2_INT_4E6030 t, x0, x1, x2, x3;
+    RC2_INT_4E6030 *p0;
+    unsigned long l;
+    p0 = key->data;
+    l = d[0];
+    x0 = l;
+    x1 = l >> 16;
+    l = d[1];
+    x2 = l;
+    x3 = l >> 16;
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[63] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[62] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[61] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[60] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[59] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[58] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[57] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[56] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[55] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[54] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[53] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[52] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[51] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[50] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[49] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[48] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[47] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[46] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[45] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[44] - (x3 & x2) - (~x3 & x1);
+    x3 -= p0[x2 & 0x3f];
+    x2 -= p0[x1 & 0x3f];
+    x1 -= p0[x0 & 0x3f];
+    x0 -= p0[x3 & 0x3f];
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[43] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[42] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[41] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[40] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[39] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[38] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[37] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[36] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[35] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[34] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[33] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[32] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[31] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[30] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[29] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[28] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[27] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[26] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[25] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[24] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[23] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[22] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[21] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[20] - (x3 & x2) - (~x3 & x1);
+    x3 -= p0[x2 & 0x3f];
+    x2 -= p0[x1 & 0x3f];
+    x1 -= p0[x0 & 0x3f];
+    x0 -= p0[x3 & 0x3f];
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[19] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[18] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[17] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[16] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[15] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[14] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[13] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[12] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[11] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[10] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[9] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[8] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[7] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[6] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[5] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[4] - (x3 & x2) - (~x3 & x1);
+    t = x3 << 11;
+    x3 >>= 5;
+    x3 |= t;
+    x3 = x3 - p0[3] - (x2 & x1) - (~x2 & x0);
+    t = x2 << 13;
+    x2 >>= 3;
+    x2 |= t;
+    x2 = x2 - p0[2] - (x1 & x0) - (~x1 & x3);
+    t = x1 << 14;
+    x1 >>= 2;
+    x1 |= t;
+    x1 = x1 - p0[1] - (x0 & x3) - (~x0 & x2);
+    t = x0 << 15;
+    x0 >>= 1;
+    x0 |= t;
+    x0 = x0 - p0[0] - (x3 & x2) - (~x3 & x1);
+    d[0] = x0 | ((unsigned long)x1 << 16);
+    d[1] = x2 | ((unsigned long)x3 << 16);
+}
+/* localdecomp:end func_L39_004E7E58 */

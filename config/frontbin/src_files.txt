@@ -183,6 +183,7 @@ src/frontbin/3B7F80.c 003B7F80
 src/frontbin/3B7FD8.c 003B7FD8
 src/frontbin/3B8A38.c 003B8A38
 src/frontbin/3B9298.c 003B9298
+src/frontbin/3B96C8.c 003B96C8
 src/frontbin/3B98A0.c 003B98A0
 src/frontbin/3B9A90.c 003B9A90
 src/frontbin/3B9BD0.c 003B9BD0

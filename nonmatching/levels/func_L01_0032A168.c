@@ -1,3 +1,4 @@
+/* k6 agent 4b (2026-11-26): with `extern s32 D_001D545C;` in the block it compiles in its file's context again (the file declares it only later). Writing the w0 test as `~v->w0 != 0` (or `v->w0 + 1 != 0`) breaks cse's sharing of the -1: 17 rows, but the test is then nor/beqz instead of retail's li/beq and the guard's -1 is set late instead of in the tbl test's delay slot. */
 /* PAL near miss (Sonnet round 20, b33 h4d / h4e): 27 raw differences (6 words that are not branch offsets or the masked jump-table lui/addiu) with `-mvu0-use-vf0-vf2` added to
  * its file's flags (the vec_add_ab at the end of case 4 needs it: without it cc1 reports `fixed or forbidden register 96 (vf17) was spilled for class VU_REGS`, so a match would also
  * change the flag line of src/levels/shared/L01_00329AD0.c and every other block of that file would have to be re-checked).
@@ -13,6 +14,7 @@
  * wrapper inline or a boolean result variable breaks the sharing but changes the code. Not tried: a real source form that makes the call block contain a label at cse time. */
 #include "common.h"
 /* localdecomp:start func_L01_0032A168 */
+extern s32 D_001D545C;
 #include "vu0.h"
 
 typedef struct {
