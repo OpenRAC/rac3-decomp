@@ -3,7 +3,7 @@
 /* declared by functions of L39_006DC228.c, which this file was cut from */
 extern u8 D_001A5CD0[];
 extern void *D_001E2050_sda;
-extern s32 func_L39_006D6E50(s32, s32, s32, s32 *);
+extern void func_L39_006D6E50(s32, s32, s32, s32 *);
 extern void func_L39_006D6E30(s32, s32, s32 *);
 typedef struct {
     s32 ids[8];

@@ -27,9 +27,9 @@ typedef struct {
     T_006A0AC0 *t128;
 } S_006A0AC0;
 extern u8 D_00248568[];
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(S_006A0AC0 *);
-extern void func_L39_0068B2F8(S_006A0AC0 *, s32, s32);
+extern s32 func_L39_0068B2F8(S_006A0AC0 *, s32, s32);
 void func_L39_006A0AC0(S_006A0AC0 *a0)
 {
     func_L39_0067F100(0x2F0000);
@@ -48,7 +48,7 @@ void func_L39_006A0AC0(S_006A0AC0 *a0)
 extern void func_L39_0068ADC8(void *);
 extern void func_L39_006A0BC8(void *);
 
-extern void func_L39_0067F168();
+extern s32 func_L39_0067F168();
 void func_L39_006A0BC8(void *p) {
     func_L39_0067F168(p);
     func_L39_0068ADC8(p);

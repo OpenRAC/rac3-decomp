@@ -7,7 +7,7 @@ void func_L01_003A45F0(u8 *a) {
 /* localdecomp:end func_L01_003A45F0 */
 
 /* localdecomp:start func_L01_003A4600 */
-extern u8 *func_L01_00449050(u8 *);
+extern s32 func_L01_00449050(u8 *);
 extern void func_003C3A10(u8 *, s32, s32, s32);
 
 void func_L01_003A4600(u8 *m, u8 *other) {

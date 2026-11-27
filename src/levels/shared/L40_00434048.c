@@ -76,14 +76,14 @@ s32 func_L40_004341E8(u8 *a0) {
 /* localdecomp:end func_L40_004341E8 */
 
 /* localdecomp:start func_L40_00434248 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L40_00434248(s32 a0) {
     return func_L39_0066DD30(a0, 0, 0) != 0;
 }
 /* localdecomp:end func_L40_00434248 */
 
 /* localdecomp:start func_L40_00434270 */
-extern void func_L39_0066DCC8(int, int, int, int);
+extern s32 func_L39_0066DCC8(int, int, int, int);
 extern void func_L39_00662AA0(u8 *a0, void *a1, s32 a2);
 extern void *func_0011D534(void *, s32, s32);
 extern s32 D_001A5CD0[];
@@ -145,7 +145,7 @@ void func_L40_00434270(u8 *a0) {
 /* localdecomp:end func_L40_00434270 */
 
 /* localdecomp:start func_L40_00434398 */
-extern void func_L39_0066DCC8(int, int, int, int);
+extern s32 func_L39_0066DCC8(int, int, int, int);
 extern void func_L39_00662AA0(u8 *a0, void *a1, s32 a2);
 
 void func_L40_00434398(s32 a0, s32 a1, s32 a2)
@@ -161,7 +161,7 @@ void func_L40_00434398(s32 a0, s32 a1, s32 a2)
 /* localdecomp:end func_L40_00434398 */
 
 /* localdecomp:start func_L40_004343F0 */
-extern void func_L39_0066DCC8(int, int, int, int);
+extern s32 func_L39_0066DCC8(int, int, int, int);
 
 void func_L40_004343F0(int a0)
 {

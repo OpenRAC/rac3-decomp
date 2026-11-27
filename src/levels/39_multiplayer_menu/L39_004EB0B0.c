@@ -20,7 +20,7 @@ typedef struct {
     s32 f44;
 } S_004EB0B0;
 
-extern void func_L39_004CA180(void *, s32);
+extern s32 func_L39_004CA180(void *, s32);
 
 void func_L39_004EB0B0(S_004EB0B0 *a0, s32 a1, s32 a2) {
     if (a0->f30 == a1) {

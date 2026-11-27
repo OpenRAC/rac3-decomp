@@ -216,7 +216,7 @@ extern void func_0038CC88(void *, void *, s32);
 extern Mdl_00666518 *func_003C24B0(s32, s32);
 extern void func_L01_00456160(void *, s32);
 extern void *func_001206F4(void *, void *);
-extern void func_L39_0055D598(u8 *);
+extern void *func_L39_0055D598(u8 *);
 extern void func_003C7C38(void *);
 extern void func_L39_0061C1E0(void *, s32);
 extern void func_L39_0061ECE0(void *, void *, s32);
@@ -225,7 +225,7 @@ extern void func_0038D328(void *, void *);
 extern void func_L39_00632180(u8 *, f32 *, s32, f32, f32, f32);
 extern void func_L01_00412E70(void *, void *, f32, u8 *, f32);
 extern void func_00382760(void *, f32, f32, f32);
-extern void func_L39_00673A80(void *, s32);
+extern s32 func_L39_00673A80(void *, s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 
 static __inline__ void Prep_00666518(u8 *q) {

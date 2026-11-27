@@ -14,8 +14,8 @@ extern u32 D_0013E300[4];
 extern u32 D_0013E2F8;
 extern void func_00124B80(u32, u32);
 extern u32 func_00124A68(u32, u32, void *);
-extern void func_00124A28(void);
-extern void func_001249F0(void);
+extern u32 *func_00124A28(void);
+extern s32 func_001249F0(void);
 extern void func_0011EED0(s32 *);
 extern void func_0011EEC0(s32 *);
 extern char *D_0013E020;
@@ -106,8 +106,8 @@ typedef struct Alarm_125D18 {
 extern Alarm_125D18 *D_159EC0;
 extern int func_001258E8(void);
 extern s32 func_00125B68(int id, int time, void *cb, void *arg);
-extern void func_001259F0(int id);
-extern void func_00125CB8();
+extern int func_001259F0(int id);
+extern s32 func_00125CB8();
 int func_00124920(void);
 int func_00124970(void);
 
@@ -166,8 +166,8 @@ typedef struct Node_125E48 {
 extern Node_125E48 *D_159EC0_00125E48;
 extern s32 func_00125878(void);
 extern void func_00125A70(s32, s32, void *, Node_125E48 *);
-extern void func_00125940(s32);
-extern void func_00125CB8(void);
+extern s32 func_00125940(s32);
+extern s32 func_00125CB8(void);
 
 static inline Node_125E48 *alloc_125E48(void) {
     Node_125E48 *n = D_159EC0_00125E48;

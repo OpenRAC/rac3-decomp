@@ -7,6 +7,9 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
+typedef struct { u8 pad[0x58]; s32 w; s32 h; union { s32 flags; u8 c; } u; } S_38EDE8;
+extern s32 func_00393620(S_38EDE8 *p, s32 *x, s32 *y);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_00396278 */

@@ -8,11 +8,11 @@ __asm__(".extern D_L39_0024D760, 16");
 __asm__(".extern D_L39_0024D764, 16");
 extern u8 D_L39_0024D764;
 extern u8 *D_L39_0024D760;
-void func_L39_006CC120(void *);
-void func_L39_006CC930(void *);
+void *func_L39_006CC120(void *);
+s32 func_L39_006CC930(void *);
 void func_L39_0068A2D0(void *, s32, s32, s32, f32, f32);
-void func_L39_0068B2F8(void *, s32, s32);
-void func_L39_0067F168(void);
+s32 func_L39_0068B2F8(void *, s32, s32);
+s32 func_L39_0067F168(void);
 void func_L39_0068ADC8(void *);
 void func_L39_006CC158(void *, s32);
 

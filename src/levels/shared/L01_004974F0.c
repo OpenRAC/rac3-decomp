@@ -23,7 +23,7 @@ struct Obj_492EE8 {
 };
 
 /* declared by functions of L01_00494F98.c, which this file was cut from */
-extern void func_L01_00517918(s32);
+extern s32 func_L01_00517918(s32);
 extern void func_L01_00497BE0(void);
 extern void func_L01_004978A8(s32 a, s32 b);
 extern void func_003E8630(s32, s32);

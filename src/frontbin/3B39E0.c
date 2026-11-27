@@ -22,7 +22,7 @@ extern u8 D_001D88A8[];
 extern u8 D_00240820[];
 extern s32 D_001D4BC0_003B39E0[4] __attribute__((section(".sdata")));
 extern s32 func_00381FF0(s32);
-extern void func_11B2E8();
+extern s32 func_11B2E8();
 extern void func_0038E7E8_003B39E0(f32, f32, f32, unsigned long, u8 *, s32, f32, s32, s32, unsigned long, f32, f32);
 
 void func_003B39E0(void) {

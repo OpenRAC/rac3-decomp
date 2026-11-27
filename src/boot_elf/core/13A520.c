@@ -245,7 +245,7 @@ extern char D_00152008[];
 extern char D_00152030[];
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_0013A0F8();
-extern s32 func_0013A150_001350A8(void *, char *, ...);
+extern void func_0013A150_001350A8(void *, char *, ...);
 extern void func_00135FD8();
 extern u32 func_00136010();
 extern void func_00134FD8();
@@ -256,7 +256,7 @@ extern s32 func_00136080();
 extern s32 func_001360A8();
 typedef struct { u8 pad[0xC4]; s32 xC4; u8 pad2[0x24]; s32 xEC; s32 xF0; s32 xF4; s32 xF8; } T_135C10;
 typedef struct { u8 pad[0x40]; T_135C10 *x40; } S_135C10;
-extern void func_001353A8(S_135C10 *);
+extern s32 func_001353A8(S_135C10 *);
 typedef struct {
     s32 x0;
     s32 x4;
@@ -281,8 +281,8 @@ typedef struct {
 extern void func_001352E0(S_135C60 *);
 typedef struct { u8 pad[0x184]; s32 x184; } T_135E40;
 typedef struct { u8 pad[0x40]; T_135E40 *x40; } S_135E40;
-extern void func_00135818(S_135E40 *, s32, s32);
-extern void func_00135988(S_135E40 *, s32, s32);
+extern s32 func_00135818(S_135E40 *, s32, s32);
+extern s32 func_00135988(S_135E40 *, s32, s32);
 typedef struct { u8 pad[0x28]; s32 x28; } C_135E88;
 typedef struct { u8 pad[0x1C8]; C_135E88 *a0; C_135E88 *b0; u8 p1[8]; C_135E88 *a1; C_135E88 *b1; u8 p2[8]; C_135E88 *a2; C_135E88 *b2; } T_135E88;
 typedef struct { u8 pad[0x40]; T_135E88 *x40; } S_135E88;
@@ -476,7 +476,7 @@ typedef struct {
     u32 scr_hi;
     u32 sys;
 } PH_137620;
-extern void func_00137450_00137620(BS_137620 *, PH_137620 *);
+extern s32 func_00137450_00137620(BS_137620 *, PH_137620 *);
 typedef struct {
     unsigned long buf;   
     unsigned long pos;   
@@ -504,7 +504,7 @@ extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 typedef struct { u8 pad[0xC]; s32 xC; u8 pad2[0x858]; s32 x868; } S_13A0F8;
 extern s32 func_00135D50(s32, s32 *);
-extern s32 func_00139F80(s32);
+extern void func_00139F80(s32);
 extern s32 func_00124920(void);
 extern s32 func_00124970(void);
 extern void func_0013A208(s32);
@@ -589,7 +589,7 @@ extern s8 D_00141838_0013A7D0[];
 extern char D_00152270_0013A7D0[];
 extern s32 func_00123430();
 extern void func_00123840();
-extern void func_001236C0();
+extern s32 func_001236C0();
 
 s8 *func_0013A7D0(void) {
     s32 r;
@@ -606,7 +606,7 @@ s8 *func_0013A7D0(void) {
 
 /* localdecomp:start func_0013A840 */
 extern u8 D_00141838[];
-extern void func_0013A7D0_0013A840(void);
+extern s8 *func_0013A7D0_0013A840(void);
 s32 func_0013A840(void) {
     s8 *p = (s8 *)D_00141838;
     if (*p == 0) {

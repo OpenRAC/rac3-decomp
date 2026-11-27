@@ -32,7 +32,7 @@ typedef struct {
 } G_006AF570;
 __asm__(".extern D_L39_0024D760, 16");
 extern G_006AF570 *D_L39_0024D760;
-extern void func_L39_0067F168(void *);
+extern s32 func_L39_0067F168(void *);
 extern void func_L39_006DDDE8(void *);
 extern void func_L39_0068ADC8(void *);
 extern void func_L01_0040FDE0(s32);

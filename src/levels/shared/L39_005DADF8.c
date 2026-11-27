@@ -2,8 +2,8 @@
 
 /* declared by functions of L39_005DA870.c, which this file was cut from */
 extern void func_003E82F8(s32);
-extern void func_L01_00517190(s32, s32);
-extern void func_L01_005170B8(s32, s32);
+extern s32 func_L01_00517190(s32, s32);
+extern s32 func_L01_005170B8(s32, s32);
 
 /* localdecomp:start func_L39_005DADF8 */
 extern unsigned char D_L39_00243690[8];
@@ -181,8 +181,8 @@ extern S_005DB1A8 D_L39_0049C890[];
 extern s32 D_001D7FD8_sda[2];
 extern void func_003E82F8(s32);
 extern s32 func_L01_00516D60(s32, s32);
-extern void func_L01_00517190(s32, s32);
-extern void func_L01_005170B8(s32, s32);
+extern s32 func_L01_00517190(s32, s32);
+extern s32 func_L01_005170B8(s32, s32);
 
 void func_L39_005DB1A8(s32 *a0, s32 a1)
 {

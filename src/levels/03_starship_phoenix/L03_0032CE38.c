@@ -20,7 +20,7 @@ typedef struct { u8 pad0[0x68]; struct { u8 pad[0xD0]; s32 idx; } *p68; } Obj_32
 /* localdecomp:start func_L03_0032CE38 */
 /* m2c3 */
 void *func_L01_003F2A50(s32, s32);              /* extern */
-s32 func_L01_003F2AF8(s32, void *);             /* extern */
+void func_L01_003F2AF8(s32, void *);             /* extern */
 
 void func_L03_0032CE38(void *arg0) {
     void *temp_16;

@@ -13,14 +13,14 @@ extern f32 func_L39_005B4410(f32, f32);
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_L39_005B4468(f32, f32);
 extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
-extern void func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
+extern void *func_L01_0046A610(void *, void *, s32, s32, s32, s32, f32, f32, f32, f32, f32);
 extern void func_003C4840(void *, void *, f32);
 extern void func_0038D850(void *, void *, void *);
 extern f32 func_L39_005B44C8(void);
 extern void func_00382760(void *, f32, f32, f32);
 extern s32 func_L01_00448D88(u32, s32);
 extern s32 func_L39_005B43C8(s32, s32);
-extern void func_L39_005C7B40(void *, void *, s32, s32, s32, s32, s32, s32, s32, f32);
+extern void *func_L39_005C7B40(void *, void *, s32, s32, s32, s32, s32, s32, s32, f32);
 
 void func_L39_00548130(u8 *self, V4_00548130 *pos) {
     V4_00548130 q;

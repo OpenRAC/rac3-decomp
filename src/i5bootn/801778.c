@@ -10,7 +10,7 @@ extern void func_00801138(void);
 extern int func_008014A0(int);
 typedef int (*putc_fn_8015A0)(void *, int *, int);
 extern int func_008024B8_008015A0(void *, void *, int *, const char *, ...);
-extern int func_00801510_008015A0(unsigned long);
+extern long func_00801510_008015A0(unsigned long);
 
 /* localdecomp:start func_00801778 */
 /* Sony 2.9-ee library code: the printf core behind func_008024B8 and func_00802508. out is

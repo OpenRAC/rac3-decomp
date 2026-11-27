@@ -17,7 +17,7 @@ extern s32 D_L20_001E02D8_003FE9C0;
 __asm__(".extern D_L20_001E02D8_003FE9C0, 16");
 extern u8 D_L20_001D66B0[8];
 __asm__(".extern D_L20_001D66B0, 16");
-extern s32 func_L03_0043FC00(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
+extern void func_L03_0043FC00(s32, s32, u8 *, s32, s32, f32, f32, f32, f32, s32, f32, f32, s32, s32, f32);
 extern void func_L01_004443E8(void *, s32, s32);
 extern void func_003C2880(void *);
 extern void func_L01_00445BE0(s32, s32);

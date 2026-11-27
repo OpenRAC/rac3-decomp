@@ -52,7 +52,7 @@ typedef struct M_006B3308 {
 extern char D_L39_00248FC8[];
 extern char D_L39_00248FD0[];
 extern u8 D_L39_0047E438[];
-extern void func_L39_00688388(void *);
+extern void *func_L39_00688388(void *);
 extern s32 func_L39_005B43C8(s32, s32);
 extern void func_L39_0068CD28(u8 *, s32, f32, f32, f32, f32);
 extern void func_00120D28(s32, s32, s32);

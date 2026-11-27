@@ -8,6 +8,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+void func_0038E150(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_0038E150 */

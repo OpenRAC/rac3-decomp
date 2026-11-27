@@ -38,7 +38,7 @@ extern u32 D_001A7F70[];
 __asm__(".extern D_001A7F70, 16");
 extern u32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
-void func_L01_0041A5B0(s32 a, s32 b);
+s32 func_L01_0041A5B0(s32 a, s32 b);
 void func_L03_0032CF78_0032C890(void *a, s32 b);
 
 void func_L03_0032C890(s32 a, u8 b) {

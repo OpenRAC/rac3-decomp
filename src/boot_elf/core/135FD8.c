@@ -248,14 +248,14 @@ extern char D_00152008[];
 extern char D_00152030[];
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_0013A0F8();
-extern s32 func_0013A150_001350A8(void *, char *, ...);
+extern void func_0013A150_001350A8(void *, char *, ...);
 extern u32 func_00136010();
 extern void func_00134FD8();
 extern s32 func_00135C60();
 extern s32 func_00135E88();
 typedef struct { u8 pad[0xC4]; s32 xC4; u8 pad2[0x24]; s32 xEC; s32 xF0; s32 xF4; s32 xF8; } T_135C10;
 typedef struct { u8 pad[0x40]; T_135C10 *x40; } S_135C10;
-extern void func_001353A8(S_135C10 *);
+extern s32 func_001353A8(S_135C10 *);
 typedef struct {
     s32 x0;
     s32 x4;
@@ -280,8 +280,8 @@ typedef struct {
 extern void func_001352E0(S_135C60 *);
 typedef struct { u8 pad[0x184]; s32 x184; } T_135E40;
 typedef struct { u8 pad[0x40]; T_135E40 *x40; } S_135E40;
-extern void func_00135818(S_135E40 *, s32, s32);
-extern void func_00135988(S_135E40 *, s32, s32);
+extern s32 func_00135818(S_135E40 *, s32, s32);
+extern s32 func_00135988(S_135E40 *, s32, s32);
 typedef struct { u8 pad[0x28]; s32 x28; } C_135E88;
 typedef struct { u8 pad[0x1C8]; C_135E88 *a0; C_135E88 *b0; u8 p1[8]; C_135E88 *a1; C_135E88 *b1; u8 p2[8]; C_135E88 *a2; C_135E88 *b2; } T_135E88;
 typedef struct { u8 pad[0x40]; T_135E88 *x40; } S_135E88;

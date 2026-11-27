@@ -54,11 +54,11 @@ extern void func_0038CE20(f32 *, void *, f32);
 extern void func_L01_0040E6B8(void *, void *, f32);
 extern void func_00382760(void *, f32, f32, f32);
 extern void func_0038CF68(void *, void *, f32);
-extern void func_L19_0045E1A8(void *, void *, s32, s32, s32, s32, s32, f32);
+extern u8 *func_L19_0045E1A8(void *, void *, s32, s32, s32, s32, s32, f32);
 extern f32 func_0038D160(f32, f32);
 extern f32 func_0038CED8(void *);
 extern void func_L01_003EB5E0(s32, s32);
-extern s32 func_L01_003F2A50(s32, s32);
+extern void *func_L01_003F2A50(s32, s32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 

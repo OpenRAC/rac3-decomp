@@ -4,8 +4,8 @@
 extern s32 D_L39_003D2880[];
 extern s32 D_001DC354_sda;
 __asm__(".extern D_001DC354_sda, 4");
-extern void func_L01_00516AA0();
-extern void func_L01_00516470(int);
+extern s32 func_L01_00516AA0();
+extern s32 func_L01_00516470(int);
 extern s32 func_L01_005168F0(s32, f32);
 extern s32 func_L01_00517538(s32, f32, f32);
 extern s32 func_L01_005170B8(s32, s32);

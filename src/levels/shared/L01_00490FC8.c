@@ -50,7 +50,7 @@ extern f32 D_L01_001D8D90;
 __asm__(".extern D_L01_001D8D88, 4");
 __asm__(".extern D_L01_001D8D8C, 4");
 __asm__(".extern D_L01_001D8D90, 4");
-extern void func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00516558(s32, f32 *, f32 *);
 extern s32 func_L01_00516470(s32, f32, f32);
 
 void func_L01_00490FC8(void) {

@@ -113,7 +113,7 @@ extern f32 D_001D99BC;
 extern f32 D_001D99B0[];
 extern s32 func_00381C60();
 extern f32 func_0038D318();
-extern s32 func_0038DA68();
+extern void func_0038DA68();
 extern void func_0038DB30(void *, s32, f32);
 typedef struct {
     f32 x;

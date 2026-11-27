@@ -51,7 +51,7 @@ void func_003B6DB0(void) {
 /* localdecomp:end func_003B6DB0 */
 
 /* localdecomp:start func_003B6E50 */
-extern void func_003A5748(s32, s32, s32);
+extern s32 func_003A5748(s32, s32, s32);
  
 void func_003B6E50(void) {
     func_003A5748(5, 0, 0);

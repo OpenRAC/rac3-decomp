@@ -14,7 +14,7 @@ extern void func_L02_004C3638(s32);
 extern void func_L01_0050FED0(void);
 extern void func_L01_004436F4(void *);
 extern void func_L01_004E2ED0(void);
-extern void func_L02_004D36C0(s32, s32);
+extern s32 func_L02_004D36C0(s32, s32);
 
 void func_L02_004C2BA0(s32 mode, s32 arg, u8 *obj)
 {

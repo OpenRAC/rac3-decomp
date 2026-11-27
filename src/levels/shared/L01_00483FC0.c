@@ -116,15 +116,15 @@ s32 func_L01_00484028(void) {
 
 /* localdecomp:start func_L01_00484080 */
 extern s32 func_003E9138(s32, s32, f32, f32, f32, f32, s32);
-extern void func_L01_00516B90(s32, s32, s32);
+extern s32 func_L01_00516B90(s32, s32, s32);
 extern s32 func_L01_00517190(s32, s32);
 extern s32 func_003B5060(s32);
 extern s32 func_L01_00518110(s32, s32, s32, s32);
 extern s32 func_003E8348(s32, s32);
 extern s32 func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_00381FF0(s32);
-extern void func_L01_00516AA0(s32, s32, s32);
-extern void func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516470(s32, f32, f32);
 extern s32 func_003E8B98(s32, s32, s32, s32, s32, s32, s32);
 extern s32 D_L01_001D8508;
 extern f32 D_L01_001D8510;

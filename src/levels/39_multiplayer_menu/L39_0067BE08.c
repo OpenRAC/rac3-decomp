@@ -50,7 +50,7 @@ extern s32 func_003E9138(s32, s32, f32, f32, f32, f32, s32);
 extern s32 func_L39_005B43C8(s32, s32);
 extern void func_003A26F0(s32, s32, s32);
 extern s32 func_003B43B0(s32);
-extern void func_L39_005DBEE8(s32, s32, s32);
+extern s32 func_L39_005DBEE8(s32, s32, s32);
 extern s32 func_003E8710(s32, s32);
 extern s32 func_L01_00517190(s32, s32);
 extern s32 func_L01_00518110(s32, s32, s32, s32);

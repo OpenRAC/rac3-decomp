@@ -3,6 +3,7 @@
 
 typedef int s128_3D8F20 __attribute__((mode(TI)));
 typedef int u128_t __attribute__((mode(TI)));
+typedef struct { u8 pad[0x6C]; f32 scale; u8 pad70[0x80]; } Row_003DD9C8;
 
 /* localdecomp:start func_L01_003D9510 */
 extern s32 D_L01_001D6740;
@@ -1118,7 +1119,6 @@ INCLUDE_ASM("asm/levels", func_L01_003DD0F8);
 #include "vu0.h"
 extern vu0_v4 D_L01_001E29C0;
 extern u8 D_00142657[];
-typedef struct { u8 pad[0x6C]; f32 scale; u8 pad70[0x80]; } Row_003DD9C8;
 extern Row_003DD9C8 D_L01_002C5600[];
 extern f32 D_L01_001D66B0;
 void func_L01_003DD9C8(u8 *owner, f32 *origin) {

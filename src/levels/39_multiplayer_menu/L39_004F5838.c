@@ -1,10 +1,10 @@
 #include "common.h"
 
 /* declared by functions of L39_004F4FD8.c, which this file was cut from */
-extern s32 *func_L39_004F6A30();
+extern void func_L39_004F6A30();
 
 /* localdecomp:start func_L39_004F5838 */
-extern s32 *func_L39_004F6A30();
+extern void func_L39_004F6A30();
 s32 func_L39_004F5838(void) {
     func_L39_004F6A30();
     return 0;

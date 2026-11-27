@@ -10,7 +10,7 @@ extern s32 D_L39_0024BB44;
 __asm__(".extern D_L39_0024BB44, 16");
 extern s32 D_001DD730_sda;
 extern S_006B0FA8 D_L39_003D2880[];
-extern void func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00516470(s32, f32, f32);
 extern void func_L39_0068B058(void *);
 
 void func_L39_006B0FA8(void *a0) {

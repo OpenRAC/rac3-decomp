@@ -4,7 +4,7 @@
 extern void func_L01_00517688(void);
 extern void *func_003E6C08();
 
-extern void func_L01_00515DE0(void *);
+extern s32 func_L01_00515DE0(void *);
 extern u8 D_L01_001E15E0[];
  
 void func_L01_00517688(void) {

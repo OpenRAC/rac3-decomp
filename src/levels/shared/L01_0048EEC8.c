@@ -44,7 +44,7 @@ extern char *func_00381FF0(s32 id);
 extern void func_L01_0047EC88(void);
 extern u8 *D_001D52FC[] __attribute__((section(".sdata")));
 extern void *func_L01_0047EBE0(void);
-extern void func_L01_00517748(void *);
+extern s32 func_L01_00517748(void *);
 extern O_00489FA8 *func_003B42F8(s32);
 extern void func_L01_0047DE68(void);
 extern s32 func_L01_0048EE70(void);
@@ -66,14 +66,14 @@ extern void func_L01_00518D40_0048EEC8(s32);
 extern void func_003E8348(s32, s32);
 extern s32 func_003E8FE8(s32, char *, s32, f32, f32, f32, f32);
 extern void func_003E7AC8(s32, s32);
-extern void func_L01_00516B90(s32, s32, s32);
+extern s32 func_L01_00516B90(s32, s32, s32);
 extern void func_003E7F20(s32, s32);
 extern void func_003E9270(s32, s32, f32, f32, f32, f32, f32, f32);
 extern void func_003E9138(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_L01_00516AA0(s32, s32, s32);
 extern s32 func_003B4528(void *, s32, s32, s32, s32);
 extern s32 func_003E8710(s32, void *);
-extern void func_L01_00518480(s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L01_00518480(s32, s32, s32, s32, s32, s32, s32, s32, s32);
 extern S_0048EEC8 D_00160C40_0048EEC8;
 
 void func_L01_0048EEC8(void) {

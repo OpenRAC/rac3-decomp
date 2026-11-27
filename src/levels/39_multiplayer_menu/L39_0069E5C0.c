@@ -13,7 +13,7 @@ __asm__(".extern D_001DCCBC_sda, 4");
 __asm__(".extern D_001DCCC0_sda, 4");
 __asm__(".extern D_001DCCC4_sda, 4");
 __asm__(".extern D_001DCCC8_sda, 4");
-void func_L39_00688388(void *);
+void *func_L39_00688388(void *);
 void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 void func_L39_00689670(void *, void *);
 

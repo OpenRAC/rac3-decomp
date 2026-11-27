@@ -7,8 +7,8 @@ extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32,
 extern void func_L01_00450DE8(void *, void *, f32, f32, f32);
 extern void func_L01_00446748(void *, void *, s32, f32);
 extern s32 func_003D4D00(void *, s32, f32, void *, void *);
-extern void func_L04_00325460(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, s32, s32, s32, s32);
-extern void func_L01_00452460(void *, s32, s32);
+extern void *func_L04_00325460(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, s32, s32, s32, s32);
+extern u8 *func_L01_00452460(void *, s32, s32);
 
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_003C59E8;
 typedef struct {

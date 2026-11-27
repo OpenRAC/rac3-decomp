@@ -4,7 +4,7 @@
 /* follows func_L04_00362DF0 (src/levels/shared/L04_00362CE0.c) */
 typedef int Q_00351148 __attribute__((mode(TI)));
 extern u8 *func_00382348(void *);
-extern u8 *func_L01_00448FF0(u8 *);
+extern s32 func_L01_00448FF0(u8 *);
 extern s32 func_L01_00456C98(void *, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void func_L01_004450F0(void *, s32, s32);

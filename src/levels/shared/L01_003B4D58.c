@@ -47,7 +47,7 @@ extern void func_L01_003EE650(s32);
 extern s32 func_L01_003B3548(u8 *);
 
 /* localdecomp:start func_L01_003B4D58 */
-extern void func_L01_00517918(s32);
+extern s32 func_L01_00517918(s32);
 
 void func_L01_003B4D58(void *a, u8 *b) {
     if (*(s32 *)(b + 36) != 0) {

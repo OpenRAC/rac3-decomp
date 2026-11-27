@@ -11,7 +11,7 @@ typedef struct {
 
 extern u8 *D_L39_00241640;
 extern S_006A8E38 *D_L39_0024D760;
-extern s32 func_L39_006D9328(void *, void *);
+extern void *func_L39_006D9328(void *, void *);
 
 s32 func_L39_006A8E38(s32 a0, s32 index)
 {

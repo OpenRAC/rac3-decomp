@@ -9,7 +9,7 @@ s32 func_L39_0068B3C0();
 s32 func_L39_0068B1E0();
 s32 func_L39_0068B260();
 s32 func_L39_0068B2F8();
-void func_L39_00688340(s32, s32, s32);
+s32 func_L39_00688340(s32, s32, s32);
 typedef struct { u8 pad[0x284]; s32 unk284; } S_0068AF68;
 extern S_0068AF68 *D_L39_00247914[];
 

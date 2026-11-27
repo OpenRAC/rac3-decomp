@@ -17,7 +17,7 @@ extern void func_L39_004B3B18(void);
 extern void func_L01_00447450(s32);
 extern void func_L39_006121B0(s32);
 extern s32 func_003B43B0(s32);
-extern void func_L39_005DBEE8(s32, s32, s32);
+extern s32 func_L39_005DBEE8(s32, s32, s32);
 extern void func_L39_00681470(void);
 extern void func_L39_005C1A60(s32, s32, s32);
 

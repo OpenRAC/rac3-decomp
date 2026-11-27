@@ -107,11 +107,11 @@ extern u8 D_001A58C7[];
 extern u16 D_L39_004B0890[][5], D_L39_004B0A98[][5], D_L39_004B0CA0[][5], D_L39_004B0EA8[][5], D_L39_004B10B0[][5], D_L39_004B12B8[][5];
 extern void func_L39_006A8E90(void);
 extern void func_L39_006A8F08(u16 (*src)[5], s32 n);
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(void *);
 extern void func_L39_006AB780(u8 *p, s32 a1, s32 a2);
 extern void func_L39_006AB098(void *);
-extern void func_L39_0068B2F8(void *, s32, s32);
+extern s32 func_L39_0068B2F8(void *, s32, s32);
 
 void func_L39_006AA0F0(void *a0)
 {

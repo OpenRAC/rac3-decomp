@@ -78,15 +78,15 @@ extern void func_003A98B8(s32, s32, s32, s32);
 extern s32 func_0038E488(u8 *p, s32 off, s32 *out);
 extern s32 func_0038E928_00390768(u8 *, s32, f32);
 extern void func_0038EBC8_00390768(f32, f32, s32, u8 *, s32, f32, f32, s32, s32, unsigned long, f32, f32);
-extern void func_0038E928();
-extern void func_0038E5C8(void);
+extern s32 func_0038E928();
+extern s32 func_0038E5C8(void);
 extern void func_0038E7A0();
 extern void func_0038E7A0();
-extern void func_0038E928();
-extern void func_0038E928();
-extern void func_0038E928();
+extern s32 func_0038E928();
+extern s32 func_0038E928();
+extern s32 func_0038E928();
 extern void func_0038EBC8(f32, f32, f32, f32, s32, s32, s32, s32, s32, unsigned long, f32, f32);
-extern void func_0038E928();
+extern s32 func_0038E928();
 extern s32 D_001D55E8;
 extern void func_0038E530(s32);
 extern void func_0038EBC8_00391240(s32, s32, s32, s32, s32, unsigned long, f32, f32, f32, f32, f32, f32);
@@ -194,7 +194,7 @@ extern unsigned long D_00141AD0_00391A58[];
 extern unsigned long D_00141DC0_00391A58[];
 extern unsigned long D_001420B0_00391A58[];
 extern void func_0012C138(void *, s32, s16, s16, s16, s16);
-extern void func_0012C638(s32, s32, s32, s32, s32, s32);
+extern int func_0012C638(s32, s32, s32, s32, s32, s32);
 extern void func_00391778(void);
 extern void func_00391880(s32, s32);
 extern void func_0038D068();
@@ -206,7 +206,7 @@ extern s32 D_001D4CF8[];
 /* localdecomp:start func_00392698 */
 extern u32 *D_001DA050;
 extern s32 D_001D4CF8_00392698; 
-extern void func_12C820(s32);
+extern s32 func_12C820(s32);
 
 void func_00392698(void) {
     if (D_001DA050 != 0) {
@@ -263,7 +263,7 @@ extern S_38DC08 D_001CFEC0_00392820[];
 extern s32 D_001DA050_00392820;
 extern long D_001D4C30;
 extern void func_0038CF80();
-extern void func_0012C638(s32, s32, s32, s32, s32, s32);
+extern int func_0012C638(s32, s32, s32, s32, s32, s32);
 void func_00392820(s32 tw, s32 th, s32 tbp, s32 mode) {
     S_38DC08 *s = D_001CFEC0_00392820;
     s32 tbw;

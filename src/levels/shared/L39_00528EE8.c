@@ -58,7 +58,6 @@ void func_L39_00528EE8(void *arg, void *arg2) {
 /* localdecomp:end func_L39_00528EE8 */
 
 /* localdecomp:start func_L39_00529130 */
-#include "vu0.h"
 typedef struct { u8 pad0[0xAA]; s16 xAA; } T_00529130;
 typedef struct { u8 pad0[0x24]; f32 x24; } U_00529130;
 typedef struct {

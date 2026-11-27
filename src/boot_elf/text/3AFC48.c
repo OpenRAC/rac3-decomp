@@ -40,7 +40,7 @@ extern void func_003877A0();
 extern void func_003AF9E0();
 extern s32 D_001D5C78;
 extern s32 D_0031D050[];
-extern void func_00396948();
+extern int func_00396948();
 extern void func_003AF850();
 
 extern s32 D_001DA08C;

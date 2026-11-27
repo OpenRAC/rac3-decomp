@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern s32 func_003B2C68(void *);
 extern void func_003B2BF8();
 extern s32 func_003B2C50();
@@ -22,7 +23,7 @@ extern void func_003B2C80();
 
 /* localdecomp:start func_003B2A00 */
 extern void func_003AFD88(void);
-extern void func_003B19A0(u8 *);
+extern s32 func_003B19A0(u8 *);
 extern u8 *D_001DA0B4[];
 s32 func_003B2A00(void) {
     func_003AFD88();
@@ -32,7 +33,7 @@ s32 func_003B2A00(void) {
 /* localdecomp:end func_003B2A00 */
 
 /* localdecomp:start func_003B2A30 */
-extern void func_003B1B88(void *);
+extern s32 func_003B1B88(void *);
 extern u8 *D_001DA0B4[];
 
 s32 func_003B2A30(void) {
@@ -42,7 +43,7 @@ s32 func_003B2A30(void) {
 /* localdecomp:end func_003B2A30 */
 
 /* localdecomp:start func_003B2A58 */
-extern void func_003B1C98(void *);
+extern s32 func_003B1C98(void *);
 extern u8 *D_001DA0B4[];
 
 s32 func_003B2A58(void) {
@@ -54,7 +55,7 @@ s32 func_003B2A58(void) {
 /* localdecomp:start func_003B2A80 */
 typedef struct { unsigned long a, b, c; } Q_3AD4D8;
 extern u8 *D_001DA0B4[];
-extern void func_003B22E0(u8 *, Q_3AD4D8 *);
+extern s32 func_003B22E0(u8 *, Q_3AD4D8 *);
 s32 func_003B2A80(s32 unused, u8 *out) {
     Q_3AD4D8 t;
     func_003B22E0(D_001DA0B4[0] + 0x48, &t);

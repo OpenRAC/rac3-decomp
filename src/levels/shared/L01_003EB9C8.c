@@ -2743,7 +2743,167 @@ void func_L01_003F19B0(void) {
 }
 /* localdecomp:end func_L01_003F19B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F19B8);
+/* localdecomp:start func_L01_003F19B8 */
+extern void (*D_L01_001DF9C0_003F19B8[])(void);
+extern void (*D_L01_001DF9D0_003F19B8[])(void);
+extern void func_L01_003F1740_003F19B8(void);
+extern void func_L01_003F1760_003F19B8(void);
+extern void func_L01_003F1780_003F19B8(void);
+extern void func_L01_003F17A0_003F19B8(void);
+extern void func_L01_003F17C0_003F19B8(s32, s32 *);
+extern void func_L01_003F1850_003F19B8(s32, s32, s32, s32);
+extern void func_L01_003F19B0_003F19B8(void);
+extern void func_L01_003F6F10_003F19B8(s32);
+extern void func_L01_00403168_003F19B8(s32);
+extern void func_L01_00407950_003F19B8(void);
+extern void func_L01_0045A550_003F19B8(void);
+extern void func_L01_00459F60_003F19B8(void);
+extern void func_003A92F0(s32);
+extern void func_003A9108(void);
+extern void func_0013B620(void);
+extern void func_0038E138(void);
+extern void func_00387F68(void);
+extern void func_003A9440(s32, unsigned long);
+extern void func_0038AF30(s32, s32, s32, s32, unsigned long);
+extern void func_00389240(s32);
+extern s32 func_003A0EA8(s32);
+extern void func_003B3158(s32);
+extern void func_00389370(void);
+extern void func_003A91D0(void);
+extern void func_003A9150(void);
+extern void func_003923D0(void);
+extern void func_00392748(s32);
+extern void func_003922B8(void);
+extern s32 func_0012C908(s32);
+extern s32 D_L01_001D6694;
+extern s32 D_L01_001D6698;
+extern s32 D_001D52F4;
+extern s32 D_L01_001DF944;
+extern s32 D_L01_001DF948;
+extern s32 D_L01_001DFB48;
+extern unsigned long D_001D4AC0;
+typedef struct {
+    s32 w;
+    s32 h;
+} Screen_003F19B8;
+extern Screen_003F19B8 D_001D4BC0;
+extern s32 D_00143950[];
+
+void func_L01_003F19B8(void) {
+    s32 out[8];
+    s32 t;
+
+    D_L01_001DF9C0_003F19B8[0] = func_L01_003F1740_003F19B8;
+    D_L01_001DF9C0_003F19B8[1] = func_L01_003F1760_003F19B8;
+    D_L01_001DF9C0_003F19B8[2] = func_L01_003F1780_003F19B8;
+    D_L01_001DF9C0_003F19B8[3] = func_L01_003F17A0_003F19B8;
+    D_L01_001DF9D0_003F19B8[0] = 0;
+    D_L01_001DF9D0_003F19B8[1] = 0;
+    D_L01_001DF9D0_003F19B8[2] = 0;
+    D_L01_001DF9D0_003F19B8[3] = 0;
+    func_003A92F0(1);
+    func_003A9108();
+    while (D_L01_001D6694 == 0 && D_L01_001D6698 != 0) {
+        D_001D4AC0 += *(volatile u32 *)0x10000800;
+        *(volatile u32 *)0x10000800 = 0;
+        D_001D52F4 = 1;
+        func_0013B620();
+        func_L01_00407950_003F19B8();
+        D_L01_001DF944 = 0xBF;
+        switch (D_L01_001D6698) {
+        case 1:
+            func_L01_003F17C0_003F19B8(2, &out[0]);
+            func_L01_003F1850_003F19B8(out[0], out[0] + 1, 1, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[1], out[1] + 1, 0, 1);
+            break;
+        case 2:
+            func_L01_003F17C0_003F19B8(3, &out[4]);
+            func_L01_003F1850_003F19B8(out[4], out[4] + 3, 1, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[5], out[5] + 3, 0, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[6], out[6] + 3, 0, 1);
+            break;
+        case 3:
+        default:
+            func_L01_003F17C0_003F19B8(4, &out[0]);
+            func_L01_003F1850_003F19B8(out[0], out[0] + 6, 1, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[1], out[1] + 6, 0, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[2], out[2] + 6, 0, 0);
+            func_0038E138();
+            func_L01_003F1850_003F19B8(out[3], out[3] + 6, 0, 1);
+            break;
+        }
+        func_L01_003F6F10_003F19B8(0);
+        func_L01_00403168_003F19B8(0);
+        func_00387F68();
+        func_003A9440(0x47, 0x33001);
+        if (D_L01_001D6698 == 1) {
+            func_0038AF30(0, D_001D4BC0.h >> 1, 0x155, 0x200, 0x80000000UL);
+            func_0038AF30(D_001D4BC0.h >> 1, D_001D4BC0.h, 0, 0xAA, 0x80000000UL);
+            func_0038AF30((D_001D4BC0.h >> 1) - 1, D_001D4BC0.h >> 1, 0, 0x200, 0x80000000UL);
+        } else if (D_L01_001D6698 == 2) {
+            func_0038AF30(D_001D4BC0.h >> 1, D_001D4BC0.h, 0x100, 0x200, 0x80000000UL);
+            func_0038AF30(0, D_001D4BC0.h, 0xFF, 0x100, 0x80000000UL);
+            func_0038AF30((D_001D4BC0.h >> 1) - 1, D_001D4BC0.h >> 1, 0, 0x200, 0x80000000UL);
+        } else {
+            func_0038AF30(0, D_001D4BC0.h, 0xFF, 0x100, 0x80000000UL);
+            func_0038AF30((D_001D4BC0.h >> 1) - 1, D_001D4BC0.h >> 1, 0, 0x200, 0x80000000UL);
+        }
+        func_00389240(0);
+        if (func_003A0EA8(3) == 0) {
+            func_003A9440(0x47, 0x33001);
+            func_0038E138();
+            func_003B3158(4);
+        }
+        func_00389370();
+        func_003A92F0(1);
+        func_003A91D0();
+        func_003A9150();
+        func_L01_0045A550_003F19B8();
+        func_L01_003F19B0_003F19B8();
+        func_L01_003F6F10_003F19B8(0);
+        {
+            s32 limit = 0x2580;
+            s32 c = D_00143950[0];
+            t = *(volatile s32 *)0x10000800;
+            if (c != 0) {
+                limit = 0x2D00;
+            }
+            if (t < limit) {
+                func_0012C908(0);
+            }
+        }
+        func_L01_003F19B0_003F19B8();
+        {
+            s32 limit = 0x4B00;
+            s32 c = D_00143950[0];
+            t = *(volatile s32 *)0x10000800;
+            if (c != 0) {
+                limit = 0x5A00;
+            }
+            if (limit < t) {
+                D_001D52F4 = 2;
+                func_L01_003F6F10_003F19B8(0);
+                func_L01_003F19B0_003F19B8();
+            }
+        }
+        D_L01_001DFB48 += 1;
+        func_L01_00459F60_003F19B8();
+        func_003923D0();
+        func_00392748(1);
+        func_003922B8();
+        func_003A92F0(1);
+        func_0012C908(0);
+        D_L01_001DF948 += 1;
+        func_003A91D0();
+        func_003A9150();
+    }
+}
+/* localdecomp:end func_L01_003F19B8 */
 
 /* localdecomp:start func_L01_003F1E68 */
 extern void func_L01_0045E4B0();

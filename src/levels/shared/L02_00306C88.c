@@ -8,13 +8,13 @@ __asm__(".extern D_L02_001E00A0, 4");
 extern f32 func_003C3D30(void *, s32, s32, f32);
 extern void func_L01_003016B0(void *, s32, f32, f32);
 extern f32 func_003824E0(f32, f32);
-extern void func_L01_0046A938(void *, void *, s32, f32, f32);
+extern void *func_L01_0046A938(void *, void *, s32, f32, f32);
 extern f32 func_00382538(void);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_00382468(s32);
 extern s32 func_00382498(s32, s32);
-extern void func_L01_00468A68(void *, void *, s32, s32);
+extern u8 *func_L01_00468A68(void *, void *, s32, s32);
 
 void func_L02_00306C88(u8 *o) {
     vu0_v4 pos;

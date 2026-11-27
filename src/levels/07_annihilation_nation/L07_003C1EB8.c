@@ -8,7 +8,7 @@ extern s32 func_00381FF0(s32);
 /* localdecomp:start func_L07_003C1EB8 */
 /* following rac3-decomp's func_L03_00330530 */
 typedef struct { u8 pad00[0x30]; s32 f30; u8 pad34[7]; u8 b3B; } S_003C1EB8;
-extern void func_0011B2E8();
+extern s32 func_0011B2E8();
 extern char *func_0011B4E4(char *, char *);
 extern void func_003910C0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_0038FA18(u16 *, long, char *, s32, unsigned long, f32, f32);

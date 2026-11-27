@@ -36,7 +36,7 @@ typedef struct P_0069A170 {
 extern Tbl_0069A170 D_L39_00248218;
 extern u8 D_L39_00248148[];
 extern u8 D_001A5D2E[];
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068A9B8(s32);
 extern s32 func_00381FF0(s32);
 extern void func_L39_00689BD8(void *, s32);
@@ -47,7 +47,7 @@ extern void func_L39_0068A6D0(void *, s32, f32, f32, f32, f32, u32);
 extern void func_L39_0068A4A8(void *, s32, s32, f32, f32, f32, f32, u32);
 extern void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern void func_L39_0068AAB8(void *);
-extern void func_L39_0068B2F8(void *, s32, s32);
+extern s32 func_L39_0068B2F8(void *, s32, s32);
 extern s32 func_00120048(u8 *, u8 *, ...);
 extern s32 func_003825F8(s32, s32, s32, s32, s32, s32);
 extern void func_L39_0069BA50(void *);

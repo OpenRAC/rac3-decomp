@@ -54,7 +54,7 @@ extern u8 D_L39_0047D210[];
 extern u8 D_L39_00248338[];
 extern u8 D_L39_00248340[];
 extern P_0069D2D8 D_L39_004B03A0[];
-void func_L39_00688388(void *);
+void *func_L39_00688388(void *);
 void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 s32 func_00381FF0(s32);
 void func_L39_00689670(void *, void *);

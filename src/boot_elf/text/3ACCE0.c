@@ -11,7 +11,7 @@ extern void (*D_00226A00[])(s32);
 
 /* declarations of 3ABF50.c's earlier functions (tools/port_from_us.py) */
 extern void func_00121760();
-extern void func_003AA070();
+extern void *func_003AA070();
 extern char D_001D8230[];
 extern char D_001D8270[];
 extern char D_001D82A0[];

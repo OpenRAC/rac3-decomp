@@ -56,7 +56,7 @@ typedef struct Pn_00626998 {
 } Pn_00626998;
 
 extern Ob_00626998 *func_L39_0061CF40(Pn_00626998 *);
-extern Ob_00626998 *func_L39_0061D7B0(Pn_00626998 *);
+extern s32 func_L39_0061D7B0(Pn_00626998 *);
 
 s32 func_L39_00626998(u8 *g, Pn_00626998 *p, s32 flag) {
     s32 found;

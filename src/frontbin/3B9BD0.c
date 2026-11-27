@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern s32 *func_003B9BD0(s32);
 extern s32 func_003B9C58(s32 *);
 extern s32 func_003B9C68();
@@ -17,7 +18,7 @@ extern s32 func_003B9E30(void *, s32, s32);
 typedef struct { u8 b[0xB4]; } E_3B46F0;
 extern E_3B46F0 D_00280CF0[];
 extern s32 D_001DA1A8;
-extern void func_003B9A90(E_3B46F0 *);
+extern void *func_003B9A90(E_3B46F0 *);
 s32 *func_003B9BD0(s32 idx) {
     s32 i;
     E_3B46F0 *p;

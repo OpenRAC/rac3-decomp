@@ -55,7 +55,7 @@ typedef struct D_00695530 {
 extern u8 D_L39_00247FC0[];
 extern u8 D_L39_0047CC68[];
 extern s32 func_00381FF0(s32);
-extern void func_L39_00688388(void *);
+extern void *func_L39_00688388(void *);
 extern void func_L39_0068CD28(u8 *, s32, f32, f32, f32, f32);
 extern void func_L39_00689670(void *, void *);
 

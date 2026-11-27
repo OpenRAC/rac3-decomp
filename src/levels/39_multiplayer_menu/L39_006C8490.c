@@ -4,7 +4,7 @@ typedef void (*FnVt_006C7F08)(void *, s32, s32);
 
 /* localdecomp:start func_L39_006C8490 */
 extern void func_L39_0068ADC8(void *);
-extern void func_L39_0067F168();
+extern s32 func_L39_0067F168();
 
 void func_L39_006C8490(void *arg0) {
     func_L39_0067F168(arg0);

@@ -43,7 +43,7 @@ typedef struct { u8 b[16]; } V16_48DCD8;
 extern void func_003A2750(s32);
 
 /* localdecomp:start func_L01_00490370 */
-extern void func_L01_00517918_00490370(s32);
+extern s32 func_L01_00517918_00490370(s32);
 extern void func_L01_00490930(void);
 extern void func_003A2750(s32);
 

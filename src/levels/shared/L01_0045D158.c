@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_0045D158 */
-extern u8 *func_L01_00448FF0(u8 *);
+extern s32 func_L01_00448FF0(u8 *);
 extern f32 func_L01_00451580(u8 *);
 extern s32 D_L01_001D673C_0045D158 __attribute__((section(".sdata")));
 

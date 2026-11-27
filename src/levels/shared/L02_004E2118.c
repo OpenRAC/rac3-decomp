@@ -9,7 +9,7 @@ typedef struct {
     s32 x25C4;
 } H_004E2118;
 extern H_004E2118 D_001A4BE0;
-extern void func_L02_004D36C0(s32, s32);
+extern s32 func_L02_004D36C0(s32, s32);
 
 void func_L02_004E2118(vu0_v4 *a0, vu0_v4 *a1, s32 a2) {
     vu0_v4 v = *a1;

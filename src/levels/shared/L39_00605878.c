@@ -21,7 +21,7 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern void func_003AAED0(void *, f32, f32, f32, f32);
 extern void func_003AAFF8(void *, f32, f32, f32, f32);
-extern s32 *func_L39_006010E0(void *);
+extern s32 func_L39_006010E0(void *);
 
 extern f32 D_001D9F60_sda;
 __asm__(".extern D_001D9F60_sda, 4");

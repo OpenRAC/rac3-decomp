@@ -57,8 +57,8 @@ void func_003AEF00(void *arg0, s32 arg1) {
 typedef struct { u8 p0[0x1C4]; u32 f1C4; } S_3A9698;
 extern S_3A9698 *D_001D52FC[];
 extern s32 func_003829D8(s32, s32, s32, s32, s32, s32);
-extern s32 *func_003AB270();
-extern f32 *func_003AB748();
+extern s32 func_003AB270();
+extern s32 func_003AB748();
 extern void func_003AB2B8();
 void func_003AEFF8(u8 *base, s32 b, f32 f) {
     s32 *r;

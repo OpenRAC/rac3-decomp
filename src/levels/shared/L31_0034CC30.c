@@ -128,7 +128,7 @@ extern void func_L31_0034B850_0034CD18(M_0034CD18 *, f32 *, f32);
 extern f32 func_0038CF00(void *, void *);
 extern f32 func_003C4088(f32, f32, f32);
 extern s32 func_00382498(s32, s32);
-extern s32 func_L31_0034E0F0_0034CD18(void *, s32, s32, s32, s32);
+extern void *func_L31_0034E0F0_0034CD18(void *, s32, s32, s32, s32);
 
 void func_L31_0034CD18(M_0034CD18 *m) {
     V_0034CD18 *v = m->x68;

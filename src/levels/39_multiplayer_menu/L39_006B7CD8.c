@@ -12,7 +12,7 @@ extern u8 D_L39_0037C848[];
 extern void func_L39_006B6BD0(void);
 extern void func_L39_006B6C30(void);
 extern void func_L01_004792D8(void (*)(void));
-extern void func_L39_005BF798(int, int, int, int, int);
+extern s32 func_L39_005BF798(int, int, int, int, int);
 extern void func_L39_00689A70(void);
 
 void func_L39_006B7CD8(O_006B7CD8 *arg0) {

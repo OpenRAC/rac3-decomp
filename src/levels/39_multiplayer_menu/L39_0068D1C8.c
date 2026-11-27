@@ -32,7 +32,7 @@ void func_L39_0068D1F0(void *a0)
 /* localdecomp:end func_L39_0068D1F0 */
 
 /* localdecomp:start func_L39_0068D230 */
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(void *);
 extern s32 func_00381FF0(s32);
 extern s32 func_00120048(u8 *, u8 *, ...);

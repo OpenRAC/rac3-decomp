@@ -22,11 +22,11 @@ extern s32 D_001DA03C;
 extern s32 D_001DA040;
 extern s32 D_001DA044;
 extern s16 D_001CD018[];
-extern void func_13CF80();
+extern s32 func_13CF80();
 extern void func_11F0A0();
 extern void func_003A1C28();
 extern void func_0038A238();
-extern void func_003A0D40();
+extern s32 func_003A0D40();
 /* localdecomp:start func_003A8980 */
 extern u8 *D_001D6EEC_003A8980;
 extern s32 func_0038DFB8(s32, s32, f32);
@@ -71,12 +71,12 @@ extern s32 D_001DA03C_003A8980;
 extern s32 D_001DA040_003A8980;
 extern s32 D_001DA044_003A8980;
 extern s16 D_001CD018_003A8980[];
-extern void func_13CF80_003A8980();
+extern s32 func_13CF80_003A8980();
 extern void func_11F0A0_003A8980();
 extern void func_003A5430_003A8980();
 extern void func_003A1C28_003A8980();
 extern void func_0038A238_003A8980();
-extern void func_003A0D40_003A8980();
+extern s32 func_003A0D40_003A8980();
 void func_003A8980(s32 a, s32 b, s32 c, s32 d, s32 e) {
     D_001A30B0_003A8980[0x43] |= 8;
     func_13CF80_003A8980(2, 0, 0, 0, 0);

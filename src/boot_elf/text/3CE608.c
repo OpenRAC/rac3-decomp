@@ -16,7 +16,7 @@ extern S_3C8B28 *D_001DA5F0_003CE450;
 extern s32 D_001DA610[2];
 extern void func_0038D728(void *, void *);
 extern s32 func_003CE450(s32, s32);
-s32 func_003CE798_003CE568(s32);
+void func_003CE798_003CE568(s32);
 extern s32 D_001D9D00;
 extern void *D_001DA5F0_003CE568;
 extern s32 D_001DA650;

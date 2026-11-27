@@ -42,7 +42,7 @@ extern f32 func_0038CF38(void *, void *);
 extern f32 func_003C3D30(void *, s32, s32, f32);
 extern void func_L01_0045A748(void *, void *);
 extern s32 func_L01_0045BD10(void *, f32);
-extern void func_L01_0045A898(void *, void *, f32);
+extern s32 func_L01_0045A898(void *, void *, f32);
 
 void func_L16_003CBC88(u8 *a0, V_003CBC88 *a1, f32 f)
 {

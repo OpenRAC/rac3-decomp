@@ -27,7 +27,7 @@ extern u8 D_001DA938[];
 extern void *func_003E6FC0();
 extern void func_003E6EE0(void *);
 extern void func_003AA060();
-extern void func_003E71C8_003B3510();
+extern s32 func_003E71C8_003B3510();
 extern void func_003E6F70();
 extern void *func_003E6FC0();
 extern s32 D_001D9EC0;
@@ -47,7 +47,7 @@ typedef struct { u8 pad0[0x18]; u16 h18; u8 pad1a[0x12E]; s32 f148; u8 pad14c[0x
 extern S_003ADCB0 D_00142430;
 extern u8 D_001D4BE0;
 extern u8 D_001D4BE0_b_003ADCB0;
-extern void func_0012BE28();
+extern s32 func_0012BE28();
 extern void func_0013AD58();
 extern void func_0039E9C0();
 void func_003B3610(void *a, s32 b) {
@@ -69,7 +69,7 @@ void func_003B3610(void *a, s32 b) {
 __asm__(".extern D_001D888C, 4");
 extern s32 D_001D888C;
 extern void (*D_001DA100)();
-extern void func_003A1398(s32, s32);
+extern s32 func_003A1398(s32, s32);
 extern void func_003B3D90(void);
 void func_003B3690(void) {
     s32 t = D_001D888C;

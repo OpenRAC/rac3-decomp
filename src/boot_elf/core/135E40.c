@@ -245,7 +245,7 @@ extern char D_00152008[];
 extern char D_00152030[];
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_0013A0F8();
-extern s32 func_0013A150_001350A8(void *, char *, ...);
+extern void func_0013A150_001350A8(void *, char *, ...);
 extern void func_00135FD8();
 extern u32 func_00136010();
 extern void func_00134FD8();
@@ -255,7 +255,7 @@ extern s32 func_00136080();
 extern s32 func_001360A8();
 typedef struct { u8 pad[0xC4]; s32 xC4; u8 pad2[0x24]; s32 xEC; s32 xF0; s32 xF4; s32 xF8; } T_135C10;
 typedef struct { u8 pad[0x40]; T_135C10 *x40; } S_135C10;
-extern void func_001353A8(S_135C10 *);
+extern s32 func_001353A8(S_135C10 *);
 typedef struct {
     s32 x0;
     s32 x4;
@@ -282,8 +282,8 @@ extern void func_001352E0(S_135C60 *);
 /* localdecomp:start func_00135E40 */
 typedef struct { u8 pad[0x184]; s32 x184; } T_135E40;
 typedef struct { u8 pad[0x40]; T_135E40 *x40; } S_135E40;
-extern void func_00135818(S_135E40 *, s32, s32);
-extern void func_00135988(S_135E40 *, s32, s32);
+extern s32 func_00135818(S_135E40 *, s32, s32);
+extern s32 func_00135988(S_135E40 *, s32, s32);
 void func_00135E40(S_135E40 *p, s32 b, s32 c) {
     if (p->x40->x184 != 3) {
         func_00135988(p, b, c);

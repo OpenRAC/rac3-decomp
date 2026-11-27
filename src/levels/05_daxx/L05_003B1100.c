@@ -126,7 +126,7 @@ void func_L05_003B12E8(u8 *a0) {
 extern void *func_L01_00447490(void *a, s32 b, s32 c);
 extern f32 func_L01_004474E8(void *a, void *b);
 extern void func_003C4A40(void *a, void *b);
-extern void func_L01_004AAC98(s32 a, s32 b, void *c, s32 d);
+extern s32 func_L01_004AAC98(s32 a, s32 b, void *c, s32 d);
 extern void func_L01_004450F0(void *, s32, s32);
 extern void func_L01_0044ABD0(void *a, void *b);
 extern s32 D_001DE7A0_sda;

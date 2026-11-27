@@ -111,7 +111,7 @@ typedef struct {
 } S_1315D8;
 extern s32 func_00133C58();
 extern void func_00132A98();
-extern void func_00135DC8_001315D8();
+extern int func_00135DC8_001315D8();
 extern void func_00139F90();
 extern void func_0013A030();
 extern s32 func_00132970();

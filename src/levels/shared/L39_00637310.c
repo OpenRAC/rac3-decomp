@@ -119,7 +119,7 @@ typedef struct {
 } S_006378B0;
 extern u8 D_L39_004997E0[];
 extern f32 func_003C4138(f32 *, f32, f32);
-extern void func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
+extern f32 func_L01_004482A0(f32 *, f32 *, f32, f32, f32, f32);
 
 /* the protected-byte decode the original inlined at each read (func_L39_00636F30 has it expanded) */
 static __inline__ u32 decode_006378B0(u8 *q) {

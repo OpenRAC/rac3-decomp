@@ -80,7 +80,7 @@ extern void func_00387268(void);
 extern void func_L39_005872D8(void);
 extern void func_003A9108(void);
 extern s32 func_001959F8(void);
-extern void func_L39_005C2A40(s32, s32, s32);
+extern s32 func_L39_005C2A40(s32, s32, s32);
 extern void func_L39_0058A5D0(s32);
 extern void func_00194A38(s32);
 extern void func_001264E0(s32);

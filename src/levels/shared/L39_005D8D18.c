@@ -9,7 +9,7 @@ extern f32 D_L39_0024C2AC[];
 extern f32 D_L39_0024C2B0[];
 extern f32 D_L39_0024C2B4[];
 extern void func_003E82F8(s32);
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 
 void func_L39_005D8D18(s32 a0, f32 *a1, f32 *a2) {
     if (D_L39_0024362C) {

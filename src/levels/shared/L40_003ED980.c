@@ -35,7 +35,7 @@ extern V_003EDA10 D_L40_00246DC0[] __attribute__((section(".sdata")));
 extern f32 func_L39_005B4410(f32, f32);
 extern s32 func_L39_005B4398(s32);
 extern void func_003C2F58(void *, s32, void *);
-extern void func_L39_005CF720(void *, void *, void *, void *, s32);
+extern void *func_L39_005CF720(void *, void *, void *, void *, s32);
 
 void func_L40_003EDA10(u8 *a0) {
     V_003EDA10 buf;

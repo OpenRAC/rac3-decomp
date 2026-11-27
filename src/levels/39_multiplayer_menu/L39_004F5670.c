@@ -17,7 +17,7 @@ s32 func_L39_004F5680(void) {
 /* localdecomp:end func_L39_004F5680 */
 
 /* localdecomp:start func_L39_004F56A0 */
-extern s32 *func_L39_004F66E8();
+extern void func_L39_004F66E8();
 s32 func_L39_004F56A0(void) {
     func_L39_004F66E8();
     return 0;
@@ -55,7 +55,7 @@ s32 func_L39_004F56E8(void *schedule, void *key) {
 /* localdecomp:end func_L39_004F56E8 */
 
 /* localdecomp:start func_L39_004F5708 */
-extern s32 *func_L39_004F66E8();
+extern void func_L39_004F66E8();
 s32 func_L39_004F5708(void) {
     func_L39_004F66E8();
     return 0;

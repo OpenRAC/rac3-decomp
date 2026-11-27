@@ -51,7 +51,7 @@ __asm__(".extern D_L39_0024AC30, 4");
 extern f32 D_L39_0024AC30;
 __asm__(".extern D_L39_0024AB10, 8");
 extern u8 D_L39_0024AB10[] __attribute__((section(".sdata")));
-extern void func_L39_005F33E0(s32, s32, void *);
+extern s32 func_L39_005F33E0(s32, s32, void *);
 extern f32 func_L39_005B4410(f32, f32);
 extern void func_0038CE20(void *, void *, f32);
 extern s32 func_L39_005B43C8(s32, s32);

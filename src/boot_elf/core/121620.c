@@ -78,9 +78,9 @@ typedef struct { s32 size; s32 count; u8 *rd; u8 *wr; u8 buf[1]; } R_120060;
 typedef struct { s32 size; s32 count; u8 *rd; u8 *wr; u8 buf[1]; } R_1200A0;
 typedef struct {
     s32 fd;
-    volatile s32 count;
-    volatile u32 len;
-    volatile s32 xC;
+    s32 count;
+    u32 len;
+    s32 xC;
     u8 *ptr;
     u8 *buf;
     R_120060 *ring;
@@ -93,9 +93,9 @@ extern void func_00120060_001200E0();
 extern void func_001217E0(const char *, ...);
 typedef struct {
     s32 sock;
-    volatile s32 len;
+    s32 len;
     s32 pad8;
-    volatile s32 busy;
+    s32 busy;
     s8 *pkt;
 } St_120278;
 extern volatile St_120278 D_152D50;
@@ -106,7 +106,7 @@ extern s32 func_0011FF30(s32, s8);
 extern s32 func_0011FF60(s32);
 typedef struct {
     int f0;
-    volatile int f4;
+    int f4;
     u8 *f8;
 } Ring_1203F0;
 typedef struct {

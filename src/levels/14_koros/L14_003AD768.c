@@ -12,7 +12,7 @@ typedef struct {
     s32 f1C;
     s32 f20;
 } S_3AD768;
-extern s32 func_L01_00470150(void *, s32, s32, s32, s32, s32, f32, f32, s32, s32, f32, s32, s32);
+extern void *func_L01_00470150(void *, s32, s32, s32, s32, s32, f32, f32, s32, s32, f32, s32, s32);
 extern void func_L01_00404A10(void *, void *);
 extern void func_L14_003AD850(u8 *);
 void func_L14_003AD768(u8 *a0) {

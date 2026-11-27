@@ -6,7 +6,7 @@ typedef int u128_t __attribute__((mode(TI)));
 extern u8 *func_003C24B0(s32, s32);
 extern f32 func_L39_005B4410(f32, f32);
 extern void func_003C7C38(void *);
-extern void func_L39_005F33E0(s32, s32, void *);
+extern s32 func_L39_005F33E0(s32, s32, void *);
 
 /* from L39_0054D4B0 (same constructor shape) */
 u8 *func_L39_00528D28(s32 a0, void *a1, void *a2, s32 a3, s32 a4, f32 f0, f32 f1, f32 f2, f32 f3) {

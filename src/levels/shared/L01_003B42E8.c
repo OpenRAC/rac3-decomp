@@ -48,7 +48,7 @@ extern s32 func_L01_003B3548(u8 *);
 
 /* localdecomp:start func_L01_003B42E8 */
 extern s32 func_00381FF0(s32);
-extern void func_0011B2E8();
+extern s32 func_0011B2E8();
 extern void func_003910C0(s16 *p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern void func_0038FA18(u16 *, long, char *, s32, unsigned long, f32, f32);
 extern void func_0038C3B0(s32, s32, s32, s32, s32, s32);

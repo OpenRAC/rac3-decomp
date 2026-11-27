@@ -19,7 +19,7 @@ s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_005170B8(s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
 s32 func_L01_00516C78(s32, s32, s32);
-s32 func_L39_00611628(s32, void *);
+void func_L39_00611628(s32, void *);
 
 void func_L39_00680C90(void *arg0) {
     u8 *p = arg0;

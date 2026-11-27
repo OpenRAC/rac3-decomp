@@ -14,8 +14,8 @@ extern u32 D_0013E300[4];
 extern u32 D_0013E2F8;
 extern void func_00124B80(u32, u32);
 extern u32 func_00124A68(u32, u32, void *);
-extern void func_00124A28(void);
-extern void func_001249F0(void);
+extern u32 *func_00124A28(void);
+extern s32 func_001249F0(void);
 extern void func_0011EED0(s32 *);
 extern void func_0011EEC0(s32 *);
 

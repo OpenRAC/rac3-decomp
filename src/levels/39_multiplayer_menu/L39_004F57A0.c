@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_004F57A0 */
-extern s32 *func_L39_004F6A30();
+extern void func_L39_004F6A30();
 
 s32 func_L39_004F57A0(void) {
     func_L39_004F6A30();

@@ -23,7 +23,7 @@ s32 func_L39_005F3488(s32, s32, char *, s32);
 s32 func_L39_005F33E0(s32, s32, char *);
 void func_L39_005F3088(s32);
 s32 func_L39_005F3760(u32, s32);
-void func_L01_004464C8(void *, void *, void *, void *);
+f32 func_L01_004464C8(void *, void *, void *, void *);
 f32 func_L01_0040E548(void *, void *);
 
 void func_L39_005F3B18(S_005F3B18 *arg0) {

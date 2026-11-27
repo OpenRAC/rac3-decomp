@@ -1,13 +1,13 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_00508E58 */
-extern void func_L39_00511A50(void);
+extern s32 func_L39_00511A50(void);
 extern void func_L39_00512018(void);
-extern void func_L39_005120B0(void);
-extern void func_L39_00512BA8(void);
-extern void func_L39_00513808(void);
+extern s32 func_L39_005120B0(void);
+extern s32 func_L39_00512BA8(void);
+extern s32 func_L39_00513808(void);
 extern void func_L39_00513FA0(void);
-extern void func_L39_00512B20(void);
+extern s32 func_L39_00512B20(void);
 
 void func_L39_00508E58(void **p, void *a0, void *a1, void *a2, void *a3, void *a4, void *a5, void *a6) {
     if (a0) {

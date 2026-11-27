@@ -41,7 +41,7 @@ typedef struct {
     u8 b2DC;
 } S_0069C788;
 
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(void *);
 extern void func_L39_0068A4A8(void *, s32, s32, f32, f32, f32, f32, s32);
 extern void func_L39_00689F00(void *, f32, f32, f32, f32, f32, f32, s32, s32, s32);

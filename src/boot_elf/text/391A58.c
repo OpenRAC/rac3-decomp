@@ -82,7 +82,7 @@ extern unsigned long D_00141AD0_00391A58[];
 extern unsigned long D_00141DC0_00391A58[];
 extern unsigned long D_001420B0_00391A58[];
 extern void func_0012C138(void *, s32, s16, s16, s16, s16);
-extern void func_0012C638(s32, s32, s32, s32, s32, s32);
+extern int func_0012C638(s32, s32, s32, s32, s32, s32);
 extern void func_00391880(s32, s32);
 extern void func_0038D068();
 extern void func_11F0A0(s32);

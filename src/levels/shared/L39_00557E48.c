@@ -30,7 +30,7 @@ void *func_L39_00557E48(u8 *pos) {
 /* localdecomp:end func_L39_00557E48 */
 
 /* localdecomp:start func_L39_00557EF0 */
-extern u8 *func_L39_0066B870(s32 a0);
+extern s32 func_L39_0066B870(s32 a0);
 extern u8 *func_L39_0066B8A8(u8 *a0, s32 *a1);
 typedef struct { s32 w0; } W_00557EF0;
 typedef struct { u8 p0[0x90]; W_00557EF0 *w90; } E_00557EF0;

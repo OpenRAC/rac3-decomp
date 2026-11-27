@@ -419,7 +419,7 @@ void func_L30_0035ADB8(void) {
 /* localdecomp:end func_L30_0035ADB8 */
 
 /* localdecomp:start func_L30_0035B758 */
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 
 void func_L30_0035B758(void) {
     func_L01_00516AA0(0x100012, 1, 0);

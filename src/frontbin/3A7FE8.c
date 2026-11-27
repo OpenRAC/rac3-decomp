@@ -31,20 +31,20 @@ extern u8 D_002D2100[];
 extern s32 func_003BD4B8();
 extern void func_0038A238(s32);
 extern void func_11F0A0(s32);
-extern void func_13CF80();
+extern s32 func_13CF80();
 extern void func_13CA28(void);
-extern void func_13B620_003A2460(void);
+extern s32 func_13B620_003A2460(void);
 extern void func_003A1C28(void);
-extern void func_13BF00();
-extern void func_13BED0();
+extern s32 func_13BF00();
+extern s32 func_13BED0();
 extern void func_00392260(s32, long, long);
 extern void func_13D310();
 extern s32 func_12C908(s32);
 extern void func_0039C410(void);
 extern void func_0039ADE0(void);
 extern s32 func_0039A1E0();
-extern void func_13CF40();
-extern void func_13CDF0(s32);
+extern s32 func_13CF40();
+extern s32 func_13CDF0(s32);
 extern void func_003A9AD0();
 
 /* localdecomp:start func_003A7FE8 */

@@ -10,7 +10,7 @@ struct N_0066BB58 {
     N_0066BB58 *f84;
 };
 extern N_0066BB58 *D_L39_0024CF64;
-extern void func_L39_0066C3C8(N_0066BB58 *, N_0066BB58 **);
+extern void *func_L39_0066C3C8(N_0066BB58 *, N_0066BB58 **);
 void func_L39_0066BB58(s32 id) {
     N_0066BB58 *p = D_L39_0024CF64;
     while (p != 0) {
@@ -42,7 +42,7 @@ extern E_0066BBB8 D_L39_0033B990[];
 extern H_0066BBB8 D_L39_0033B8F0[];
 extern G_0066BBB8 D_001A5CD0;
 extern struct N_0066BB58 *D_L39_0024CF64;
-extern void func_L39_0066C3C8(struct N_0066BB58 *, struct N_0066BB58 **);
+extern void *func_L39_0066C3C8(struct N_0066BB58 *, struct N_0066BB58 **);
 extern s32 func_L39_0066C428(s32);
 extern s32 func_L39_0066C038(void);
 void func_L39_0066BBB8(void) {
@@ -103,7 +103,7 @@ extern u8 D_1A5CD0[];
 extern s32 *D_L39_0024CF6C;
 extern s32 *D_L39_0024CF6C_b;
 extern s32 func_14AD08();
-extern void func_L39_0066C110(s32, s32, s32, s32 *);
+extern s32 func_L39_0066C110(s32, s32, s32, s32 *);
 extern s32 *func_L39_0066C310(s32 *);
 
 void func_L39_0066BD80(s32 n) {

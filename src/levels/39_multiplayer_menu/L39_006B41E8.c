@@ -83,7 +83,7 @@ extern f32 D_001DD8AC_sda;
 extern f32 D_001DD8B0_sda;
 extern f32 D_001DD8B4_sda;
 extern s32 func_00381FF0(s32);
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068A9B8(s32);
 extern void func_L39_00689BD8(void *, s32);
 extern void func_L39_00689D28(void *, s32);
@@ -93,7 +93,7 @@ extern void func_L39_0068A6D0(void *, s32, u32, f32, f32, f32, f32);
 extern void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern void func_L39_0068A4A8(void *, s32, s32, u32, f32, f32, f32, f32);
 extern void func_L39_0068AAB8(void *);
-extern void func_L39_006CEA18(void *, s32);
+extern s32 func_L39_006CEA18(void *, s32);
 
 void func_L39_006B4210(S_006B4210 *self)
 {
@@ -213,7 +213,7 @@ void func_L39_006B4210(S_006B4210 *self)
 extern void func_L39_0068ADC8(void *);
 extern void func_L39_006B4898(void *);
 
-extern void func_L39_0067F168();
+extern s32 func_L39_0067F168();
 void func_L39_006B4898(void *p) {
     func_L39_0067F168(p);
     func_L39_0068ADC8(p);

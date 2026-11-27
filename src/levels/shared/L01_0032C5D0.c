@@ -3,9 +3,9 @@
 
 /* localdecomp:start func_L01_0032C5D0 */
 /* m2c3 */
-s32 func_L01_0032C6B8(void *, void *);              /* extern */
+void func_L01_0032C6B8(void *, void *);              /* extern */
 f32 func_L01_004451A8(f32);                             /* extern */
-s32 func_L01_0044C280(void *, void *, void *, s32, f32); /* extern */
+void func_L01_0044C280(void *, void *, void *, s32, f32); /* extern */
 
 void func_L01_0032C5D0(void *arg0) {
     void *temp_18;

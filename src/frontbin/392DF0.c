@@ -19,7 +19,7 @@ extern s32 D_001D9D04;
 extern s32 D_001D545C;
 extern s32 D_001D4CF0;
 extern s32 D_001D4CEC_00392DF0;
-extern void func_0039EC28(s32, s32);
+extern s32 func_0039EC28(s32, s32);
 /* localdecomp:start func_00392DF0 */
 /* from the US decomp's func_0038E5B8 (rac3-uya-decomp); the types and externs are the file's */
 __asm__(".extern D_001D5B74, 4");

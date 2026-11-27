@@ -32,7 +32,7 @@ typedef struct {
 
 extern u8 D_L39_0047D510[];
 extern u8 D_L39_00248508[];
-extern void func_L39_00688388(void *);
+extern void *func_L39_00688388(void *);
 extern void func_L39_0068CD28(u8 *arg0, u8 *arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 extern void func_L39_00689670(void *, void *);
 

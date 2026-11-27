@@ -3,10 +3,12 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
+extern void func_003C4CE8(void *, void *, f32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern int func_003C4D58(unsigned char *);
 extern void func_003C4C18(f32 *v, f32 r);
 /* --- end of declarations from other files --- */

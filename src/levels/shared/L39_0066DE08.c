@@ -20,7 +20,7 @@ typedef struct S_0066DE08 {
 
 extern s32 D_001A5DF8[];
 extern S_0066DE08e *D_L39_0024BF6C;
-extern S_0066DE08i *func_L39_0061D7B0(S_0066DE08e *);
+extern s32 func_L39_0061D7B0(S_0066DE08e *);
 
 void func_L39_0066DE08(S_0066DE08 *a0) {
     S_0066DE08e *e = a0->w10;

@@ -33,7 +33,7 @@ __asm__(".extern D_00142668_4BDA00, 16");
 extern void func_0038CBA0();
 extern void func_L01_004DFEA0();
 extern void func_L01_004E7C88();
-extern void func_L02_004D36C0();
+extern s32 func_L02_004D36C0();
 
 void func_L02_004BDA00(void) {
     s16 id;

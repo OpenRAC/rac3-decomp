@@ -13,7 +13,7 @@ void func_L39_006921B8(void *object, s32 flags)
 /* localdecomp:end func_L39_006921B8 */
 
 /* localdecomp:start func_L39_006921E0 */
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068A9B8(s32);
 extern s32 func_00381FF0(s32);
 extern void func_L39_00689BD8(void *, s32);
@@ -114,7 +114,7 @@ void func_L39_006921E0(S_006921E0 *self) {
 extern void func_L39_0068ADC8(void *);
 extern void func_L39_006923F0(void *);
 
-extern void func_L39_0067F168();
+extern s32 func_L39_0067F168();
 void func_L39_006923F0(void *p) {
     func_L39_0067F168(p);
     func_L39_0068ADC8(p);

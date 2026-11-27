@@ -30,7 +30,7 @@ extern u8 D_001DC324_sda;
 extern s32 D_001DC328_sda;
 extern f32 func_003C4138(f32 *, f32, f32);
 extern s32 func_0038DBD8(s32, s32, f32);
-extern void func_L01_005170B8(s32, s32);
+extern s32 func_L01_005170B8(s32, s32);
 
 void func_L39_0068B058(S_0068B058_A *arg0) {
     s32 c;

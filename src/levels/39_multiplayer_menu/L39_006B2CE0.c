@@ -4,7 +4,7 @@
 __asm__(".extern D_L39_0024D760_006B2CE0, 16");
 extern u8 *D_L39_0024D760_006B2CE0;
 extern s32 func_L39_006DE180(s32);
-extern s32 func_L01_003A4720(s32);
+extern void func_L01_003A4720(s32);
 
 void func_L39_006B2CE0(void) {
     func_L39_006DE180(*(s32 *)(D_L39_0024D760_006B2CE0 + 0x54));
@@ -20,7 +20,7 @@ typedef struct {
 
 __asm__(".extern D_L39_0024D760, 16");
 extern S_6B2D18 *D_L39_0024D760;
-extern void func_L39_006DCAD0(s32, s32);
+extern s32 func_L39_006DCAD0(s32, s32);
 
 /* from rac4-decomp's func_L00_00708980 */
 void func_L39_006B2D18(void) {

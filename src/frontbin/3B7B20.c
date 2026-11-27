@@ -24,8 +24,8 @@ extern void *func_003B42F8(s32);
 
 /* localdecomp:start func_003B7B20 */
 extern void func_003B6888(void);
-extern void func_003B68B0(void);
-extern void func_003B68E0(void);
+extern s32 func_003B68B0(void);
+extern s32 func_003B68E0(void);
 extern s32 D_001D8A18;
 extern s8 D_001D9FA0;
 extern s32 D_001D8A40;

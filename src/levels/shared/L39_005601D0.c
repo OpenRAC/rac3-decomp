@@ -1,21 +1,21 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_005601D0 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_005601D0(s32 a0) {
     return func_L39_0066DD30(a0, 0, 0) != 0;
 }
 /* localdecomp:end func_L39_005601D0 */
 
 /* localdecomp:start func_L39_005601F8 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_005601F8(s32 a0) {
     return func_L39_0066DD30(a0, 1, 0) != 0;
 }
 /* localdecomp:end func_L39_005601F8 */
 
 /* localdecomp:start func_L39_00560220 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_00560220(s32 a0) {
     return func_L39_0066DD30(a0, 2, 0) != 0;
 }

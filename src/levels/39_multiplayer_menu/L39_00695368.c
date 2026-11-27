@@ -22,7 +22,7 @@ typedef struct P_00695368 { u8 pad[0xC8]; u8 fC8; s32 fCC; s32 fD0; } P_00695368
 __asm__(".extern D_L39_0024D760, 16");
 extern s32 *D_L39_0024D760;
 extern s32 func_00381FF0(s32);
-extern void func_L39_006D0DD0(void *);
+extern s32 func_L39_006D0DD0(void *);
 extern void func_L39_00689E58(void *, s32, u32, f32, f32);
 
 void func_L39_00695368(u8 *arg0)

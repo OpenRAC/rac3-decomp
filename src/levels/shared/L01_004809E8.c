@@ -5,7 +5,7 @@ extern s32 func_003E6FA0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 
 extern void func_L01_00480B10(s32);
 
 /* localdecomp:start func_L01_004809E8 */
-extern void func_L01_00517918(s32);
+extern s32 func_L01_00517918(s32);
 extern s32 func_003B9BD0(s32);
 extern s32 func_003B9E90(s32);
 extern u8 *func_003B42F8(s32);

@@ -15,7 +15,7 @@ boot_elf	func_00118670	1	-
 boot_elf	func_00118720	1	-
 boot_elf	func_00118838	1	-
 boot_elf	func_00118898	1	-
-boot_elf	func_001188C0	1	-
+boot_elf	func_001188C0	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_00118950	1	-
 boot_elf	func_001189B0	1	-
 boot_elf	func_00118CA8	1	-
@@ -35,12 +35,12 @@ boot_elf	func_0011A328	1	-
 boot_elf	func_0011A3A8	1	-
 boot_elf	func_0011A3F8	1	-
 boot_elf	func_0011A4A0	1	-
-boot_elf	func_0011A4D0	1	-
+boot_elf	func_0011A4D0	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_0011A5D8	1	-
 boot_elf	func_0011A658	1	-
 boot_elf	func_0011A718	1	-
 boot_elf	func_0011A750	1	-
-boot_elf	func_0011A960	1	-
+boot_elf	func_0011A960	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_0011AA60	1	-
 boot_elf	func_0011ABB8	1	-
 boot_elf	func_0011AC20	1	-
@@ -201,6 +201,7 @@ boot_elf	func_001258E8	1	-
 boot_elf	func_00125940	1	-
 boot_elf	func_001259F0	1	-
 boot_elf	func_00125B68	1	-
+boot_elf	func_00125BE8	1	-
 boot_elf	func_00125C68	1	-
 boot_elf	func_00125CB8	1	-
 boot_elf	func_00125D18	1	-
@@ -210,35 +211,35 @@ boot_elf	func_00125F70	1	-
 boot_elf	func_00126020	1	-
 boot_elf	func_001260D0	1	-
 boot_elf	func_001260F0	1	-
-boot_elf	func_001267E0	1	-
-boot_elf	func_001267F0	1	-
-boot_elf	func_00126818	1	-
-boot_elf	func_00126848	1	-
-boot_elf	func_00126850	1	-
-boot_elf	func_001268A8	1	-
-boot_elf	func_001268D0	1	-
-boot_elf	func_001268F8	1	-
-boot_elf	func_00126920	1	-
-boot_elf	func_00126988	1	-
-boot_elf	func_001269B0	1	-
-boot_elf	func_00126C88	1	-
-boot_elf	func_00126C90	1	-
-boot_elf	func_00126C98	1	-
-boot_elf	func_00126D70	1	-
-boot_elf	func_00126EB8	1	-
-boot_elf	func_00126F40	1	-
-boot_elf	func_00126FC0	1	-
-boot_elf	func_00127050	1	-
-boot_elf	func_00127058	1	-
-boot_elf	func_00127388	1	-
-boot_elf	func_00127568	1	-
+boot_elf	func_001267E0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001267F0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126818	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126848	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126850	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001268A8	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001268D0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001268F8	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126920	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126988	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_001269B0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126C88	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126C90	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126C98	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126D70	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126EB8	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126F40	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00126FC0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00127050	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00127058	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00127388	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00127568	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_00127750	1	-
 boot_elf	func_00127848	1	-
-boot_elf	func_001278E0	1	-
+boot_elf	func_001278E0	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_00127F48	1	-
 boot_elf	func_00127FA8	1	-
 boot_elf	func_00127FB0	1	-
-boot_elf	func_00128580	1	-
+boot_elf	func_00128580	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_00128AC0	1	-
 boot_elf	func_00128BF0	1	-
 boot_elf	func_00128C90	1	-
@@ -261,15 +262,15 @@ boot_elf	func_00129A18	1	-
 boot_elf	func_00129A58	1	-
 boot_elf	func_00129AA0	1	-
 boot_elf	func_00129AF0	1	-
-boot_elf	func_00129BF0	1	-
-boot_elf	func_00129E58	1	-
-boot_elf	func_00129EA0	1	-
-boot_elf	func_00129F28	1	-
+boot_elf	func_00129BF0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00129E58	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00129EA0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_00129F28	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_0012A068	1	-
-boot_elf	func_0012A150	1	-
-boot_elf	func_0012A258	1	-
-boot_elf	func_0012A5F0	1	-
-boot_elf	func_0012A7C8	1	-
+boot_elf	func_0012A150	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0012A258	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0012A5F0	0	boot_elf: no object of the block alone checks MATCH
+boot_elf	func_0012A7C8	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_0012A948	1	-
 boot_elf	func_0012A9F0	1	-
 boot_elf	func_0012AA78	1	-
@@ -299,7 +300,7 @@ boot_elf	func_0012C570	1	-
 boot_elf	func_0012C638	1	-
 boot_elf	func_0012C820	1	-
 boot_elf	func_0012C908	1	-
-boot_elf	func_0012C99C	1	boot_elf: starts on a 4-mod-8 address here; C starts 8-aligned
+boot_elf	func_0012C99C	0	boot_elf: starts on a 4-mod-8 address here; C starts 8-aligned
 boot_elf	func_0012CB88	1	-
 boot_elf	func_0012CCC8	1	-
 boot_elf	func_0012CE48	1	-
@@ -722,18 +723,23 @@ boot_elf	func_00392E18	1	-
 boot_elf	func_00392E60	1	-
 boot_elf	func_00392F00	1	-
 boot_elf	func_00392F78	1	-
+boot_elf	func_00392F98	1	-
 boot_elf	func_00393028	1	-
 boot_elf	func_00393058	1	-
 boot_elf	func_00393120	1	-
 boot_elf	func_003932D0	1	-
+boot_elf	func_003932E8	1	-
 boot_elf	func_00393340	1	-
 boot_elf	func_00393348	1	-
 boot_elf	func_003933B0	1	-
 boot_elf	func_00393518	1	-
+boot_elf	func_00393670	1	-
 boot_elf	func_003936A0	1	-
 boot_elf	func_00393830	1	-
 boot_elf	func_00393918	1	-
+boot_elf	func_00393990	1	-
 boot_elf	func_00393A00	1	-
+boot_elf	func_00393A70	1	-
 boot_elf	func_00393BE8	1	-
 boot_elf	func_00396658	1	-
 boot_elf	func_003967A0	1	-
@@ -1063,6 +1069,7 @@ boot_elf	func_003AC270	1	-
 boot_elf	func_003AC300	1	-
 boot_elf	func_003AC328	1	-
 boot_elf	func_003AC360	1	-
+boot_elf	func_003AC590	1	-
 boot_elf	func_003AC9F0	1	-
 boot_elf	func_003ACCF8	1	-
 boot_elf	func_003ACF70	1	-
@@ -1145,7 +1152,7 @@ boot_elf	func_003B1A38	1	-
 boot_elf	func_003B1AB0	1	-
 boot_elf	func_003B1C10	1	-
 boot_elf	func_003B1D00	1	-
-boot_elf	func_003B1D58	1	-
+boot_elf	func_003B1D58	0	boot_elf: no object of the block alone checks MATCH
 boot_elf	func_003B1F40	1	-
 boot_elf	func_003B2050	1	-
 boot_elf	func_003B2360	1	-
@@ -1207,18 +1214,20 @@ boot_elf	func_003B3BA0	1	-
 boot_elf	func_003B3C60	1	-
 boot_elf	func_003B3CC8	1	-
 boot_elf	func_003B3D90	1	-
-boot_elf	func_003B4610	1	-
+boot_elf	func_003B4610	0	boot_elf: it has read-only data its code does not read
 boot_elf	func_003B4638	1	-
 boot_elf	func_003B4670	1	-
 boot_elf	func_003B4678	1	-
 boot_elf	func_003B46B0	1	-
 boot_elf	func_003B4738	1	-
 boot_elf	func_003B4768	1	-
+boot_elf	func_003B47F0	1	-
 boot_elf	func_003B4828	1	-
 boot_elf	func_003B4838	1	-
 boot_elf	func_003B48E0	1	-
 boot_elf	func_003B4920	1	-
 boot_elf	func_003B4940	1	-
+boot_elf	func_003B4A10	1	-
 boot_elf	func_003B4A38	1	-
 boot_elf	func_003B4A40	1	-
 boot_elf	func_003B4A90	1	-
@@ -1237,6 +1246,7 @@ boot_elf	func_003B4B28	1	-
 boot_elf	func_003B4B78	1	-
 boot_elf	func_003B4BC0	1	-
 boot_elf	func_003B4BF8	1	-
+boot_elf	func_003B5088	1	-
 boot_elf	func_003B5350	1	-
 boot_elf	func_003B5378	1	-
 boot_elf	func_003B5380	1	-
@@ -1249,7 +1259,7 @@ boot_elf	func_003B5890	1	-
 boot_elf	func_003B5B80	1	-
 boot_elf	func_003B5BC8	1	-
 boot_elf	func_003B5BE8	1	-
-boot_elf	func_003B5EF0	1	-
+boot_elf	func_003B5EF0	0	boot_elf: it has read-only data its code does not read
 boot_elf	func_003B5F48	1	-
 boot_elf	func_003B5F78	1	-
 boot_elf	func_003B6090	1	-
@@ -1423,6 +1433,7 @@ boot_elf	func_003C1078	1	-
 boot_elf	func_003C1080	1	-
 boot_elf	func_003C10B0	1	-
 boot_elf	func_003C12B8	1	-
+boot_elf	func_003C1318	1	-
 boot_elf	func_003C1638	1	-
 boot_elf	func_003C1660	1	-
 boot_elf	func_003C1848	1	-
@@ -1533,6 +1544,7 @@ boot_elf	func_003D8978	1	-
 boot_elf	func_003D89F8	1	-
 boot_elf	func_003D8A70	1	-
 boot_elf	func_003D8D50	1	-
+boot_elf	func_003D90A8	1	-
 boot_elf	func_003D9378	1	-
 boot_elf	func_003D94B8	1	-
 boot_elf	func_003D95A8	1	-
@@ -1849,12 +1861,12 @@ boot_elf	func_003EFBB0	1	-
 boot_elf	func_003EFF68	1	-
 boot_elf	func_003F01C8	1	-
 boot_elf	func_003F0250	1	-
-boot_elf	func_003F0270	0	boot_elf: not built
-boot_elf	func_003F02C8	0	boot_elf: not built
-boot_elf	func_003F02D0	0	boot_elf: not built
-boot_elf	func_003F0358	0	boot_elf: not built
-boot_elf	func_003F0388	0	boot_elf: not built
-boot_elf	func_003F03A0	0	boot_elf: not built
+boot_elf	func_003F0270	1	-
+boot_elf	func_003F02C8	1	-
+boot_elf	func_003F02D0	1	-
+boot_elf	func_003F0358	1	-
+boot_elf	func_003F0388	1	-
+boot_elf	func_003F03A0	1	-
 boot_elf	func_003F03B0	1	-
 boot_elf	func_003F05C8	1	-
 boot_elf	func_003F0A10	1	-
@@ -2121,6 +2133,7 @@ frontbin	func_0038DA68	1	-
 frontbin	func_0038DED0	1	-
 frontbin	func_0038E0A8	1	-
 frontbin	func_0038E138	1	-
+frontbin	func_0038E150	1	-
 frontbin	func_0038E1C8	1	-
 frontbin	func_0038E1E8	1	-
 frontbin	func_0038E3C0	1	-
@@ -2149,8 +2162,11 @@ frontbin	func_00391210	1	-
 frontbin	func_00391240	1	-
 frontbin	func_003912E8	1	-
 frontbin	func_00391308	1	-
+frontbin	func_00391328	1	-
 frontbin	func_00391398	1	-
 frontbin	func_00391408	1	-
+frontbin	func_00391678	1	-
+frontbin	func_00392260	1	-
 frontbin	func_00392290	1	-
 frontbin	func_003922B8	1	-
 frontbin	func_00392350	1	-
@@ -2175,6 +2191,7 @@ frontbin	func_00392F60	1	-
 frontbin	func_00392F68	1	-
 frontbin	func_00392FD0	1	-
 frontbin	func_00393138	1	-
+frontbin	func_00393168	1	-
 frontbin	func_00393290	1	-
 frontbin	func_003932C0	1	-
 frontbin	func_00393348	1	-
@@ -2187,6 +2204,7 @@ frontbin	func_00393690	1	-
 frontbin	func_00393808	1	-
 frontbin	func_00393B58	1	-
 frontbin	func_00394620	1	-
+frontbin	func_00396278	1	-
 frontbin	func_003963C0	1	-
 frontbin	func_00396690	1	-
 frontbin	func_003966D8	1	-
@@ -2421,6 +2439,7 @@ frontbin	func_003A9050	1	-
 frontbin	func_003A90A0	1	-
 frontbin	func_003A9108	1	-
 frontbin	func_003A9150	1	-
+frontbin	func_003A91D0	1	-
 frontbin	func_003A92F0	1	-
 frontbin	func_003A9338	1	-
 frontbin	func_003A9390	1	-
@@ -2505,6 +2524,7 @@ frontbin	func_003ABEB8	1	-
 frontbin	func_003ABF48	1	-
 frontbin	func_003ABF70	1	-
 frontbin	func_003ABFA8	1	-
+frontbin	func_003AC1D8	1	-
 frontbin	func_003AC638	1	-
 frontbin	func_003AC940	1	-
 frontbin	func_003ACBB8	1	-
@@ -2587,7 +2607,7 @@ frontbin	func_003B1680	1	-
 frontbin	func_003B16F8	1	-
 frontbin	func_003B1858	1	-
 frontbin	func_003B1948	1	-
-frontbin	func_003B19A0	0	frontbin: no object of the block alone checks MATCH
+frontbin	func_003B19A0	1	-
 frontbin	func_003B1B88	1	-
 frontbin	func_003B1C98	1	-
 frontbin	func_003B1FA8	1	-
@@ -2740,6 +2760,7 @@ frontbin	func_003B7F08	1	-
 frontbin	func_003B7F30	1	-
 frontbin	func_003B7F80	1	-
 frontbin	func_003B8430	1	-
+frontbin	func_003B8A38	1	-
 frontbin	func_003B96C8	1	-
 frontbin	func_003B96D0	1	-
 frontbin	func_003B96D8	1	-
@@ -2870,6 +2891,7 @@ frontbin	func_003C0CC0	1	-
 frontbin	func_003C0CC8	1	-
 frontbin	func_003C0CF8	1	-
 frontbin	func_003C0F00	1	-
+frontbin	func_003C0F60	1	-
 frontbin	func_003C1280	1	-
 frontbin	func_003C1490	1	-
 frontbin	func_003C14D8	1	-
@@ -2918,7 +2940,7 @@ frontbin	func_003C4B40	1	-
 frontbin	func_003C4B50	1	-
 frontbin	func_003C4BB0	1	-
 frontbin	func_003C4C18	1	-
-frontbin	func_003C4CE8	1	-
+frontbin	func_003C4CE8	0	frontbin: no object of the block alone checks MATCH
 frontbin	func_003C4D58	1	-
 frontbin	func_003C4DA8	1	-
 frontbin	func_003C4E80	1	-
@@ -2976,6 +2998,7 @@ frontbin	func_003D85C0	1	-
 frontbin	func_003D8640	1	-
 frontbin	func_003D86B8	1	-
 frontbin	func_003D8998	1	-
+frontbin	func_003D8CF0	1	-
 frontbin	func_003D8FC0	1	-
 frontbin	func_003D9100	1	-
 frontbin	func_003D91F0	1	-
@@ -3533,6 +3556,7 @@ levels	func_L01_00308508	34	-
 levels	func_L01_003086D0	34	-
 levels	func_L01_00308808	34	-
 levels	func_L01_00308848	34	-
+levels	func_L01_003088D8	34	-
 levels	func_L01_00308D50	34	-
 levels	func_L01_00308DE0	34	-
 levels	func_L01_003090E0	34	-
@@ -3613,6 +3637,7 @@ levels	func_L01_00317070	34	-
 levels	func_L01_00317238	34	-
 levels	func_L01_00317370	34	-
 levels	func_L01_003173B0	34	-
+levels	func_L01_00317440	34	-
 levels	func_L01_003178B8	34	-
 levels	func_L01_00317948	34	-
 levels	func_L01_00317C48	14	-
@@ -3664,6 +3689,7 @@ levels	func_L01_0031E2D8	34	-
 levels	func_L01_0031F258	34	-
 levels	func_L01_0031F268	34	-
 levels	func_L01_0031F2E8	34	-
+levels	func_L01_0031F688	34	-
 levels	func_L01_0031F6C8	3	-
 levels	func_L01_00321608	34	-
 levels	func_L01_00321710	34	-
@@ -3824,6 +3850,7 @@ levels	func_L01_00333D80	10	-
 levels	func_L01_00333F18	10	-
 levels	func_L01_00334188	10	-
 levels	func_L01_00334250	10	-
+levels	func_L01_00334358	10	-
 levels	func_L01_003347C0	10	-
 levels	func_L01_00334868	10	-
 levels	func_L01_00335048	10	-
@@ -3925,6 +3952,7 @@ levels	func_L01_0034D700	34	-
 levels	func_L01_0034D840	34	-
 levels	func_L01_0034D8C8	34	-
 levels	func_L01_0034DBA8	34	-
+levels	func_L01_0034DBE8	34	-
 levels	func_L01_0034DF10	34	-
 levels	func_L01_0034E5E0	34	-
 levels	func_L01_0034E808	34	-
@@ -4043,6 +4071,7 @@ levels	func_L01_00367260	13	-
 levels	func_L01_00367590	34	-
 levels	func_L01_00367658	34	-
 levels	func_L01_00367688	34	-
+levels	func_L01_00367EE0	34	-
 levels	func_L01_003683D8	34	-
 levels	func_L01_003687C8	34	-
 levels	func_L01_00368F58	34	-
@@ -4173,12 +4202,14 @@ levels	func_L01_00396FD8	34	-
 levels	func_L01_00397060	34	-
 levels	func_L01_003970C8	34	-
 levels	func_L01_00397278	34	-
+levels	func_L01_003973F8	34	-
 levels	func_L01_00399380	34	-
 levels	func_L01_00399A40	34	-
 levels	func_L01_00399A50	34	-
 levels	func_L01_00399D78	51	-
 levels	func_L01_00399DE8	51	-
 levels	func_L01_0039AA18	34	-
+levels	func_L01_0039AEB8	46	-
 levels	func_L01_0039B9F0	34	-
 levels	func_L01_0039C190	34	-
 levels	func_L01_0039C2F8	34	-
@@ -4224,6 +4255,7 @@ levels	func_L01_003A7B38	34	-
 levels	func_L01_003A7D70	5	-
 levels	func_L01_003A7DC0	5	-
 levels	func_L01_003A8048	5	-
+levels	func_L01_003A8850	10	-
 levels	func_L01_003A8C98	10	-
 levels	func_L01_003A8CF0	10	-
 levels	func_L01_003A93A0	7	-
@@ -4243,6 +4275,7 @@ levels	func_L01_003AB248	12	-
 levels	func_L01_003AB448	12	-
 levels	func_L01_003AB470	12	-
 levels	func_L01_003AB598	12	-
+levels	func_L01_003AB790	12	-
 levels	func_L01_003AB888	12	-
 levels	func_L01_003ABD10	12	-
 levels	func_L01_003ABD60	12	-
@@ -4485,6 +4518,7 @@ levels	func_L01_003C7A68	10	-
 levels	func_L01_003C7A98	10	-
 levels	func_L01_003C7BC0	10	-
 levels	func_L01_003C7C80	10	-
+levels	func_L01_003C8400	10	-
 levels	func_L01_003C8D60	10	-
 levels	func_L01_003C8DC0	1	-
 levels	func_L01_003C8DE8	34	-
@@ -4600,6 +4634,7 @@ levels	func_L01_003DE198	34	-
 levels	func_L01_003DE3A8	34	-
 levels	func_L01_003DE418	34	-
 levels	func_L01_003DE488	34	-
+levels	func_L01_003DE510	34	-
 levels	func_L01_003DEDF8	34	-
 levels	func_L01_003DF558	34	-
 levels	func_L01_003DF620	34	-
@@ -4738,6 +4773,7 @@ levels	func_L01_003F17A0	51	-
 levels	func_L01_003F17C0	51	-
 levels	func_L01_003F1850	34	-
 levels	func_L01_003F19B0	51	-
+levels	func_L01_003F19B8	34	-
 levels	func_L01_003F1E68	51	-
 levels	func_L01_003F1E98	51	-
 levels	func_L01_003F1F08	51	-
@@ -5239,6 +5275,7 @@ levels	func_L01_0044EBA0	51	-
 levels	func_L01_0044EC78	26	-
 levels	func_L01_0044F280	26	-
 levels	func_L01_0044F368	26	-
+levels	func_L01_0044F450	26	-
 levels	func_L01_0044F888	13	-
 levels	func_L01_0044F8D8	10	-
 levels	func_L01_0044F9F8	10	-
@@ -6085,6 +6122,7 @@ levels	func_L01_004AADE8	21	-
 levels	func_L01_004AAE90	34	-
 levels	func_L01_004AAF20	34	-
 levels	func_L01_004AAFD0	34	-
+levels	func_L01_004AB048	26	level_04: +0x18: the instruction differs;level_09: +0x18: the instruction differs;level_18: +0x18: the instruction differs;level_20: +0x18: the instruction differs;level_23: +0x18: the instruction differs;level_24: +0x18: the instruction differs;level_26: +0x18: the instruction differs;level_29: +0x18: the instruction differs
 levels	func_L01_004AB070	51	-
 levels	func_L01_004AB0E0	34	-
 levels	func_L01_004AB188	34	-
@@ -6340,6 +6378,7 @@ levels	func_L01_004DEBC0	34	-
 levels	func_L01_004DEE80	30	-
 levels	func_L01_004DF000	31	-
 levels	func_L01_004DF068	29	-
+levels	func_L01_004DF840	34	-
 levels	func_L01_004DFCC8	34	-
 levels	func_L01_004DFD60	34	-
 levels	func_L01_004DFDB0	21	-
@@ -7247,6 +7286,7 @@ levels	func_L03_003B2DA8	1	-
 levels	func_L03_003B2E38	2	-
 levels	func_L03_003B4310	6	-
 levels	func_L03_003B50B0	6	-
+levels	func_L03_003B5C78	6	-
 levels	func_L03_003B6180	6	-
 levels	func_L03_003B68D8	6	-
 levels	func_L03_003B6940	1	-
@@ -7809,6 +7849,7 @@ levels	func_L05_003DD1E0	3	-
 levels	func_L05_003DDCC8	1	-
 levels	func_L05_003DDD20	1	-
 levels	func_L05_003E6220	1	-
+levels	func_L05_003E63C0	1	-
 levels	func_L05_00410D00	2	-
 levels	func_L05_0041A6E8	1	-
 levels	func_L05_0041AA70	1	-
@@ -7884,6 +7925,7 @@ levels	func_L06_00353210	2	-
 levels	func_L06_003532B8	2	-
 levels	func_L06_00353480	2	-
 levels	func_L06_00353610	2	-
+levels	func_L06_003536C0	2	-
 levels	func_L06_00353AC8	2	-
 levels	func_L06_00353B28	2	-
 levels	func_L06_00353B90	2	-
@@ -8139,6 +8181,7 @@ levels	func_L07_003A7AC0	1	-
 levels	func_L07_003A7C10	1	-
 levels	func_L07_003A7CB8	1	-
 levels	func_L07_003A7E88	1	-
+levels	func_L07_003A80A0	1	-
 levels	func_L07_003A8538	1	-
 levels	func_L07_003A89E8	1	-
 levels	func_L07_003A8C18	1	-
@@ -8925,7 +8968,7 @@ levels	func_L12_003D3578	4	-
 levels	func_L12_003D36B0	4	-
 levels	func_L12_003D3748	4	-
 levels	func_L12_003D38C0	4	-
-levels	func_L12_003D3978	4	-
+levels	func_L12_003D3978	0	level_12: D_L01_001DEF10 is 0x001DEF50 here, 0x001DEBD0 for func_L01_003C8400;level_18: D_L01_001DEF10 is 0x001DF328 here, 0x001DEF00 for func_L01_003C8400;level_26: D_L01_001DEF10 is 0x001DF128 here, 0x001DEC90 for func_L01_003C8400;level_29: D_L01_001DEF10 is 0x001DED48 here, 0x001DE9A0 for func_L01_003C8400
 levels	func_L12_003D3A80	4	-
 levels	func_L12_003D3B00	4	-
 levels	func_L12_003D3DA0	4	-
@@ -9284,6 +9327,7 @@ levels	func_L18_004ABAA0	1	-
 levels	func_L18_004ACBA8	1	-
 levels	func_L18_00528E70	1	-
 levels	func_L19_00302700	1	-
+levels	func_L19_00302998	1	-
 levels	func_L19_003070B8	1	-
 levels	func_L19_003074D8	1	-
 levels	func_L19_0030CDE8	3	-
@@ -10885,6 +10929,7 @@ levels	func_L39_004B54C8	1	-
 levels	func_L39_004B5630	1	-
 levels	func_L39_004B5748	1	-
 levels	func_L39_004B5910	1	-
+levels	func_L39_004B5938	1	-
 levels	func_L39_004B5960	1	-
 levels	func_L39_004B59D8	1	-
 levels	func_L39_004B5F68	1	-
@@ -11304,6 +11349,7 @@ levels	func_L39_004D4730	1	-
 levels	func_L39_004D4D18	1	-
 levels	func_L39_004D4E68	1	-
 levels	func_L39_004D5030	1	-
+levels	func_L39_004D51F0	1	-
 levels	func_L39_004D5288	1	-
 levels	func_L39_004D5370	1	-
 levels	func_L39_004D5420	1	-
@@ -12079,7 +12125,7 @@ levels	func_L39_00502618	1	-
 levels	func_L39_00502FF8	1	-
 levels	func_L39_005031A8	1	-
 levels	func_L39_00503360	1	-
-levels	func_L39_00503B20	1	-
+levels	func_L39_00503B20	0	level_39: no object of the block alone checks MATCH
 levels	func_L39_005042F8	1	-
 levels	func_L39_00504410	1	-
 levels	func_L39_00504460	1	-
@@ -12698,6 +12744,7 @@ levels	func_L39_00556B80	17	-
 levels	func_L39_00556C10	17	-
 levels	func_L39_00556C40	17	-
 levels	func_L39_00556C78	17	-
+levels	func_L39_00556CC0	17	-
 levels	func_L39_00556E10	17	-
 levels	func_L39_00557C80	17	-
 levels	func_L39_00557CB0	17	-
@@ -12802,6 +12849,7 @@ levels	func_L39_0056ED40	17	-
 levels	func_L39_0056EE00	17	-
 levels	func_L39_0056F660	17	-
 levels	func_L39_0056F820	17	-
+levels	func_L39_00570200	17	-
 levels	func_L39_00570BA8	17	-
 levels	func_L39_00570C98	17	-
 levels	func_L39_00570DF0	17	-
@@ -14295,6 +14343,7 @@ levels	func_L39_0068FA80	1	-
 levels	func_L39_00690868	1	-
 levels	func_L39_00690890	1	-
 levels	func_L39_00690DB8	1	-
+levels	func_L39_00690DE8	1	-
 levels	func_L39_006915C8	1	-
 levels	func_L39_006918A8	1	-
 levels	func_L39_00691900	1	-

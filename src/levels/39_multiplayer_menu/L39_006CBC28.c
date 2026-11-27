@@ -2,7 +2,7 @@
 
 /* localdecomp:start func_L39_006CBC28 */
 extern s32 D_L39_00249160 __attribute__((section(".data")));
-extern void func_L39_0067F168(void *);
+extern s32 func_L39_0067F168(void *);
 extern void func_L39_0068ADC8(void *);
 
 void func_L39_006CBC28(void *object)

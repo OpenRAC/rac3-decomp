@@ -24,7 +24,7 @@ __asm__(".extern D_L39_0024D760, 16");
 extern G_00695028 *D_L39_0024D760;
 extern u8 D_L39_00247F60[];
 s32 func_00381FF0(s32);
-void func_L39_0067F100(s32);
+s32 func_L39_0067F100(s32);
 void func_L39_00689BD8(void *, s32);
 void func_L39_00689D28(void *, u8 *);
 void func_L39_00689DB8(void *, s32);

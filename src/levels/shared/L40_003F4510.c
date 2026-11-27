@@ -16,7 +16,7 @@ extern s32 func_00197498(s32);
 extern s32 func_L40_0053D8C8(s32 id, s32 a1, s32 a2, s32 a3);
 extern void func_L40_003F47B0();
 extern void func_L40_003F3C60();
-extern void func_L40_003F4638();
+extern u8 *func_L40_003F4638();
 
 s32 func_L40_003F4510(u8 *m, S_003F4510 *a1) {
     u8 *v = *(u8 **)(m + 0x68);

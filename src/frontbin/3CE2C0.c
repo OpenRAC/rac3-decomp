@@ -19,7 +19,7 @@ extern u32 *D_001DA604_003CE2C0;
 extern s32 D_001D4BB0_003CE2C0;
 extern s32 D_001D4BB4_003CE2C0;
 extern void func_003A02E8();
-extern s32 func_003A9618();
+extern void func_003A9618();
 /* localdecomp:start func_003CE2C0 */
 /* from frontbin's func_00389370 */
 __asm__(".extern D_001DA600_003CE2C0, 16");

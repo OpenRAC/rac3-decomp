@@ -91,11 +91,11 @@ extern void func_L01_0048B738_0048A8F8(void);
 extern void func_L01_0048BD78_0048A8F8(void);
 extern s32 func_L01_0047DAB0_0048A8F8(void);
 extern s32 func_003A5348(s32, s32, s32);
-extern void *func_L01_00495030_0048A8F8(void);
-extern void func_L01_00517748_0048A8F8(s32);
+extern s32 func_L01_00495030_0048A8F8(void);
+extern s32 func_L01_00517748_0048A8F8(s32);
 extern void func_L01_00516090_0048A8F8(void *);
 extern void func_003BB0E8(s32);
-extern s32 func_L01_0047EBE0_0048A8F8(void);
+extern void *func_L01_0047EBE0_0048A8F8(void);
 extern void func_L01_0047DAC8_0048A8F8(void);
 
 void func_L01_0048A8F8(void *a0) {
@@ -124,7 +124,7 @@ void func_L01_0048A8F8(void *a0) {
 /* localdecomp:end func_L01_0048A8F8 */
 
 /* localdecomp:start func_L01_0048A9F0 */
-extern void func_L01_00517918_0048A9F0(s32);
+extern s32 func_L01_00517918_0048A9F0(s32);
 extern void func_L01_0048B338(void);
 extern void func_003A2750(s32);
 
@@ -154,8 +154,8 @@ void func_L01_0048AA50(void) {
 /* localdecomp:end func_L01_0048AA50 */
 
 /* localdecomp:start func_L01_0048AA70 */
-extern void func_L01_00517748_0048AA70(s32);
-extern s32 func_L01_0047EBE0_0048AA70(void);
+extern s32 func_L01_00517748_0048AA70(s32);
+extern void *func_L01_0047EBE0_0048AA70(void);
 extern s32 D_001D545C;
 __asm__(".extern D_001D545C, 16");
 extern void func_003BB0E8(s32);

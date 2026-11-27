@@ -22,7 +22,7 @@ typedef struct { s32 a; s32 b; s32 c; s32 d; } Ent_00497C30;
 
 /* declared by functions of L01_00499C80.c, which this file was cut from */
 extern s32 func_003E6FA0(s32 *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5);
-extern void func_L01_00517918(s32);
+extern s32 func_L01_00517918(s32);
 extern void func_003A2750(s32);
 extern void *func_003B42F8(s32);
 extern void func_003BB468(s32);
