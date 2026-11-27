@@ -11,7 +11,6 @@ typedef struct { u8 pad0[0x18]; u16 h18; u8 pad1a[0x12E]; s32 f148; u8 pad14c[0x
 extern void func_003B4218(void);
 /* --- end of declarations from other files --- */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/text", func_003B4218);
 
 
 extern s32 D_001D4CE8_003B3BF8;
@@ -37,3 +36,138 @@ extern S_003ADCB0 D_00142430;
 extern s32 func_0039C050(s32, s32);
 extern void func_0039C6E0(void);
 extern void func_003A9308(void);
+/* localdecomp:start func_003B4218 */
+/* the copy of func_003B3E60 */
+__asm__(".extern D_001D888C, 4");
+extern u8 D_001D9FA0_003B4218_a003B4218 __asm__("D_001D9FA0_003B4218");
+void func_003B4218(void) {
+    u32 p;
+    switch (D_001D4CE8) {
+    case 3:
+        if (D_001D52FC->f1A4 & 0x40) {
+            D_001D4CEC.b0 = 0;
+            D_001D888C++;
+        }
+        break;
+    case 8:
+        p = D_001D52FC->f1A4;
+        if (p & 0x20) {
+            D_001D4CEC.b3 = 1;
+        } else if (p & 0x10) {
+            if (D_001D5BDD) { func_003A9308(); break; }
+            D_001D4CEC.b5 = 1;
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            if (D_001D5BDC == 0) D_001D888C++;
+        }
+        break;
+    case 15:
+        p = D_001D52FC->f1A4;
+        if (p & 0x20) {
+            func_0039C050(0, 0);
+        } else if (p & 0x10) {
+            if (D_001D5BDD) { func_003A9308(); break; }
+            D_001D4CEC.b5 = 1;
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            if (D_001D5BDC == 0) D_001D888C++;
+        }
+        break;
+    case 22:
+        if (D_001D52FC->f1A4 & 0x40) {
+            D_001D4CEC.b6 = 0;
+            D_001D4CEC.b10 = 0;
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            /* both arms merge; retail keeps the dead D_001D5BDC load */
+            if (D_001D5BDC == 0) D_001D888C++; else D_001D888C++;
+        }
+        break;
+    case 19: case 20: case 24: {
+        S_142430_003AE8A8 *e = (S_142430_003AE8A8 *)&D_00142430;
+        if (e->f8 != 2) { func_003A9308(); break; }
+        if (e->f10 == 0) D_001D4CE8 = 11;
+        else if (e->f10 == -1) { e->f10 = 0; D_001D4CE8 = 11; }
+        else if (e->f10 == -2) D_001D4CE8 = 7;
+        else D_001D4CE8 = 14;
+        D_001D888C++;
+        break;
+    }
+    case 14:
+        if (D_001D9FA0_003B4218_a003B4218 == 0) break;
+    case 4: case 5: case 7:
+        if (D_001D52FC->f1A4 & 0x10) {
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            D_001D888C++;
+        }
+        break;
+    case 21:
+        if (D_001D5BDC != 0 && D_001D9FA0_003B4218_a003B4218 == 0) {
+            p = D_001D52FC->f1A4;
+            if (p & 0x40) {
+                func_0039C6E0();
+                D_001D4CEC.b1 = 0;
+                D_001D4CEC.b2 = 0;
+                D_001D4CEC.b5 = 1;
+                func_003A9308();
+                break;
+            }
+            if (p & 0x10) {
+                D_001D4CEC.b1 = 0;
+                D_001D4CEC.b2 = 0;
+                D_001D888C++;
+            }
+        } else if (D_001D5BDD) {
+            if (D_001D52FC->f1A4 & 0x40) func_003A9308();
+        } else if (D_001D52FC->f1A4 & 0x10) {
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            D_001D888C++;
+        }
+        break;
+    case 26: case 27:
+        p = D_001D52FC->f1A4;
+        if (p & 0x40) {
+            func_0039C6E0();
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            D_001D4CEC.b5 = 1;
+            func_003A9308();
+        } else if (p & 0x10) {
+            D_001D4CEC.b5 = 1;
+            D_001D888C++;
+        }
+        break;
+    case 6:
+        if (D_001D5BDC != 0) {
+            if (D_001D9FA0_003B4218_a003B4218 == 0 && (D_001D52FC->f1A4 & 0x40)) {
+                func_0039C6E0();
+                D_001D4CEC.b1 = 0;
+                D_001D4CEC.b2 = 0;
+                func_003A9308();
+            }
+            if (D_001D52FC->f1A4 & 0x10) {
+                D_001D4CEC.b5 = 1;
+                D_001D4CEC.b1 = 0;
+                D_001D4CEC.b2 = 0;
+                D_001D888C++;
+            }
+        } else if (D_001D5BDD) {
+            if (D_001D52FC->f1A4 & 0x20) func_003A9308();
+        } else if (D_001D52FC->f1A4 & 0x10) {
+            D_001D4CEC.b5 = 1;
+            D_001D4CEC.b1 = 0;
+            D_001D4CEC.b2 = 0;
+            D_001D888C++;
+        }
+        break;
+    case 1: case 11: case 18:
+        if (!D_001D4CEC.b1 && !D_001D4CEC.b2) D_001D888C++;
+        break;
+    case 2: case 9: case 10: case 12: case 13: case 16: case 17: case 23: case 25:
+    case 28: case 29: case 30: case 31: case 32:
+        break;
+    }
+}
+/* localdecomp:end func_003B4218 */
