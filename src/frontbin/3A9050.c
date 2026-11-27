@@ -10,7 +10,6 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003A9150();
-extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 /* --- end of declarations from other files --- */
 
 /* declarations carried from the file this was cut from */
@@ -238,7 +237,6 @@ extern void func_12D938();
 extern void func_11F0A0();
 extern void func_003D9DA8();
 extern void func_003A9150();
-/* localdecomp:start func_003A91D0 */
 /* US draft of func_003A91D0 (rac3-uya-decomp func_003A3C80, commit 13cf5c5), names moved to PAL addresses
    where known. Not carried: flags: the US matched it with `@ps2as` (a single-function override). */
 
@@ -290,7 +288,6 @@ void func_003A91D0(void) {
         func_003D9DA8();
     }
 }
-/* localdecomp:end func_003A91D0 */
 /* localdecomp:end func_003A91D0 */
 
 /* localdecomp:start func_003A92F0 */

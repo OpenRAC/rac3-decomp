@@ -10,7 +10,6 @@ extern void (*D_00226A00[])(s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_00395328 */
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C0D0);
 
 /* US draft of func_00395328 (rac3-uya-decomp func_00395240, commit 13cf5c5), names moved to PAL addresses
    where known. Not carried: differs: did not build, or built to other bytes, in PAL. */

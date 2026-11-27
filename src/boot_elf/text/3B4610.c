@@ -13,7 +13,6 @@ extern void *func_003B46B0();
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B4610 */
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C710);
 void func_003B4610(void *p, s32 a) {
     void *q = *(void **)((u8 *)p + 0x4);
     ((void (*)(void *, s32, s32))*(void **)((u8 *)q + 0x1C))(p, a, 0);

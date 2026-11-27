@@ -16,7 +16,6 @@ extern void func_003B5F48(void);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B5EF0 */
-INCLUDE_RODATA("asm/boot_elf/nonmatchings/text/rodata", jtbl_0031C7B0);
 
 typedef struct {
     u8 pad0[0x4954];
