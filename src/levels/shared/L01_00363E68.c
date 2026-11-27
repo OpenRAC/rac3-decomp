@@ -81,7 +81,112 @@ void func_L01_00363E68(void *position, s32 texture, f32 size, f32 offset, f32 an
 
 INCLUDE_ASM("asm/levels", func_L01_00364180);
 
-INCLUDE_ASM("asm/levels", func_L01_003649E8);
+/* localdecomp:start func_L01_003649E8 */
+#include "vu0.h"
+typedef struct { vu0_v4 r[3]; } M3_003649E8;
+typedef struct {
+    u8 pad0[0x34];
+    u16 x34;
+} Obj_003649E8;
+typedef struct {
+    u8 pad0[0x6C0];
+    M3_003649E8 m6C0;
+    u8 pad6F0[0x25C0 - 0x6F0];
+    Obj_003649E8 *p25C0;
+    s32 state;
+    u8 pad25C8[0x2874 - 0x25C8];
+    s16 x2874;
+} Hero_003649E8;
+typedef struct {
+    u8 pad0[0xC0];
+    vu0_v4 xC0;
+    vu0_v4 xD0;
+    vu0_v4 xE0;
+} Moby_003649E8;
+typedef struct {
+    u8 pad0[0xC];
+    s32 active;
+    u8 pad10[0x1C - 0x10];
+    void *part;
+} Bolt_003649E8;
+extern Hero_003649E8 D_001A4BE0_003649E8;
+extern M3_003649E8 D_L01_001E29E0_003649E8;
+extern vu0_v4 D_L01_001E1AC0_003649E8 __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001E1AD0_003649E8 __attribute__((section(".sdata")));
+extern f32 D_L01_001E1AE0;
+extern f32 D_L01_001E1AE4;
+extern s16 D_L01_001E1B10_003649E8[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_0028E3A0_003649E8[];
+extern Bolt_003649E8 D_L01_0028CAA0_003649E8[];
+extern s32 D_L01_001DD774;
+extern s32 D_L01_001DD778;
+extern f32 D_L01_001DD784;
+extern s32 D_L01_001DD788;
+extern f32 D_L01_001DD78C;
+__asm__(".extern D_L01_001DD774, 4");
+__asm__(".extern D_L01_001DD778, 4");
+__asm__(".extern D_L01_001DD784, 4");
+__asm__(".extern D_L01_001DD788, 4");
+__asm__(".extern D_L01_001DD78C, 4");
+
+/* Resets the trail effect: the ring centres along the player's facing, the class slots and timers. */
+void func_L01_003649E8(Moby_003649E8 *moby, vu0_v4 *pos) {
+    extern void func_0038CE20_003649E8(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_00382538(void);
+    extern void func_0038D890(void *, void *, void *, f32);
+    M3_003649E8 m;
+    vu0_v4 step;
+    vu0_v4 fwd;
+    vu0_v4 a;
+    vu0_v4 b;
+    f32 r;
+    s32 i;
+
+    if (D_L01_001DD774 == 0) {
+        return;
+    }
+    D_L01_001E1AE4 = 1.0f;
+    D_L01_001DD774 = 0;
+    if ((D_001A4BE0_003649E8.state == 0x1D || D_001A4BE0_003649E8.state == 1) && (D_001A4BE0_003649E8.p25C0->x34 & 1)) {
+        m = D_L01_001E29E0_003649E8;
+    } else if (D_001A4BE0_003649E8.x2874 == 1) {
+        func_0038CE20_003649E8(&m.r[0], &moby->xD0, -1.0f);
+        m.r[1] = moby->xC0;
+        m.r[2] = moby->xE0;
+    } else {
+        m = D_001A4BE0_003649E8.m6C0;
+    }
+    func_0038CF68(&step, &m.r[0], D_L01_001E1AE4);
+    func_0038CF68(&fwd, &m.r[2], 1.0f);
+    D_L01_0028E3A0_003649E8[0] = *pos;
+    D_L01_001E1B10_003649E8[0] = 0;
+    for (i = 1; i < 10; i++) {
+        D_L01_001E1B10_003649E8[i] = 0;
+        vec_add_ab(&D_L01_0028E3A0_003649E8[i], &D_L01_0028E3A0_003649E8[i - 1], &step);
+    }
+    *(vu0_q *)&a = 0;
+    *(vu0_q *)&b = 0;
+    a.z = 0.1f;
+    a.w = 1.0f;
+    b.x = 1.0f;
+    b.w = 1.0f;
+    qzero(&D_L01_001E1AC0_003649E8);
+    r = func_00382538();
+    func_0038D890(&D_L01_001E1AD0_003649E8, &a, &b, r);
+    D_L01_001E1AE0 = r;
+    D_L01_001DD784 = 0.006f;
+    D_L01_001DD788 = 0;
+    D_L01_001DD78C = 0;
+    if (D_L01_001DD778 != 0) {
+        D_L01_001DD778 = 0;
+        for (i = 0; i < 200; i++) {
+            D_L01_0028CAA0_003649E8[i].part = 0;
+            D_L01_0028CAA0_003649E8[i].active = 0;
+        }
+    }
+}
+/* localdecomp:end func_L01_003649E8 */
 
 INCLUDE_ASM("asm/levels", func_L01_00364C20);
 
@@ -263,7 +368,202 @@ void func_L01_00366240(void *arg) {
 
 LINKER_REMNANT("asm/levels", func_L01_003663F0);
 
-INCLUDE_ASM("asm/levels", func_L01_00366400);
+/* localdecomp:start func_L01_00366400 */
+/* The sound-slot checks: slot handles live in the player at 0x27D4-0x27DC; a handle is valid while
+   its 128-byte slot (D_001A30B0) still names this moby as owner and is active. */
+typedef int Q_00366400 __attribute__((mode(TI)));
+typedef struct {
+    u8 pad0[0x1224];
+    s32 x1224;
+    u8 pad1228[0x25C0 - 0x1228];
+    u8 *x25C0;
+    s32 x25C4;
+    u8 pad25C8[0x27D4 - 0x25C8];
+    s32 x27D4;
+    s32 x27D8;
+    s32 x27DC;
+} Hero_00366400;
+extern Hero_00366400 D_001A4BE0_00366400;
+extern u8 D_001A30B0[];
+extern u8 *D_L01_001E1CC4;
+extern s32 D_L01_001E1CC0, D_L01_001E1CC8, D_L01_001E1CCC, D_L01_001E1CD0, D_L01_001E1CD4, D_L01_001E1D00;
+extern s32 D_L01_001E1B60[] __attribute__((section(".sdata")));
+extern s32 D_L01_001E1B70[] __attribute__((section(".sdata")));
+__asm__(".extern D_L01_001E1B80_00366400, 16");
+extern s32 D_L01_001E1B80_00366400[] __attribute__((section(".sdata")));
+extern f32 D_L01_001E1C20, D_L01_001E1C28, D_L01_001E1C68;
+extern s32 D_L01_001E1C24, D_L01_001E1C60, D_L01_001E1C6C;
+extern u8 D_L01_001E1C70_00366400[] __attribute__((section(".sdata")));
+extern u8 D_L01_001E1C74_00366400[] __attribute__((section(".sdata")));
+extern u8 D_L01_001E1C80_00366400[] __attribute__((section(".sdata")));
+extern Q_00366400 D_L01_001E1CE0_00366400 __attribute__((section(".sdata")));
+extern Q_00366400 D_L01_001E1CF0_00366400 __attribute__((section(".sdata")));
+static __inline__ u8 *slot_00366400(s32 idx) {
+    return D_001A30B0 + (idx << 7);
+}
+extern void func_003A4F28(s32);
+#define slot_free_00366400(self, h) { \
+    if ((h) != -1 && *(u8 **)(slot_00366400(h) + 0xDC) == (self) && slot_00366400(h)[0xD0] != 0) { \
+        func_003A4F28(h); \
+    } \
+    (h) = -1; \
+}
+#define slot_bad_00366400(self, h) ((h) == -1 || *(u8 **)(slot_00366400(h) + 0xDC) != (self) || slot_00366400(h)[0xD0] == 0)
+void func_L01_00366400(u8 *self) {
+    extern void *func_L01_0043B568(s32, s32, s32);
+    extern s32 func_003A52A0(s32, s32, void *);
+    extern void func_L01_004450F0(void *, s32, s32);
+    extern s32 func_0038CAD0(void *);
+    extern void func_L01_00366E48(void *, void *, void *, void *, s32);
+    extern void func_L01_00366EA8(void *, void *, void *, s32, s32);
+    extern void func_L01_00366DE0(void);
+    extern void func_L01_00366BE0(void *);
+    extern void func_L01_00366CD0(void);
+    extern void func_L01_00367780(void *);
+    extern void func_L01_00367EE0(void *);
+    extern void func_L01_00368B30(void);
+    extern void func_L01_00404A10(void *, void *);
+    s32 i;
+
+    if (D_001A4BE0_00366400.x1224 == 3 || D_001A4BE0_00366400.x25C4 == 0x74) {
+        if (D_L01_001E1CC4 != 0) {
+            void **vt = (void **)func_L01_0043B568(0x1860, 0, 8);
+            ((void (*)(void *, void *, s32))vt[1])(D_L01_001E1CC4, self, 0);
+            D_L01_001E1CC4 = 0;
+        }
+        slot_free_00366400(self, D_001A4BE0_00366400.x27D4);
+        slot_free_00366400(self, D_001A4BE0_00366400.x27D8);
+        slot_free_00366400(self, D_001A4BE0_00366400.x27DC);
+        return;
+    }
+    if (slot_bad_00366400(self, D_001A4BE0_00366400.x27D4)) {
+        D_001A4BE0_00366400.x27D4 = func_003A52A0(1, 4, self);
+    }
+    switch (self[0x20]) {
+    case 0:
+        {
+            s32 k;
+            for (k = 0; k < 4; k++) {
+                D_L01_001E1B60[k] = 0;
+                D_L01_001E1B70[k] = -1;
+                D_L01_001E1B80_00366400[k] = 0;
+            }
+        }
+        D_L01_001E1C28 = 0.75f;
+        D_L01_001E1C68 = 1.0f;
+        D_L01_001E1C20 = 0.0f;
+        D_L01_001E1C24 = 0;
+        D_L01_001E1C60 = 0;
+        func_L01_00366E48(self, D_L01_001E1C70_00366400, D_L01_001E1C74_00366400, D_L01_001E1C80_00366400, 0);
+        D_L01_001E1CC0 = 0;
+        D_L01_001E1CC4 = 0;
+        D_L01_001E1CC8 = 0;
+        D_L01_001E1CCC = 0;
+        D_L01_001E1CD0 = 0;
+        D_L01_001E1CD4 = 0;
+        D_L01_001E1D00 = 0;
+        D_L01_001E1CE0_00366400 = *(Q_00366400 *)(self + 0x10);
+        D_L01_001E1CF0_00366400 = *(Q_00366400 *)(self + 0x10);
+        D_L01_001E1C6C = 12;
+        func_003A52A0(0, 0, self);
+        func_L01_004450F0(self, 1, -1);
+        break;
+    case 1:
+        if (func_0038CAD0(&D_L01_001E1C6C) != 0) {
+            func_L01_004450F0(self, 2, -1);
+        } else {
+            if ((u32)(D_001A4BE0_00366400.x25C4 - 0x17) >= 4) {
+                return;
+            }
+            func_L01_004450F0(self, 5, -1);
+            return;
+        }
+        break;
+    case 2:
+        if ((u32)(D_001A4BE0_00366400.x25C4 - 0x17) < 4) {
+            func_L01_004450F0(self, 4, -1);
+        } else {
+            if (D_L01_001E1C28 < 1.2000000476837158f) {
+                D_L01_001E1C28 += 0.03999999910593033f;
+                if (1.2000000476837158f < D_L01_001E1C28) {
+                    D_L01_001E1C28 = 1.2000000476837158f;
+                }
+            }
+            if (D_L01_001E1C68 < 14.0f) {
+                D_L01_001E1C68 += 0.48000001907348633f;
+                if (14.0f < D_L01_001E1C68) {
+                    D_L01_001E1C68 = 14.0f;
+                }
+            }
+            if (D_L01_001E1C28 == 1.2000000476837158f && D_L01_001E1C68 == 14.0f) {
+                func_L01_004450F0(self, 3, -1);
+            }
+        }
+        break;
+    case 3:
+        if (D_L01_001E1D00 == 1) {
+            if (slot_bad_00366400(self, D_001A4BE0_00366400.x27D8)) {
+                D_001A4BE0_00366400.x27D8 = func_003A52A0(2, 4, self);
+            }
+        } else {
+            slot_free_00366400(self, D_001A4BE0_00366400.x27D8);
+        }
+        for (i = 0; i < 4; i++) {
+            if (D_L01_001E1B80_00366400[i] != 0) {
+                break;
+            }
+        }
+        if (i < 4) {
+            if (slot_bad_00366400(self, D_001A4BE0_00366400.x27DC)) {
+                D_001A4BE0_00366400.x27DC = func_003A52A0(3, 4, self);
+            }
+        } else {
+            slot_free_00366400(self, D_001A4BE0_00366400.x27DC);
+        }
+        if ((u32)(D_001A4BE0_00366400.x25C4 - 0x17) < 4) {
+            func_L01_004450F0(self, 4, -1);
+            D_L01_001E1C68 -= 0.8400000333786011f;
+            if (D_L01_001E1C68 < 1.0f) {
+                D_L01_001E1C68 = 1.0f;
+                D_L01_001E1C28 = 0.75f;
+                func_L01_004450F0(self, 5, -1);
+            }
+        }
+        break;
+    case 4:
+        D_L01_001E1C68 -= 0.8400000333786011f;
+        if (D_L01_001E1C68 < 1.0f) {
+            D_L01_001E1C68 = 1.0f;
+            D_L01_001E1C28 = 0.75f;
+            func_L01_004450F0(self, 5, -1);
+        }
+        break;
+    case 5:
+        slot_free_00366400(self, D_001A4BE0_00366400.x27D4);
+        slot_free_00366400(self, D_001A4BE0_00366400.x27D8);
+        slot_free_00366400(self, D_001A4BE0_00366400.x27DC);
+        if ((u32)(D_001A4BE0_00366400.x25C4 - 0x17) < 4) {
+            return;
+        }
+        D_L01_001E1C6C = 12;
+        func_L01_004450F0(self, 1, -1);
+        break;
+    default:
+        break;
+    }
+    func_0038CAD0(&D_L01_001E1CC0);
+    {
+        s32 on = D_L01_001E1C20 > 0.0f;
+        func_L01_00366EA8(D_L01_001E1C70_00366400, D_L01_001E1C74_00366400, D_L01_001E1C80_00366400, 1, on);
+    }
+    func_L01_00366DE0();
+    func_L01_00366BE0(self);
+    func_L01_00366CD0();
+    func_L01_00367780(self);
+    func_L01_00367EE0(self);
+    func_L01_00404A10(func_L01_00368B30, D_001A4BE0_00366400.x25C0);
+}
+/* localdecomp:end func_L01_00366400 */
 
 /* localdecomp:start func_L01_00366BE0 */
 #include "vu0.h"
@@ -1505,7 +1805,84 @@ Moby_0036AA60 *func_L01_0036AA60(s128 *a, s128 *b, s128 *c, s32 arg, f32 value) 
 
 /* localdecomp:end func_L01_0036AA60 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036AB88);
+/* localdecomp:start func_L01_0036AB88 */
+#include "vu0.h"
+extern u8 D_L01_001D66B0[] __attribute__((section(".sdata")));
+extern u8 *D_L01_0022116C[];
+extern u8 *D_L01_00221098_0036AB88[];
+void func_L01_0036AB88(u8 *obj) {
+    extern void func_003C5180(void *, void *, s32);
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    extern s32 func_0038CAD0(void *);
+    extern void func_003C2880(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_00382468(s32);
+    extern u8 *func_L01_0046FB40(void *, void *, s32, s32, s32, s32, s32, f32, f32, f32, s32);
+    extern void func_L01_0036B078(u8 *);
+    extern void func_L01_00404A10(void (*)(u8 *), u8 *);
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    vu0_v4 samples[3];
+    vu0_v4 head, point;
+    u8 *state = *(u8 **)(obj + 0x68);
+    u8 *particle;
+    s32 rotation, count, i;
+    f32 t, angle, size;
+    samples[0] = *(vu0_v4 *)(obj + 0x10);
+    func_003C5180(obj + 0x10, &samples[1], 1);
+    samples[2] = *(vu0_v4 *)(obj + 0x10);
+    if (func_L01_004CB2D8()) {
+        func_L01_004CAB30(obj + 0x10, obj + 0x10);
+        func_L01_004CAB30(state + 0x50, state + 0x50);
+        func_L01_004CAB30(state, state);
+    }
+    if (obj[0x20] == 0) {
+        vec_add_ab(state + 0x50, state + 0x50, state + 0x20);
+        if (func_0038CAD0(state + 0x38)) {
+            func_003C2880(obj);
+            return;
+        }
+        func_0038CF68(&head, state + 0x20, -0.5f);
+        vec_add_ba(&head, obj + 0x10, &head);
+        rotation = func_00382468(255);
+        particle = func_L01_0046FB40(&head, D_L01_001D66B0, 2, 0x202080, rotation, 32, 16, 420000.0f, 420000.0f, 0.0f, 2);
+        if (particle) particle[2] = *D_L01_0022116C[0];
+        rotation = (rotation + 128) % 255;
+        particle = func_L01_0046FB40(&head, D_L01_001D66B0, 2, 0x204080, rotation, 32, 16, 420000.0f, 420000.0f, 0.0f, 2);
+        if (particle) particle[2] = *D_L01_0022116C[0];
+        func_L01_00404A10(func_L01_0036B078, obj);
+        for (i = 1; i >= 0; i--) {
+            s32 spin;
+            f32 len;
+            t = func_003824E0(0.0f, 1.0f);
+            func_0038CDF8(&point, state, &head, t);
+            spin = func_00382468(255);
+            angle = -(*(f32 *)(state + 0x60) * 180.0f / 3.1415927410125732f);
+            size = 1.8f - angle * 0.01f * 5.0f;
+            count = (s32)(t * 20.0f - angle);
+            if (count >= 10) count = 9;
+            else if (count <= 1) count = 2;
+            point.x += func_L01_00443A18(0.0f, 0.04f);
+            point.y += func_L01_00443A18(0.0f, 0.04f);
+            point.z += func_L01_00443A18(0.0f, 0.04f);
+            len = size * 0.2f * 210000.0f;
+            count = (count * 5 + 2) / 6;
+            angle = angle * 5.0f * 0.0004000000189989805f;
+            { u8 *spark = func_L01_0046FB40(&point, state + 0x20, count, 0xFF1010, spin, 48, 0, size * 210000.0f, len, angle, 2);
+            if (spark) spark[2] = *D_L01_00221098_0036AB88[91]; }
+            size *= 0.5f;
+            len = size * 0.2f * 210000.0f;
+            { u8 *spark = func_L01_0046FB40(&point, state + 0x20, count, 0x808080, spin, 48, 0, size * 210000.0f, len, angle, 2);
+            if (spark) spark[2] = *D_L01_00221098_0036AB88[91]; }
+        }
+    }
+    if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
+        *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||
+        *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) func_003C2880(obj);
+}
+/* localdecomp:end func_L01_0036AB88 */
 
 /* localdecomp:start func_L01_0036B078 */
 #include "vu0.h"

@@ -1,80 +1,7 @@
-/* 2026-11-24 (CLOSEOUT attempt 1 of 2, rac3-w1), upstream 242c17bd: still 32 differences (tools/check.py)
- * at levels 04, 16, 18, 22 and 29 and with --no-context, with the recipe below (file line plus
- * `@ps2as -mvu0-use-vf0-vf2`, divs_nops row `func_L04_00313DD0 0 2`, both in the working tree only). The count did not
- * improve. Change: case 3's 0x1A0 block takes D_001A4C78 in a local `a` and sets `h = a - 0x98`; the reload is now
- * retail's `lwc1 $f12, 0x1a0($s3)` after `addiu $s3, $s0, -0x98` (it was 0x108($s0)). That block still differs only
- * in order: 2.0f is loaded into $f20 before the func_0038DAB8 call (retail: just before the func_L01_00448690 call),
- * `lui $s0` comes before the 0x1A0 store (retail: after), and the reload sits before the jal with `move $a1, $zero` in
- * the delay slot (retail: the reload in the delay slot). The other groups are unchanged (clamp registers 6, vec
- * copy/sub order 6, case 1 3, beql and move order 3).
- * Same bytes as this draft (so the stop rule applies): the reload in a local `r` first; `h` assigned in its own
- * statement; `a` and `h` assigned inside the call's arguments; func_003C3D30's argument as `a - 0x18`.
- * Worse: the first argument as `h + 0x98` with h = D_001A4C78 - 0x98 (254), or with h = D_001A4BE0 (248: CSE then
- * forwards the stored 0x1A0 value and drops the reload); the ternary's angle put in `t` before the func_0038DAB8
- * call (255).
- */
-/* 2026-11-23 (PASS-P7, rac3-w2), upstream c162f99b: plain C now. The F32/S32/U32/U16/S16/U8/PTR
- * `#define` accessors are written out as casts (`*(f32 *)(p + 0x40)`, `(*(u8 **)(p + 0x68))`) and the four GNU
- * statement expressions as block-scoped pointer locals; that rewrite alone compiles to the same code (236, unchanged at
- * levels 04, 16, 18, 22 and 29 and with --no-context).
- * Then 32 differences (tools/check.py) at all five places (04, 16, 18, 22, 29) and with --no-context, measured with the
- * file's line set to `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` and the divs_nops row
- * `func_L04_00313DD0 0 2` (both in the working tree only). Without the row: 178. With the clean config and
- * `--as ps2as --flags=-mvu0-use-vf0-vf2` the row is not applied: also 178.
- * The change: case 3's clamp `hero.88 = max(hero.88 - 2, func_003C3D30(...))` takes the call's result in the local `z`
- * (also the saved hero.88 above) instead of `t`. That restores retail's extra `mov.s` and the 3-word shift behind
- * most of the 236. z is callee-saved, so ours copies into $f21 where retail copies into $f1, and the load of hero.88
- * still comes before the copy (sched1 ranks the load's chain higher; retail's copy comes first, so its hero.88 - 2 gets
- * $f0). Left (32):
- *  - case 1: `addu idx, base` for D_L04_00236380[(s16)id + 0x464] (2); hero.0x80 read as 0x4c60($s7) (1).
- *  - case 3: vec_copy's sqc2 to vB0 comes three insns late and vec_sub's two lqc2 are swapped (6). The four
- *    _ab/_ba combinations give the same code.
- *  - case 3: hero.0x1A0 is reloaded through 0x108($s0), not through the rebuilt hero 0x1a0($s3), and 2.0f is
- *    loaded before the func_0038DAB8 call, not before func_L01_00448690 (14).
- *  - case 3: the clamp's registers ($f21/$f1 vs retail's $f1/$f0, 6), then beql vs beq and one move order (3).
- * Tried without gain (each still 32 or worse): (D + 0x464)[i], *(D + (i + 0x464)), (i + 0x464)[D], D[0x464 + i],
- * (D + i)[0x464] (33); hero 0x80 as D_001A4BE0 + 0x80 - 0x80 + 0x80, + 0x84 - 4, ((f32 *)p)[0] (32); a `hero` local
- * for the case-1 condition (1109: one callee-saved register fewer); vec_add_ba / vec_sub_ba, alone or together (32,
- * same code); vec_copy before the v50.z store (35), v50.z before v50.y (36); reusing case 3's outer `hero` for the
- * 0x1A0 block (328); h = D_001A4C78 - 0x98 assigned after the call (32); h = D_001A4C78, arg h, load h - 0x98 + 0x1A0
- * (36); the clamp's result in `t` compared as t > hero.88 (236), in `d` (236), and hero.88 - 2 in z (236).
- */
-/* 2026-11-22 (NM-R10, rac3-w3): re-measured on upstream 6de86dfe, still 236 differences (tools/check.py) at
- * level 04 with `--as ps2as --flags=-mvu0-use-vf0-vf2` (without the vf2 flag it still does not compile: vf17 spilled).
- * Tried for case 3's hero.0x1A0 reload: the call's first argument as `D_001A4BE0 + 0x98` (one symbol with the hero, so
- * that CSE could derive the hero as $s0 - 0x98 as retail does) with h = D_001A4BE0 or h = D_001A4BE0 + 0x98 - 0x98:
- * 302, because CSE then reuses the previous block's hero register and forwards the stored 0x1A0 value instead of
- * reloading it; `D_001A4BE0 + 0x98` with h = D_001A4C78 - 0x98: 251. No gain, so the draft is unchanged below.
- */
-/* 2026-11-21 (Promises fleet rac3-w1): 236 differences (tools/check.py) at level 04 with
- * `--as ps2as --flags=-mvu0-use-vf0-vf2`, with or without the divs_nops line `func_L04_00313DD0 0 2`. Most follow from
- * case 3 being one instruction short (see "case 3 after hero.1A0" below). Declaring `u8 *h = D_001A4C78 - 0x98;` before
- * the func_L01_00448690 call gives 252, and `u8 *h = D_001A4BE0;` gives 251. (The GNU statement expressions and
- * `#define` accessors this note mentions were rewritten as plain C on 2026-11-23, below.)
- */
-/* PAL near miss (e15, 2026-11-17): func_L04_00313DD0 (4488 B, 5 places: 04, 16, 18, 22, 29), written by hand from
- * retail; 29 aligned rows left of 1122 (scratch flags: -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
- * --as ps2as; the file's line in text_parts.txt needs "-mvu0-use-vf0-vf2 ... @ps2as" added: case 3 uses vadd/vsub).
- * Also needs divs_nops line "func_L04_00313DD0 0 2" (2 nops before the div.s in case 3).
- * Left:
- *  - jump table: check shows `lui 0 / addiu 0` for jtbl_002BF100 (our own .rodata); probably needs a file cut so the
- *    object's .rodata lands at 0x002BF100 (lessons 12/43), not checked in a build.
- *  - case 1: `lbu 0x464` index: retail `addu base, idx` (base + idx), ours idx + base (lesson 18 forms tried: (D+i)[0x464],
- *    struct member, *(D+i+0x464): worse).
- *  - case 1: hero.0x80 in the func_0038D160 args reads 0x4c60(%hi reg) instead of 0x80($s0) (hero = &hero.pos - 0x80).
- *  - case 3: vec_copy(&vB0, hero.pos) / vec_add_ab(&v80, m.pos, &v50) interleave: one lqc2/sqc2 swapped.
- *  - case 3 after `hero.1A0 = ...`: retail rebuilds `s0 = &D_001A4C78; s3 = s0 - 0x98` before the reload of 0x1A0;
- *    ours reads 0x108($s0) and sets s3 after (variants H1-H3 in the notes: no gain). Then the hero.88 clamp's register
- *    order and one beq/beql + the mov.s $f12, $f20 order in the +-60 degree clamp.
- * Found: hero accesses are one block-scoped pointer per region (retail rebuilds `addiu sN, s4, %lo` per block,
- * lesson 9/39); pv->0x64 = 0 after the func_L01_004482A0 call is an int store (a float 0.0 store gets CSE'd with the
- * call's 0.0f argument and costs a callee-saved $f register); case 1's object loop is `i = 0; o = D[0]; while (o) {...;
- * i++; o = D[i]; }` (a for loop is strength-reduced).
- */
 #include "common.h"
 #include "vu0.h"
 
-
+/* localdecomp:start func_L04_00313DD0 */
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038DB00(f32, f32);
 extern f32 func_0038DBA0(f32, f32);
@@ -106,14 +33,43 @@ extern void func_L01_0041A5B0(s32, s32);
 extern f32 func_L01_0040E548(void *, void *);
 extern void func_L01_0040E408(void *, void *, f32);
 extern void func_L01_004482A0(void *, void *, f32, f32, f32, f32);
-extern void func_L01_00448690(void *, s32, f32, f32);
+extern void func_L01_00448690(void *, f32, s32, f32);
 extern void func_L01_0050FB40(s32, s32, f32);
 extern s32 func_L02_003E71A8(void *, void *, f32);
 extern s32 func_L04_0050CB28(s32, s32);
 extern void func_L04_003FDBF0(s32, f32, f32);
 extern void func_L04_004B3440(void *, s32, void *, s32, void *);
 
-extern u8 D_001A4BE0[];
+typedef struct {
+    u8 pad0000[0x80];
+    f32 position[4];
+    u8 pad0090[0x8];
+    f32 yaw;
+    u8 pad009C[0x54];
+    u8 motionState[0xA0];
+    u8 pad0190[0x10];
+    f32 targetYaw;
+    u8 pad01A4[0x14];
+    s32 modeTimer;
+    u8 pad01BC[0xC08 - 0x1BC];
+    s32 animFlags;
+    s32 animBusy;
+    u8 pad0C10[0x1200 - 0xC10];
+    s32 canInteract;
+    u8 pad1204[0x121A - 0x1204];
+    u8 interactBusy;
+    u8 pad121B[0x1228 - 0x121B];
+    s32 groundState;
+    u8 pad122C[0x2260 - 0x122C];
+    f32 stickY;
+    f32 stickX;
+    u8 pad2268[0x25C0 - 0x2268];
+    u8 *moby;
+    s32 moveState;
+    u8 pad25C8[0x25E4 - 0x25C8];
+    u8 disabled;
+} CrankPlayer;
+extern CrankPlayer D_001A4BE0;
 extern u8 D_001A4C78[];
 extern u8 D_001A7E18[];
 extern u8 D_001BBE90[];
@@ -128,9 +84,15 @@ extern s32 D_L04_001E2890[];
 extern u8 D_L04_001E2840[];
 extern u8 *D_L04_0021D3E0[];
 extern u8 D_L04_00235770[];
-extern u8 D_L04_00236380[];
+typedef struct { u8 pad[0x464]; u8 collected[0]; } CrankLevelState;
+extern CrankLevelState D_L04_00236380;
 __asm__(".extern D_L04_001DC550, 4");
 
+/* The bolt crank's update (shared by levels 04, 16, 18, 22 and 29): rac2's matched
+ * bolt_crank_update_pal (rac2 src/pal/levels/06_notak/L06_0041DED0-sw.c) is the same code, with rac3's
+ * extra states 0, 6 and 7, the hero state at its rac3 offsets and the crank's variables 0x40 further on.
+ * Case 3's player-motion step is per-instruction VU0 asm; its hero-position copy goes through a 128-bit
+ * local. */
 void func_L04_00313DD0(u8 *m) {
     u8 *pv = (*(u8 **)(m + 0x68));
 
@@ -139,7 +101,7 @@ void func_L04_00313DD0(u8 *m) {
         return;
     }
     {
-        u8 *h = D_001A4BE0;
+        u8 *h = (u8 *)&D_001A4BE0;
         if (*(s32 *)(h + 0x25C4) != 0x37 && m[0x20] == 3) {
             func_L01_004450F0(m, 1, -1);
             if (D_L04_001E2890[0] != 0) {
@@ -176,7 +138,7 @@ void func_L04_00313DD0(u8 *m) {
     case 1:
         if (m < D_L04_001DFDA0 && *(s32 *)(pv + 0x30) == 0) {
             u16 id = *(u16 *)(m + 0xB2);
-            if (D_L04_00236380[(s16)id + 0x464] != 0) {
+            if (D_L04_00236380.collected[(s16)id] != 0) {
                 goto open;
             }
             {
@@ -200,9 +162,9 @@ void func_L04_00313DD0(u8 *m) {
             }
         }
         {
-            if (func_0038CF38(m + 0x10, D_001A4BE0 + 0x80) < 3.0f && D_001A4BE0[0x121A] == 0 && D_001A4BE0[0x25E4] == 0 &&
-                func_0038DBA0(*(f32 *)(D_001A4BE0 + 0x98), func_0038D160(*(f32 *)(m + 0x10) - *(f32 *)(D_001A4BE0 + 0x80), *(f32 *)(m + 0x14) - *(f32 *)(D_001A4BE0 + 0x84))) < 19.198622f &&
-                fabs_asm(*(f32 *)(D_001A4BE0 + 0x88) - 0.3f - *(f32 *)(m + 0x18)) < 0.2f && *(s32 *)(D_001A4BE0 + 0x1228) == 9 && *(s32 *)(D_001A4BE0 + 0x1200) != 0 &&
+            if (func_0038CF38(m + 0x10, D_001A4BE0.position) < 3.0f && !D_001A4BE0.interactBusy && !D_001A4BE0.disabled &&
+                func_0038DBA0(D_001A4BE0.yaw, func_0038D160(*(f32 *)(m + 0x10) - D_001A4BE0.position[0], *(f32 *)(m + 0x14) - D_001A4BE0.position[1])) < 19.198622f &&
+                fabs_asm(D_001A4BE0.position[2] - 0.3f - *(f32 *)(m + 0x18)) < 0.2f && D_001A4BE0.groundState == 9 && D_001A4BE0.canInteract != 0 &&
                 func_L01_004606E8(0x80, 0xA, 0, 0) != 0 && *(u32 *)(pv + 0x54) >= 0x1A && *(f32 *)(m + 0x18) == *(f32 *)(pv + 0x7C) &&
                 *(f32 *)(pv + 0x40) < 1.0f) {
                 s32 ok = 1;
@@ -262,7 +224,7 @@ void func_L04_00313DD0(u8 *m) {
             }
             {
             u8 *g = D_001A7E18;
-            if (*(u16 *)(g + 0x8A84) == 0 && func_L01_0040E548(m + 0x10, D_001A4BE0 + 0x80) < 9.0f) {
+            if (*(u16 *)(g + 0x8A84) == 0 && func_L01_0040E548(m + 0x10, D_001A4BE0.position) < 9.0f) {
                 u32 t = (D_001D4C38 * 5 + 2) / 6;
                 u32 cur = *(u32 *)(g + 0x22C);
                 if (t - cur >= 0x385 || cur == 0) {
@@ -277,10 +239,11 @@ void func_L04_00313DD0(u8 *m) {
         }
         break;
     case 3: {
-        u8 *hero = D_001A4BE0;
+        u8 *hero = (u8 *)&D_001A4BE0;
         f32 mat[16] __attribute__((aligned(16)));
-        vu0_v4 v40, v50, v60, v70, v80, v90, vA0, vB0;
-        f32 ang, ang2, z, d, t;
+        vu0_v4 v40, v50, v60, v70, v80, v90, vA0;
+        vu0_q vB0;
+        f32 ang, ang2, z, d, t, groundHeight;
 
         *(vu0_q *)&v80 = 0;
         {
@@ -375,22 +338,22 @@ void func_L04_00313DD0(u8 *m) {
             func_L01_0050FB40(0x3A, 0, 6.0f);
         }
         if ((*(u8 **)(hero + 0x25C0))[0x43] != 0x3F) {
-            u8 *h1 = D_001A4BE0;
+            u8 *h1 = (u8 *)&D_001A4BE0;
             if (*(s32 *)(h1 + 0xC0C) == 0) {
                 if ((*(u8 **)(h1 + 0x25C0))[0x42] == 0x3B && fabs_asm(*(f32 *)(pv + 0x5C)) == 0.0f) {
                     func_L01_0050FB40(0x3A, 0, 12.0f);
                 } else {
-                    u8 *h2 = D_001A4BE0;
+                    u8 *h2 = (u8 *)&D_001A4BE0;
                     if ((*(u8 **)(h2 + 0x25C0))[0x42] == 0x3A) {
                         if (*(f32 *)(pv + 0x5C) > 0.0f) {
                             func_L01_0050FB40(0x3B, 0, 12.0f);
                         }
                     } else {
-                        u8 *h2b = D_001A4BE0;
+                        u8 *h2b = (u8 *)&D_001A4BE0;
                         if ((*(u8 **)(h2b + 0x25C0))[0x42] == 0x3B && *(f32 *)(pv + 0x5C) > 0.044400007f) {
                             func_L01_0050FB40(0x3C, 0, 12.0f);
                         } else {
-                            u8 *h3 = D_001A4BE0;
+                            u8 *h3 = (u8 *)&D_001A4BE0;
                             if ((*(u8 **)(h3 + 0x25C0))[0x42] == 0x3C && *(f32 *)(pv + 0x5C) < 0.029600004f) {
                                 func_L01_0050FB40(0x3B, 0, 13.0f);
                             }
@@ -399,40 +362,51 @@ void func_L04_00313DD0(u8 *m) {
                 }
             }
         }
-        {
-        u8 *hero = D_001A4BE0;
-        z = *(f32 *)(hero + 0x88);
-        vec_add_ba(hero + 0x80, hero + 0x80, &v50);
-        ang2 = func_0038D160(*(f32 *)(hero + 0x80) - *(f32 *)(m + 0x10), *(f32 *)(hero + 0x84) - *(f32 *)(m + 0x14));
+        z = D_001A4BE0.position[2];
+        vec_add_ba(D_001A4BE0.position, D_001A4BE0.position, &v50);
+        ang2 = func_0038D160(D_001A4BE0.position[0] - *(f32 *)(m + 0x10), D_001A4BE0.position[1] - *(f32 *)(m + 0x14));
         v50.x = func_0038D098(ang2) * 1.05f;
         v50.y = func_0038D0B0(ang2) * 1.05f;
         *(s32 *)&v50.z = 0;
-        vec_copy(&vB0, hero + 0x80);
-        vec_add_ab(&v80, m + 0x10, &v50);
-        vec_sub_ab(&v90, &v80, &vB0);
+        {
+            vu0_q c, x, y;
+            __asm__("lqc2 %0, %1" : "=j"(c) : "m"(*(vu0_q *)D_001A4BE0.position));
+            __asm__("sqc2 %1, %0" : "=m"(vB0) : "j"(c));
+            __asm__("lqc2 %0, %1" : "=j"(x) : "m"(*(vu0_q *)(m + 0x10)));
+            __asm__("lqc2 %0, %1" : "=j"(y) : "m"(*(vu0_q *)&v50));
+            __asm__("vadd.xyz %0, %1, %2" : "=j"(x) : "j"(x), "j"(y));
+            __asm__("sqc2 %1, %0" : "=m"(v80) : "j"(x));
+            __asm__("lqc2 %0, %1" : "=j"(c) : "m"(v80));
+            __asm__("lqc2 %0, %1" : "=j"(x) : "m"(vB0));
+            __asm__("vsub.xyz %0, %1, %2" : "=j"(c) : "j"(c), "j"(x));
+            __asm__("sqc2 %1, %0" : "=m"(*(vu0_q *)&v90) : "j"(c));
+        }
         *(s32 *)&v90.z = 0;
         vA0.x = -func_0038CED8(&v90);
         func_L01_004482A0(&vA0, &D_L04_001DC550, 0.0f, 0.0216f, 0.43200004f, 0.14000002f);
         func_0038CF68(&v90, &v90, D_L04_001DC550);
-        vec_add_ab(hero + 0x80, hero + 0x80, &v90);
-        *(f32 *)(hero + 0x88) = z;
-        *(f32 *)(hero + 0x1A0) = func_0038DAB8(D_001D5469 ? -1.5707964f : 1.5707964f, ang2);
+        vec_add_ab(D_001A4BE0.position, D_001A4BE0.position, &v90);
+        D_001A4BE0.position[2] = z;
+        if (D_001D5469) {
+            D_001A4BE0.targetYaw = func_0038DAB8(-1.5707964f, ang2);
+        } else {
+            D_001A4BE0.targetYaw = func_0038DAB8(1.5707964f, ang2);
         }
         {
-        u8 *a = D_001A4C78;
-        u8 *h = a - 0x98;
-        func_L01_00448690(a, 0, *(f32 *)(h + 0x1A0), 0.12566371f);
+        f32 *playerYaw = (f32 *)D_001A4C78;
+        CrankPlayer *player = (CrankPlayer *)((u8 *)playerYaw - 0x98);
+        func_L01_00448690(playerYaw, player->targetYaw, 0, 0.12566371f);
         *(f32 *)(pv + 0x64) = *(f32 *)(pv + 0x64) + 0.00392f;
-        *(f32 *)(h + 0x88) = *(f32 *)(h + 0x88) - (*(f32 *)(pv + 0x64) - 2.0f);
-        z = func_003C3D30(D_001A4C78 - 0x18, 0, 0, 0.5f);
-        *(f32 *)(h + 0x88) = *(f32 *)(h + 0x88) - 2.0f;
-        if (*(f32 *)(h + 0x88) < z) {
-            *(f32 *)(h + 0x88) = z;
+        player->position[2] -= *(f32 *)(pv + 0x64) - 2.0f;
+        groundHeight = func_003C3D30(player->position, 0, 0, 0.5f);
+        player->position[2] -= 2.0f;
+        if (player->position[2] < groundHeight) {
+            player->position[2] = groundHeight;
             *(s32 *)(pv + 0x64) = 0;
         }
-        if ((*(u8 **)(h + 0x25C0))[0x43] != 0x3F) {
+        if (player->moby[0x43] != 0x3F) {
             f32 a = func_0038DAB8(0.2617994f, ang2);
-            func_L01_00448690(m + 0xF8, 0, a, 0.06283186f);
+            func_L01_00448690(m + 0xF8, a, 0, 0.06283186f);
             if (func_0038DB00(*(f32 *)(m + 0xF8), a) > 1.0471976f) {
                 *(f32 *)(m + 0xF8) = func_0038DB00(*(f32 *)(m + 0xF8), 1.0471976f);
             } else if (func_0038DB00(*(f32 *)(m + 0xF8), a) < -1.0471976f) {
@@ -448,7 +422,7 @@ void func_L04_00313DD0(u8 *m) {
         if (*(f32 *)(pv + 0x40) < 0.0f) {
             *(f32 *)(pv + 0x40) = 0.0f;
         }
-        func_0038CBA0(D_001A4BE0 + 0xF0, 0xA0);
+        func_0038CBA0(D_001A4BE0.motionState, 0xA0);
         return;
     }
     case 4:
@@ -497,3 +471,29 @@ void func_L04_00313DD0(u8 *m) {
         break;
     }
 }
+/* localdecomp:end func_L04_00313DD0 */
+
+/* localdecomp:start func_L04_00314F58 */
+f32 func_L04_00314F58(void *arg0) {
+    return (*(f32 *)((u8 *)((*(void **)((u8 *)arg0 + 0x68))) + 0x40));
+}
+/* localdecomp:end func_L04_00314F58 */
+
+/* localdecomp:start func_L04_00314F68 */
+void func_L04_00314F68(u8 *a0, u8 *a1) {
+    u8 *v = *(u8 **)(a1 + 104);
+    float x = *(float *)(v + 96);
+    u8 *o = *(u8 **)(a0 + 104);
+    if (0.0f <= x) *(float *)(o + 64) = x;
+    else *(float *)(o + 64) = 0.0f;
+    *(s32 *)(o + 96) = *(s32 *)(v + 32);
+}
+/* localdecomp:end func_L04_00314F68 */
+
+/* localdecomp:start func_L04_00314FA0 */
+extern void (**func_L01_0043B548())(int);
+
+void func_L04_00314FA0(int a0) {
+    (*func_L01_0043B548(6625, 108))(a0);
+}
+/* localdecomp:end func_L04_00314FA0 */

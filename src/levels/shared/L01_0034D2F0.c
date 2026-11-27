@@ -650,7 +650,185 @@ void func_L01_0034F0B0(u8 *bolt)
 }
 /* localdecomp:end func_L01_0034F0B0 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034F168);
+/* localdecomp:start func_L01_0034F168 */
+/* lightning_ribbon_draw: draws one of the bolt's lines (`points` points at `line`) as two strips of
+   GS quads, the core and the glow, each segment turned to face the camera (D_L01_001E29C0); the core's
+   half width eases from D_L01_001DD408 to D_L01_001DD404 along the line, the glow's is that x
+   D_L01_001DD40C. The second line's glow fades its first and last segments' outer edge. */
+#include "vu0.h"
+typedef struct {
+    vu0_v4 v[4];
+    u32 rgba[4];
+    f32 st[4][2];
+    unsigned long tag[4];
+} Quad_0034F168;
+extern s32 D_L01_001DD400;
+__asm__(".extern D_L01_001DD400, 4");
+extern f32 D_L01_001DD404;
+__asm__(".extern D_L01_001DD404, 4");
+extern f32 D_L01_001DD408;
+__asm__(".extern D_L01_001DD408, 4");
+extern f32 D_L01_001DD40C;
+__asm__(".extern D_L01_001DD40C, 4");
+extern s32 D_L01_001DD444;
+__asm__(".extern D_L01_001DD444, 4");
+extern u8 D_L01_001E29C0[];
+extern long func_00389598(s32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038CE90(void *, void *, void *);
+extern void func_0038D028(void *, void *, void *);
+extern void func_003D2DA0(void *, s32, s32);
+extern f32 func_L01_004451D0(f32, f32, f32, f32, f32);
+
+void func_L01_0034F168(u8 *bolt, s32 line, s32 core_alpha, s32 glow_alpha, s32 points) {
+    vu0_v4 *pts = (vu0_v4 *)line;
+    Quad_0034F168 q0;
+    Quad_0034F168 q1;
+    vu0_v4 core;
+    vu0_v4 glow;
+    vu0_v4 dir0;
+    vu0_v4 dir;
+    vu0_v4 side;
+    vu0_v4 up;
+    vu0_v4 pos;
+    vu0_v4 p0;
+    vu0_v4 p1;
+    vu0_v4 fwd;
+    vu0_v4 eye;
+    vu0_v4 nrm;
+    vu0_v4 last;
+    u8 *vars = *(u8 **)(bolt + 0x68);
+    s32 i = 1;
+    u32 c0;
+    u32 c1;
+    f32 w;
+    f32 v0;
+
+    q0.tag[1] = func_00389598(0x17);
+    q0.tag[3] = 0x8000000048UL;
+    q0.tag[2] = 0xFF9000000260UL;
+    c0 = (D_L01_001DD400 & 0xFFFFFF) | (core_alpha << 24);
+    q0.rgba[0] = q0.rgba[1] = q0.rgba[2] = q0.rgba[3] = c0;
+    q0.tag[0] = 0;
+    q1.tag[1] = func_00389598(0xE);
+    c1 = (*(s32 *)(vars + 0x24) & 0xFFFFFF) | (glow_alpha << 24);
+    q1.st[0][1] = 0.0f;
+    q1.rgba[0] = q1.rgba[1] = q1.rgba[2] = q1.rgba[3] = c1;
+    q1.tag[3] = q0.tag[3];
+    q1.tag[2] = q0.tag[2];
+    q1.tag[0] = q0.tag[0];
+    q1.st[0][0] = 1.0f;
+    q1.st[1][0] = 1.0f;
+    q1.st[1][1] = 1.0f;
+    q1.st[2][0] = 0.0f;
+    q1.st[2][1] = 0.0f;
+    q1.st[3][0] = 0.0f;
+    q1.st[3][1] = 1.0f;
+    v0 = q1.st[0][1];
+    q0.st[0][0] = *(f32 *)(vars + 0x14) + v0;
+    q0.st[0][1] = v0;
+    q0.st[1][0] = *(f32 *)(vars + 0x14) + v0;
+    q0.st[1][1] = 1.0f;
+    q0.st[2][0] = *(f32 *)(vars + 0x14) + 1.0f;
+    q0.st[2][1] = v0;
+    q0.st[3][0] = *(f32 *)(vars + 0x14) + 1.0f;
+    q0.st[3][1] = 1.0f;
+    *(vu0_q *)&core = 0;
+    *(vu0_q *)&glow = 0;
+    core.w = 1.0f;
+    core.z = D_L01_001DD408;
+    glow.w = 1.0f;
+    glow.z = D_L01_001DD408 * D_L01_001DD40C;
+    vec_sub_ba(&dir0, vars + 0x30, bolt + 0x10);
+    func_0038CF68(&dir0, &dir0, 1.0f);
+    dir = dir0;
+    func_0038CE90(&side, &dir, bolt + 0xE0);
+    func_0038CF68(&side, &side, 1.0f);
+    func_0038CE90(&up, &side, &dir);
+    q0.v[0] = core;
+    pos = *(vu0_v4 *)(bolt + 0x10);
+    func_0038CE20((f32 *)&q0.v[1], (f32 *)&q0.v[0], -1.0f);
+    q1.v[0] = glow;
+    func_0038CE20((f32 *)&q1.v[1], (f32 *)&q1.v[0], -1.0f);
+    func_0038D028(&p0, &pts[0], &dir);
+    func_0038D028(&p1, &pts[1], &dir);
+    vec_sub_ba(&fwd, &p1, &p0);
+    func_0038CF68(&fwd, &fwd, 1.0f);
+    vec_sub_ba(&eye, D_L01_001E29C0, &p0);
+    func_0038CE90(&nrm, &eye, &fwd);
+    func_0038CF68(&nrm, &nrm, 1.0f);
+    func_0038CE90(&eye, &fwd, &nrm);
+    last = p0;
+    func_0038D028(&q0.v[0], &q0.v[0], &fwd);
+    func_0038D028(&q0.v[1], &q0.v[1], &fwd);
+    func_0038D028(&q1.v[0], &q1.v[0], &fwd);
+    func_0038D028(&q1.v[1], &q1.v[1], &fwd);
+    for (; i < points; i++) {
+        q0.v[2] = core;
+        func_0038CE20((f32 *)&q0.v[3], (f32 *)&q0.v[2], -1.0f);
+        q1.v[2] = glow;
+        func_0038CE20((f32 *)&q1.v[3], (f32 *)&q1.v[2], -1.0f);
+        if (i == points - 1) {
+            func_0038D028(&last, &pts[i], &dir);
+        } else {
+            func_0038D028(&p0, &pts[i], &dir);
+            func_0038D028(&p1, &pts[i + 1], &dir);
+            vec_sub_ab(&fwd, &p1, &p0);
+            func_0038CF68(&fwd, &fwd, 1.0f);
+            vec_sub_ba(&eye, D_L01_001E29C0, &p0);
+            func_0038CE90(&nrm, &eye, &fwd);
+            func_0038CF68(&nrm, &nrm, 1.0f);
+            func_0038CE90(&eye, &fwd, &nrm);
+            last = p0;
+        }
+        func_0038D028(&q0.v[2], &q0.v[2], &fwd);
+        func_0038D028(&q0.v[3], &q0.v[3], &fwd);
+        func_0038D028(&q1.v[2], &q1.v[2], &fwd);
+        func_0038D028(&q1.v[3], &q1.v[3], &fwd);
+        if (i == 1 && D_L01_001DD444 == glow_alpha) {
+            u32 c0 = q0.rgba[0];
+            u32 c1;
+            q0.rgba[1] = 0xFFFFFF;
+            q0.rgba[0] = 0xFFFFFF;
+            c1 = q1.rgba[0];
+            q1.rgba[0] = q1.rgba[1] = *(s32 *)(vars + 0x24) & 0xFFFFFF;
+            func_003D2DA0(&q0, 0, 0);
+            func_003D2DA0(&q1, 0, 0);
+            q0.rgba[0] = q0.rgba[1] = q0.rgba[2] = q0.rgba[3] = c0;
+            q1.rgba[0] = q1.rgba[1] = q1.rgba[2] = q1.rgba[3] = c1;
+        } else if (i == points - 2 && D_L01_001DD444 == glow_alpha) {
+            u32 c0 = q0.rgba[2];
+            u32 c1;
+            q0.rgba[3] = 0xFFFFFF;
+            q0.rgba[2] = 0xFFFFFF;
+            c1 = q1.rgba[2];
+            q1.rgba[2] = q1.rgba[3] = *(s32 *)(vars + 0x24) & 0xFFFFFF;
+            func_003D2DA0(&q0, 0, 0);
+            func_003D2DA0(&q1, 0, 0);
+            q0.rgba[0] = q0.rgba[1] = q0.rgba[2] = q0.rgba[3] = c0;
+            q1.rgba[0] = q1.rgba[1] = q1.rgba[2] = q1.rgba[3] = c1;
+        } else {
+            func_003D2DA0(&q0, 0, 0);
+            func_003D2DA0(&q1, 0, 0);
+        }
+        q0.v[0] = q0.v[2];
+        q0.v[1] = q0.v[3];
+        q1.v[0] = q1.v[2];
+        q1.v[1] = q1.v[3];
+        w = func_L01_004451D0(-1.0f, v0, 1.0f, v0, (f32)i / (f32)points);
+        core.z = D_L01_001DD408 + (D_L01_001DD404 - D_L01_001DD408) * w;
+        glow.z = core.z * D_L01_001DD40C;
+        q0.st[0][0] = *(f32 *)(vars + 0x14) + v0;
+        q0.st[0][1] = v0;
+        q0.st[1][0] = *(f32 *)(vars + 0x14) + v0;
+        q0.st[1][1] = 1.0f;
+        q0.st[2][0] = *(f32 *)(vars + 0x14) + 1.0f;
+        q0.st[2][1] = v0;
+        q0.st[3][0] = *(f32 *)(vars + 0x14) + 1.0f;
+        q0.st[3][1] = 1.0f;
+    }
+}
+/* localdecomp:end func_L01_0034F168 */
 
 /* localdecomp:start func_L01_0034F7E8 */
 void func_L01_0034F7E8(void) {

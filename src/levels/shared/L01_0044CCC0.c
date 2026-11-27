@@ -219,7 +219,169 @@ s32 func_L01_0044CE88(struct Moby *m) {
 }
 /* localdecomp:end func_L01_0044CE88 */
 
-INCLUDE_ASM("asm/levels", func_L01_0044D360);
+/* localdecomp:start func_L01_0044D360 */
+#include "vu0.h"
+typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_44D360;
+typedef struct { u8 p0[0x18]; f32 f18; } Path_44D360;
+typedef struct {
+    u8 pad0[0x32];
+    u8 x32;
+    u8 x33;
+    u8 pad34[0x3C - 0x34];
+    s32 x3C;
+    u8 pad40[0x5A - 0x40];
+    u8 x5A;
+} Stats_44D360;
+
+extern s32 func_00382468(s32);
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_L01_004461B8(f32 *, f32 *, f32, f32, f32);
+extern void func_L01_00477668(s32, void *, void *, void *);
+extern void func_L01_002F8F20(void *, void *, void *, s32, s32, s32);
+extern s32 D_001D545C;
+__asm__(".extern D_001D545C, 4");
+extern s32 D_L01_001D6714;
+extern u8 D_L01_001DFE80[] __attribute__((section(".sdata")));
+extern s32 D_001A91E8[];
+extern s32 D_001A9280[];
+extern Stats_44D360 D_00142660;
+extern Path_44D360 *D_L01_0021F6C0[];
+extern u8 D_L01_00000258[];
+
+/* Splits a bolt value into pickups (1 to 30000) and throws them out of the object, scaling the value by
+   how fast the level is played (PAL). As rac2's moby_spawn_bolt_pickups_pal (src/pal/game/002AE6D8-g8.c). */
+void func_L01_0044D360(u8 *object, s32 low, s32 high, s32 flags, s32 surface, s32 maximum, f32 height) {
+    V4_44D360 offset;
+    V4_44D360 position;
+    V4_44D360 velocity;
+    V4_44D360 half;
+    V4_44D360 end;
+    V4_44D360 hit;
+    V4_44D360 correction;
+    f32 t0, t1;
+    s32 ones, fives, twenties, fifties, hundreds, fivehundreds, thousands, threethousands, tenthousands, thirtythousands;
+    s32 value, remaining, enabled, q;
+    f32 angle, x, y, duration;
+
+    qzero(&offset);
+    ones = 0; fives = 0; twenties = 0; fifties = 0; hundreds = 0; fivehundreds = 0; thousands = 0;
+    threethousands = 0; tenthousands = 0; thirtythousands = 0;
+    if (!(flags & 32) && object[0xB0] != 255 && (u32)(*(u16 *)(object + 0xAA) - 500) >= 41) {
+        u32 index = object[0xB0];
+        u8 *table = D_L01_001DFE80;
+        D_L01_001D6714 = table[index] >> 7;
+    }
+    {
+        s32 allowed = ((flags >> 5) ^ 1) & 1;
+        enabled = 0;
+        if (D_L01_001D6714) enabled = allowed;
+    }
+    if (!flags || (!low && !high)) return;
+    if (low <= 0) low = 1;
+    value = func_00382468(high - low + 1) + low;
+    if (value < 500 && enabled && D_001A91E8[D_001D545C]) {
+        s32 rate = D_001A9280[D_001D545C] * 3000 / D_001A91E8[D_001D545C];
+        if (D_00142660.x32 || D_00142660.x33) rate /= 2;
+#define limit ((s32)D_L01_00000258)
+        if (rate < limit / 2) {
+            if (rate <= limit * 3 / 10) {
+                value *= 5;
+            } else {
+                value = value * (limit * 19 / 30 - rate) / (limit / 15);
+            }
+            if (D_00142660.x33) {
+                if (value > limit * 10 / 3) value = limit * 10 / 3;
+            } else if (value > limit * 5 / 3) value = limit * 5 / 3;
+        } else if (limit < rate) {
+            if (limit * 7 / 6 < rate) {
+                value /= 10;
+            } else {
+                value = value * (limit * 6 / 5 - rate) / (limit * 4 / 15);
+            }
+            if (value <= 0) value = 1;
+        }
+#undef limit
+    }
+    remaining = value;
+    if (flags & 8) {
+        s32 count = maximum;
+#define TAKE(n, denom) q = remaining / denom; n = q; if (n > count) n = count; \
+        count -= n; remaining -= n * denom
+        TAKE(thirtythousands, 30000);
+        if (count > 0) { TAKE(tenthousands, 10000);
+        if (count > 0) { TAKE(threethousands, 3000);
+        if (count > 0) { TAKE(thousands, 1000);
+        if (count > 0) { TAKE(fivehundreds, 500);
+        if (count > 0) { TAKE(hundreds, 100);
+        if (count > 0) { TAKE(fifties, 50);
+        if (count > 0) { TAKE(twenties, 20);
+        if (count > 0) { TAKE(fives, 5);
+        if (count > 0) { ones = remaining; if (remaining > count) ones = count; }
+        }}}}}}}}
+#undef TAKE
+        remaining /= D_00142660.x5A + 1;
+        D_00142660.x3C += remaining;
+    } else {
+#define SPLIT(n, denom) if (remaining >= denom) { q = remaining / denom; n = q; remaining -= n * denom; }
+        SPLIT(thirtythousands, 30000); SPLIT(tenthousands, 10000); SPLIT(threethousands, 3000);
+        SPLIT(thousands, 1000); SPLIT(fivehundreds, 500); SPLIT(hundreds, 100);
+        SPLIT(fifties, 50); SPLIT(twenties, 20); SPLIT(fives, 5);
+#undef SPLIT
+        ones = remaining;
+        if (thirtythousands < 0 || tenthousands < 0 || threethousands < 0 || thousands < 0 || fivehundreds < 0 ||
+            hundreds < 0 || fifties < 0 || twenties < 0 || fives < 0 || ones < 0) {
+            thirtythousands = thirtythousands < 0 ? 0 : thirtythousands; tenthousands = tenthousands < 0 ? 0 : tenthousands;
+            threethousands = threethousands < 0 ? 0 : threethousands; thousands = thousands < 0 ? 0 : thousands;
+            fivehundreds = fivehundreds < 0 ? 0 : fivehundreds; hundreds = hundreds < 0 ? 0 : hundreds;
+            fifties = fifties < 0 ? 0 : fifties; twenties = twenties < 0 ? 0 : twenties;
+            fives = fives < 0 ? 0 : fives; ones = ones < 0 ? 0 : ones;
+        }
+    }
+    while (ones || fives || twenties || fifties || hundreds || fivehundreds || thousands || threethousands || tenthousands || thirtythousands) {
+        func_0038CE20(&position, object, 0.0009765625f);
+        angle = func_00382538();
+        x = func_0038D098(angle) * (func_003824E0(0, 3) * 0.020000001f);
+        velocity.x = x;
+        y = func_0038D0B0(angle) * (func_003824E0(0, 3) * 0.020000001f);
+        velocity.y = y;
+        velocity.z = 0;
+        velocity.z = func_003824E0(3.700000047683716f, 6) * 0.020000001f;
+        half.x = velocity.x; half.y = velocity.y; half.z = 0;
+        func_0038CF68(&half, &half, 0.5f);
+        vec_add_ab(&position, &position, &half);
+        position.z += height;
+        if (surface >= 0) {
+            duration = 120;
+            if ((f32)func_L01_004461B8(&t0, &t1, -0.0021600001f, velocity.z - (-0.0021600001f), position.z - D_L01_0021F6C0[surface]->f18) >= 1 && t0 > 0 && t0 < duration) duration = t0;
+            func_0038CE20(&end, &velocity, duration);
+            vec_add_ab(&end, &end, object + 16);
+            func_L01_00477668(surface, object + 16, &end, &hit);
+            vec_sub_ab(&end, &hit, &position);
+            end.z = 0;
+            func_0038CF68(&correction, &end, 0.25f);
+            vec_sub_ab(&end, &end, &correction);
+            func_0038CE20(&end, &end, 1 / duration);
+            velocity.x = end.x; velocity.y = end.y;
+        }
+        vec_add_ab(&velocity, &velocity, &offset);
+        if (thirtythousands) { func_L01_002F8F20(object, &position, &velocity, flags, 30000, enabled); thirtythousands--; }
+        else if (tenthousands) { func_L01_002F8F20(object, &position, &velocity, flags, 10000, enabled); tenthousands--; }
+        else if (threethousands) { func_L01_002F8F20(object, &position, &velocity, flags, 3000, enabled); threethousands--; }
+        else if (thousands) { func_L01_002F8F20(object, &position, &velocity, flags, 1000, enabled); thousands--; }
+        else if (fivehundreds) { func_L01_002F8F20(object, &position, &velocity, flags, 500, enabled); fivehundreds--; }
+        else if (hundreds) { func_L01_002F8F20(object, &position, &velocity, flags, 100, enabled); hundreds--; }
+        else if (fifties) { func_L01_002F8F20(object, &position, &velocity, flags, 50, enabled); fifties--; }
+        else if (twenties) { func_L01_002F8F20(object, &position, &velocity, flags, 20, enabled); twenties--; }
+        else if (fives) { func_L01_002F8F20(object, &position, &velocity, flags, 5, enabled); fives--; }
+        else { func_L01_002F8F20(object, &position, &velocity, flags, 1, enabled); ones--; }
+    }
+}
+/* localdecomp:end func_L01_0044D360 */
 
 /* localdecomp:start func_L01_0044DF00 */
 extern s32 D_00143950[];
