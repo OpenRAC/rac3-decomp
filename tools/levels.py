@@ -422,16 +422,17 @@ def elf_path(number):
 def read_table(path=TABLE):
     """[{number, dir, title, elf_sha1, overlay_sha1, entry, sections: [(name, address, size, offset)]}]"""
     out = []
-    for line in open(path, encoding="utf-8"):
-        if line.startswith("#") or not line.strip():
-            continue
-        f = line.rstrip("\n").split("\t")
-        secs = []
-        for s in f[6].split(","):
-            name, a, n, off = s.split(":")
-            secs.append((name, int(a, 16), int(n, 16), int(off, 16)))
-        out.append({"number": int(f[0]), "dir": f[1], "title": f[2], "elf_sha1": f[3], "overlay_sha1": f[4],
-                    "entry": int(f[5], 16), "sections": secs, "elf_size": int(f[7], 16)})
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            if line.startswith("#") or not line.strip():
+                continue
+            f = line.rstrip("\n").split("\t")
+            secs = []
+            for s in f[6].split(","):
+                name, a, n, off = s.split(":")
+                secs.append((name, int(a, 16), int(n, 16), int(off, 16)))
+            out.append({"number": int(f[0]), "dir": f[1], "title": f[2], "elf_sha1": f[3], "overlay_sha1": f[4],
+                        "entry": int(f[5], 16), "sections": secs, "elf_size": int(f[7], 16)})
     return out
 
 

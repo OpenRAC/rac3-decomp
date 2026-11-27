@@ -104,10 +104,11 @@ def read_table(path=TABLE):
     """{(version, program): gp} of config/gp.tsv."""
     out = {}
     if os.path.exists(path):
-        for line in open(path):
-            if line.strip() and not line.startswith("#"):
-                f = line.rstrip("\n").split("\t")
-                out[(f[0], f[1])] = int(f[2], 16)
+        with open(path) as fh:
+            for line in fh:
+                if line.strip() and not line.startswith("#"):
+                    f = line.rstrip("\n").split("\t")
+                    out[(f[0], f[1])] = int(f[2], 16)
     return out
 
 

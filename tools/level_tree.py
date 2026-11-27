@@ -75,8 +75,10 @@ def bootstrap():
     for d in os.listdir(SRC) if os.path.isdir(SRC) else []:
         p = os.path.join(SRC, d)
         for f in os.listdir(p):
-            if f.endswith(".c") and "localdecomp:start" in open(os.path.join(p, f), errors="replace").read():
-                sys.exit("%s has C in it; refusing to rebuild src/levels/" % os.path.join(p, f))
+            if f.endswith(".c"):
+                with open(os.path.join(p, f), errors="replace") as fh:
+                    if "localdecomp:start" in fh.read():
+                        sys.exit("%s has C in it; refusing to rebuild src/levels/" % os.path.join(p, f))
     if os.path.isdir(SRC):
         shutil.rmtree(SRC)
     # every level's places in address order, to see what follows what
@@ -116,20 +118,23 @@ def bootstrap():
         for r in rs:
             kind = "LINKER_REMNANT" if r[4] else "INCLUDE_ASM"
             body += ['%s("%s", %s);' % (kind, ASM, r[0]), ""]
-        open(os.path.join(ROOT, rel), "w", newline="").write(NL.join(body))
+        with open(os.path.join(ROOT, rel), "w", newline="") as fh:
+            fh.write(NL.join(body))
         lines.append("%s\t%s" % (rel, BASE_FLAGS))
-    open(PARTS, "w", newline="\n").write("\n".join(lines) + "\n")
+    with open(PARTS, "w", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
     print("src/levels/: %d files, %d functions (%d shared, %d level-specific)" % (
         len(files), len(own), sum(1 for r in own if r[1] == "shared"), sum(1 for r in own if r[1] == "level")))
 
 
 def read_parts():
     out = {}
-    for line in open(PARTS):
-        if line.startswith("#") or not line.strip():
-            continue
-        rel, flags = line.rstrip("\n").split("\t", 1)
-        out[rel] = flags
+    with open(PARTS) as fh:
+        for line in fh:
+            if line.startswith("#") or not line.strip():
+                continue
+            rel, flags = line.rstrip("\n").split("\t", 1)
+            out[rel] = flags
     return out
 
 
@@ -143,7 +148,8 @@ def parse_source(rel):
     """(prelude, [(name, kind, text)]) of a src/levels/ file: the text before its first function,
     then each function's block (kind C, INCLUDE_ASM, ASM_FUNC or LINKER_REMNANT) with the free
     text before it; the text after the last block goes with it."""
-    text = open(os.path.join(ROOT, rel), newline="").read()
+    with open(os.path.join(ROOT, rel), newline="") as fh:
+        text = fh.read()
     prelude, out, pos = None, [], 0
     for m in BLOCK.finditer(text):
         free = text[pos:m.start()]
@@ -218,10 +224,11 @@ def read_divs_nops(path=DIVS_NOPS):
     config/frontbin/divs_nops.txt, read by tools/asm_filter.py)."""
     out = {}
     if os.path.exists(path):
-        for line in open(path):
-            f = line.split("#")[0].split()
-            if len(f) > 1:
-                out[f[0]] = " ".join(f)
+        with open(path) as fh:
+            for line in fh:
+                f = line.split("#")[0].split()
+                if len(f) > 1:
+                    out[f[0]] = " ".join(f)
     return out
 
 
@@ -234,10 +241,11 @@ def read_sq_ra_funcs(path=SQ_RA_FUNCS):
     sq_rewrite; the format of config/frontbin/sq_ra_funcs.txt)."""
     out = set()
     if os.path.exists(path):
-        for line in open(path):
-            f = line.split("#")[0].split()
-            if f:
-                out.add(f[0])
+        with open(path) as fh:
+            for line in fh:
+                f = line.split("#")[0].split()
+                if f:
+                    out.add(f[0])
     return out
 
 
@@ -286,19 +294,23 @@ def build_tree(number, rows=None, sources=None, parts=None):
                 folder = remnants if kind == "LINKER_REMNANT" else asm_text
                 lines += ['%s("%s", func_%08X);' % (kind, folder, a), ""]
             text = NL.join(lines)
-        open(os.path.join(ROOT, rel), "w", newline="").write(text)
+        with open(os.path.join(ROOT, rel), "w", newline="") as fh:
+            fh.write(text)
         files.append("%s %08X" % (rel, start))
         flags.append("0x%08X     %s" % (start, parts.get(owner, BASE_FLAGS)))
     head = "# %s's source files in link order (tools/level_tree.py; generated, never committed)." % d
-    open(os.path.join(b, "src_files.txt"), "w", newline="").write(NL.join([head] + files) + NL)
-    open(os.path.join(b, "text_parts.txt"), "w", newline="").write(
-        NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
+    with open(os.path.join(b, "src_files.txt"), "w", newline="") as fh:
+        fh.write(NL.join([head] + files) + NL)
+    with open(os.path.join(b, "text_parts.txt"), "w", newline="") as fh:
+        fh.write(NL.join(["# %s's flags per source file (tools/level_tree.py, from config/levels/text_parts.txt)." % d] + flags) + NL)
     write_divs_nops(b, number, places)
     write_sq_ra_funcs(b, number, places)
     if not os.path.exists(os.path.join(b, "localdecomp_flags.txt")):
-        open(os.path.join(b, "localdecomp_flags.txt"), "w").write("")
+        with open(os.path.join(b, "localdecomp_flags.txt"), "w") as fh:
+            fh.write("")
     if not os.path.exists(os.path.join(b, "symbol_addrs.txt")):
-        open(os.path.join(b, "symbol_addrs.txt"), "w", newline="").write("// %s: named symbols for splat%s" % (d, NL))
+        with open(os.path.join(b, "symbol_addrs.txt"), "w", newline="") as fh:
+            fh.write("// %s: named symbols for splat%s" % (d, NL))
     return len(files), len(places)
 
 
@@ -309,7 +321,8 @@ def write_divs_nops(b, number, places, table=None):
     lines = ["# level %02d's nops before div.s/sqrt.s (tools/level_tree.py, from config/levels/divs_nops.txt)."
              % number]
     lines += ["func_%08X %s" % (a, " ".join(table[r[0]].split()[1:])) for a, r in places if r[0] in table]
-    open(os.path.join(b, "divs_nops.txt"), "w", newline="").write(NL.join(lines) + NL)
+    with open(os.path.join(b, "divs_nops.txt"), "w", newline="") as fh:
+        fh.write(NL.join(lines) + NL)
 
 
 def write_sq_ra_funcs(b, number, places, table=None):
@@ -319,7 +332,8 @@ def write_sq_ra_funcs(b, number, places, table=None):
     lines = ["# level %02d's functions that save $ra with sq (tools/level_tree.py, from config/levels/sq_ra_funcs.txt)."
              % number]
     lines += ["func_%08X" % a for a, r in places if r[0] in table]
-    open(os.path.join(b, "sq_ra_funcs.txt"), "w", newline="").write(NL.join(lines) + NL)
+    with open(os.path.join(b, "sq_ra_funcs.txt"), "w", newline="") as fh:
+        fh.write(NL.join(lines) + NL)
 
 
 def code_size(number, address, size):

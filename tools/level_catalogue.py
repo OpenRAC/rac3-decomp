@@ -661,12 +661,13 @@ def catalogue_rows(per_level, fb_key, be_key, tagged_kind=False):
 def read_catalogue(path=None):
     """[(name, kind, size, fingerprint, remnant, [(level, address)])]"""
     out = []
-    for line in open(path or levels.CATALOGUE):
-        if line.startswith("#"):
-            continue
-        name, kind, size, fp, rem, _, places = line.rstrip("\n").split("\t")
-        out.append((name, kind, int(size), fp, rem == "1",
-                    [(int(p[:2]), int(p[3:], 16)) for p in places.split(",")]))
+    with open(path or levels.CATALOGUE) as fh:
+        for line in fh:
+            if line.startswith("#"):
+                continue
+            name, kind, size, fp, rem, _, places = line.rstrip("\n").split("\t")
+            out.append((name, kind, int(size), fp, rem == "1",
+                        [(int(p[:2]), int(p[3:], 16)) for p in places.split(",")]))
     return out
 
 
@@ -674,10 +675,11 @@ def read_pairs(path=PAIRS):
     """{boot_elf function name: frontbin function name}"""
     out = {}
     if os.path.exists(path):
-        for line in open(path):
-            if not line.startswith("#") and line.strip():
-                b, f = line.split()
-                out[b] = f
+        with open(path) as fh:
+            for line in fh:
+                if not line.startswith("#") and line.strip():
+                    b, f = line.split()
+                    out[b] = f
     return out
 
 

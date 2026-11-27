@@ -78,12 +78,13 @@ class Map:
     def __init__(self, path=MAP):
         self.rows = []
         if os.path.exists(path):
-            for line in open(path, encoding="utf-8"):
-                if line.startswith("#") or not line.strip():
-                    continue
-                f = line.rstrip("\n").split("\t")
-                self.rows.append({"pal": f[0], "program": f[1], "us": f[2], "place": f[3], "size": int(f[4]),
-                                  "state": f[5], "status": f[6], "closeness": float(f[7]), "hash": f[8]})
+            with open(path, encoding="utf-8") as fh:
+                for line in fh:
+                    if line.startswith("#") or not line.strip():
+                        continue
+                    f = line.rstrip("\n").split("\t")
+                    self.rows.append({"pal": f[0], "program": f[1], "us": f[2], "place": f[3], "size": int(f[4]),
+                                      "state": f[5], "status": f[6], "closeness": float(f[7]), "hash": f[8]})
         self.by_pal = {}
         self.supplemental = collections.defaultdict(list)
         for row in self.rows:
@@ -200,10 +201,11 @@ def us_parts():
     """{src/us/ file: flags} of config/us/text_parts.txt"""
     out = {}
     if os.path.exists(US_PARTS):
-        for line in open(US_PARTS):
-            if line.strip() and not line.startswith("#"):
-                rel, flags = line.rstrip("\n").split("\t", 1)
-                out[rel] = flags
+        with open(US_PARTS) as fh:
+            for line in fh:
+                if line.strip() and not line.startswith("#"):
+                    rel, flags = line.rstrip("\n").split("\t", 1)
+                    out[rel] = flags
     return out
 
 
@@ -220,7 +222,9 @@ def us_sources():
                 continue
             rel = os.path.relpath(os.path.join(d, f), ROOT).replace(os.sep, "/")
             program = rel.split("/")[2]
-            for name in re.findall(r"localdecomp:start (func_\w+)", open(os.path.join(d, f)).read()):
+            with open(os.path.join(d, f)) as fh:
+                names = re.findall(r"localdecomp:start (func_\w+)", fh.read())
+            for name in names:
                 key = program, name
                 if key in out and out[key] != rel:
                     raise ValueError("duplicate NTSC-U C symbol %s in %s and %s" % (name, out[key], rel))
@@ -336,10 +340,11 @@ def counterpart_flags(program, us_name):
     import targets
     t = targets.TARGETS[program]
     best = None
-    for line in open(t.path("parts")):
-        f = line.split("#", 1)[0].split(None, 1)
-        if len(f) == 2 and int(f[0], 16) <= int(r["pal"][5:], 16) and (best is None or int(f[0], 16) >= best[0]):
-            best = (int(f[0], 16), f[1].strip())
+    with open(t.path("parts")) as fh:
+        for line in fh:
+            f = line.split("#", 1)[0].split(None, 1)
+            if len(f) == 2 and int(f[0], 16) <= int(r["pal"][5:], 16) and (best is None or int(f[0], 16) >= best[0]):
+                best = (int(f[0], 16), f[1].strip())
     return best[1] if best else None
 
 
@@ -434,7 +439,8 @@ def file_hashes():
             for f in fs:
                 if f.endswith(".c"):
                     rel = os.path.relpath(os.path.join(d, f), ROOT).replace(os.sep, "/")
-                    data = open(os.path.join(d, f), "rb").read()
+                    with open(os.path.join(d, f), "rb") as fh:
+                        data = fh.read()
                     h = hashlib.sha1(data)
                     h.update(parts.get(rel, "").encode())
                     h.update(us_parts().get(rel, "").encode())
@@ -448,7 +454,8 @@ def file_hashes():
     import targets
     for name in CORE:
         t = targets.TARGETS[name]
-        flags = [l for l in open(t.path("parts")) if l.strip() and not l.startswith("#")]
+        with open(t.path("parts")) as fh:
+            flags = [l for l in fh if l.strip() and not l.startswith("#")]
         for rel, start in sf.read_file_list(t.path("files")):
             if rel in out:
                 fl = [l for l in flags if int(l.split()[0], 16) == start]
@@ -829,10 +836,11 @@ def ps2as(program, rel):
     import targets
     t = targets.TARGETS[program]
     start = dict(sf.read_file_list(t.path("files"))).get(rel)
-    for line in open(t.path("parts")):
-        f = line.split("#", 1)[0].split()
-        if f and start is not None and int(f[0], 16) == start:
-            return "@ps2as" in f
+    with open(t.path("parts")) as fh:
+        for line in fh:
+            f = line.split("#", 1)[0].split()
+            if f and start is not None and int(f[0], 16) == start:
+                return "@ps2as" in f
     return False
 
 
@@ -906,7 +914,8 @@ def write(a):
         if st is None:
             continue
         b = ct.get((program, st[3]))
-        h = hashlib.sha1(open(path, "rb").read()).hexdigest()[:12]
+        with open(path, "rb") as fh:
+            h = hashlib.sha1(fh.read()).hexdigest()[:12]
         rows.append({"pal": name, "program": program, "us": "func_%08X" % b if b is not None else "-",
                      "place": "%08X" % b if b is not None else "-", "size": st[2], "state": "near",
                      "status": "near" if b is not None else "none", "closeness": 0.0, "hash": h,
@@ -977,11 +986,13 @@ def write(a):
             whole[(r["program"], r["rel"])].append(r)
         elif r["program"] != "levels":
             path = os.path.join(tmp, "%s_%s.c" % (r["program"], r["pal"]))
-            open(path, "w").write(chunk_text(r["program"], r["rel"], r["pal"], block_only=True))
+            with open(path, "w") as fh:
+                fh.write(chunk_text(r["program"], r["rel"], r["pal"], block_only=True))
             jobs.append(([r], r["program"], [r["pal"]], path, []))
         else:
             path = os.path.join(tmp, "%s_%s.c" % (r["program"], r["pal"]))
-            open(path, "w").write(chunk_text(r["program"], r["rel"], r["pal"]))
+            with open(path, "w") as fh:
+                fh.write(chunk_text(r["program"], r["rel"], r["pal"]))
             jobs.append(([r], r["program"], [r["pal"]], path, []))
     ents = {p: entries_of(p) for p in CORE}
     for (program, rel), rs in whole.items():
@@ -1039,13 +1050,15 @@ def write(a):
         rjobs = []
         for r in retry:
             path = os.path.join(tmp, "%s_%s.c" % (r["program"], r["pal"]))
-            open(path, "w").write(chunk_text(r["program"], r["rel"], r["pal"]))
+            with open(path, "w") as fh:
+                fh.write(chunk_text(r["program"], r["rel"], r["pal"]))
             rjobs.append((r, path))
         again = []
         for (r, path), res in zip(rjobs, ex.map(lambda j: run_check(j[0]["program"], [j[0]["pal"]], j[1], a), rjobs)):
             if res[r["pal"]][0] is None and "<source file context>" in str(res[r["pal"]][1]):
                 p2 = path[:-2] + "_block.c"
-                open(p2, "w").write(chunk_text(r["program"], r["rel"], r["pal"], block_only=True))
+                with open(p2, "w") as fh:
+                    fh.write(chunk_text(r["program"], r["rel"], r["pal"], block_only=True))
                 again.append((r, p2))
             else:
                 apply(r, *res[r["pal"]])
@@ -1086,10 +1099,11 @@ def exceptions():
     out = {}
     p = version.cfg("exceptions.tsv", v="us")
     if os.path.exists(p):
-        for line in open(p, encoding="utf-8"):
-            if line.strip() and not line.startswith("#"):
-                prog, name, why = line.rstrip("\n").split("\t", 2)
-                out[(prog, name)] = why
+        with open(p, encoding="utf-8") as fh:
+            for line in fh:
+                if line.strip() and not line.startswith("#"):
+                    prog, name, why = line.rstrip("\n").split("\t", 2)
+                    out[(prog, name)] = why
     return out
 
 
@@ -1098,7 +1112,8 @@ def save(rows):
     for r in rows:
         lines.append("\t".join([r["pal"], r["program"], r["us"], r["place"], str(r["size"]), r["state"],
                                 r["status"], "%.2f" % r["closeness"], r["hash"]]))
-    open(MAP, "w", newline="\n").write("\n".join(lines) + "\n")
+    with open(MAP, "w", newline="\n") as fh:
+        fh.write("\n".join(lines) + "\n")
 
 
 def check():
