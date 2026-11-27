@@ -38,7 +38,7 @@ INCLUDE_ASM("asm/levels", func_L01_002F78B0);
 /* localdecomp:start func_L01_002F88E0 */
 extern s32 D_00142660[];
 extern s32 D_L01_001D6714;
-extern u8 *D_001E0020_sda;
+extern u8 *D_L01_001E0020;
 __asm__(".extern D_001D545C_sda, 4");
 extern s32 D_001D545C_sda;
 extern s32 D_001A9280[];
@@ -65,7 +65,7 @@ void func_L01_002F88E0(u8 *m) {
     f32 scale;
     increment = t->arr[func_L01_002F94F8((void *)m)].val;
     D_00142660[0] += increment;
-    if ((vars[0x6D] & 2) || (D_L01_001D6714 && m < D_001E0020_sda)) {
+    if ((vars[0x6D] & 2) || (D_L01_001D6714 && m < D_L01_001E0020)) {
         D_001A9280[D_001D545C_sda] += increment;
     }
     func_003E54E0(150);
