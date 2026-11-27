@@ -1,0 +1,48 @@
+{
+  "comment": "tools/xgame_index.py build reads these games (docs/contributing/cross-game-index.md). Paths are relative to each game's decomp root, and roots to the OpenRAC games folder (--games, $OPENRAC_GAMES, else ~/Projects/RAC/OpenRAC/games). rac3 reads src/ and its report from this checkout, and its baserom/ and asm/ from here or the games folder. A later version of a game keeps only the functions whose code differs from an earlier version's function of the same name.",
+  "games": [
+    {
+      "game": "rac3",
+      "root": "rac3/decomp",
+      "self": true,
+      "versions": [
+        {"version": "pal", "report": "progress/report.json", "exclude": ["us"],
+         "core": "baserom/boot_elf.elf",
+         "units": {"frontbin": "baserom/frontbin.elf", "boot_elf": "baserom/boot_elf.elf", "i5bootn": "baserom/i5bootn.elf"},
+         "levels": ["baserom/levels", "(\\d\\d)_.*\\.elf$"],
+         "asm": "asm/", "asm_exclude": ["asm/us/"]}
+      ]
+    },
+    {
+      "game": "rac2",
+      "root": "rac2/decomp",
+      "versions": [
+        {"version": "us", "report": "progress/report.json", "exclude": ["jp", "kr", "pal", "us2"],
+         "core": "baserom/SCUS_972.68", "levels": ["baserom/levels", "(\\d\\d)_"]},
+        {"version": "pal", "report": "progress/pal/report.json", "exclude": ["jp", "kr", "us2"],
+         "core": "baserom/pal/SCES_516.07", "levels": ["baserom/pal/levels", "(\\d\\d)_"]}
+      ]
+    },
+    {
+      "game": "rac1",
+      "root": "rac1/decomp",
+      "versions": [
+        {"version": "pal", "report": "progress/report.json", "exclude": ["versions"],
+         "core": "baserom/SCES_509.16", "levels": ["baserom/overlays", "level_(\\d\\d)$"],
+         "asm": "asm/"}
+      ]
+    },
+    {
+      "game": "rac4",
+      "root": "rac4/decomp",
+      "versions": [
+        {"version": "us", "report": "progress/report.json", "exclude": ["pal"],
+         "core": "baserom/us/main.elf", "names": {"func_FB_": "baserom/us/frontbin.elf"},
+         "levels": ["baserom/us/levels", "(\\d\\d)_.*\\.elf$"], "asm": "asm/us/"},
+        {"version": "pal", "report": "progress/pal/report.json", "exclude": [],
+         "core": "baserom/pal/main.elf", "names": {"func_FB_": "baserom/pal/frontbin.elf"},
+         "levels": ["baserom/pal/levels", "(\\d\\d)_.*\\.elf$"], "asm": "asm/pal/"}
+      ]
+    }
+  ]
+}
