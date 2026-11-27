@@ -45,3 +45,22 @@ class VariableDefinitionTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class JumpTableRodataTest(unittest.TestCase):
+    def rodata_errors(self, source):
+        pr_check.errors.clear()
+        pr_check.check_file(source, "x.c")
+        found = [e for e in pr_check.errors if "INCLUDE_RODATA" in e]
+        pr_check.errors.clear()
+        return found
+
+    def test_stale_jump_table_after_c_is_rejected(self):
+        self.assertTrue(self.rodata_errors(
+            's32 func_00100000(void) { return 0; }\n'
+            'INCLUDE_RODATA("asm/x/rodata", jtbl_00300000);\n'))
+
+    def test_unreferenced_tail_after_c_is_accepted(self):
+        self.assertFalse(self.rodata_errors(
+            's32 func_00100000(void) { return 0; }\n'
+            'INCLUDE_RODATA("asm/x/rodata", D_00300018);\n'))
