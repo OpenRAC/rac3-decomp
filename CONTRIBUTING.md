@@ -6,7 +6,7 @@ version:
 1. **Set up** the SN ee-gcc 2.95.3 v1.36 toolchain, Sony's ee-gcc 2.9-ee-991111 and your own
    programs in `baserom/` ([building.md](docs/build/building.md), [Setup](docs/wiki/Setup.md)).
 2. **Match** a function with `tools/check.py`, using its file's flags
-   ([Workflow](docs/wiki/Workflow.md), [Matching patterns](docs/wiki/Matching-Patterns.md)). Many
+   ([Workflow](docs/wiki/Workflow.md), [Matching patterns](docs/wiki/Matching-Patterns.md); read the short [matching lessons](docs/contributing/LESSONS.md) first). Many
    functions have a US draft in `nonmatching/` to start from.
 3. **Check** with `python3 tests/check_repository.py`, `python3 -m unittest discover -s tests` and a
    full build that prints `MATCH` for every program.

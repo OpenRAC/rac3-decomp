@@ -3,7 +3,7 @@
 This file is for AI agents (Claude, Codex or others) working in this repository. Read it
 completely before changing anything; then read README.md, CONTRIBUTING.md,
 docs/build/build-fidelity.md and the wiki pages in `docs/wiki/` (Setup, Workflow, Matching-Patterns,
-Pull-Requests). The repository follows the structure of rac1-decomp and rac2-decomp, the other
+Pull-Requests), plus docs/contributing/LESSONS.md (the rules agents keep rediscovering). The repository follows the structure of rac1-decomp and rac2-decomp, the other
 OpenRAC decompilations, and of rac3-uya-decomp (the US version), which it started from: keep it
 that way.
 

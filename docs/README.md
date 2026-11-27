@@ -54,6 +54,6 @@ Every doc of this repository, by folder. New here? Read [building.md](build/buil
 ## wiki/: the GitHub wiki
 
 The pages in [wiki/](wiki/Home.md) are published to the GitHub wiki by `.github/workflows/wiki-sync.yml`, so they
-stay in this folder: [Setup](wiki/Setup.md), [Workflow](wiki/Workflow.md), [Matching patterns](wiki/Matching-Patterns.md),
+stay in this folder: [Setup](wiki/Setup.md), [Workflow](wiki/Workflow.md), [Matching patterns](wiki/Matching-Patterns.md), [Matching lessons](contributing/LESSONS.md),
 [Cross-repository resources](wiki/Cross-Repository-Resources.md), [Tools](wiki/Tools.md),
 [Toolchain and build](wiki/Toolchain-and-Build.md), [Pull requests](wiki/Pull-Requests.md), [Credits](wiki/Credits.md).
