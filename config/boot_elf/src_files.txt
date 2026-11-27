@@ -227,6 +227,8 @@ src/boot_elf/text/381080.c 00381080
 src/boot_elf/text/381250.c 00381250
 src/boot_elf/text/381B98.c 00381B98
 src/boot_elf/text/382410.c 00382410
+src/boot_elf/text/3824D0.c 003824D0
+src/boot_elf/text/3826A8.c 003826A8
 src/boot_elf/text/382760.c 00382760
 src/boot_elf/text/382848.c 00382848
 src/boot_elf/text/382F00.c 00382F00
