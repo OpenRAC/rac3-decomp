@@ -1243,7 +1243,7 @@ extern s32 D_001D90B8;
 extern s32 D_001D90B0;
 extern void func_003848D8(s32);
 extern void func_00384498(s32, s32);
-extern void func_00383380(s32);
+extern void func_00383380_00384D88(s32);
 extern void func_003C48A8();
 extern void func_00385EF0();
 extern void func_003828D8(s32);
@@ -1257,7 +1257,7 @@ extern void func_00384AC8(s32);
 extern void func_00384BB8(s32);
 extern void func_00383830(u8 *);
 extern void func_003841B8(u8 *);
-extern void func_00384260(s32, void *, s32);
+extern void func_00384260_00384D88(s32, void *, s32);
 extern void func_00384778(s32);
 extern void func_00384CC8(s32);
 void func_00384D88(void) {
@@ -1292,7 +1292,7 @@ void func_00384D88(void) {
         func_00384BB8(i);
         func_003848D8(i);
         func_00384498(i,0);
-        func_00383380(i);
+        func_00383380_00384D88(i);
         matrix=*(u8 **)(hero+0x50);
         if(*(s32 *)(hero+0x458)>0) *(s16 *)(hero+0x2A0)=0;
         if((u32)(*(u16 *)(hero+0x2A0)-1)<2)func_00383830(*(u8 **)(hero+0x54));
@@ -1305,9 +1305,9 @@ void func_00384D88(void) {
             *(Q_00384D88 *)(hero+0x3A0)=*(Q_00384D88 *)(matrix+0x20);
         }
         func_003C48A8(hero+0x380,hero+0x10);
-        func_00384260(i,hero+0x20,0);
-        func_00384260(i,hero+0x30,1);
-        func_00384260(i,hero+0x40,2);
+        func_00384260_00384D88(i,hero+0x20,0);
+        func_00384260_00384D88(i,hero+0x30,1);
+        func_00384260_00384D88(i,hero+0x40,2);
         func_00384778(i);
         func_00385EF0(hero);
         func_003828D8(i);

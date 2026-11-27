@@ -131,7 +131,7 @@ def declaration_statements(chunk):
             if not text:
                 pass
             elif text.startswith(("INCLUDE_ASM", "INCLUDE_RODATA", "ASM_FUNC", "LINKER_REMNANT",
-                                  "TEXT_PADDING", "__asm__", "asm(", "asm (")):
+                                  "TEXT_PADDING", "TEXT_FILL", "__asm__", "asm(", "asm (")):
                 pass
             elif text.startswith(("extern", "typedef", "register")) or \
                     re.match(r"^(struct|union|enum)\b[^=]*$", text) or \

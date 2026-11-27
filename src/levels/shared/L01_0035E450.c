@@ -12,6 +12,12 @@ typedef struct {
     s32 a[12];
 } S_0035E418;
 
+typedef struct {
+    u8 unk0;
+    u8 type;
+    u8 pad[238];
+} Entry_0035F048;
+
 extern void func_L01_004C8668(int);
 extern void func_003C2880(void *);
 
@@ -132,7 +138,137 @@ u8 *func_L01_0035E638(s32 owner, s128 *pos, s128 *velocity, f32 damage, s32 flag
 }
 /* localdecomp:end func_L01_0035E638 */
 
-INCLUDE_ASM("asm/levels", func_L01_0035E710);
+/* localdecomp:start func_L01_0035E710 */
+#include "vu0.h"
+
+typedef struct {
+    u8 pad_0[0x18];
+    u8 b18;
+    u8 b19;
+    s16 source_class;
+    u8 pad_1C[0x30 - 0x1C];
+} DamageInfo_35E710;
+
+typedef struct Moby_35E710 {
+    u8 pad_0[0x24];
+    u8 *pclass;
+    u8 pad_28[0x68 - 0x28];
+    u8 *vars;
+    u8 pad_6C[0x98 - 0x6C];
+    void *coll_record;
+    u8 pad_9C[0xAA - 0x9C];
+    s16 class_id;
+} Moby_35E710;
+
+typedef struct {
+    u8 pad_0[0x18];
+    Moby_35E710 *moby;
+} CollHit_35E710;
+
+extern u8 D_001A4BE0[];
+extern CollHit_35E710 D_L01_001EAA00;
+extern u8 D_00142617[];
+extern Entry_0035F048 D_L01_002C5600[];
+
+void func_L01_0035E710(u8 *obj) {
+    extern s32 func_L01_004CB2D8(void);
+    extern void func_L01_004CAB30(void *, void *);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern void func_0038CE20(s128 *, s128 *, f32);
+    extern void func_L01_00446760(DamageInfo_35E710 *, u8 *, s32, void *, f32);
+    extern s32 func_003D4D00(void *, s32, f32, void *, void *);
+    extern f32 func_L01_0040E548(void *, void *);
+    extern void func_L01_0035EB20(S_38C110v *);
+    extern s32 func_L01_003303B8(u8 *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32,
+        s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    extern void func_003C2880(void *);
+    extern s32 func_0038DC20(void *, f32);
+    extern void func_L01_00404A10(void *, void *);
+    extern void func_L01_0035EF20(u8 *);
+    extern void func_L01_0035F048(u8 *, s128 *, s128 *);
+
+    S_38C110v previous;
+    S_38C110v push;
+    DamageInfo_35E710 info;
+    u8 *v = *(u8 **)(obj + 0x68);
+    u8 *h1, *h2;
+
+    switch (obj[0x20]) {
+    case 0:
+    {
+        S_38C110v *prev;
+        previous = *(S_38C110v *)(obj + 0x10);
+        prev = &previous;
+        vec_add_ba(obj + 0x10, v, obj + 0x10);
+        if (func_L01_004CB2D8()) {
+            func_L01_004CAB30(obj + 0x10, obj + 0x10);
+        }
+        if (*(f32 *)(obj + 0x10) < 2.0f || *(f32 *)(obj + 0x10) > 1021.0f ||
+            *(f32 *)(obj + 0x14) < 2.0f || *(f32 *)(obj + 0x14) > 1021.0f ||
+            *(f32 *)(obj + 0x18) < 2.0f || *(f32 *)(obj + 0x18) > 1021.0f) {
+            goto destroy;
+        }
+        ++*(s32 *)(v + 0x14);
+        h1 = D_001A4BE0;
+        *(s32 *)(*(u8 **)(h1 + 0x25C0) + 0x98) = 0;
+        if (func_003D3CB0(prev, obj + 0x10, 0x20, obj, 0)) {
+            u8 *hit = (u8 *)D_L01_001EAA00.moby;
+            if (hit == 0 || hit != *(u8 **)(v + 0x1C)) {
+                *(s128 *)(obj + 0x10) = *(s128 *)((u8 *)&D_L01_001EAA00 + 0x20);
+                obj[0x20] = 1;
+                push = *(S_38C110v *)v;
+                func_0038CE20((s128 *)&push, (s128 *)&push, 3.0f);
+                push.w = 5627.9248046875f;
+                func_L01_00446760(&info, obj, *(s32 *)(v + 0x28), &push, *(f32 *)(v + 0x24));
+                info.source_class = *(u16 *)(obj + 0xAA);
+                info.b19 = 1;
+                info.b18 = 0;
+                if (D_L01_001EAA00.moby != 0) {
+                    if ((u8 *)D_L01_001EAA00.moby != *(u8 **)(v + 0x1C)) {
+                        func_003D4D00((u8 *)&D_L01_001EAA00 + 0x20, 0, 1.0f, obj, &info);
+                    }
+                } else {
+                    func_003D4D00((u8 *)&D_L01_001EAA00 + 0x20, 0, 0.6f, obj, &info);
+                }
+            }
+        }
+        h2 = D_001A4BE0;
+        {
+            u8 *m = *(u8 **)(h2 + 0x25C0);
+            *(s32 *)(m + 0x98) = *(s32 *)(*(u8 **)(m + 0x24) + 0x10);
+        }
+        if (*(s32 *)(v + 0x14) < 151) {
+            if (!(func_L01_0040E548(obj + 0x10, h2 + 0x80) > 6400.0f)) {
+                break;
+            }
+        }
+        goto destroy;
+    }
+    case 1:
+        if (((Entry_0035F048 *)((s32)D_L01_002C5600 + D_00142617[0] * 0xF0))->type >= 2) {
+            func_L01_0035EB20((S_38C110v *)(obj + 0x10));
+        } else {
+            func_L01_003303B8(obj + 0x10, 0, 5, 2, 2, 2, 2, 0, 0.2f, 0.0f, 0.0f, 0.0f,
+                0, 1, 0, 0, 0, 0, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF,
+                0x7F60A0FF, 0x280000FF, 0xFF6430, 0);
+        }
+        goto destroy;
+    }
+    goto draw;
+destroy:
+    func_003C2880(obj);
+    return;
+draw:
+    push = *(S_38C110v *)(obj + 0x10);
+    push.w = 0.5f;
+    if (func_0038DC20(&push, 96.0f) > 0) {
+        func_L01_00404A10(func_L01_0035EF20, obj);
+        *(S_38C110v *)&info = *(S_38C110v *)(obj + 0x10);
+        func_L01_0035F048(obj, (s128 *)&info, (s128 *)&previous);
+    }
+    return;
+}
+/* localdecomp:end func_L01_0035E710 */
 
 LINKER_REMNANT("asm/levels", func_L01_0035EB18);
 
@@ -275,7 +411,6 @@ typedef struct { u8 pad[0x57]; u8 player; } State_0035F048;
 typedef struct { u8 pad[0x5C]; u8 *id; } Runtime_0035F048;
 extern State_0035F048 D_001425C0;
 extern Runtime_0035F048 D_L01_00221098;
-typedef struct { u8 unk0; u8 type; u8 pad[238]; } Entry_0035F048;
 extern Entry_0035F048 D_L01_002C5600[];
 extern S_38C110v D_001A4EC0;
 void func_L01_0035F048(u8 *moby,s128 *start,s128 *end) {
