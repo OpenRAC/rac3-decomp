@@ -236,16 +236,18 @@ A function that checks alone can fail the full build, or NTSC-U's carry, which c
   checks at 33 of 34 places, read the failing place's offsets before rewriting anything.
 - **Multiplayer twins that differ.** Levels 39-53 have their own rows for a few functions whose
   story twin has other bytes (struct 0x30 smaller, `0x45E0` against `0x4610`): they are separate
-  functions. `func_L39_00548648` and `func_L39_0058ACE0` match in level 39 and differ in 40-52:
-  they need rows of their own.
+  functions. Before adding a row, check that the C itself is right: `func_L39_00548648` and
+  `func_L39_0058ACE0` looked like such twins (level 39 right, 40-52 off) but were one missing
+  `divs_nops.txt` row and one `$gp`-small alias used for stores retail makes with `lui`.
 - **Different callees by level.** One level's copy calls another twin: call through an alias
   (`func_L01_0038B988_0035BC10`: level 06 calls `0x36C318`, the catalogue says `0x38F4A8`;
   the plain name gave 1 diff there).
 - **Two `$gp` values.** Multiplayer levels have `$gp` 0x247FC0 (PAL 39-53): a core name read
   through `$gp` there is refused; use `D_XXXXXXXX_sda` ([globals.md](../build/globals.md)).
 - **A level function that cannot be linked.** `func_L39_005001E8`, `func_L39_004BA208`: their
-  read-only data and the file's are apart in retail. `func_L39_004D7770` loads a jump table with
-  `lui` (differs at `+0x84`). These were reverted to `INCLUDE_ASM` after the full build.
+  read-only data and the file's are apart in retail. They were reverted to `INCLUDE_ASM` after the
+  full build. (`func_L39_004D7770`, reverted with them for a jump table loaded with `lui`, links
+  as it was written: level 39's full build takes it.)
 
 ## Hand-written assembly (`ASM_FUNC`)
 
