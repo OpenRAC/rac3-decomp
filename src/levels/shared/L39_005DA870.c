@@ -11,9 +11,9 @@ __asm__(".extern D_L39_00241120, 16");
 extern s32 *D_L39_00241120;
 extern void func_003E82F8(s32);
 extern s32 func_L01_00516AA0(s32, s32, s32);
-extern void func_L01_005169C8(s32, f32);
-extern void func_L01_00517190(s32, s32);
-extern void func_L01_005170B8(s32, s32);
+extern s32 func_L01_005169C8(s32, f32);
+extern s32 func_L01_00517190(s32, s32);
+extern s32 func_L01_005170B8(s32, s32);
 extern s32 func_00392A18(void);
 extern s32 func_L39_00611AC8(s32, s32, s32);
 

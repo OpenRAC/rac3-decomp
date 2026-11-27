@@ -8,7 +8,7 @@ extern void func_L01_00439880(u8 *, u16 *, s32 *);
 extern void func_L01_004450F0(u8 *, s32, s32);
 extern s32 func_0038CAD0(void *);
 extern H_3B4B88 *func_L01_00447490(u8 *, s32, s32);
-extern void func_L01_00455E18(u8 *, void *, void *);
+extern s32 func_L01_00455E18(u8 *, void *, void *);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_L01_00451FE0(void *, s32, void *, s32, s32, s32, s32, s32, s32, s32,
                           f32, f32, f32, f32, f32, f32, f32, f32);

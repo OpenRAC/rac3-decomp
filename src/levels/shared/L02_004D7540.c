@@ -2,7 +2,7 @@
 
 /* localdecomp:start func_L02_004D7540 */
 extern u8 D_001A71C4[];
-extern void func_L02_004D36C0(s32, s32);
+extern s32 func_L02_004D36C0(s32, s32);
 void func_L02_004D7540(s32 a0) {
     s32 m = 1;
     if (a0 != 0) {

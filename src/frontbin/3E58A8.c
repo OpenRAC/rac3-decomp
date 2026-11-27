@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern s32 *func_003E5918(s32 *);
 extern s32 func_003E5AA0();
 extern s32 func_003E58F8();
@@ -90,7 +91,7 @@ void func_003E5928(void) {
 extern u8 D_00306E00[];
 extern s32 D_001DA878;
 extern void *func_003E6670();
-extern void func_116FD0();
+extern s32 func_116FD0();
 extern void func_003E5928();
 void *func_003E59C8(s32 idx) {
     u8 *q;

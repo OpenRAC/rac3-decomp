@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern void func_00397C90(void);
 extern s32 func_00397CA8(void);
 /* --- end of declarations from other files --- */
@@ -43,7 +44,7 @@ extern s32 func_13B620(void);
 extern void func_003A5430(void);
 extern void func_003A2558(void);
 extern void func_003A1C28(void);
-extern void func_12EF10(void);
+extern s32 func_12EF10(void);
 extern void func_121B38(void);
 extern void func_124ED8(s32, s32, s32);
 void func_00397CC0(s32 a, s32 b, s32 c) {

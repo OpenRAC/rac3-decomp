@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* declared by functions of L39_004F9B38.c, which this file was cut from */
-extern void func_L39_004BC6C8(int, int, int, int, int);
+extern s32 func_L39_004BC6C8(int, int, int, int, int);
 
 /* localdecomp:start func_L39_004FB5C8 */
 typedef struct {
@@ -10,7 +10,7 @@ typedef struct {
 } S_4FB5C8;
 
 extern void *func_L39_004BEED8(s32);
-extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
 
 /* from rac4-decomp's func_L00_005373D8 */
 void *func_L39_004FB5C8(void) {

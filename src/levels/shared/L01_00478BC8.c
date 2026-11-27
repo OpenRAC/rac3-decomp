@@ -25,23 +25,23 @@ extern void func_003E5090(s32);
 extern void func_003E5360(s32);
 extern void func_003E51F8(s32);
 extern void func_003E8898(s32, f32, f32);
-extern void func_L01_00518010(s32, s32);
+extern s32 func_L01_00518010(s32, s32);
 extern s32 func_00392A18(void);
-extern void func_L01_00517448(s32, s32, s32);
+extern s32 func_L01_00517448(s32, s32, s32);
 extern s32 func_L01_005170B8(s32, s32);
-extern void func_L01_00516470(s32, f32, f32);
-extern void func_L01_00517538(s32, f32, f32);
-extern void func_L01_00516FD8(s32, void *);
-extern void func_L01_00516B90(s32, s32, s32);
+extern s32 func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00517538(s32, f32, f32);
+extern s32 func_L01_00516FD8(s32, void *);
+extern s32 func_L01_00516B90(s32, s32, s32);
 extern void *func_003E6C08();
 extern s32 func_003E6DE8(void *);
 extern s32 func_003E6378();
 extern void func_003EDAD0(void *, s32, s32);
-extern void func_L01_00517190(s32, s32);
+extern s32 func_L01_00517190(s32, s32);
 extern s32 func_003E8630(s32, s32);
 extern void func_003E90B8(s32, s32, s32, f32, f32, f32, f32, f32, f32);
 extern s32 func_003E8348(s32, s32);
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 extern void func_003E6FF0(s32, s32);
 extern void func_L01_004796B8(void);
 
@@ -128,7 +128,7 @@ void func_L01_00478BD0(s32 arg0) {
 /* localdecomp:start func_L01_00479200 */
 __asm__(".extern D_L01_001D8058, 1");
 extern u8 D_L01_001D8058;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 extern s32 func_L01_00479578(s32);
 extern s32 func_L01_00516010(s32);
 s32 func_L01_00479200(void) {
@@ -143,7 +143,7 @@ s32 func_L01_00479200(void) {
 /* localdecomp:start func_L01_00479248 */
 __asm__(".extern D_L01_001D8058, 1");
 extern u8 D_L01_001D8058;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_00479248(void) {
     if (D_L01_001D8058 != 0) {
         func_L01_00516AA0(0x10000, 1, 0);
@@ -155,7 +155,7 @@ s32 func_L01_00479248(void) {
 
 /* localdecomp:start func_L01_00479280 */
 extern s32 func_L01_00479578_00479280(s32);
-extern void func_L01_00516050(s32);
+extern s32 func_L01_00516050(s32);
 void func_L01_00479280(void) {
     func_L01_00516050(func_L01_00479578_00479280(0));
 }

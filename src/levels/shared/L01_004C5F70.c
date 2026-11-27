@@ -1,10 +1,10 @@
 #include "common.h"
 
 /* localdecomp:start func_L01_004C5F70 */
-extern void func_0012CB88(void *, s16, s32, s32, s32, s32, s32, s32);
+extern int func_0012CB88(void *, s16, s32, s32, s32, s32, s32, s32);
 extern void func_0011F0A0(s32);
-extern void func_0012CE48(void *, s32);
-extern void func_0012A9F0(s32, s32);
+extern int func_0012CE48(void *, s32);
+extern s32 func_0012A9F0(s32, s32);
 
 void func_L01_004C5F70(s32 dst, s32 src, s32 size) {
     u8 buf[112];
@@ -26,7 +26,7 @@ void func_L01_004C5F70(s32 dst, s32 src, s32 size) {
 
 /* localdecomp:start func_L01_004C6030 */
 extern u32 *D_L01_001E1068;
-extern void func_0012C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
+extern int func_0012C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
 void func_L01_004C6030(s32 a0, s32 a1, s32 size) {
     s32 n;
     s32 dst = 0;

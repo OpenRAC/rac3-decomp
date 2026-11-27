@@ -21,7 +21,7 @@ extern u8 D_001D5BDD_003AE438;
 extern u8 D_001D88A0[];
 extern u8 D_001D88A8[];
 extern s32 func_00381FF0();
-extern void func_11B2E8();
+extern s32 func_11B2E8();
 extern void func_0038E7E8_003AE438(f32, f32, f32, unsigned long, s32, s32, f32, s32, s32, unsigned long, f32, f32);
 typedef struct { u32 b0:1, b1:1, b2:1, b3:1, b4:1, b5:1, b6:1, b7:1, b8:1, b9:1, b10:1, rest:21; } F_003B2F50;
 typedef struct { u8 pad[0x1A4]; s32 f1A4; } P_003B2F50;

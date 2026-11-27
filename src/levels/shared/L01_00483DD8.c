@@ -70,8 +70,8 @@ struct VObj_487AC0 {
 };
 
 /* declared by functions of L01_004838A0.c, which this file was cut from */
-extern void func_L01_00517748(s32);
-extern s32 func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(s32);
+extern void *func_L01_0047EBE0(void);
 
 /* localdecomp:start func_L01_00483DD8 */
 typedef struct {
@@ -89,11 +89,11 @@ extern f32 D_L01_001D8504;
 extern s32 D_L01_001D84BC[2];
 __asm__(".extern D_L01_001D84BC, 16");
 extern void func_L01_0047EC88_00483DD8(void);
-extern s32 func_L01_0047EBE0_00483DD8(void);
-extern void func_L01_00517748_00483DD8(s32);
+extern void *func_L01_0047EBE0_00483DD8(void);
+extern s32 func_L01_00517748_00483DD8(s32);
 extern void func_L01_00516090_00483DD8(void *);
 extern s32 func_003A5348(s32, s32, s32);
-extern void func_L01_00516470_00483DD8(s32, f32, f32);
+extern s32 func_L01_00516470_00483DD8(s32, f32, f32);
 extern s32 func_L01_005170B8_00483DD8(s32, u32);
 
 void func_L01_00483DD8(void *self) {

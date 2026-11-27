@@ -115,7 +115,7 @@ extern f32 func_0038DAB8(f32, f32);
 extern void func_0038D308(void *, void *);
 extern f32 func_L39_005B4410(f32, f32);
 extern u8 *func_L01_0046B458(u8 *position, s32 life, f32 size, f32 start_size, s32 colour, s32 roll_kind, s32 spin, void *velocity, f32 unk, s32 delay);
-extern void func_L39_005F33E0(s32, s32, s32);
+extern s32 func_L39_005F33E0(s32, s32, s32);
 extern u8 D_L39_00242930[8];
 __asm__(".extern D_L39_0024AE8C, 4");
 __asm__(".extern D_L39_0024AE90, 4");

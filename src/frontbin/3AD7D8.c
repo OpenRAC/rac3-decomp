@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern void func_003AAF00(void *, s32);
 /* --- end of declarations from other files --- */
 
@@ -132,12 +133,12 @@ __asm__(".extern D_001D86B4, 4");
 
 
 extern void func_0011A264(void *, s32, s32);
-extern void func_0011B2E8();
+extern s32 func_0011B2E8();
 extern f32 func_0038DAB8(f32, f32);
 extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern s32 func_003AAEB0(void *);
-extern s32 *func_003AAEB8();
+extern s32 func_003AAEB8();
 extern void func_003AAED0(void *, f32, f32, f32, f32);
 extern void func_003AAF20(void *, s32);
 extern void func_003AAF90(void *, s32);

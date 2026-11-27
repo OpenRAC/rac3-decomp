@@ -40,11 +40,11 @@ typedef struct S_006A5AF0 {
 } S_006A5AF0;
 
 extern S_006A5AF0_g *D_L39_0024D760;
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(S_006A5AF0 *);
 extern void func_L39_0068A4A8(S_006A5AF0 *, f32, f32, f32, s32, s32, f32, s32);
 extern void func_L39_00689F00(S_006A5AF0 *, f32, f32, f32, f32, f32, f32, s32, s32, s32);
-extern void func_L39_0068B2F8(S_006A5AF0 *, s32, s32);
+extern s32 func_L39_0068B2F8(S_006A5AF0 *, s32, s32);
 extern s32 func_L39_006CEA18(u8 *, s32);
 
 void func_L39_006A5AF0(S_006A5AF0 *this)

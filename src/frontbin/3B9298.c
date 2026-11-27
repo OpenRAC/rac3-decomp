@@ -7,12 +7,13 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
+extern s32 func_003B9298(s32, s32, s32, s32, s32, s32, s32, s32, f32, s32, s32, s32, s32, s32, s32);
 extern s32 func_003B97B0(void);
 extern s32 func_003B96D0(void);
 extern s32 func_003B9700();
 extern void func_003B96D8();
 extern void func_003B9890(void);
-extern s32 func_003B9298(s32, s32, s32, s32, s32, s32, s32, s32, f32, s32, s32, s32, s32, s32, s32);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003B9298 */

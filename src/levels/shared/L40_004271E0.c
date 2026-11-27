@@ -13,10 +13,10 @@ typedef struct {
 
 extern s32 D_L40_002499F4 __attribute__((section(".data")));
 extern u8 *D_001D5F30_sda;
-extern u8 *func_L39_0061D7B0(void *);
+extern s32 func_L39_0061D7B0(void *);
 extern void *func_L01_00447490(void *, u32, s32);
 extern f32 func_L01_004474E8(void *, void *);
-extern O_004271E0 *func_L39_0061CEA0(void *);
+extern s32 func_L39_0061CEA0(void *);
 extern void func_003C4A40(void *, void *);
 
 void func_L40_004271E0(u8 *a0) {

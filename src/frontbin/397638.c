@@ -87,9 +87,9 @@ void func_00397638(f32 x, f32 y, f32 w, f32 h, f32 ang, s32 tw, s32 th, unsigned
 /* localdecomp:start func_00397980 */
 extern u32 *D_001DA050_00397980;
 extern u32 D_001DA050_00397980_lui[];
-extern void func_12C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
+extern int func_12C9A0(void *, s16, s16, s16, s32, s32, s16, s16);
 extern void func_11F0A0(s32);
-extern void func_12CCC8(void *, s32);
+extern int func_12CCC8(void *, s32);
 void func_00397980(s32 a0, s32 a1, s32 a2, s32 d, s32 e, s32 f) {
     u32 tmp[24];
     u32 *buf;

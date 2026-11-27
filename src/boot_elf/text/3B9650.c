@@ -15,7 +15,7 @@ extern void func_003B9C48(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3B8DF0.c's earlier functions */
-extern void func_003A5748(s32, s32, s32);
+extern s32 func_003A5748(s32, s32, s32);
 extern s32 func_003E93A0(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_003E7BF0(s32, s32, s32);
 extern s32 func_003E9628(s32, s32, f32, f32, f32, f32, f32, f32);

@@ -125,7 +125,7 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_003AFBD8);
 /* localdecomp:start func_003AFBF0 */
 extern s32 D_001D5C78;
 extern s32 D_0031D050[];
-extern void func_00396948();
+extern int func_00396948();
 extern void func_003AF850();
 void func_003AFBF0(void) {
     if (D_001D5C78 != 0 && D_0031D050[0] == 0) {

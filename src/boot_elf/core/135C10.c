@@ -244,7 +244,7 @@ extern char D_00152008[];
 extern char D_00152030[];
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_0013A0F8();
-extern s32 func_0013A150_001350A8(void *, char *, ...);
+extern void func_0013A150_001350A8(void *, char *, ...);
 extern void func_00135FD8();
 extern u32 func_00136010();
 extern void func_00134FD8();
@@ -323,7 +323,7 @@ typedef struct Obj_00135560 {
 /* localdecomp:start func_00135C10 */
 typedef struct { u8 pad[0xC4]; s32 xC4; u8 pad2[0x24]; s32 xEC; s32 xF0; s32 xF4; s32 xF8; } T_135C10;
 typedef struct { u8 pad[0x40]; T_135C10 *x40; } S_135C10;
-extern void func_001353A8(S_135C10 *);
+extern s32 func_001353A8(S_135C10 *);
 void func_00135C10(S_135C10 *p, u32 a, s32 b) {
     T_135C10 *q = p->x40;
     q->xC4 = 1;

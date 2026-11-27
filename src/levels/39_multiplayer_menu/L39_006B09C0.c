@@ -50,7 +50,7 @@ void func_L39_00689B80(void *);
 void func_L39_0068AAB8(void *);
 s32 func_L01_005169C8(s32, f32);
 s32 func_00381FF0(s32);
-void func_L39_0068B2F8(void *, s32, s32);
+s32 func_L39_0068B2F8(void *, s32, s32);
 
 void func_L39_006B09C0(S_006B09C0_This *this)
 {

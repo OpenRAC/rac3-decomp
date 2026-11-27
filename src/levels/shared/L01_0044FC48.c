@@ -7,7 +7,7 @@ typedef struct {
 
 extern T_0044FC48 D_L01_002BC250;
 extern void func_L01_00451F60(s32, s32, s32);
-extern void func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
+extern s32 func_L01_00452560(s32, s32, s32, s32, s32, s32, s32);
 
 void func_L01_0044FC48(s32 i, u8 flag) {
     T_0044FC48 t = D_L01_002BC250;

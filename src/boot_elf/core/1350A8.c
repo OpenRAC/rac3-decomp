@@ -250,7 +250,7 @@ extern char D_00152008[];
 extern char D_00152030[];
 extern s32 func_0011A264(s32, s32, s32);
 extern s32 func_0013A0F8();
-extern s32 func_0013A150_001350A8(void *, char *, ...);
+extern void func_0013A150_001350A8(void *, char *, ...);
 extern void func_00135FD8();
 extern u32 func_00136010();
 extern void func_00134FD8();

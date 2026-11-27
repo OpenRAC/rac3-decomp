@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_004F9A20 */
-extern void func_L39_004BC6C8(s32, s32, s32, s32, s32);
+extern s32 func_L39_004BC6C8(s32, s32, s32, s32, s32);
 extern void *func_L39_004BEED8(s32);
 
 /* from rac4-decomp's func_L00_00535830, renamed */

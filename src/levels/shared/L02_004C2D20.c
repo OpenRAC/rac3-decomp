@@ -39,12 +39,12 @@ extern void func_00393C40();
 extern void func_00394620();
 extern void func_L01_004E04E8(void);
 extern void func_00393348(s32, s32, void *, void *, void *, s32, s32);
-extern void func_L01_0041C828(s32);
+extern s32 func_L01_0041C828(s32);
 extern void func_003C2880(s32);
 extern void func_L01_004E1560(void);
 extern void func_L01_0050FED0(void);
 extern s32 func_L01_004DFCC8(M_4BEAD0 *, s32, s32, void *);
-extern void func_L02_004D36C0(s32, s32);
+extern s32 func_L02_004D36C0(s32, s32);
 void func_L02_004C2D20(void) {
     G_4BEAD0 *g;
     M_4BEAD0 *m;

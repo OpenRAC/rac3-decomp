@@ -7,7 +7,7 @@ typedef struct { u8 p0[0x2D8]; P_0052D348 *pl0; P_0052D348 *pl1; } R_0052D348;
 typedef struct { u8 p0[0x6D0]; R_0052D348 *r; } Q_0052D348;
 typedef struct { u8 p0[0x68]; Q_0052D348 *q; } O_0052D348;
 extern E_0052D348 D_L39_0024DE80[];
-extern void func_L01_003F1F20(s32, s32);
+extern int func_L01_003F1F20(s32, s32);
 
 void func_L39_0052D348(O_0052D348 *o) {
     Q_0052D348 *q = o->q;
@@ -48,7 +48,7 @@ void func_L39_0052D348(O_0052D348 *o) {
 /* localdecomp:start func_L39_0052D4E8 */
 #include "vu0.h"
 
-extern void func_L01_003F1F20_0052D4E8(s32, s32);
+extern int func_L01_003F1F20_0052D4E8(s32, s32);
 extern void func_0038CE20(void *, void *, f32);
 extern void *func_L39_006472D0_0052D4E8(void *, void *, void *, f32, f32, f32, f32, f32, s32);
 extern void func_0038D000(void *, void *, void *);
@@ -56,7 +56,7 @@ extern f32 func_0038CF00(void *, void *);
 extern u8 *func_00382348(void *);
 extern void func_L01_003F6F20_0052D4E8(s32, void *, u32, void *, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
 extern f32 func_0038CEA8(void *);
-extern u8 *func_L39_0061D7B0_0052D4E8(void *);
+extern s32 func_L39_0061D7B0_0052D4E8(void *);
 extern u8 *func_L39_00668620_0052D4E8(void *);
 extern void func_00382760(void *, f32, f32, f32);
 extern u8 *func_L07_003CAE10_0052D4E8(void *, void *, void *, s32, void *, s32, u32, f32, f32);

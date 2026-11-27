@@ -1,7 +1,9 @@
 #include "common.h"
+#include "vu0.h"
 
 /* declared by functions of L39_005CDCF0.c, which this file was cut from */
 extern s32 func_0038CB00(void *);
+extern s32 func_0038DBD8(s32, s32, f32);
 extern void func_003CD250(u8 *);
 
 /* localdecomp:start func_L39_005CDFD8 */

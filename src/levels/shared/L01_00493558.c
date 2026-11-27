@@ -26,12 +26,12 @@ struct O_490778 {
 
 /* declared by functions of L01_00492C80.c, which this file was cut from */
 extern void func_003A5348(s32 a0, s32 a1, s32 a2);
-extern void func_L01_00517748(s32 a0);
+extern s32 func_L01_00517748(s32 a0);
 
 /* localdecomp:start func_L01_00493558 */
 extern void func_003A5348(s32, s32, s32);
 extern s32 func_L01_00480AB8(void);
-extern void func_L01_00517748(s32);
+extern s32 func_L01_00517748(s32);
 extern s32 func_L01_00492870(void);
 extern void func_L01_00516090_00493558(s32);
 void func_L01_00493558(void) {
@@ -44,7 +44,7 @@ void func_L01_00493558(void) {
 /* localdecomp:start func_L01_004935A0 */
 extern void func_003A5348(s32, s32, s32);
 extern s32 func_L01_00494018(void);
-extern void func_L01_00517748(s32);
+extern s32 func_L01_00517748(s32);
 extern s32 func_L01_00492870(void);
 extern void func_L01_00516090_004935A0(s32);
 void func_L01_004935A0(void) {
@@ -56,8 +56,8 @@ void func_L01_004935A0(void) {
 
 /* localdecomp:start func_L01_004935E8 */
 extern void func_L01_0047DAD0(s32 a0);
-extern s32 func_L01_0047EBE0(void);
-extern void func_L01_00517748(s32 a0);
+extern void *func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(s32 a0);
 extern s32 func_L01_00492870(void);
 extern void func_L01_00516090_004935E8(s32 a0);
 extern void func_003A5348(s32 a0, s32 a1, s32 a2);
@@ -72,7 +72,7 @@ void func_L01_004935E8(void) {
 /* localdecomp:start func_L01_00493638 */
 extern void func_003A5348(s32, s32, s32);
 extern s32 func_L01_0049B550(void);
-extern void func_L01_00517748(s32);
+extern s32 func_L01_00517748(s32);
 extern s32 func_L01_00492870(void);
 extern void func_L01_00516090_00493638(s32);
 void func_L01_00493638(void) {

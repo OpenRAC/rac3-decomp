@@ -51,6 +51,7 @@ extern char D_001D8388[], D_001D8398[], D_001D83A8[], D_001D83E0[], D_001D8418[]
 extern s32 func_11B2E8();
 extern void func_00391510();
 extern void func_00391598();
+extern void func_0038FDF8();
 extern void func_0038C790(s32, s32, s32, s32, s32, s32);
 extern void func_003AC9F0(s32, s32, s32, f32, f32, f32, f32);
 /* localdecomp:start func_003AC590 */

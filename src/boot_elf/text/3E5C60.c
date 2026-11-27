@@ -90,7 +90,7 @@ void func_003E5CE0(void) {
 extern u8 D_00306E00[];
 extern s32 D_001DA878;
 extern void *func_003E6A28();
-extern void func_116FD0();
+extern s32 func_116FD0();
 extern void func_003E5CE0();
 void *func_003E5D80(s32 idx) {
     u8 *q;

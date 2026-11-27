@@ -86,7 +86,7 @@ void func_L01_004A2848(void) {
 extern char *D_001D52FC;
 __asm__(".extern D_001D52FC, 16");
 extern s32 func_L01_004A1128(void);
-extern void func_L01_00517748(s32);
+extern s32 func_L01_00517748(s32);
 extern void func_L01_00516090_004A2878(s32);
 
 void func_L01_004A2878(s32 a0) {

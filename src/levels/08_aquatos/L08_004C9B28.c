@@ -6,7 +6,7 @@ extern s32 D_00142668[];
 extern u8 D_00142CAD[];
 extern void func_0038CBA0(void *, s32);
 extern void func_L01_004DFEA0(s32);
-extern void func_L08_004DD0C0(s32, s32);
+extern s32 func_L08_004DD0C0(s32, s32);
 
 void func_L08_004C9B28(void)
 {

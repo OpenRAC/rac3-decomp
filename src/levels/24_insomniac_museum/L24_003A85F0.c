@@ -12,7 +12,7 @@ typedef struct Obj_003A88E8 {
 
 /* localdecomp:start func_L24_003A85F0 */
 /* m2c3 */
-s32 func_L24_003A8530(f32);                         /* extern */
+void func_L24_003A8530(f32);                         /* extern */
 
 void func_L24_003A85F0(void *arg0) {
     f32 temp_f2;

@@ -16,6 +16,22 @@ typedef struct {
     u8 pad44[4];
     f32 f48;
 } Obj_371CB8;
+typedef struct {
+    u8 pad_0[0x80];
+    f32 x;                     /* 0x80: position */
+    f32 y;                     /* 0x84 */
+    u8 pad_88[0x1210 - 0x88];
+    s32 fire_button;           /* 0x1210: the button the item fires on */
+    u8 pad_1214[0x25C0 - 0x1214];
+    u8 *camera;                /* 0x25C0 */
+    s32 state;                 /* 0x25C4: the hero's state (0x1D aiming) */
+    u8 pad_25C8[0x25ED - 0x25C8];
+    u8 no_firing;              /* 0x25ED: guns refuse to fire while set */
+    u8 pad_25EE[0x2874 - 0x25EE];
+    s16 mode;                  /* 0x2874 */
+    u8 pad_2876[0x28BC - 0x2876];
+    s32 aiming_fire_wait;      /* 0x28BC: 40 outside state 29 */
+} Hero_3727B8;
 
 INCLUDE_ASM("asm/levels", func_L01_0036B670);
 
@@ -899,19 +915,6 @@ void func_L01_00372430(u8 *p, vu0_v4 *from_ptr, vu0_v4 *to_ptr) {
 /* localdecomp:end func_L01_00372430 */
 
 /* localdecomp:start func_L01_003727B8 */
-typedef struct {
-    u8 pad_0[0x80];
-    f32 x;                     /* 0x80: position */
-    f32 y;                     /* 0x84 */
-    u8 pad_88[0x1210 - 0x88];
-    s32 fire_button;           /* 0x1210: the button the item fires on */
-    u8 pad_1214[0x25C4 - 0x1214];
-    s32 state;                 /* 0x25C4: the hero's state (0x1D aiming) */
-    u8 pad_25C8[0x25ED - 0x25C8];
-    u8 no_firing;              /* 0x25ED: guns refuse to fire while set */
-    u8 pad_25EE[0x28BC - 0x25EE];
-    s32 aiming_fire_wait;      /* 0x28BC: 40 outside state 29 */
-} Hero_3727B8;
 typedef struct {
     u8 pad_0[0x20];
     s32 timer;                 /* 0x20: frames to the next phase */

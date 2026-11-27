@@ -29,7 +29,7 @@ extern s32 D_001D7C04_sda;
 extern s32 D_L41_0024112C;
 extern s32 D_L41_00248818;
 extern void func_L01_00439880(void *, s32 *, s32 *);
-extern void func_L39_005F33E0(s32, s32, void *);
+extern s32 func_L39_005F33E0(s32, s32, void *);
 extern f32 func_L39_005B4410(f32, f32);
 extern f32 func_L39_005B4468(f32, f32);
 extern void func_0038D000(void *, void *, void *);

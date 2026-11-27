@@ -5,7 +5,7 @@ extern u8 D_L39_00243914;
 extern s32 D_L39_00243910;
 extern s32 *D_L39_00241120[];
 extern void func_003E82F8(s32);
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 
 void func_L39_005DEBD0(s32 arg0) {
     if (D_L39_00243914) {
@@ -24,7 +24,7 @@ extern u8 D_L39_00243914;
 extern s32 D_L39_00243910;
 extern s32 *D_L39_00241120[];
 extern void func_003E82F8(s32);
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 
 void func_L39_005DEC68(s32 arg0) {
     if (D_L39_00243914) {

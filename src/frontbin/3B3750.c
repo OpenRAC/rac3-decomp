@@ -106,7 +106,7 @@ extern void func_003B37E8_003B3910(void);
 extern void func_003B38A8(void);
 extern void func_003B3378_003B3910(void);
 extern void func_003B32D8_003B3910(void);
-extern void func_003A0F98(s32, s32);
+extern s32 func_003A0F98(s32, s32);
 void func_003B3910(void) {
     switch (D_001D8888) {
     case 1:

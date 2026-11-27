@@ -218,7 +218,39 @@ s32 func_L39_004D5030(char *path, void *a1, void *a2) {
 
 LINKER_REMNANT("asm/levels", func_L39_004D51E8);
 
-INCLUDE_ASM("asm/levels", func_L39_004D51F0);
+/* localdecomp:start func_L39_004D51F0 */
+extern s32 func_00129C38(s32, s32, s32);
+extern s32 func_00127108(s32);
+
+s32 func_L39_004D51F0(s32 *obj, s32 a1, s32 a2) {
+    s32 i;
+    s32 ret;
+
+    i = 0;
+    while (1) {
+        if (++i > 1000) {
+            ret = -1;
+            break;
+        }
+        if (func_00129C38((s32)obj, a1, a2) < 0) {
+            if (func_00127108(10000) < 0) {
+                ret = -1;
+                break;
+            }
+            continue;
+        }
+        if (obj[0x24 / 4] != 0) {
+            ret = 0;
+            break;
+        }
+        if (func_00127108(10000) < 0) {
+            ret = -1;
+            break;
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004D51F0 */
 
 /* localdecomp:start func_L39_004D5288 */
 extern s32 func_00129E18(void *, s32, s32, s32, s32, void *, s32, s32, s32);

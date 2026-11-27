@@ -69,7 +69,7 @@ extern s32 func_00396278();
 /* from boot_elf's func_00396AB8 */
 __asm__(".extern D_001D5E98, 4");
 __asm__(".extern D_001D5EA4, 1");
-extern void func_00393348();
+extern s32 func_00393348();
 extern void func_00393930();
 extern s32 D_001D5E9C_003966D8[] __attribute__((section(".sdata")));
 

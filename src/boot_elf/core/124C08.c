@@ -14,8 +14,8 @@ extern u32 D_0013E300[4];
 extern u32 D_0013E2F8;
 extern void func_00124B80(u32, u32);
 extern u32 func_00124A68(u32, u32, void *);
-extern void func_00124A28(void);
-extern void func_001249F0(void);
+extern u32 *func_00124A28(void);
+extern s32 func_001249F0(void);
 
 /* localdecomp:start func_00124C08 */
 s32 func_00124C08(s32 *dst, s32 *src, u32 n) {

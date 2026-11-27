@@ -7,7 +7,7 @@ void func_00120D28(s32, s32, s32);
 extern void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);
 extern void func_00120D28(s32, s32, s32);
 extern u8 D_L39_0047C520[];
-extern void func_L39_00688388(void *);
+extern void *func_L39_00688388(void *);
 extern void func_L39_00689670(void *, void *);
 extern s32 D_00247BC0[];
 __asm__(".extern D_001DC480_sda, 4");

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "vu0.h"
 
 typedef struct {
     u8 pad0[104];
@@ -15,6 +16,33 @@ typedef int u128_t __attribute__((mode(TI)));
 typedef struct {
     u128_t q[5];
 } S_2BEE10;
+typedef struct {
+    u8 pad_0[0x80];
+    vu0_v4 pos;                /* 0x80 */
+    u8 pad_90[0x1D8 - 0x90];
+    s32 i1D8;                  /* 0x1D8 */
+    u8 pad_1DC[0x6F0 - 0x1DC];
+    vu0_v4 aim;                /* 0x6F0 */
+    u8 pad_700[0x1210 - 0x700];
+    s32 fire_button;           /* 0x1210 */
+    u8 pad_1214[0x1220 - 0x1214];
+    s32 i1220;                 /* 0x1220 */
+    u8 pad_1224[0x1430 - 0x1224];
+    u8 *lockon_target;         /* 0x1430 */
+    u8 pad_1434[0x16B0 - 0x1434];
+    s32 mode;                  /* 0x16B0 */
+    u8 pad_16B4[0x25C0 - 0x16B4];
+    u8 *camera;                /* 0x25C0 */
+    s32 state;                 /* 0x25C4 */
+    u8 pad_25C8[0x25E9 - 0x25C8];
+    u8 b25E9;                  /* 0x25E9 */
+    u8 pad_25EA[0x25ED - 0x25EA];
+    u8 no_firing;              /* 0x25ED */
+    u8 pad_25EE[0x2874 - 0x25EE];
+    s16 h2874;                 /* 0x2874 */
+    u8 pad_2876[0x28BC - 0x2876];
+    s32 aiming_fire_wait;      /* 0x28BC */
+} Hero_38B280_0038B280;
 
 INCLUDE_ASM("asm/levels", func_L01_00386B38);
 
@@ -803,30 +831,6 @@ INCLUDE_ASM("asm/levels", func_L01_0038AD40);
 /* localdecomp:start func_L01_0038B280 */
 #include "vu0.h"
 
-typedef struct {
-    u8 pad_0[0x80];
-    vu0_v4 pos;                /* 0x80 */
-    u8 pad_90[0x1D8 - 0x90];
-    s32 i1D8;                  /* 0x1D8 */
-    u8 pad_1DC[0x6F0 - 0x1DC];
-    vu0_v4 aim;                /* 0x6F0 */
-    u8 pad_700[0x1210 - 0x700];
-    s32 fire_button;           /* 0x1210 */
-    u8 pad_1214[0x1220 - 0x1214];
-    s32 i1220;                 /* 0x1220 */
-    u8 pad_1224[0x1430 - 0x1224];
-    u8 *lockon_target;         /* 0x1430 */
-    u8 pad_1434[0x25C4 - 0x1434];
-    s32 state;                 /* 0x25C4 */
-    u8 pad_25C8[0x25E9 - 0x25C8];
-    u8 b25E9;                  /* 0x25E9 */
-    u8 pad_25EA[0x25ED - 0x25EA];
-    u8 no_firing;              /* 0x25ED */
-    u8 pad_25EE[0x2874 - 0x25EE];
-    s16 h2874;                 /* 0x2874 */
-    u8 pad_2876[0x28BC - 0x2876];
-    s32 aiming_fire_wait;      /* 0x28BC */
-} Hero_38B280_0038B280;
 typedef struct {
     u8 pad_0[0x10];
     u8 landing[0x10];          /* 0x10 */

@@ -8,6 +8,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 /* --- end of declarations from other files --- */
 
 typedef s32 (*FN_A9EF0)();
@@ -126,7 +127,7 @@ LINKER_REMNANT("asm/remnants", func_003AF820);
 
 extern s32 D_001D5C78;
 extern s32 D_0031D050[];
-extern void func_00396568();
+extern int func_00396568();
 extern void func_003AF498();
 /* localdecomp:start func_003AF838 */
 void func_003AF838(void) {

@@ -23,7 +23,7 @@ extern u8 D_L09_001E1660[];
 __asm__(".extern D_L09_001E009C, 16");
 __asm__(".extern D_L09_001DFDB4, 16");
 __asm__(".extern D_L09_001DF9DC, 16");
-extern Fn_003177B8 *func_L01_0043B568(s32, s32, s32);
+extern s32 func_L01_0043B568(s32, s32, s32);
 extern void *func_003E6C08();
 extern s32 func_L01_00515C78(void *, void *);
 extern void func_L09_00317D00(void);

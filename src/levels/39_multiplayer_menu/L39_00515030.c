@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L39_00515030 */
-extern s32 func_L39_004F7538(void *, void *, s32);
+extern void func_L39_004F7538(void *, void *, s32);
 typedef struct { s32 cap; s32 n; long *d; } S_00515030;
 
 s32 func_L39_00515030(s32 arg0, S_00515030 *s) {

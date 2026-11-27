@@ -1,7 +1,7 @@
 #include "common.h"
 
 /* localdecomp:start func_L02_00335DB0 */
-extern s32 func_L01_00301798(u8 *, s32, s32, s32, s32);
+extern u8 *func_L01_00301798(u8 *, s32, s32, s32, s32);
 
 void func_L02_00335DB0(u8 *m) {
     u8 *cls;

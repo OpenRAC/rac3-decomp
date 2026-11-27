@@ -23,7 +23,7 @@ typedef struct {
     O_006B2FF0 *f114;
 } S_006B2FF0;
 
-void func_L39_0067F100(s32);
+s32 func_L39_0067F100(s32);
 void func_L39_0068AAB8(void *);
 
 void func_L39_006B2FF0(S_006B2FF0 *self) {

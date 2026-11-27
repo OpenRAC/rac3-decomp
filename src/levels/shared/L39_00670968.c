@@ -356,7 +356,7 @@ extern void *func_0011D534(void *, s32, s32);
 extern void func_001206F4(void *, void *);
 extern void func_L01_003F1F60(s32);
 extern void func_L01_00404AD8(void *, s32);
-extern void func_L39_0066FF08(void);
+extern s32 func_L39_0066FF08(void);
 
 void func_L39_00670D90(s32 arg0) {
     s32 i;

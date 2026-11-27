@@ -28,13 +28,13 @@ extern void func_003A1C28(void);
 extern s32 func_003A8770(s32);
 extern void func_003912E8(void);
 extern void func_003A5430(void);
-extern long func_13CDF0_003A7A18(s32);
+extern s32 func_13CDF0_003A7A18(s32);
 extern s32 func_13CD28(s32, s32, s32, void *);
 extern void func_003A87D8(s32, s32, s32, s32);
 extern u32 func_003A8830(s32, u32);
 extern s32 func_003AF890(s32, s32, s32 (*)(s32, s32), s32, s32);
 extern s32 func_12A9F0(s32, s32);
-extern void func_12D4D8(u8 *);
+extern s32 func_12D4D8(u8 *);
 extern void func_003A9108(void);
 extern s32 D_001DA034;
 extern s32 D_00227400[];
@@ -56,8 +56,8 @@ typedef struct { unsigned long v; u16 h8; u16 hA; u8 bC; u8 bD; s16 hE; } T_003A
 extern T_003A8EC8b D_00226000[];
 extern P_003A8EC8 *D_001DA038;
 extern void func_00392C48(s32 *);
-extern void func_003A0F98(s32, s32);
-extern void func_00392A80(void *, s32 *, s32 *);
+extern s32 func_003A0F98(s32, s32);
+extern s32 func_00392A80(void *, s32 *, s32 *);
 extern void func_003D9DA8(void);
 extern s32 func_003A0EC0(s32, s32, s32, s32, u8 *);
 void func_003A8B10(void)

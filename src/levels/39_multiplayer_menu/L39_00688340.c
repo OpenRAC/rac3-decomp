@@ -3,10 +3,10 @@
 typedef struct { u8 pad0[0xF4]; u8 *p; } O_A;
 
 /* declared by functions of L39_006876A0.c, which this file was cut from */
-void func_L39_0067EE00(void *);
+void *func_L39_0067EE00(void *);
 
 /* localdecomp:start func_L39_00688340 */
-void func_L39_005F1718();
+s32 func_L39_005F1718();
 s32 func_L39_005F3548();
 
 s32 func_L39_00688340(void) {
@@ -23,7 +23,7 @@ LINKER_REMNANT("asm/levels", func_L39_00688378);
 
 /* localdecomp:start func_L39_00688388 */
 extern u8 D_L39_0047C2F8[];
-void func_L39_0067EE00(void *);
+void *func_L39_0067EE00(void *);
 
 void *func_L39_00688388(void *arg0) {
     u8 *obj;

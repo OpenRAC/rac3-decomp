@@ -91,7 +91,7 @@ __asm__(".extern D_001DD028_sda, 4");
 extern f32 D_001DD028_sda __attribute__((section(".sdata")));
 __asm__(".extern D_001DD040_sda, 4");
 extern f32 D_001DD040_sda __attribute__((section(".sdata")));
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068A9B8(s32);
 extern void *func_00381FF0(s32);
 extern void func_L39_00689BD8(void *, void *);

@@ -4,7 +4,7 @@
 typedef int u128_t __attribute__((mode(TI)));
 extern u8 *func_003C24B0(s32, s32);
 extern void func_003C7C38(u8 *);
-extern void func_L01_00445F40(u8 *, s32);
+extern s32 func_L01_00445F40(u8 *, s32);
 extern u8 *D_001A71A0[];
 
 u8 *func_L24_0034E250(s32 a0, void *a1, void *a2, void *a3, s32 a4, f32 f12, f32 f13) {
@@ -56,10 +56,10 @@ extern P8_34E370 D_L24_001DD500[];
 extern s32 D_L24_001E06A0;
 extern f32 D_L24_001E06A4;
 extern s32 D_001D4BC4;
-extern void func_L24_0041CE48(s32, s32, s32);
+extern s32 func_L24_0041CE48(s32, s32, s32);
 extern s32 func_L24_00402798(void);
 extern void func_L24_00402808(void);
-extern void func_L24_004027C8(void);
+extern int func_L24_004027C8(void);
 extern s32 func_0038DBD8(s32, s32, f32);
 extern void func_0038C310(s32, s32, s32, s32, s32, void *);
 

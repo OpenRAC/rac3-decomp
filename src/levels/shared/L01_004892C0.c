@@ -71,7 +71,7 @@ struct VObj_487AC0 {
 
 /* declared by functions of L01_004838A0.c, which this file was cut from */
 extern u8 D_00142CA0[];
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 extern void func_L01_004784C0(s32, s32, f32, f32);
 extern s32 func_00381FF0(s32);
 extern s32 func_0011B2E8(char *, char *, ...);
@@ -86,7 +86,7 @@ extern s32 func_L01_00487F78(s32, s32, s32);
 extern s32 func_00381FF0(s32);
 extern s32 func_L01_00485B68(s32);
 extern int func_0011B2E8(char *, char *, ...);
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 extern void func_L01_004784C0(s32, s32, f32, f32);
 extern s32 D_L01_001D8848;
 extern s32 D_L01_001D8838;

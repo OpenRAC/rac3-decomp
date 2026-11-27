@@ -36,7 +36,7 @@ typedef struct {
 
 extern char D_00248020[];
 extern u8 D_L39_0047CDB0[];
-extern void func_L39_00688388(void *);
+extern void *func_L39_00688388(void *);
 extern s32 func_00381FF0(s32);
 extern void func_00120D28(void *, void *, s32);
 extern void func_L39_0068CD28(u8 *arg0, s32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5);

@@ -70,28 +70,28 @@ s32 func_L39_0053D838(u8 *a0) {
 /* localdecomp:end func_L39_0053D838 */
 
 /* localdecomp:start func_L39_0053D8E8 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_0053D8E8(s32 a0) {
     return func_L39_0066DD30(a0, 0, 0) != 0;
 }
 /* localdecomp:end func_L39_0053D8E8 */
 
 /* localdecomp:start func_L39_0053D910 */
-extern void func_L39_0066DCC8(s32, s32, s32, s32);
+extern s32 func_L39_0066DCC8(s32, s32, s32, s32);
 void func_L39_0053D910(s32 a0) {
     func_L39_0066DCC8(a0, 0, 0, 250);
 }
 /* localdecomp:end func_L39_0053D910 */
 
 /* localdecomp:start func_L39_0053D938 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_0053D938(s32 a0) {
     return func_L39_0066DD30(a0, 1, 0) != 0;
 }
 /* localdecomp:end func_L39_0053D938 */
 
 /* localdecomp:start func_L39_0053D960 */
-extern void func_L39_0066DCC8(s32, s32, s32, s32);
+extern s32 func_L39_0066DCC8(s32, s32, s32, s32);
 typedef struct {
     u8 pad[136];
     s32 f88[1];
@@ -122,14 +122,14 @@ void func_L39_0053D960(u8 *m) {
 /* localdecomp:end func_L39_0053D960 */
 
 /* localdecomp:start func_L39_0053D9E8 */
-extern s32 func_L39_0066DD30(s32, s32, s32);
+extern void *func_L39_0066DD30(s32, s32, s32);
 s32 func_L39_0053D9E8(s32 a0) {
     return func_L39_0066DD30(a0, 2, 0) != 0;
 }
 /* localdecomp:end func_L39_0053D9E8 */
 
 /* localdecomp:start func_L39_0053DA10 */
-extern void func_L39_0066DCC8(s32, s32, s32, s32);
+extern s32 func_L39_0066DCC8(s32, s32, s32, s32);
 void func_L39_0053DA10(s32 a0) {
     func_L39_0066DCC8(a0, 2, 0, 250);
 }

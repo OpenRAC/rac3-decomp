@@ -7,7 +7,7 @@ extern void func_003C2880(void *);
 extern void func_0038D308(void *, void *);
 extern void func_L03_003B2E38(u8 *);
 extern void func_L01_004450F0(void *, s32, s32);
-extern void func_L01_00448890(void *, f32, void *, f32, f32, f32, s32);
+extern f32 func_L01_00448890(void *, f32, void *, f32, f32, f32, s32);
 extern f32 func_0038DBA0(f32, f32);
 
 void func_L03_003B2C30(u8 *m) {

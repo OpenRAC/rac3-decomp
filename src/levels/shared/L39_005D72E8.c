@@ -7,7 +7,7 @@ extern E_005D4D78 D_L39_002FB000[];
 extern u8 D_L39_002435F8[2];
 extern s32 D_L39_002435E8[2];
 extern E_005D4D78 *D_L39_00243600[2];
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 
 void func_L39_005D72E8(s32 a0, E_005D4D78 *e) {
     s32 i = e - D_L39_002FB000;

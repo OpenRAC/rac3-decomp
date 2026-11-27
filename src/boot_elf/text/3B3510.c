@@ -15,7 +15,7 @@ extern void func_003AA060();
 extern void *func_003E6FC0();
 
 extern void func_003AA060();
-extern void func_003E71C8_003B3510();
+extern s32 func_003E71C8_003B3510();
 extern void func_003E6F70();
 extern void *func_003E6FC0();
 extern s32 D_001D9EC0;

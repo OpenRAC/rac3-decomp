@@ -17,7 +17,7 @@ typedef struct S_006AC1A0 {
     O_006AC1A0 *f124;
     O_006AC1A0 *f128;
 } S_006AC1A0;
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068A9B8(s32);
 extern s32 func_00381FF0(s32);
 extern void func_L39_00689BD8(void *, s32);

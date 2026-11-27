@@ -21,8 +21,8 @@ typedef struct {
 typedef struct { s32 a; s32 b; s32 c; s32 d; } Ent_00497C30;
 
 /* declared by functions of L01_00499C80.c, which this file was cut from */
-extern s32 func_L01_0047EBE0(void);
-extern void func_L01_00517748(int);
+extern void *func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(int);
 extern void *func_003BB3A8(s32);
 extern void *func_003B42F8(s32);
 extern s32 func_003B4528(void *, s32, s32, s32, s32);
@@ -91,7 +91,7 @@ extern s32 D_L01_001DC1B0;
 __asm__(".extern D_L01_001DC1B0, 4");
 extern s32 func_00381FF0(s32);
 extern void func_003B9298(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, f32);
-extern s32 func_L01_00518D40_0049A868(s32);
+extern void func_L01_00518D40_0049A868(s32);
 extern s32 func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
 extern s32 func_L01_00516AA0(s32, s32, s32);
 extern s32 func_003E8630(s32, s32);

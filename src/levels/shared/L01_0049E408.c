@@ -78,7 +78,7 @@ extern f32 D_L01_001D94E4;
 __asm__(".extern D_L01_001D94CC, 4");
 __asm__(".extern D_L01_001D94D4, 4");
 __asm__(".extern D_L01_001D94E4, 4");
-extern void func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00516558(s32, f32 *, f32 *);
 extern s32 func_L01_00516470(s32, f32, f32);
 
 s32 func_L01_0049E408(void) {
@@ -114,7 +114,7 @@ extern f32 D_L01_001D94E4;
 __asm__(".extern D_L01_001D94CC, 4");
 __asm__(".extern D_L01_001D94D0, 4");
 __asm__(".extern D_L01_001D94E4, 4");
-extern void func_L01_00516558(s32, f32 *, f32 *);
+extern s32 func_L01_00516558(s32, f32 *, f32 *);
 extern s32 func_L01_00516470(s32, f32, f32);
 
 s32 func_L01_0049E4B0(void) {

@@ -9,7 +9,7 @@ extern u8 *D_L39_00247914;
 /* pattern from L39_0068DDC8.c: scalar pointer with .extern size hint */
 __asm__(".extern D_L39_0024D760, 16");
 extern s32 *D_L39_0024D760;
-extern void func_L39_006D0078(void *);
+extern s32 func_L39_006D0078(void *);
 
 s32 func_L39_006CA268(u8 *arg0)
 {

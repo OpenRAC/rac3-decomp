@@ -53,7 +53,7 @@ extern void func_003B9298(s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32,
 extern s32 func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
 extern void func_003E7F20(s32, s32);
 extern void func_003E8630(s32, s32);
-extern void func_L01_00517538(s32, f32, f32);
+extern s32 func_L01_00517538(s32, f32, f32);
 extern void func_L01_00492D00(void *);
 extern void func_003E8348(s32, s32);
 extern void func_003E8710(s32, void *);

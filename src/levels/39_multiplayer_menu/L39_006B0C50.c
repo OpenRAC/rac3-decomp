@@ -2,7 +2,7 @@
 
 /* localdecomp:start func_L39_006B0C50 */
 extern void *D_00247914[];
-void func_L39_0067F168(void);
+s32 func_L39_0067F168(void);
 void func_L39_0068ADC8(void *);
 
 void func_L39_006B0C50(void *object)

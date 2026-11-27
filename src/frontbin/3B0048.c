@@ -7,6 +7,7 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern void func_003B0130();
 extern void func_003B0048(void);
 extern void func_003B01D0(s32 *);
@@ -50,7 +51,7 @@ s32 func_003B0070(S_3AAAC8 *p, s32 a, s32 b, s32 c) {
 /* localdecomp:end func_003B0070 */
 
 /* localdecomp:start func_003B0108 */
-extern void func_13D0F8();
+extern s32 func_13D0F8();
  
 s32 func_003B0108(void) {
     func_13D0F8();
@@ -61,7 +62,7 @@ s32 func_003B0108(void) {
 LINKER_REMNANT("asm/remnants", func_003B0128);
 
 /* localdecomp:start func_003B0130 */
-extern void func_0013D120(s32, s32, s32, s32, s32);
+extern s32 func_0013D120(s32, s32, s32, s32, s32);
 typedef struct { s32 f0, f4; s32 f8, fC, f10; s32 f14, f18; u8 p1C[0x2C]; s32 f48, f4C; u8 p50[0xC]; s32 f5C; } T;
 void func_003B0130(T *a) {
     if (a->f4 != 3) {
@@ -74,7 +75,7 @@ void func_003B0130(T *a) {
 /* localdecomp:end func_003B0130 */
 
 /* localdecomp:start func_003B01D0 */
-extern void func_0013D0C0(s32 *);
+extern s32 func_0013D0C0(s32 *);
 void func_003B01D0(s32 *p) {
     func_0013D0C0(p);
     p[0] = 0;

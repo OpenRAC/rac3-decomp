@@ -132,12 +132,12 @@ __asm__(".extern D_001D86B4, 4");
 
 
 extern void func_0011A264(void *, s32, s32);
-extern void func_0011B2E8();
+extern s32 func_0011B2E8();
 extern f32 func_0038DE98(f32, f32);
 extern f32 func_0038D478(f32);
 extern f32 func_0038D490(f32);
 extern s32 func_003AB268(void *);
-extern s32 *func_003AB270();
+extern s32 func_003AB270();
 extern void func_003AB288(void *, f32, f32, f32, f32);
 extern void func_003AB2D8(void *, s32);
 extern void func_003AB348(void *, s32);

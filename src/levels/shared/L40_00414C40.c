@@ -35,9 +35,9 @@ extern s32 func_L40_0048FF90(void *p, s32 a1, f32 a, f32 b);
 extern void func_L40_00490080(u8 *p);
 extern f32 func_0038CEA8(void *v);
 extern s32 func_L40_00490E98(u128_00414C40 *a0, f32 f12, f32 f13, f32 f14);
-extern void func_L40_00490F48(S_00414C40 *e, s32 n0, s32 *l0, s32 n1, s32 *l1, s32 n2, s32 *l2, s32 n3, s32 *l3);
+extern s32 func_L40_00490F48(S_00414C40 *e, s32 n0, s32 *l0, s32 n1, s32 *l1, s32 n2, s32 *l2, s32 n3, s32 *l3);
 extern void func_L40_004910D0(void);
-extern s32 func_L01_004450F0(u8 *, s32, s32);
+extern void func_L01_004450F0(u8 *, s32, s32);
 
 typedef struct {
     s32 a;

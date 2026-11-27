@@ -7,7 +7,7 @@ extern f32 D_001DC370_sda;
 extern f32 D_001DC374_sda;
 extern f32 D_001DC378_sda;
 extern f32 D_001DC37C_sda;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_00516C78(s32, s32, s32);
 s32 func_L01_005170B8(s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
@@ -96,7 +96,7 @@ extern s32 D_003D2880[];
 extern u8 D_001DC30A_sda;
 extern f32 D_001DC370_sda;
 extern f32 D_001DC374_sda;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_00516C78(s32, s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
 
@@ -158,7 +158,7 @@ extern s32 D_003D2880[];
 extern S5_0068A4A8 D_L39_00247A90;
 extern S2_0068A4A8 D_L39_00247AA8 __attribute__((section(".data")));
 extern f32 D_001DC31C_sda;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_005170B8(s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
 s32 func_L01_00517538(s32, f32, f32);
@@ -214,7 +214,7 @@ void func_L39_0068A4A8(S_0068A4A8 *self, s32 idx, s32 count, s32 a3, f32 x, f32 
 extern s32 D_003D2880[];
 extern f32 D_001DC314_sda;
 extern f32 D_001DC318_sda;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_005170B8(s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
 s32 func_L01_00517538(s32, f32, f32);
@@ -243,7 +243,7 @@ void func_L39_0068A6D0(u8 *arg0, s32 idx, s32 arg2, f32 x, f32 y, f32 sx, f32 sy
 /* localdecomp:start func_L39_0068A7B8 */
 extern s32 D_003D2880[];
 extern f32 D_001DC31C_sda;
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 s32 func_L01_005170B8(s32, s32);
 s32 func_L01_00516470(s32, f32, f32);
 s32 func_L01_00517538(s32, f32, f32);

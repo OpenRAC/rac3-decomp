@@ -10,7 +10,7 @@ s8 *func_L39_0050C218(void) {
 
 /* localdecomp:start func_L39_0050C230 */
 extern s8 D_L39_00453D68[];
-extern void func_L30_003C2D78(int, int, s8 *);
+extern s32 func_L30_003C2D78(int, int, s8 *);
 void func_L39_0050C230(int a0, int a1, s8 *a2)
 {
     if (!a2) {

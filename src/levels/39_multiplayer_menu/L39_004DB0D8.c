@@ -15,7 +15,7 @@ s32 func_L39_004DB0D8(void) {
 /* localdecomp:end func_L39_004DB0D8 */
 
 /* localdecomp:start func_L39_004DB110 */
-extern void func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern s32 func_L39_004BC6C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern void *func_L39_004BEED8(s32 arg0);
 typedef struct {
     s32 f0;

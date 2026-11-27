@@ -31,7 +31,7 @@ typedef struct {
     f32 f14C;
     u8 pad150[0x1C0 - 0x150];
     s32 f1C0;
-    volatile s32 f1C4;
+    s32 f1C4;
     u8 pad1C8[4];
     s32 f1CC;
     u8 pad1D0[8];
@@ -98,8 +98,8 @@ extern f32 func_0038DB48(f32);
 extern void func_003A2558(void);
 extern s32 func_0039AC08(s32);
 extern void func_0039AA38(s32);
-extern void func_00381CA8(s32);
-extern void func_00381D70(s32);
+extern s32 func_00381CA8(s32);
+extern s32 func_00381D70(s32);
 extern s32 func_003934B8(s32);
 #define ROW_38F3F8 ((E_38F3F8 *)((s32 *)D_001D9EF0_0038F3F8)[D_001D5CAC])
 /* localdecomp:start func_00394620 */
@@ -161,7 +161,7 @@ __asm__(".extern D_001D5D7C, 4");
 __asm__(".extern D_001D5D80, 4");
 extern void func_003AEC40(u8 *, s32, f32);
 extern s32 func_00397CA8(void);
-extern void func_11B2E8(void *, char *, s32);
+extern s32 func_11B2E8(void *, char *, s32);
 extern s32 func_0038DBD8(s32, s32, f32);
 extern s32 func_00390DB8_00394620(s32, s32, unsigned long, void *, s32);
 extern s32 func_00381D80_00394620(s32, s32);

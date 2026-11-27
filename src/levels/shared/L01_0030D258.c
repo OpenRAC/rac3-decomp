@@ -484,7 +484,7 @@ void func_L01_0030DF88(u8 *owner, u8 *arc) {
         *(vu0_q *)&second = *(vu0_q *)(arc + 0x10);
         vec_add_ab(&first, &first, arc + 0x20);
         vec_add_ba(&second, &second, arc + 0x30);
-        func_L01_0030D7A8(&points[i], arc + 0x20, arc + 0x30, &first, &second, (f32)i / 23.0f);
+        func_L01_0030D7A8((f32 *)&points[i], (f32 *)(arc + 0x20), (f32 *)(arc + 0x30), (f32 *)&first, (f32 *)&second, (f32)i / 23.0f);
         jitter.w = 0.0f;
         jitter.x = func_003824E0(-0.1f, 0.1f);
         jitter.y = func_003824E0(-0.1f, 0.1f);

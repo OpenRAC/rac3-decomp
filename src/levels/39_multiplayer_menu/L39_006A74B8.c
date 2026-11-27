@@ -27,8 +27,8 @@ typedef struct S_L39_006A6078 {
 } S_L39_006A6078;
 
 /* localdecomp:start func_L39_006A74B8 */
-s32 func_L39_0068ADC8(s32);
-s32 func_L39_005C1A60(s32, s32, s32);
+void func_L39_0068ADC8(s32);
+void func_L39_005C1A60(s32, s32, s32);
 s32 func_L39_0067F168();
 
 /* from rac4-decomp's func_L00_007457B0, renamed */

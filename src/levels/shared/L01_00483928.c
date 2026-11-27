@@ -70,8 +70,8 @@ struct VObj_487AC0 {
 };
 
 /* declared by functions of L01_004838A0.c, which this file was cut from */
-extern void func_L01_00517748(s32);
-extern s32 func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(s32);
+extern void *func_L01_0047EBE0(void);
 
 /* localdecomp:start func_L01_00483928 */
 typedef struct {
@@ -104,7 +104,7 @@ extern char D_L01_001E06F0[] __attribute__((section(".sdata")));
 extern u8 D_00143950[];
 
 extern s32 func_003E9138(s32, s32, s32, f32, f32, f32, f32);
-extern void func_L01_00516B90(s32, s32, s32);
+extern s32 func_L01_00516B90(s32, s32, s32);
 extern s32 func_L01_00517190(s32, s32);
 extern s32 func_003B5060(s32);
 extern s32 func_003E8B98(s32, s32, s32, s32, s32, s32, s32);
@@ -112,9 +112,9 @@ extern s32 func_003E8348(s32, s32);
 extern s32 func_00381FF0(s32);
 extern s32 func_003E8FE8(s32, s32, s32, f32, f32, f32, f32);
 extern int func_0011B868();
-extern void func_L01_00516AA0(s32, s32, s32);
+extern s32 func_L01_00516AA0(s32, s32, s32);
 extern s32 func_L01_00518110(s32, s32, s32, s32);
-extern void func_L01_00516470(s32, f32, f32);
+extern s32 func_L01_00516470(s32, f32, f32);
 extern s32 func_L01_00517538(s32, f32, f32);
 
 void func_L01_00483928(void) {

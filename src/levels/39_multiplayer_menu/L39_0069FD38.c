@@ -46,7 +46,7 @@ typedef struct {
     u8 f2C8;
 } S_0069FD88;
 
-extern void func_L39_0067F100(s32);
+extern s32 func_L39_0067F100(s32);
 extern void func_L39_0068AAB8(S_0069FD88 *);
 extern char *func_00381FF0(s32);
 extern s32 func_00120048(char *, char *, ...);

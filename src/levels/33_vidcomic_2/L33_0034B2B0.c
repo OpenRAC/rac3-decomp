@@ -28,8 +28,8 @@ __asm__(".extern D_L33_001DD78C, 16");
 __asm__(".extern D_L33_001DD794, 16");
 extern void func_L01_00456230(u8 *, s32);
 extern f32 func_003824E0(f32, f32);
-extern void func_L33_0034FEE8(void *, V_0034B2B0 *, s32, s32, s32, f32, f32, f32, f32, f32);
-extern void func_L33_00353800(void *, V_0034B2B0 *, s32, s32, s32, s32, s32);
+extern void *func_L33_0034FEE8(void *, V_0034B2B0 *, s32, s32, s32, f32, f32, f32, f32, f32);
+extern void *func_L33_00353800(void *, V_0034B2B0 *, s32, s32, s32, s32, s32);
 
 void func_L33_0034B2B0(u8 *a0, s32 i, void *a2) {
     P_0034B2B0 *e = *(P_0034B2B0 **)(a0 + 0x68);

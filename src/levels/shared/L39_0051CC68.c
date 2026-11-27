@@ -9,7 +9,7 @@ extern s32 func_L39_005B43C8(s32, s32);
 extern f32 func_L39_005B4410(f32, f32);
 extern void func_003CD250(void *);
 extern void func_0038CF68_0051CC68(void *, void *, f32);
-extern void func_L39_005C9A00(void *, void *, s32, s32, f32);
+extern void *func_L39_005C9A00(void *, void *, s32, s32, f32);
 extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, s32, s32);
 
 void func_L39_0051CC68(u8 *m, s32 sparks) {

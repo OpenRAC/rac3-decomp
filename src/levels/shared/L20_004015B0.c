@@ -25,7 +25,7 @@ extern void func_003A52A0(s32, s32, void *);
 extern void func_L01_00451FE0(void *m, s32 a, void *b, f32 x1, f32 x2, f32 x3, f32 x4, s32 e,
                               f32 x5, f32 x6, s32 f, s32 g, s32 c, s32 d, f32 x0, f32 one,
                               s32 h, s32 k);
-extern void func_L05_003DC520(void *, s32);
+extern u8 *func_L05_003DC520(void *, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_L02_00429840(void *, void *, s32, s32, void *, s32, s32, s32, f32, f32, f32, f32);
 extern void func_L02_003E2E38(void *, void *, f32, void *, s32, s32, f32, f32, f32, f32, s32);

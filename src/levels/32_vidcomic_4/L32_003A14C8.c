@@ -37,7 +37,7 @@ extern u8 D_1A30B0[];
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_003A4F28(u32);
 extern void func_L32_003A1E58(void *);
-extern void func_L32_003B8498(void *, f32, f32, f32, s32, u8, s32, s32, f32, s32, s32);
+extern void *func_L32_003B8498(void *, f32, f32, f32, s32, u8, s32, s32, f32, s32, s32);
 extern void func_L32_003A3310(void *);
 
 void func_L32_003A14C8(void *arg0, s32 arg1) {

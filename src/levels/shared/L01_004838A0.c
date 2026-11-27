@@ -70,8 +70,8 @@ struct VObj_487AC0 {
 };
 
 /* localdecomp:start func_L01_004838A0 */
-extern s32 func_L01_0047EBE0_004838A0(void);
-extern void func_L01_00517748(s32);
+extern void *func_L01_0047EBE0_004838A0(void);
+extern s32 func_L01_00517748(s32);
 
 void func_L01_004838A0(void) {
     func_L01_00517748(func_L01_0047EBE0_004838A0());
@@ -80,8 +80,8 @@ void func_L01_004838A0(void) {
 
 /* localdecomp:start func_L01_004838C8 */
 extern u8 D_00142732[];
-extern s32 func_L01_0047EBE0(void);
-extern void func_L01_00517748(s32);
+extern void *func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(s32);
 
 void func_L01_004838C8(void) {
     D_00142732[0] = 2;
@@ -91,8 +91,8 @@ void func_L01_004838C8(void) {
 
 /* localdecomp:start func_L01_004838F8 */
 extern u8 D_00142732[];
-extern s32 func_L01_0047EBE0(void);
-extern void func_L01_00517748(s32);
+extern void *func_L01_0047EBE0(void);
+extern s32 func_L01_00517748(s32);
 
 void func_L01_004838F8(void) {
     D_00142732[0] = 3;

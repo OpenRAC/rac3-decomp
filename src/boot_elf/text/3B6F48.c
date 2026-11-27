@@ -28,7 +28,7 @@ extern s32 D_001D8AA4;
 extern s32 D_001D8AA8;
 extern u8 D_001D5BDC[];
 extern u8 D_001D5BDC_003B6DB0[];
-extern void func_003A5748(s32, s32, s32);
+extern s32 func_003A5748(s32, s32, s32);
 typedef struct { u8 on; u8 pad[7]; } F;
 typedef struct { void (*fn)(); s32 pad; } T;
 extern s32 D_001D8A18_003B6E78;

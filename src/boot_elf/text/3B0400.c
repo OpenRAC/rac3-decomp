@@ -50,7 +50,7 @@ s32 func_003B0428(S_3AAAC8 *p, s32 a, s32 b, s32 c) {
 /* localdecomp:end func_003B0428 */
 
 /* localdecomp:start func_003B04C0 */
-extern void func_13D0F8();
+extern s32 func_13D0F8();
  
 s32 func_003B04C0(void) {
     func_13D0F8();
@@ -61,7 +61,7 @@ s32 func_003B04C0(void) {
 LINKER_REMNANT("asm/boot_elf/remnants", func_003B04E0);
 
 /* localdecomp:start func_003B04E8 */
-extern void func_0013D120(s32, s32, s32, s32, s32);
+extern s32 func_0013D120(s32, s32, s32, s32, s32);
 typedef struct { s32 f0, f4; s32 f8, fC, f10; s32 f14, f18; u8 p1C[0x2C]; s32 f48, f4C; u8 p50[0xC]; s32 f5C; } T;
 void func_003B04E8(T *a) {
     if (a->f4 != 3) {
@@ -74,7 +74,7 @@ void func_003B04E8(T *a) {
 /* localdecomp:end func_003B04E8 */
 
 /* localdecomp:start func_003B0588 */
-extern void func_0013D0C0(s32 *);
+extern s32 func_0013D0C0(s32 *);
 void func_003B0588(s32 *p) {
     func_0013D0C0(p);
     p[0] = 0;

@@ -9,7 +9,7 @@ typedef struct {
     u8 pad1A8[0x5C0 - 0x1A8];
 } Pad_00355C18;
 extern void func_003C3A10(void *, s32, s32, s32);
-extern void func_L01_0045AA30(void *, void *);
+extern s32 func_L01_0045AA30(void *, void *);
 extern u8 *func_L24_003B87F0(void *, f32);
 extern Pad_00355C18 D_001CD0C0[];
 extern s32 D_L24_001E0FD0[] __attribute__((section(".sdata")));

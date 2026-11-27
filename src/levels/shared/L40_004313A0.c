@@ -5,7 +5,7 @@ extern u8 *func_L39_0066DD30(s32, s32, s32);
 
 /* localdecomp:start func_L40_004313A0 */
 extern u8 *func_L39_0066DD30(s32 a0, s32 a1, s32 a2);
-extern u8 *func_L39_0066DCC8(s32 a0, s32 a1, s32 a2, s32 a3);
+extern s32 func_L39_0066DCC8(s32 a0, s32 a1, s32 a2, s32 a3);
 extern void func_L39_00662AA0(u8 *a0, s32 a1, s32 a2);
 extern void func_L39_00662B68(u8 *a0, s32 a1, s32 a2);
 

@@ -22,7 +22,7 @@ typedef struct {
     u8 pad3[0x3C8 - 0x2C8];
     s32 f3c8;
 } S_00694770;
-void func_L39_0068B2F8(s32, s32, s32);
+s32 func_L39_0068B2F8(s32, s32, s32);
 
 s32 func_L39_00694770(S_00694770 *p, s32 arg1)
 {
@@ -101,7 +101,7 @@ typedef struct {
 } S_006948A0;
 extern G_006948A0 *D_L39_0024D760 __attribute__((section(".data")));
 extern void *func_00381FF0(s32);
-extern void func_L39_006D0DD0(Q_006948A0 *);
+extern s32 func_L39_006D0DD0(Q_006948A0 *);
 
 void func_L39_006948A0(S_006948A0 *p)
 {

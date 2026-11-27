@@ -3,6 +3,7 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void func_0038D6C8(void *, void *, void *, f32);
 extern void func_0038D590(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
 extern void func_0038D640();
 /* --- end of declarations from other files --- */
 

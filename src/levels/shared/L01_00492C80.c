@@ -25,7 +25,7 @@ struct O_490778 {
 };
 
 /* localdecomp:start func_L01_00492C80 */
-extern void func_L01_00517918(s32);
+extern s32 func_L01_00517918(s32);
 extern void func_L01_00493038_00492C80(void);
 extern void func_003A2750(s32);
 

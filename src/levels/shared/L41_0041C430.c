@@ -33,7 +33,7 @@ __asm__(".extern D_L41_002477A0, 4");
 
 extern f32 func_L39_005B4410(f32, f32);
 extern void func_0038CF68(void *, void *, f32);
-extern void func_L39_005C5FC8(void *, void *, s32, s32, s32, s32, s32, s32);
+extern void *func_L39_005C5FC8(void *, void *, s32, s32, s32, s32, s32, s32);
 
 void func_L41_0041C430(void *o) {
     V_0041BB30 v;

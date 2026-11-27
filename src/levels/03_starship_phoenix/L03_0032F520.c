@@ -12,8 +12,8 @@ void func_0039EF28(void);
 void func_L03_0040F9E8(int a);
 void func_L03_004F54E0(int a);
 void func_L03_0035AD98(void);
-void func_L01_0044CD60(int a);
-void func_L01_00419248(int a);
+s32 func_L01_0044CD60(int a);
+s32 func_L01_00419248(int a);
 void func_L03_0032F520(void) {
     int i = D_001426E0[0xD6];
     if (i != 0) {

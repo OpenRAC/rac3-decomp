@@ -10,7 +10,7 @@ typedef struct {
     s16 fCA;
 } P_433210;
 extern P_433210 *func_L01_0045B958(void *);
-extern void func_L01_0045C150(void *, void *, s32, s32);
+extern s32 func_L01_0045C150(void *, void *, s32, s32);
 extern s32 func_L01_0045CED0(void *, void *);
 extern f32 func_0038CF00(void *, void *);
 

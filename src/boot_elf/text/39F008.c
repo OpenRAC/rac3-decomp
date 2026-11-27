@@ -277,7 +277,7 @@ extern u16 D_001D6308;
 extern s32 D_001D545C_0039C2D0;
 extern s32 D_001D4BE0_0039C2D0;
 extern u8 D_001A9318_0039C2D0[];
-extern void func_12BE28();
+extern s32 func_12BE28();
 extern void func_13AD58();
 extern void func_0039FE68();
 extern void func_0039E9C0();

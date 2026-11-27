@@ -11,7 +11,7 @@ extern void (*D_00226A00[])(s32);
 
 /* localdecomp:start func_003AC0F0 */
 extern void func_00121760();
-extern void func_003AA070();
+extern void *func_003AA070();
 extern char D_001D8230[];
 extern char D_001D8270[];
 extern char D_001D82A0[];

@@ -165,13 +165,13 @@ void func_L39_00689A70(void) {
 /* localdecomp:end func_L39_00689A70 */
 
 /* localdecomp:start func_L39_00689A90 */
-extern char D_001DC310_sda[8];
+extern s32 D_001DC310_sda;
 extern int D_L39_003D28C0[];
 extern int func_0038CAD0(char *);
 extern void func_L01_00516AA0();
 void func_L39_00689A90(void)
 {
-    if (func_0038CAD0(D_001DC310_sda)) {
+    if (func_0038CAD0((char *)&D_001DC310_sda)) {
         func_L01_00516AA0(D_L39_003D28C0[0], 1, 0);
     }
 }

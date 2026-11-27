@@ -65,10 +65,10 @@ extern s32 func_L39_006DC7C8(u8 *, s32, char *, s32);
 extern void func_L39_0067BBE8(M_0068C210 *);
 extern s32 func_0017E480(M_0068C210 *);
 extern s32 func_L39_006872E8(G_0068C210 *, s32, s32, s32, f32, s32);
-extern void func_L39_006D8E30(R_0068C210 *);
+extern s32 func_L39_006D8E30(R_0068C210 *);
 extern s32 func_00198578(void);
 extern void func_001375B0(void *, void *, s32);
-extern void func_L39_0067EB98(void);
+extern s32 func_L39_0067EB98(void);
 
 s32 func_L39_0068C210(S_0068C210 *this) {
     M_0068C210 msg;

@@ -61,7 +61,7 @@ extern s32 func_L01_00516AA0(s32, s32, s32);
 extern s32 func_L01_00516FD8(s32, s32);
 extern s32 func_L01_00516470(s32, f32, f32);
 extern s32 func_L01_005170B8(s32, s32);
-extern s32 func_L39_00611628(s32);
+extern void func_L39_00611628(s32);
 extern char *func_00381FF0(s32);
 extern void func_120048(char *, char *, s32);
 

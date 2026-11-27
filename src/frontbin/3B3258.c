@@ -17,7 +17,7 @@ typedef struct { u8 pad0[0x18]; u16 h18; u8 pad1a[0x12E]; s32 f148; u8 pad14c[0x
 extern S_003ADCB0 D_00142430;
 extern u8 D_001D4BE0;
 extern u8 D_001D4BE0_b_003B3258;
-extern void func_0012BE28();
+extern s32 func_0012BE28();
 extern void func_0013AD58();
 extern void func_0039E5E0();
 /* localdecomp:start func_003B3258 */
@@ -57,7 +57,7 @@ typedef struct { u8 pad0[0x18]; u16 h18; u8 pad1a[0x12E]; s32 f148; u8 pad14c[0x
 extern S_003ADCB0_003B3258 D_00142430_003B3258;
 extern u8 D_001D4BE0_003B3258;
 extern u8 D_001D4BE0_b_003ADCB0;
-extern void func_12BE28();
+extern s32 func_12BE28();
 extern void func_13AD58();
 extern void func_0039E5E0_003B3258();
 void func_003B3258(void *a, s32 b) {
@@ -92,7 +92,7 @@ extern void (*D_001DA100)();
 __asm__(".extern D_001D888C, 4");
 __asm__(".extern D_001DA100, 16");
 extern s32 D_001D888C;
-extern void func_003A0F98(s32, s32);
+extern s32 func_003A0F98(s32, s32);
 extern void func_003B39D8(void);
 void func_003B32D8(void) {
     s32 t = D_001D888C;

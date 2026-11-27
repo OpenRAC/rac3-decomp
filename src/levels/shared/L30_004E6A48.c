@@ -18,7 +18,7 @@ typedef struct {
 extern S_004E6988 D_001A4BE0;
 extern u8 *func_003C24B0(s32, s32);
 extern void func_L01_0050FB40(s32, s32, f32);
-extern void func_L30_004CF4B0(s32, s32);
+extern s32 func_L30_004CF4B0(s32, s32);
 
 typedef struct {
     u8 pad0[0x43];

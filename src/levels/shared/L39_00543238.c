@@ -61,7 +61,7 @@ typedef struct {
 } A_00543278;
 typedef struct { u8 p0[0x68]; B_00543278 *b68; } AA_00543278;
 extern void func_L39_005446C0(void *);
-extern void func_L39_00544580(void *);
+extern s32 func_L39_00544580(void *);
 extern f32 func_0038CEA8(void *);
 extern void func_L39_0066A398(void *, f32);
 

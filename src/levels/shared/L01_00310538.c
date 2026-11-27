@@ -13,7 +13,7 @@ extern void func_0038D890(void *, void *, void *, f32);
 extern s32 func_0013D3E0(void);
 extern f32 func_0038DAB8(f32, f32);
 extern s32 func_00382498(s32, s32);
-extern void func_L01_00472238(void *, void *, s32, s32, f32);
+extern void *func_L01_00472238(void *, void *, s32, s32, f32);
 extern s32 func_L01_00472560(void *, void *, s32, f32, s32);
 extern Pair8 D_L01_001DC698[];
 

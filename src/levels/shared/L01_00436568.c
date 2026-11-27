@@ -125,7 +125,7 @@ extern int D_001D545C;
 extern int D_00143950[];
 extern void *func_0011A264(void *, int, int);
 extern void func_L01_00436718(int a0);
-extern int *func_L01_00521C90(int, int);
+extern s32 func_L01_00521C90(int, int);
 extern char *func_003AF0B8(int *, int);
 extern void func_L01_00436568_00436740(void);
 extern void func_L01_004365A0(void);

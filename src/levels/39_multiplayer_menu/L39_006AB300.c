@@ -21,7 +21,7 @@ typedef struct S_006AB300 {
     char _p1e0[0x290 - 0x1E0];
     s32 cur;
 } S_006AB300;
-extern void func_L39_0068B2F8(void *, s32, s32);
+extern s32 func_L39_0068B2F8(void *, s32, s32);
 
 void func_L39_006AB300(S_006AB300 *self, s32 dx, s32 dy)
 {

@@ -66,7 +66,7 @@ extern f32 D_L39_002494BC;
 extern f32 D_L39_002494C0;
 extern f32 D_L39_002494C4;
 
-void func_L39_0067F100(s32);
+s32 func_L39_0067F100(s32);
 void func_L39_0068A9B8(s32);
 s32 func_00381FF0(s32);
 void func_L39_00689D28(void *, s32);
@@ -78,7 +78,7 @@ void func_L39_0068A4A8(void *, s32, s32, f32, f32, f32, f32, u32);
 void func_L39_0068AAB8(void *);
 void func_L39_00689BB0(void *, s32, s32);
 void func_L39_006BD788(void *);
-void func_L39_0068B2F8(void *, s32, s32);
+s32 func_L39_0068B2F8(void *, s32, s32);
 
 /* matches with the file flags plus @ps2as (inline lui/ori float immediates, mixed $gp/lui floats) */
 void func_L39_006BB1A0(u8 *arg0) {
