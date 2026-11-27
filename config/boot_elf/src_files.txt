@@ -224,6 +224,8 @@ src/boot_elf/core/13C8D0.c 0013C8D0
 src/boot_elf/core/13CB20.c 0013CB20
 src/boot_elf/core/13CC10.c 0013CC10
 src/boot_elf/text/381080.c 00381080
+src/boot_elf/text/381250.c 00381250
+src/boot_elf/text/381B98.c 00381B98
 src/boot_elf/text/382410.c 00382410
 src/boot_elf/text/382760.c 00382760
 src/boot_elf/text/382848.c 00382848

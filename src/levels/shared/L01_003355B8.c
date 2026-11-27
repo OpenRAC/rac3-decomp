@@ -812,7 +812,162 @@ void func_L01_00336D90(u8 *m)
 }
 /* localdecomp:end func_L01_00336D90 */
 
-INCLUDE_ASM("asm/levels", func_L01_00337880);
+/* localdecomp:start func_L01_00337880 */
+typedef struct {
+    u8 pad0[0x234]; s32 flag234; u8 pad238[0x25C0 - 0x238]; u8 *moby;
+} Hero_00337880;
+typedef struct {
+    s16 selectors[4];
+    u32 colors[4][4];
+    f32 rate;
+    s128 *vertices;
+    s16 (*indices)[8];
+    f32 (*uv)[2];
+    s16 count;
+    u8 pad5A[2];
+    f32 uv_rate;
+} Row_00337880;
+typedef struct { u8 bytes[0xF0]; } Equip_00337880;
+extern Hero_00337880 D_001A4BE0_00337880;
+extern u8 D_001425C0[];
+extern Equip_00337880 D_L01_002C5600[];
+extern Row_00337880 D_L01_002B13E8[];
+__asm__(".extern D_L01_001DCF94, 4");
+extern s32 D_L01_001DCF94;
+__asm__(".extern D_L01_001DCF98, 4");
+extern s32 D_L01_001DCF98;
+__asm__(".extern D_L01_001DCF9C, 4");
+extern s32 D_L01_001DCF9C;
+__asm__(".extern D_L01_001DCF90, 4");
+extern f32 D_L01_001DCF90;
+extern s32 D_L01_001DFB40;
+extern s32 D_L01_001E1890;
+typedef struct {
+    s128 pos[4];
+    u32 colors[4];
+    f32 uv[4][2];
+    unsigned long w70, w78, w80, w88;
+} Packet_00337880;
+void func_L01_00337880(u8 *m) {
+    extern unsigned long func_00389598(s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003D2DA0(void *, void *, s32);
+    Packet_00337880 s;
+    u8 *p;
+    Row_00337880 *r;
+    s32 s0, s1, s2, s3;
+    s32 texture, blend, tint, state, kind, group;
+    s32 now, dt, i, j, vi, k2;
+    f32 alpha_scale, scale, time;
+    f32 *uv;
+    f32 k, off;
+
+    p = *(u8 **)(m + 0x68);
+    if (p == 0) return;
+    if (*(f32 *)(p + 0x70) == 0.0f) return;
+    if (*(f32 *)(p + 0x70) == 1.0f) {
+        if (D_001A4BE0_00337880.moby[0x42] != D_001A4BE0_00337880.moby[0x43] || D_001A4BE0_00337880.moby[0x42] == 0xFF) {
+            *(f32 *)(p + 0x70) = 0.0f;
+            return;
+        }
+    }
+    texture = D_L01_001DCF94;
+    tint = D_L01_001DCF9C;
+    kind = (D_L01_002C5600 + D_001425C0[9])->bytes[1];
+    if (kind == 1) texture = 0x31;
+    else if (kind == 2) goto texture39;
+    else if (kind == 3) { texture39: texture = 0x39; }
+    else if (kind == 4) goto texture41;
+    else if (kind == 5) goto texture41;
+    else if (kind == 6) { texture41: texture = 0x41; }
+    else if (kind == 7 || D_001A4BE0_00337880.flag234 != 0) texture = 0x38;
+    blend = D_L01_001DCF98;
+    scale = 1.0f;
+    alpha_scale = 1.0f;
+    if (!((u32)(D_001A4BE0_00337880.moby[0x42] - 0x17) < 3 || D_001A4BE0_00337880.moby[0x42] == 0x28)) {
+        state = *(s16 *)(p + 0x78);
+    } else {
+        state = D_001A4BE0_00337880.moby[0x42];
+    }
+    if (state == 0x17) {
+        *(s16 *)(p + 0x78) = state;
+        group = 0;
+    } else if (state == 0x18) {
+        *(s16 *)(p + 0x78) = state;
+        group = 1;
+    } else if (state == 0x19) {
+        *(s16 *)(p + 0x78) = state;
+        group = 2;
+    } else {
+        *(s16 *)(p + 0x78) = 0x28;
+        group = 3;
+        if ((D_L01_002C5600 + D_001425C0[9])->bytes[1] >= 7 || D_001A4BE0_00337880.flag234 != 0) {
+            texture = 0xA;
+        } else {
+            texture = 0xC;
+        }
+        alpha_scale = 0.7f;
+        scale = 1.25f;
+        tint = 0x408080;
+        blend = 2;
+    }
+    r = &D_L01_002B13E8[group];
+    s0 = r->selectors[0];
+    s1 = r->selectors[1];
+    s2 = r->selectors[2];
+    s3 = r->selectors[3];
+    if (*(f32 *)(p + 0x70) == 1.0f) {
+        *(s128 *)(p + 0x00) = *(s128 *)(D_001A4BE0_00337880.moby + 0xC0);
+        *(s128 *)(p + 0x10) = *(s128 *)(D_001A4BE0_00337880.moby + 0xD0);
+        *(s128 *)(p + 0x20) = *(s128 *)(D_001A4BE0_00337880.moby + 0xE0);
+        D_L01_001E1890 = D_L01_001DFB40;
+    }
+    now = D_L01_001DFB40;
+    dt = now - D_L01_001E1890;
+    if (dt <= 0) dt = 1;
+    time = *(f32 *)(p + 0x70) + (f32)dt * r->rate;
+    *(f32 *)(p + 0x70) = time;
+    D_L01_001E1890 = now;
+    if ((f32)(r->count * 2) <= time) {
+        s32 st2 = D_001A4BE0_00337880.moby[0x42];
+        if ((u32)(st2 - 0x17) >= 3 && st2 != 0x28) {
+            *(f32 *)(p + 0x70) = 0.0f;
+        }
+        return;
+    }
+    s.w78 = func_00389598(texture);
+    s.w80 = 0xFF9000000260L;
+    s.w70 = 5;
+    s.w88 = ((long)blend << 2) | 0x8000000040L;
+    *(s128 *)(p + 0x30) = *(s128 *)(D_001A4BE0_00337880.moby + 0x10);
+    for (i = 0; i < r->count; i++) {
+        for (j = 0; j < 4; j++) {
+            vi = ((s16 (*)[4][2])r->indices)[i][j][0];
+            if (i == s0) {
+                s.colors[j] = r->colors[0][j];
+            } else if (i == s1) {
+                s.colors[j] = r->colors[1][j];
+            } else if (i == s2) {
+                s.colors[j] = r->colors[2][j];
+            } else if (i == s3) {
+                s.colors[j] = r->colors[3][j];
+            } else {
+                s.colors[j] = 0x50808080;
+            }
+            k2 = (s8)(s.colors[j] >> 24);
+            k2 = k2 * alpha_scale;
+            s.colors[j] = (k2 << 24) | tint;
+            func_0038CE20(&s.pos[j], &r->vertices[vi], scale);
+            uv = (f32 *)(((s16 (*)[4][2])r->indices)[i][j][1] * 8 + (s32)r->uv);
+            k = D_L01_001DCF90;
+            off = 1.0f - *(f32 *)(p + 0x70) * r->uv_rate;
+            s.uv[j][0] = (uv[0] - 0.5f) * k + 0.5f;
+            s.uv[j][1] = (uv[1] - 0.5f) * k + 0.5f + off;
+        }
+        func_003D2DA0(&s, p, 0);
+    }
+}
+/* localdecomp:end func_L01_00337880 */
 
 /* localdecomp:start func_L01_00337E10 */
 /* The wrench object's animation: sequence 11 while the hero is in state 0x37, else from

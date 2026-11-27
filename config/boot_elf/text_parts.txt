@@ -225,6 +225,8 @@
 0x0013CB20     -mvu0-use-vf0-vf2 -O2 -G8 -mno-check-zero-division
 0x0013CC10     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00381080     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
+0x00381250     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+0x00381B98     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division
 0x00382410     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
 0x00382760     -O2 -G8 -fopt-stack -mno-check-zero-division -mvu0-use-vf0-vf2 @ps2as
 0x00382848     -mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as

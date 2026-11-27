@@ -324,7 +324,201 @@ void func_L01_00388AC8(void *unused, s128 *position) {
 }
 /* localdecomp:end func_L01_00388AC8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00388EE0);
+/* localdecomp:start func_L01_00388EE0 */
+typedef struct {
+    vu0_v4 pos[4];
+    u32 colour[4];
+    f32 uv[4][2];
+    u8 pad70[0x20];
+} Quad_00388EE0;
+typedef struct { u8 pad[0x150]; s16 h150; s16 h152; } Screen_00388EE0;
+typedef struct {
+    u8 pad_0[0x8];
+    s16 h8;
+    s16 hA;
+    u8 pad_C[4];
+    vu0_v4 pos;
+    f32 f20;
+    f32 f24;
+    f32 f28;
+    f32 f2C;
+    vu0_v4 v30;
+    s32 w40;
+    f32 f44;
+    u8 pad_48[0x68 - 0x48];
+    f32 f68;
+} Vars_00388EE0;
+typedef struct {
+    u8 pad_0[0x10];
+    f32 x, y, z;
+    u8 pad_1C[0x68 - 0x1C];
+    Vars_00388EE0 *vars;
+} Moby_00388EE0;
+typedef struct {
+    u8 pad_0[0x80];
+    f32 x, y;
+    u8 pad_88[0x25C4 - 0x88];
+    s32 state;
+} Hero_00388EE0;
+typedef struct { u8 pad[0x140]; f32 x, y; } Cam_00388EE0;
+extern Screen_00388EE0 D_001CFEC0_00388EE0;
+extern Hero_00388EE0 D_001A4BE0_00388EE0;
+extern Cam_00388EE0 D_L01_001E2880;
+extern vu0_v4 D_L01_001E2A40;
+extern f32 D_L01_001DDDC4, D_L01_001DDDC8, D_L01_001DDDCC, D_L01_001DDDD0, D_L01_001DDDD4;
+extern f32 D_L01_001DDDD8, D_L01_001DDDDC, D_L01_001DDDE0, D_L01_001DDDE8;
+__asm__(".extern D_L01_001DDDC4, 4");
+__asm__(".extern D_L01_001DDDC8, 4");
+__asm__(".extern D_L01_001DDDCC, 4");
+__asm__(".extern D_L01_001DDDD0, 4");
+__asm__(".extern D_L01_001DDDD4, 4");
+__asm__(".extern D_L01_001DDDD8, 4");
+__asm__(".extern D_L01_001DDDDC, 4");
+__asm__(".extern D_L01_001DDDE0, 4");
+__asm__(".extern D_L01_001DDDE8, 4");
+
+/* the four corners of a ribbon quad: centre +/- a (along) +/- b (across), through t */
+static __inline__ void ribbon_00388EE0(Quad_00388EE0 *q, vu0_v4 *c, vu0_v4 *a, vu0_v4 *b, vu0_v4 *t) {
+    vec_add_ab(t, c, a);
+    vec_add_ab(&q->pos[0], t, b);
+    vec_sub_ab(&q->pos[1], t, b);
+    vec_sub_ab(t, c, a);
+    vec_add_ab(&q->pos[2], t, b);
+    vec_sub_ab(&q->pos[3], t, b);
+}
+
+/* the beam moby's draw: an 8-way starburst core of quads, 40 sparks around the hero (unless in state 7),
+   two rotating cross ribbons and, when vars->w40 is set, a glow ribbon and the screen flash */
+void func_L01_00388EE0(Moby_00388EE0 *moby) {
+    extern void func_003C5180(void *, void *, s32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_003C4840(void *, void *, f32);
+    extern void func_0038D850(void *, void *, void *);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_003D2DA0(void *, s32, s32);
+    extern f32 func_0038D160(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_00382498(s32, s32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, f32, f32, f32, s32);
+    extern void func_0038AF30(s32, s32, s32, s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003A9440(s32, s32);
+    extern u8 *D_L01_00221098[];
+    Quad_00388EE0 quad;
+    vu0_v4 pos, hit, dir, c, d, e, f, h100, h110, h120, h130, h140, h150;
+    Vars_00388EE0 *vars = moby->vars;
+    s32 i, j, life, spin, colour;
+    f32 k, k1, angle, lerp;
+    u8 *p;
+
+    *(vu0_q *)&pos = *(vu0_q *)&vars->pos;
+    func_003C5180(&pos, &hit, 1);
+    vec_sub_ba(&dir, &D_L01_001E2A40, &pos);
+    func_0038CF68(&dir, &dir, 1.0f);
+    if (vars->h8 != 0) {
+        k1 = (f32)vars->h8 * vars->f20;
+        func_003D93B0(&quad, 0x1A, 1, 0x80);
+        colour = ((s32)(k1 * 255.0f) << 24) | 0xFF4020;
+        quad.colour[0] = quad.colour[1] = quad.colour[2] = quad.colour[3] = colour;
+        quad.uv[0][0] = 0.5f; quad.uv[0][1] = 0.0f;
+        quad.uv[1][0] = 0.5f; quad.uv[1][1] = 1.0f;
+        quad.uv[2][0] = 1.0f; quad.uv[2][1] = 0.0f;
+        quad.uv[3][0] = 1.0f; quad.uv[3][1] = 1.0f;
+
+        func_0038CE20(&c, &hit, D_L01_001DDDC4);
+        vec_add_ab(&d, &pos, &c);
+        func_003C4840(&e, &dir, vars->f68);
+        func_0038D850(&c, &c, &e);
+        for (i = 0; i < 8; i++) {
+            func_0038CE90(&f, &dir, &c);
+            func_0038CF68(&f, &f, D_L01_001DDDC8);
+            vec_add_ab(&quad.pos[0], &pos, &f);
+            vec_sub_ab(&quad.pos[1], &pos, &f);
+            func_0038CE20(&f, &f, D_L01_001DDDCC / D_L01_001DDDC8);
+            vec_add_ab(&h100, &pos, &c);
+            vec_add_ab(&quad.pos[2], &h100, &f);
+            vec_sub_ab(&quad.pos[3], &h100, &f);
+            func_003D2DA0(&quad, 0, 0);
+            if (i < 7) {
+                func_003C4840(&e, &dir, 0.7853982f);
+                func_0038D850(&c, &c, &e);
+            }
+        }
+        if (D_001A4BE0_00388EE0.state != 7) {
+            for (j = 39; j >= 0; j--) {
+                angle = func_0038D160(D_001A4BE0_00388EE0.x - D_L01_001E2880.x, D_001A4BE0_00388EE0.y - D_L01_001E2880.y);
+                func_L01_00443A18(1.0f, 2.0f);
+                f.x = moby->x + func_L01_00443A18(0.0f, 0.15f);
+                f.y = moby->y + func_L01_00443A18(0.0f, 0.15f);
+                f.z = moby->z - 0.3f;
+                angle = func_0038DAB8(angle, func_L01_00443A18(0.0f, -6.2831855f));
+                h100.x = func_0038D098(angle) * 0.20000002f;
+                h100.y = func_0038D0B0(angle) * 0.20000002f;
+                h100.z = 0.0f;
+                life = (func_00382498(10, 30) * 5 + 2) / 6;
+                spin = func_00382498(-2, -4);
+                p = func_L01_004713C8(&f, &h100, life, 0x707070, spin, 0x40, 0, 63000.004f, 168000.0f, 0.0f, 0);
+                if (p != 0) {
+                    p[2] = D_L01_00221098[23][0];
+                }
+            }
+        }
+    }
+    k = (f32)vars->hA * vars->f24;
+    vars->f28 = func_0038DAB8(vars->f28, D_L01_001DDDD8 * 0.017453292f);
+    vars->f2C = func_0038DAB8(vars->f2C, D_L01_001DDDDC * 0.017453292f);
+    func_003D93B0(&quad, 0x3D, 1, 0x80);
+    colour = ((s32)(k * 20.0f) << 24) | 0xFF8080;
+    quad.uv[0][0] = 0.0f; quad.uv[0][1] = 0.0f;
+    quad.uv[1][0] = 0.0f; quad.uv[1][1] = 1.0f;
+    quad.uv[2][0] = 1.0f; quad.uv[2][1] = 0.0f;
+    quad.uv[3][0] = 1.0f; quad.uv[3][1] = 1.0f;
+    quad.colour[0] = quad.colour[1] = quad.colour[2] = quad.colour[3] = colour;
+    func_0038CE20(&c, &vars->v30, k * -16.0f + 16.0f);
+    vec_add_ba(&d, &pos, &c);
+    vec_sub_ab(&e, &D_L01_001E2A40, &d);
+    func_0038CF68(&e, &e, 1.0f);
+    func_003C4840(&f, &e, vars->f28);
+    func_0038CE90(&h100, &e, &hit);
+    func_0038CE90(&h110, &h100, &e);
+    func_0038D850(&h120, &h110, &f);
+    lerp = D_L01_001DDDD4 + (D_L01_001DDDD0 - D_L01_001DDDD4) * k;
+    func_0038CF68(&h120, &h120, lerp);
+    func_0038CE90(&h130, &e, &h120);
+    func_0038CF68(&h130, &h130, lerp);
+    ribbon_00388EE0(&quad, &d, &h120, &h130, &h140);
+    func_003D2DA0(&quad, 0, 0);
+    func_003C4840(&f, &e, vars->f2C);
+    func_0038D850(&h120, &h110, &f);
+    func_0038CE20(&h120, &h120, lerp);
+    func_0038CE90(&h130, &e, &h120);
+    func_0038CF68(&h130, &h130, lerp);
+    ribbon_00388EE0(&quad, &d, &h120, &h130, &h140);
+    func_003D2DA0(&quad, 0, 0);
+    if (vars->w40 != 0) {
+        k = (f32)vars->w40 * vars->f44;
+        func_003D93B0(&quad, 0xB, 4, 0x80);
+        colour = ((s32)(k * 255.0f) << 24) | 0x808080;
+        quad.colour[0] = quad.colour[1] = quad.colour[2] = quad.colour[3] = colour;
+        func_0038CE20(&h150, &dir, -0.1f);
+        vec_add_ba(&d, &D_L01_001E2A40, &h150);
+        func_0038CE90(&h130, &dir, &hit);
+        func_0038CF68(&h130, &h130, D_L01_001DDDE0);
+        func_0038CE90(&h120, &h130, &dir);
+        func_0038CF68(&h120, &h120, D_L01_001DDDE0);
+        ribbon_00388EE0(&quad, &d, &h120, &h130, &h140);
+        func_003D2DA0(&quad, 0, 0);
+        colour = ((s32)(D_L01_001DDDE8 * k) << 24) | 0x808080;
+        quad.colour[0] = quad.colour[1] = quad.colour[2] = quad.colour[3] = colour;
+        func_003A9440(0x42, 0x48);
+        func_0038AF30(0, D_001CFEC0_00388EE0.h152, 0, D_001CFEC0_00388EE0.h150, quad.colour[0]);
+    }
+}
+/* localdecomp:end func_L01_00388EE0 */
 
 /* localdecomp:start func_L01_00389798 */
 typedef struct {
