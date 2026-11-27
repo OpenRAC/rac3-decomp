@@ -46,6 +46,20 @@ typedef struct {
 INCLUDE_ASM("asm/levels", func_L01_00454728);
 
 /* localdecomp:start func_L01_00455550 */
+/* declared by func_L01_00454728's C before it went back to INCLUDE_ASM */
+#include "vu0.h"
+extern f32 func_003C4138(f32 *, f32, f32);
+extern f32 func_L01_004395E0(void *);
+extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern f32 func_0038CEA8(void *);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
 #include "vu0.h"
 
 typedef struct {
@@ -271,6 +285,10 @@ finish:
 /* localdecomp:end func_L01_00455550 */
 
 /* localdecomp:start func_L01_00455E18 */
+/* declared by func_L01_00454728's C before it went back to INCLUDE_ASM */
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
 typedef struct { u8 thresholds[16]; f32 previous; } Breaks_00455E18;
 typedef struct { f32 value; s16 maximum; } Health_00455E18;
 typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) Vec_00455E18;
