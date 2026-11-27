@@ -13,3 +13,4 @@ levels	func_L39_0068B2F8	same code as its NTSC-U twin func_L39_00688750, but the
 levels	func_L39_006787B0	same code as its NTSC-U twin func_L39_00675DC8, but the carried C does not check MATCH there yet (not examined)
 levels	func_L01_004A2FC0	same code as its NTSC-U twin func_L01_0049F760, but the carried C does not check MATCH there yet (not examined)
 levels	func_L39_004B5BE8	its PAL C checks MATCH on the NTSC-U twin (func_L39_004B59E8) in its whole file, but checked alone (as the version map does) it is one word off there (bnel for retail's bnez, 1 of 223); c_objects builds it from the whole file
+levels	func_L39_0067EBD0	same code as its NTSC-U twin func_L39_0067C0B0, but the carried C checks only 25% there (first seen in the carry after its file, L39_0067D410.c, became @ps2as; not examined)
