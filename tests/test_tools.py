@@ -45,7 +45,9 @@ class TargetsTest(unittest.TestCase):
 
     def test_yaml_names_the_same_sha1(self):
         for t in targets.TARGETS.values():
-            m = re.search(r"^sha1:\s*([0-9A-Fa-f]{40})", open(t.path("yaml")).read(), re.M)
+            with open(t.path("yaml")) as f:
+                yaml_text = f.read()
+            m = re.search(r"^sha1:\s*([0-9A-Fa-f]{40})", yaml_text, re.M)
             self.assertIsNotNone(m, t.yaml)
             self.assertEqual(m.group(1).lower(), t.sha1)
 
@@ -166,7 +168,8 @@ class FlagTableTest(unittest.TestCase):
     def test_eeas_program(self):
         with tempfile.TemporaryDirectory() as d:
             prog = os.path.join(d, "ee-as")
-            open(prog, "w").close()
+            with open(prog, "w"):
+                pass
             with patch.dict(os.environ, {"UYA_EEAS": prog}):
                 self.assertEqual(eeas.program(), prog)
             with patch.dict(os.environ, {}, clear=True):
@@ -226,8 +229,8 @@ class EntryPointTest(unittest.TestCase):
         import srcfiles
         for name, t in targets.TARGETS.items():
             starts = [s for _, s in srcfiles.read_file_list(t.path("files"))]
-            lines = [int(l.split()[0], 16) for l in open(t.path("parts"))
-                     if l.split("#", 1)[0].strip()]
+            with open(t.path("parts")) as f:
+                lines = [int(l.split()[0], 16) for l in f if l.split("#", 1)[0].strip()]
             self.assertEqual(sorted(lines), sorted(starts), name)
 
     def test_readme_takes_progress_from_bytematch(self):
@@ -465,7 +468,8 @@ class LevelCodeTest(unittest.TestCase):
                 '/* localdecomp:end func_L01_002F7808 */\r\n')
         with tempfile.TemporaryDirectory(dir=ROOT) as d:
             path = os.path.join(d, "x.c")
-            open(path, "w", newline="").write(text)
+            with open(path, "w", newline="") as f:
+                f.write(text)
             prelude, chunks = level_tree.parse_source(os.path.relpath(path, ROOT))
         self.assertEqual(prelude, '#include "common.h"\r\n\r\n')
         self.assertEqual([(n, k) for n, k, _ in chunks], [("func_L01_002F7800", "INCLUDE_ASM"),
@@ -489,7 +493,8 @@ class LevelDivsNopsTest(unittest.TestCase):
             self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
             places = [(0x00400010, ["func_L08_00000010"]), (0x00400030, ["func_L08_00000030"])]
             level_tree.write_divs_nops(d, 8, places, rows)
-            lines = [l for l in open(os.path.join(d, "divs_nops.txt")) if not l.startswith("#")]
+            with open(os.path.join(d, "divs_nops.txt")) as f:
+                lines = [l for l in f if not l.startswith("#")]
             self.assertEqual(lines, ["func_00400010 2 0 1\n"])  # under the level's own names
 
     def test_committed_table_parses(self):
@@ -513,7 +518,8 @@ class LevelSqRaTest(unittest.TestCase):
             self.assertEqual(sorted(rows), ["func_L08_00000010", "func_L09_00000020"])
             places = [(0x00400010, ["func_L08_00000010"]), (0x00400030, ["func_L08_00000030"])]
             level_tree.write_sq_ra_funcs(d, 8, places, rows)
-            lines = [l for l in open(os.path.join(d, "sq_ra_funcs.txt")) if not l.startswith("#")]
+            with open(os.path.join(d, "sq_ra_funcs.txt")) as f:
+                lines = [l for l in f if not l.startswith("#")]
             self.assertEqual(lines, ["func_00400010\n"])  # under the level's own names
 
     def test_committed_table_parses(self):

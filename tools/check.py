@@ -85,14 +85,15 @@ def read_table(path, keyed_by_name=False):
     rows = []
     if not os.path.exists(path):
         return rows
-    for line in open(path):
-        fields = line.split('#', 1)[0].split()
-        if len(fields) < 2:
-            continue
-        if keyed_by_name:
-            rows.append((fields[0].lower(), fields[1:]))
-        else:
-            rows.append((int(fields[0], 16), fields[1:]))
+    with open(path) as fh:
+        for line in fh:
+            fields = line.split('#', 1)[0].split()
+            if len(fields) < 2:
+                continue
+            if keyed_by_name:
+                rows.append((fields[0].lower(), fields[1:]))
+            else:
+                rows.append((int(fields[0], 16), fields[1:]))
     return rows
 
 
@@ -522,10 +523,11 @@ def resolve_relocations(elf, text):
 
 
 def diff_object(o_path, names, retail, quiet):
-    elf = ELFFile(open(o_path, "rb"))
-    text = elf.get_section_by_name(".text").data()
-    resolved, mask = resolve_relocations(elf, text)
-    syms = {s.name: s for s in elf.get_section_by_name(".symtab").iter_symbols()}
+    with open(o_path, "rb") as _ef:
+        elf = ELFFile(_ef)
+        text = elf.get_section_by_name(".text").data()
+        resolved, mask = resolve_relocations(elf, text)
+        syms = {s.name: s for s in elf.get_section_by_name(".symtab").iter_symbols()}
     results = {}
     for name in names:
         s = syms.get(name)
@@ -687,7 +689,8 @@ def main(argv=None):
             ap.error("conflicting early extern sizes for " + symbol)
         args.early_extern_sizes[symbol] = size
 
-    src = open(args.file).read()
+    with open(args.file) as _sf:
+        src = _sf.read()
     names = args.names or list(dict.fromkeys(FUNC_DEF_RE.findall(src)))
     if not names:
         sys.exit("no func_XXXXXXXX definitions found; pass the function name")

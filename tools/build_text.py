@@ -48,12 +48,13 @@ _EXTERN_HINT_RE = EXTERN_HINT_RE
 
 def read_parts(path):
     parts = []
-    for line in open(path):
-        line = line.split('#', 1)[0].strip()
-        if not line:
-            continue
-        fields = line.split()
-        parts.append((int(fields[0], 16), fields[1:]))
+    with open(path) as fh:
+        for line in fh:
+            line = line.split('#', 1)[0].strip()
+            if not line:
+                continue
+            fields = line.split()
+            parts.append((int(fields[0], 16), fields[1:]))
     parts.sort()
     if not parts:
         sys.exit(f"{path}: no parts defined")

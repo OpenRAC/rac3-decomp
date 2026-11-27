@@ -320,14 +320,16 @@ class ObjectTest(unittest.TestCase):
         return path, words
 
     def text(self, path, n):
-        data = open(path, "rb").read()
+        with open(path, "rb") as f:
+            data = f.read()
         off, size = dnas.read_object(data)["text"]
         self.assertEqual(size, 4 * n)
         return list(struct.unpack_from("<%dI" % n, data, off))
 
     def test_read_object(self):
         path, words = self.make(relocs=[(0x38, 5), (0x40, 6), (0x10, 4)])
-        obj = dnas.read_object(open(path, "rb").read())
+        with open(path, "rb") as f:
+            obj = dnas.read_object(f.read())
         self.assertEqual(obj["relocated"], {0x38, 0x40, 0x10})
         self.assertEqual(obj["symbols"][self.FN], (0, 4 * len(words)))
         self.assertEqual(obj["symbols"]["dnas_blk_%s_0" % self.FN][0], 0x38)
@@ -337,13 +339,15 @@ class ObjectTest(unittest.TestCase):
     def test_protects_in_place(self):
         s = 1 + dnas.BEFORE
         path, words = self.make(relocs=[(4 * s, 5), (4 * (s + 2), 6), (4, 4)])
-        before = open(path, "rb").read()
+        with open(path, "rb") as f:
+            before = f.read()
         r = row(function=self.FN, offset=0x38, length=0xC)
         notes = []
         done = dnas.protect_object(path, {(self.FN, 0): r}, notes=notes)
         self.assertEqual(done, [(self.FN, 0, r)])
         self.assertEqual(notes, [])
-        after = open(path, "rb").read()
+        with open(path, "rb") as f:
+            after = f.read()
         self.assertEqual(len(after), len(before))
         self.assertEqual(self.text(path, len(words)), dnas.protect_words(words, {s, s + 2, 1}, {s: r}))
         off, size = dnas.read_object(after)["text"]
@@ -369,9 +373,12 @@ class ObjectTest(unittest.TestCase):
 
     def test_an_object_without_blocks_is_left_alone(self):
         path, _ = self.make(words=[1, 2, 3, 4], symbols=[(self.FN, 0, 16)])
-        before = open(path, "rb").read()
+        with open(path, "rb") as f:
+            before = f.read()
         self.assertEqual(dnas.protect_object(path, {}), [])
-        self.assertEqual(open(path, "rb").read(), before)
+        with open(path, "rb") as f:
+            after = f.read()
+        self.assertEqual(after, before)
 
     def test_labels_and_blocks_must_agree(self):
         words = [0x27BDFFF0] + blank(3) + [0x03E00008, 0x27BD0010]

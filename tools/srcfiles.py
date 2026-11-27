@@ -46,12 +46,13 @@ def read_file_list(path=None):
     """[(relative path, start address)] in link order (the current target's list by default)."""
     path = path or targets.get().path("files")
     out = []
-    for line in open(path):
-        line = line.split("#", 1)[0].strip()
-        if not line:
-            continue
-        rel, start = line.split()[:2]
-        out.append((rel, int(start, 16)))
+    with open(path) as fh:
+        for line in fh:
+            line = line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            rel, start = line.split()[:2]
+            out.append((rel, int(start, 16)))
     return out
 
 
@@ -65,7 +66,8 @@ def file_for_address(files, addr):
 
 
 def read_source(rel, root=ROOT):
-    return open(os.path.join(root, rel), errors="replace").read().replace("\r\n", "\n")
+    with open(os.path.join(root, rel), errors="replace") as fh:
+        return fh.read().replace("\r\n", "\n")
 
 
 # ---------------------------------------------------------------- C scanning

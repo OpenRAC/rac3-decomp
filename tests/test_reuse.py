@@ -252,7 +252,8 @@ class HeaderKeyTest(unittest.TestCase):
             self.assertEqual(self.keys(d, items), base)
 
             def changed(rel, text):
-                old = open(os.path.join(d, rel)).read()
+                with open(os.path.join(d, rel)) as f:
+                    old = f.read()
                 write(os.path.join(d, rel), text)
                 got = [k != b for k, b in zip(self.keys(d, items), base)]
                 write(os.path.join(d, rel), old)
@@ -440,7 +441,8 @@ class WatchTest(unittest.TestCase):
                 if item is a:
                     write(hero, "typedef int other;\n")
                 if item is c:
-                    old = open(vu0).read()
+                    with open(vu0) as fh:
+                        old = fh.read()
                     write(vu0, "#define qzero(x) x = 9\n")
                     write(vu0, old)
                 return item, "-", "no compile of the block alone gives MATCH"
@@ -570,7 +572,8 @@ class RepositoryKeyTest(unittest.TestCase):
         import re
         got = {os.path.abspath(p) for p in c_objects.check_tools()}
         for p in got:
-            text = open(p, errors="replace").read()
+            with open(p, errors="replace") as fh:
+                text = fh.read()
             for m in re.finditer(r"^\s*(?:from\s+(\w+)\s+import|import\s+([\w, ]+))", text, re.M):
                 for mod in [m.group(1)] if m.group(1) else [x.split()[0] for x in m.group(2).split(",") if x.strip()]:
                     f = os.path.join(ROOT, "tools", mod + ".py")
@@ -586,7 +589,12 @@ class RepositoryKeyTest(unittest.TestCase):
         generated = os.path.join(str(ROOT), "include", "bytematch_names.h")
         seen = 0
         for program, name, places, rel, nat in c_objects.placements():
-            data = open(os.path.join(str(ROOT), rel), "rb").read() if os.path.isfile(os.path.join(str(ROOT), rel)) else None
+            rel_path = os.path.join(str(ROOT), rel)
+            if os.path.isfile(rel_path):
+                with open(rel_path, "rb") as fh:
+                    data = fh.read()
+            else:
+                data = None
             got = files.header_paths(program, rel, nat, data)
             self.assertIsNotNone(got, rel)
             paths = {p for p, _ in got}

@@ -46,7 +46,8 @@ class Blocks(unittest.TestCase):
         c = code(BEQZ_A0_2, NOP, ADDIU_V0_1, JR_RA, NOP)
         with tempfile.TemporaryDirectory() as d:
             cov = os.path.join(d, "cover.txt")
-            open(cov, "w").write("00100000 5 1 1 11011\n")
+            with open(cov, "w") as f:
+                f.write("00100000 5 1 1 11011\n")
             run, total, words, n, ranges = fcheck.coverage(cov, c, 0x100000)
         self.assertEqual((run, total, words, n), (2, 3, 4, 5))
         self.assertEqual(ranges, "00100008-00100008")
@@ -55,7 +56,8 @@ class Blocks(unittest.TestCase):
         c = code(BEQZ_A0_2, NOP, ADDIU_V0_1, JR_RA, NOP)
         with tempfile.TemporaryDirectory() as d:
             cov = os.path.join(d, "cover.txt")
-            open(cov, "w").write("00100000 5 1 1 11011\n")
+            with open(cov, "w") as f:
+                f.write("00100000 5 1 1 11011\n")
             ranges = fcheck.coverage(cov, c, 0x100000, shift=-0x100)[4]
         self.assertEqual(ranges, "000FFF08-000FFF08")
 
@@ -114,7 +116,8 @@ class SmallDataUnderG0(unittest.TestCase):
             image += bytes(o - len(image)) + b
         image += bytes(shoff - len(image)) + b"".join(heads)
         path = os.path.join(d, "cand.o")
-        open(path, "wb").write(image)
+        with open(path, "wb") as f:
+            f.write(image)
         return path
 
     def placed_reference(self, addend, g0):
@@ -281,7 +284,8 @@ class Table(unittest.TestCase):
                 "func_00200000\tnonmatching/functional/func_00200000.c\tfrontbin\tfunctional\tlow\tpending\tw\ty\n")
         with tempfile.TemporaryDirectory() as d:
             table = os.path.join(d, "functional.tsv")
-            open(table, "w").write(text)
+            with open(table, "w") as f:
+                f.write(text)
             saved, saved_check = fcheck.TABLE, fcheck.check
             fcheck.TABLE = table
             fcheck.check = lambda name, candidate, program=None, fuzz=0: {
@@ -291,7 +295,8 @@ class Table(unittest.TestCase):
                 fcheck.gate(["func_00100000"], True)
             finally:
                 fcheck.TABLE, fcheck.check = saved, saved_check
-            lines = open(table).read().splitlines()
+            with open(table) as f:
+                lines = f.read().splitlines()
         self.assertEqual(lines[:2], text.splitlines()[:2])
         self.assertEqual(lines[2].split("\t")[5], "same-partial 2/3 blocks, 3/3 states (unrun: 00100008-00100008)")
         self.assertEqual(lines[2].split("\t")[:5], text.splitlines()[2].split("\t")[:5])
@@ -303,16 +308,19 @@ class Table(unittest.TestCase):
                 "func_00100000\tg.c\thigh\tboot_elf\tfunctional\tpending\tw\ty\n")
         with tempfile.TemporaryDirectory() as d:
             table, out = os.path.join(d, "functional.tsv"), os.path.join(d, "out.tsv")
-            open(table, "w").write(text)
-            open(out, "w").write("func_L01_00300000\tlevels:shared\tdiffers 1/2 blocks, 1/1 states\n"
-                                 "func_L01_00300000\tlevels:shared\tsame 2/2 blocks, 3/3 states\n")
+            with open(table, "w") as f:
+                f.write(text)
+            with open(out, "w") as f:
+                f.write("func_L01_00300000\tlevels:shared\tdiffers 1/2 blocks, 1/1 states\n"
+                        "func_L01_00300000\tlevels:shared\tsame 2/2 blocks, 3/3 states\n")
             saved = fcheck.TABLE
             fcheck.TABLE = table
             try:
                 fcheck.merge([out])
             finally:
                 fcheck.TABLE = saved
-            lines = open(table).read().splitlines()
+            with open(table) as f:
+                lines = f.read().splitlines()
         self.assertEqual(lines[1].split("\t")[5], "same 2/2 blocks, 3/3 states")
         self.assertEqual(lines[2], text.splitlines()[2])
 

@@ -836,10 +836,11 @@ def blocks(code, address):
 def hits_of(cov_file, address):
     """Which words of the function at ADDRESS ran, from openrac-fcheck --coverage."""
     if os.path.exists(cov_file):
-        for line in open(cov_file):
-            f = line.split()
-            if len(f) == 5 and int(f[0], 16) == address:
-                return [c == "1" for c in f[4]]
+        with open(cov_file) as fh:
+            for line in fh:
+                f = line.split()
+                if len(f) == 5 and int(f[0], 16) == address:
+                    return [c == "1" for c in f[4]]
     return []
 
 
@@ -919,7 +920,8 @@ def fuzz_run(cmd):
 def read_state(path):
     """(registers, [(size, compressed bytes)] of RAM, scratchpad, VU0 micro and data) of a state
     file (openrac-boot --capture: OpenRAC's tools/interpreter/src/sys/snapshot.cpp)."""
-    data = open(path, "rb").read()
+    with open(path, "rb") as fh:
+        data = fh.read()
     if data[:8] != SNAP_MAGIC:
         raise ValueError(f"{path} is not a call state")
     regs = bytearray(data[8:8 + SNAP_REGS])
@@ -1640,7 +1642,11 @@ def check_level(name, candidate, use_retail, ulps, keep, res, fuzz=0):
 def read_table():
     """(lines, columns, rows) of nonmatching/functional.tsv: the columns are its last comment line
     that starts with "# name"; each row a dict by column, with "_line" its index in LINES."""
-    lines = open(TABLE).read().splitlines() if os.path.exists(TABLE) else []
+    if os.path.exists(TABLE):
+        with open(TABLE) as fh:
+            lines = fh.read().splitlines()
+    else:
+        lines = []
     columns = ["name", "file"]
     rows = []
     for k, line in enumerate(lines):
@@ -1698,7 +1704,8 @@ def write_gates(verdicts):
         if cell is not None:
             r["gate"] = cell
             lines[r["_line"]] = "\t".join(r.get(c, "") for c in columns)
-    open(TABLE, "w").write("\n".join(lines) + "\n")
+    with open(TABLE, "w") as fh:
+        fh.write("\n".join(lines) + "\n")
 
 
 def gate(names, write, jobs=1, shard=None, out=None, only=None, fuzz=0):
@@ -1726,20 +1733,24 @@ def gate(names, write, jobs=1, shard=None, out=None, only=None, fuzz=0):
             sink.flush()
         worst = max(worst, {"same": 0, "same-read": 0, "same-partial": 0}.get(res["status"], 1))
 
-    if jobs > 1:
-        import concurrent.futures as cf
-        with cf.ProcessPoolExecutor(jobs) as pool:
-            import functools
-            for name, program, res in pool.map(functools.partial(gate_one, fuzz=fuzz), todo, chunksize=1):
-                take(name, program, res)
-    else:
-        for r in todo:
-            take(*gate_one(r, fuzz))
-    took = (datetime.datetime.now() - t0).total_seconds()
-    print(f"gate: {len(todo)} rows in {took:.0f} s ({len(todo) / max(took, 1e-9):.2f} a second, {jobs} jobs)")
-    if write:
-        write_gates(verdicts)
-    return worst
+    try:
+        if jobs > 1:
+            import concurrent.futures as cf
+            with cf.ProcessPoolExecutor(jobs) as pool:
+                import functools
+                for name, program, res in pool.map(functools.partial(gate_one, fuzz=fuzz), todo, chunksize=1):
+                    take(name, program, res)
+        else:
+            for r in todo:
+                take(*gate_one(r, fuzz))
+        took = (datetime.datetime.now() - t0).total_seconds()
+        print(f"gate: {len(todo)} rows in {took:.0f} s ({len(todo) / max(took, 1e-9):.2f} a second, {jobs} jobs)")
+        if write:
+            write_gates(verdicts)
+        return worst
+    finally:
+        if sink:
+            sink.close()
 
 
 def with_states(cell):
@@ -1754,11 +1765,12 @@ def merge(files):
     # the table's own verdicts first: a file's no-states never replaces one with states there
     verdicts = {(r["name"], r.get("program", "")): r.get("gate", "") for r in read_table()[2]}
     for f in files:
-        for line in open(f):
-            p = line.rstrip("\n").split("\t")
-            # a verdict without states never replaces one with (machines hold different states)
-            if len(p) == 3 and not (p[2].startswith("no-states") and with_states(verdicts.get((p[0], p[1]), ""))):
-                verdicts[(p[0], p[1])] = p[2]
+        with open(f) as fh:
+            for line in fh:
+                p = line.rstrip("\n").split("\t")
+                # a verdict without states never replaces one with (machines hold different states)
+                if len(p) == 3 and not (p[2].startswith("no-states") and with_states(verdicts.get((p[0], p[1]), ""))):
+                    verdicts[(p[0], p[1])] = p[2]
     write_gates(verdicts)
     print(f"merge: {len(verdicts)} verdicts into {os.path.relpath(TABLE, ROOT)}")
 
