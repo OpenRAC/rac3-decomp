@@ -186,6 +186,8 @@ def declared_names(stmt):
         flat = new
     flat = flat.rstrip(";")
     flat = re.sub(r"__attribute__\s*\(\(.*?\)\)", " ", flat)
+    # an asm label (`f(...) __asm__("g")`) names the symbol, not the declaration
+    flat = re.sub(r'__asm__\s*\(\s*"[^"]*"\s*\)', " ", flat)
     # a prototype or function pointer: the name right before its parameter list
     for decl in _split_top(flat):
         decl = re.sub(r"=.*", "", decl)

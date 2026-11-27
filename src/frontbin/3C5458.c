@@ -1,5 +1,15 @@
 #include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern void func_003C5458(void *, s32, f32, f32);
+/* --- end of declarations from other files --- */
+
 /* localdecomp:start func_003C5458 */
 /* the copy of func_003C5810 */
 #include "vu0.h"

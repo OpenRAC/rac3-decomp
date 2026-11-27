@@ -7,9 +7,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
-extern void *malloc(s32, s32) __asm__("func_003F2388");
-extern void *__nw(s32, s32) __asm__("func_003F2388");
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003F0CF0 */

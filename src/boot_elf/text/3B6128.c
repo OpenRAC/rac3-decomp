@@ -8,6 +8,9 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003B6128();
+extern void *func_003B5400(s32);
+typedef struct { s32 a, b, c, d; } E_37B870;
+extern E_37B870 D_0037F830[];
 /* --- end of declarations from other files --- */
 
 

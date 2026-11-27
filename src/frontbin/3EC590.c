@@ -7,7 +7,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern void func_0038CC88_00391678(void *, void *, s32) __asm__("func_0038CC88");
 extern s32 func_003EC590(void *arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern s32 func_003EC6E8(u8 *p, f32 a);
 extern s32 func_003EC810(u8 *p, f32 a, f32 b);

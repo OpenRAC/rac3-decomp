@@ -8,6 +8,7 @@ extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
 extern void func_003AEF00(void *, s32);
+extern void func_003AEFF8(u8 *, s32, f32);
 extern void func_003AB2B8(void *, s32);
 extern void func_003AD948(u8 *p, s32 a);
 extern void func_003AD948(u8 *, s32);

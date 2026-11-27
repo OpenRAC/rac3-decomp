@@ -1,6 +1,14 @@
 #include "common.h"
 
-typedef struct { u8 pad[0x48]; void *a[1]; } S_3C0D70;
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+/* --- end of declarations from other files --- */
+
 /* localdecomp:start func_003C62C8 */
 /* US draft of func_003C62C8 (rac3-uya-decomp func_003C6530, commit 13cf5c5), names moved to PAL addresses
    where known. Not carried: differs: did not build, or built to other bytes, in PAL. */

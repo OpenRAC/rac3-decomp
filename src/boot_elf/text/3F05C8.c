@@ -11,14 +11,9 @@ extern s32 func_003F0FA0(u8 *arg0, s32, s32);
 typedef struct { u32 key; void *val; } HE_8;
 typedef struct { s32 f0; s32 n; HE_8 e[8]; } HT_8;
 extern void *func_003F0AC0();
-extern void func_003F0D80();
-extern void func_003F0E00(void *, s32, s16, s16, s32);
 extern void func_003F0D38(void *, s32);
 extern void func_003F0E78(u8 *, s32, f32, f32);
-extern void func_003F0DE8(void *, f32);
 extern void func_003F0E28(void *, f32);
-extern s32 func_003F0E40();
-extern s32 func_003F0E58();
 extern void func_003F1090(void *, s32);
 /* --- end of declarations from other files --- */
 

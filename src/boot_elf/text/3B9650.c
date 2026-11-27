@@ -7,11 +7,6 @@ extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
-extern s32 func_003B9B68(void);
-extern s32 func_003B9A88(void);
-extern s32 func_003B9AB8();
-extern void func_003B9A90();
-extern void func_003B9C48(void);
 /* --- end of declarations from other files --- */
 
 /* declarations of 3B8DF0.c's earlier functions */

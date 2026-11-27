@@ -2,13 +2,14 @@
 #include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_003A9588(void);
+extern void func_003A9508(void);
+extern long func_003A9BE8(s32 src, s32 dst, s32 w, s32 h);
+extern void func_003A97F8(s32, unsigned long);
 typedef struct {
     u8 pad[0x84];
     s32 f84;
 } Struct227600;
-extern void func_003A9588(void);
-extern void func_003A9508(void);
-extern void func_003A97F8(s32, unsigned long);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);

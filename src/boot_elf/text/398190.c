@@ -2,6 +2,7 @@
 #include "vu0.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void func_003983C8(void);
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
 extern void (*D_00226800[])(s32);

@@ -1,5 +1,28 @@
 #include "common.h"
 
+/* --- declarations from other files (tools/split_text.py --refresh) --- */
+extern void (*D_001D9A40[2])(s32);
+extern void (*D_001D9A40_00382B20[1])(s32);
+extern void (*D_00226800[])(s32);
+extern void (*D_00226C00[])(s32);
+extern void (*D_00226E00[])(s32);
+extern void (*D_00226A00[])(s32);
+extern s32 func_003F0FA0(u8 *arg0, s32, s32);
+extern void func_003F0D80();
+extern void func_003F0E00(void *, s32, s16, s16, s32);
+extern void func_003F0D38(void *, s32);
+extern void func_003F0E78(u8 *, s32, f32, f32);
+extern void func_003F0DE8(void *, f32);
+extern void func_003F0E28(void *, f32);
+extern s32 func_003F0E40();
+extern s32 func_003F0E58();
+extern void func_003F1090(void *, s32);
+extern void func_003F0EB8(u8 *, f32);
+extern void func_003F0ED8(void *, s32);
+extern void func_003F0F00(void *, s32);
+extern void func_003F0F28(u8 *, s32, s32);
+/* --- end of declarations from other files --- */
+
 /* localdecomp:start func_003F0C98 */
 /* the copy of func_003F08E0 */
 s32 *func_003E6FC0(s32 *);                  /* extern */
