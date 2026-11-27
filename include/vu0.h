@@ -103,12 +103,15 @@ static __inline__ void vec_add_ba(void *d, void *a, void *b) {
  * constant zero register (lqc2, vsub.xyz with $vf0 as the minuend, sqc2). The "j" class holds only
  * vf1/vf2 and an operand known to be zero is still loaded into one of them, so neither vec_sub_ab
  * with a zero vector nor any other helper here emits it; retail's func_L21_003A8050 (states 15 and
- * 16, after func_0038CF68) does. */
+ * 16, after func_0038CF68) does. The vsub negates its register in place (one vu0_q, matched "0"
+ * input): as a set that kills no register it weighs 1 for gcc's first scheduling pass, the same as
+ * an ordinary constant load, so an equal-priority load written before the negate stays ahead of it.
+ * func_L07_003B1C08's strip-loop preheader (`ori 0x2020` before the vsub) needs that. */
 static __inline__ void vec_neg(void *d, void *a) {
-    vu0_q qa, qr;
-    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
-    __asm__("vsub.xyz %0, vf0, %1" : "=j"(qr) : "j"(qa));
-    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
+    vu0_q q;
+    __asm__("lqc2 %0, %1" : "=j"(q) : "m"(*(vu0_v4 *)a));
+    __asm__("vsub.xyz %0, vf0, %0" : "=j"(q) : "0"(q));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(q));
 }
 
 static __inline__ void vec_copy(void *d, void *s) {
