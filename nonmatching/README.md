@@ -64,6 +64,8 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0046FB40` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 46 words differ: retail saves $s3 with sq (16-byte slot at 0x0) where this C gets sd, shifting the frame (details in the file header) |
 | `func_L01_003AE1A0` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 30 words differ: the colour bytes of the three func_L01_00304018 calls (details in the file header) |
 | `func_L30_00343E10` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 10 words differ with -mvu0-use-vf0-vf2 added to its file line: one sqrt.s destination register, one load order |
+| `func_L01_0034ACD8` | levels | PAL draft (k8 a5, 2026-11-27), ported from the matched func_L39_00540570 | near miss: 12 rows at level 01 with the file's flags: two spill slots swapped and one `or` scheduled after two `lqc2` (details in the file header) |
+| `func_L01_00463A70` | levels | PAL draft (k8 a5, 2026-11-27), from the functional C | near miss: 56 aligned rows of 450 at level 01 with the file's flags: colour unpack divide order, the rgba pack's byte stores, a few float registers (details in the file header) |
 | `func_L23_003B9B88` | levels | k6 Opus near miss (2026-11-26) | near miss: 54 differences (40 aligned) (tools/check |
 | `func_L23_003BA670` | levels | k6 Opus near miss (2026-11-26) | near miss: 71 differences (47 aligned) (tools/check |
 | `func_L30_00343E10` | levels | PAL draft (k6 a6, 2026-11-26), written from retail | near miss: 16 words differ with -mvu0-use-vf0-vf2 added to its file line: two float locals get $f24/$f25 swapped, one load order |
