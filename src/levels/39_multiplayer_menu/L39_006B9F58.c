@@ -1,0 +1,199 @@
+#include "common.h"
+
+/* localdecomp:start func_L39_006B9F58 */
+extern u8 D_L39_0047E780[];
+extern void func_L39_00688400(u8 *, s32);
+
+/* from rac4-decomp's func_004EE7B0, renamed, constants adapted */
+void func_L39_006B9F58(void *object, s32 flags)
+{
+    *(void **)((u8 *)object + 96) = D_L39_0047E780;
+    func_L39_00688400(object, flags);
+}
+/* localdecomp:end func_L39_006B9F58 */
+
+/* localdecomp:start func_L39_006B9F80 */
+/* vtable slot 0x1C is cast as returning s64 (result unused): that gives retail's $v0/$v1 in the
+ * first loop's call. D_001FD638[i - 1].unk20 is what retail reads (-0x28 from the unk20 pointer). */
+typedef struct S_006B9F80_W {
+    u8 pad[0x60];
+    void **vt;
+} S_006B9F80_W;
+typedef struct S_006B9F80 {
+    u8 pad[0x110];
+    S_006B9F80_W *w[27];
+    u8 pad17C[0x2A8 - 0x17C];
+    s32 unk2A8;
+    s32 unk2AC;
+    s32 unk2B0;
+} S_006B9F80;
+typedef struct S_006B9F80_E {
+    u8 name[0x20];
+    s32 unk20;
+    s32 unk24;
+} S_006B9F80_E;
+extern S_006B9F80_E D_001FD638[];
+extern f32 D_001DDC54_sda;
+extern f32 D_001DDC58_sda;
+extern f32 D_001DDC5C_sda;
+extern f32 D_001DDC60_sda;
+extern f32 D_001DDC64_sda;
+extern f32 D_001DDC68_sda;
+extern f32 D_001DDC6C_sda;
+extern f32 D_001DDC70_sda;
+extern f32 D_001DDC74_sda;
+extern f32 D_001DDC80_sda;
+extern f32 D_001DDC84_sda;
+extern void func_L39_0067F100(s32);
+extern void func_L39_0068A9B8(s32);
+extern void func_L39_00689BD8(void *, s32);
+extern void func_L39_00689D28(void *, s32);
+extern void func_L39_00689DB8(void *, s32);
+extern void func_L39_0068A6D0(void *, s32, f32, f32, f32, f32, s32);
+extern void func_L39_0068A7B8(void *, s32, f32, f32, f32, f32, s32);
+extern void func_L39_0068A4A8(void *, s32, s32, f32, f32, f32, f32, s32);
+extern void func_L39_00689F00(void *, s32, s32, s32, f32, f32, f32, f32, f32, f32);
+extern void func_L39_0068AAB8(void *);
+extern void func_L39_0068B2F8(void *, s32, s32);
+void func_L39_006B9F80(S_006B9F80 *p) {
+    s32 i;
+    s32 j;
+    func_L39_0067F100(0x3E0000);
+    func_L39_0068A9B8(0);
+    func_L39_00689BD8(p, func_00381FF0(0x10ED));
+    func_L39_00689D28(p, func_00381FF0(0x124));
+    func_L39_00689DB8(p, func_00381FF0(0xCD5));
+    func_L39_0068A6D0(p, 0, D_001DDC54_sda, D_001DDC58_sda, D_001DDC5C_sda, D_001DDC60_sda, 0x332299DE);
+    func_L39_0068A6D0(p, 1, D_001DDC64_sda, D_001DDC68_sda, D_001DDC6C_sda, D_001DDC70_sda, 0x332299DE);
+    func_L39_0068A7B8(p, 0, D_001DDC54_sda,
+        D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * -5.0f / 12.0f,
+        (D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * 5.5f / 12.0f) -
+            (D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * -5.5f / 12.0f),
+        D_001DDC5C_sda - D_001DDC74_sda, 0x332299DE);
+    func_L39_0068A4A8(p, 0, 10, D_001DDC64_sda,
+        D_001DDC68_sda + (D_001DDC70_sda - D_001DDC74_sda) * -4.5f / 11.0f,
+        (D_001DDC68_sda + (D_001DDC70_sda - D_001DDC74_sda) * -4.0f / 11.0f) -
+            (D_001DDC68_sda + (D_001DDC70_sda - D_001DDC74_sda) * -5.0f / 11.0f),
+        D_001DDC6C_sda - D_001DDC74_sda * 2.0f, 0x332299DE);
+    func_L39_00689F00(p, 0, 3, 3, 2.0f, 2.0f, D_001DDC5C_sda - D_001DDC74_sda, D_001DDC80_sda, D_001DDC84_sda, 1.0f);
+    func_L39_0068AAB8(p);
+    p->unk2A8 = 0;
+    p->unk2AC = -1;
+    p->unk2B0 = -1;
+    for (i = 0, j = 1; i < 11; i++, j++) {
+        ((void (*)(void *, s32, f32, f32))p->w[j]->vt[0x44 / 4])(p->w[j], 1, D_001DDC5C_sda - D_001DDC74_sda * 2.0f, 0.0f);
+        ((void (*)(void *, s32))p->w[j]->vt[0x40 / 4])(p->w[j], 1);
+        ((void (*)(void *, u8 *))p->w[j]->vt[0x24 / 4])(p->w[j], D_001FD638[i].name);
+        ((s64 (*)(void *, s32, s32))p->w[j]->vt[0x1C / 4])(p->w[j], D_001FD638[i - 1].unk20 < 0 ? 0 : 3, 0);
+        ((void (*)(void *, s32, s32))p->w[j]->vt[0x48 / 4])(p->w[j], 1, 3);
+        if (D_001FD638[i].unk20 >= 0) {
+            p->unk2A8++;
+        }
+    }
+    if (p->unk2A8 > 0) {
+        func_L39_0068B2F8(p, 1, 0);
+    }
+    func_L39_0068A4A8(p, 1, p->unk2A8 < 11 ? p->unk2A8 : 10, D_001DDC54_sda,
+        D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * -4.0f / 12.0f,
+        (D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * -4.5f / 12.0f) -
+            (D_001DDC58_sda + (D_001DDC60_sda - D_001DDC74_sda) * -5.5f / 12.0f),
+        D_001DDC5C_sda - D_001DDC74_sda, 0x331465B7);
+    ((void (*)(void *, s32, s32))p->w[0]->vt[0x4C / 4])(p->w[0], 0x40, 1);
+    ((void (*)(void *, s32, f32, f32))p->w[0]->vt[0x44 / 4])(p->w[0], 1, D_001DDC5C_sda - D_001DDC74_sda * 2.0f, 0.0f);
+    ((void (*)(void *, s32))p->w[0]->vt[0x40 / 4])(p->w[0], 0);
+    ((s64 (*)(void *, s32, s32))p->w[0]->vt[0x1C / 4])(p->w[0], 1, 0);
+    for (j = 0; j < 11; j++) {
+        ((void (*)(void *, s32))p->w[j + 12]->vt[0x40 / 4])(p->w[j + 12], 1);
+        ((void (*)(void *, s32, s32))p->w[j + 12]->vt[0x4C / 4])(p->w[j + 12], 0x40, 1);
+        ((s64 (*)(void *, s32, s32))p->w[j + 12]->vt[0x1C / 4])(p->w[j + 12], 1, 0);
+        ((void (*)(void *))p->w[j + 12]->vt[0xB4 / 4])(p->w[j + 12]);
+    }
+    ((s64 (*)(void *, s32, s32))p->w[23]->vt[0x1C / 4])(p->w[23], 0, 0);
+    ((s64 (*)(void *, s32, s32))p->w[24]->vt[0x1C / 4])(p->w[24], 0, 0);
+    ((s64 (*)(void *, s32, s32))p->w[25]->vt[0x1C / 4])(p->w[25], 0, 0);
+    ((s64 (*)(void *, s32, s32))p->w[26]->vt[0x1C / 4])(p->w[26], 0, 0);
+}
+/* localdecomp:end func_L39_006B9F80 */
+
+/* localdecomp:start func_L39_006BA468 */
+extern void func_L39_0068ADC8(void *);
+extern void func_L39_006BA468(void *);
+
+extern void func_L39_0067F168();
+void func_L39_006BA468(void *p) {
+    func_L39_0067F168(p);
+    func_L39_0068ADC8(p);
+}
+/* localdecomp:end func_L39_006BA468 */
+
+/* localdecomp:start func_L39_006BA498 */
+typedef struct S_006BA498_e S_006BA498_e;
+typedef struct {
+    u8 pad[0x30];
+    void (*f30)(S_006BA498_e *, f32 *, f32 *);
+} S_006BA498_vt;
+struct S_006BA498_e {
+    u8 pad[0x60];
+    S_006BA498_vt *f60;
+};
+typedef struct {
+    s32 w0;
+    u8 pad[0x24];
+} S_006BA498_rec;
+
+typedef struct {
+    u8 pad[0x110];
+    S_006BA498_e *w[11];
+} S_006BA498_o;
+extern S_006BA498_rec D_001FD630[];
+typedef struct {
+    u8 pad0[0xD0];
+    void *fD0;
+    u8 padD4[0x284 - 0xD4];
+    s32 f284;
+} G_006BA498;
+__asm__(".extern D_L39_00247914, 16");
+extern G_006BA498 *D_L39_00247914;
+extern f32 D_001DDC54_sda;
+extern void func_L39_006BA5C0(void *, s32);
+extern void func_L39_006B5288(void *arg0, s32 arg1, s8 arg2);
+extern s32 func_L39_0068AEF8(void *, s32);
+void func_L39_0068A2D0(void *, s32, s32, s32, f32, f32);
+
+s32 func_L39_006BA498(u8 *obj, s32 arg1)
+{
+    s32 r;
+    s32 x;
+    s32 i;
+    s32 mode;
+    f32 v[2];
+
+    func_L39_006BA5C0(obj, arg1);
+    if (arg1 == 7) {
+        x = *(s32 *)(obj + 0x290);
+        if ((u32)(x - 1) < 11) {
+            i = x - 1;
+            func_L39_006B5288(D_L39_00247914->fD0, D_001FD630[i].w0, 1);
+            D_L39_00247914->f284 = 0x1B;
+            return 1;
+        }
+    }
+    r = func_L39_0068AEF8(obj, arg1);
+    if (*(s32 *)(obj + 0x2A8) > 0) {
+        i = *(s32 *)(obj + 0x290);
+        if (i >= 0) {
+            S_006BA498_e *e = ((S_006BA498_o *)obj)->w[i];
+            e->f60->f30(e, &v[0], &v[1]);
+            mode = *(s32 *)(obj + 0x290) >= 2;
+            if (*(s32 *)(obj + 0x290) < *(s32 *)(obj + 0x2A8)) {
+                mode |= 2;
+            }
+            {
+                f32 y = v[1];
+                func_L39_0068A2D0(obj, mode, 3, 3, D_001DDC54_sda, y);
+            }
+        }
+    }
+    return r;
+}
+/* localdecomp:end func_L39_006BA498 */

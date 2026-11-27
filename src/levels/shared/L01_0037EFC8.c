@@ -452,7 +452,247 @@ LINKER_REMNANT("asm/levels", func_L01_00382888);
 
 INCLUDE_ASM("asm/levels", func_L01_00382890);
 
-INCLUDE_ASM("asm/levels", func_L01_00382CF8);
+/* localdecomp:start func_L01_00382CF8 */
+#include "vu0.h"
+#include "structs/weapon.h"
+#include "structs/moby.h"
+typedef int Q_00382CF8 __attribute__((mode(TI)));
+typedef vu0_v4 V_00382CF8;
+typedef struct {
+    V_00382CF8 vel;         /* 0x00 */
+    s32 owner;              /* 0x10 */
+    f32 damage;             /* 0x14 */
+    u8 pad_18[0x24 - 0x18];
+    s32 age;                /* 0x24 */
+    s32 unk_28;
+    s32 flags;              /* 0x2C */
+    u8 pad_30[4];
+    void *homing;           /* 0x34 */
+    s32 shadow;             /* 0x38 */
+    s32 kind;               /* 0x3C */
+} Shot_00382CF8;
+typedef struct M_00382CF8 {
+    u8 pad_0[0x10];
+    V_00382CF8 pos;
+    u8 state;
+    u8 pad_21[3];
+    struct MobyClass *pclass;
+    u8 pad_28[4];
+    f32 scale;
+    u8 pad_30[0x68 - 0x30];
+    Shot_00382CF8 *pvar;
+    u8 pad_6C[0xAA - 0x6C];
+    s16 oclass;
+} M_00382CF8;
+typedef struct {
+    V_00382CF8 v;
+    s32 moby;
+    u8 pad_14[4];
+    u8 b18;
+    u8 b19;
+    s16 oclass;
+    u8 pad_1C[0x30 - 0x1C];
+} Dmg_00382CF8;
+typedef struct {
+    u8 pad_0[0x18];
+    M_00382CF8 *moby;
+    u8 pad_1C[4];
+    V_00382CF8 pos;
+    u8 pad_30[0x10];
+    V_00382CF8 normal;
+} Hit_00382CF8;
+extern Hit_00382CF8 D_L01_001EAA00;
+extern V_00382CF8 D_L01_001EAA20;
+extern u8 D_001425C0[];
+extern struct WeaponRow D_L01_002C5600[];
+extern void func_L01_00446780(void *, void *, s32, s32, s32, s32, f32, f32, f32);
+extern void func_L01_004450F0(void *, s32, s32);
+extern void func_L01_00457638(void *, void *, f32, f32, f32);
+extern void func_L01_004C8688(s32, void *, s32);
+extern void func_L01_004CB128(void *, void *, s32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CEA8(void *);
+extern void func_L01_004CAB30(void *, void *);
+extern void func_L01_00383BA0(void *, void *, void *);
+extern void func_L01_00446760(void *, s32, s32, void *, f32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, void *);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern void func_L01_003837B8(f32 *);
+extern void func_L01_0040E790(void *, void *, void *);
+extern s32 func_00382468(s32);
+extern void func_L01_00451E78(void *, s32, f32);
+extern void func_L01_00451FE0(void *, s32, void *, f32, f32, f32, f32, s32, f32, f32, s32, s32, s32, s32, f32, f32, s32, s32);
+extern s32 func_L01_00443FB0(void *, s32 *);
+extern void func_L01_0030F288(void *, s32, s32, s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_003303B8(void *, s32, s32, s32, s32, s32, s32, s32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
+extern void func_L01_0044AF78(void *, void *, s32, f32, f32, s32, s32, s32, f32, f32, f32, f32, f32, s32, s32, s32, s32, s32, s32);
+extern void func_003C4C18(void *, f32);
+extern f32 func_00382538(void);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_0038DBD8(s32, s32, f32);
+extern s32 func_L01_00463378(void *, void *, void *, s32, s32, s32, s32, s32, s32);
+extern void func_L01_004C8668(s32);
+extern void func_003C2880(void *);
+
+static __inline__ void qcopy_00382CF8(void *d, void *s) {
+    *(Q_00382CF8 *)d = *(Q_00382CF8 *)s;
+}
+
+static __inline__ struct WeaponRow *row_00382CF8(void) {
+    return D_L01_002C5600 + D_001425C0[0x87];
+}
+
+void func_L01_00382CF8(M_00382CF8 *m) {
+    extern s32 func_003D4D00(void *, s32, void *, void *, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    V_00382CF8 a, b, c;
+    union {
+        struct {
+            V_00382CF8 dir, step, aim;
+        } h;
+        Dmg_00382CF8 dmg;
+    } u;
+    V_00382CF8 v;
+    Dmg_00382CF8 d2;
+    Shot_00382CF8 *w;
+    s32 list;
+    s32 n;
+    s32 i;
+    s32 j;
+    s32 c1, c2;
+    f32 ang, r, h, z, rnd, q;
+
+    w = m->pvar;
+    if (++w->age >= 0x97) {
+        func_L01_00446780(m, &m->pos, w->flags, 0, 1, 0, 0.6f, w->damage, 0.0f);
+        func_L01_004450F0(m, 1, -1);
+    }
+    m->scale += m->pclass->scale * 0.025f;
+    if (m->pclass->scale < m->scale) {
+        m->scale = m->pclass->scale;
+    }
+    switch (m->state) {
+    case 0: {
+        a.x = 0.0f;
+        a.y = 0.0f;
+        a.z = 0.5f;
+        func_L01_00457638(m, &a, 0.17453294f, 0.20943952f, 0.25132743f);
+        qcopy_00382CF8(&b, &m->pos);
+        func_L01_004C8688(w->shadow, w, 0);
+        vec_add_ab(&c, &m->pos, &w->vel);
+        if (w->homing != 0) {
+            func_L01_004CB128(&u.h.aim, w->homing, 0);
+            vec_sub_ab(&u.h.dir, &u.h.aim, &c);
+            func_0038CF68(&u.h.step, &u.h.dir, 0.3f);
+            vec_add_ab(&c, &c, &u.h.step);
+            func_0038CF68(w, w, func_0038CEA8(w));
+        }
+        func_L01_004CAB30(&m->pos, &m->pos);
+        func_L01_00383BA0(m, &c, &b);
+        {
+            u.dmg.moby = w->owner;
+            func_L01_00446760(&u.dmg, w->owner, w->flags, w, w->damage);
+            u.dmg.oclass = 0x1872;
+            if (func_003D3CB0(&m->pos, &c, 0, m, &u.dmg) != 0 || func_L01_003FB640(&m->pos, 0, m, 0.2f) != 0) {
+                Hit_00382CF8 *h = &D_L01_001EAA00;
+                M_00382CF8 *hit = h->moby;
+                if (hit != 0) {
+                    if ((s32)hit != w->owner && hit->oclass != 0) {
+                        qcopy_00382CF8(&v, &w->vel);
+                        func_0038CE20(&v, &v, 2.0f);
+                        v.w = 5627.925f;
+                        d2.moby = w->owner;
+                        func_L01_00446760(&d2, w->owner, w->flags, &v, w->damage);
+                        d2.b19 = 1;
+                        d2.oclass = 0x1872;
+                        d2.b18 = 0;
+                        func_003D4D00(&h->pos, 0, m, &d2, 1.0f);
+                        func_L01_004450F0(m, 1, -1);
+                        return;
+                    }
+                } else if (row_00382CF8()->level == 0 || w->kind == 500 || w->kind == 0x1FF) {
+                    qcopy_00382CF8(&v, &w->vel);
+                    func_0038CE20(&v, &v, 3.0f);
+                    v.w = 5627.925f;
+                    d2.moby = w->owner;
+                    func_L01_00446760(&d2, w->owner, w->flags, &v, w->damage);
+                    d2.b19 = 1;
+                    d2.oclass = 0x1872;
+                    d2.b18 = 0;
+                    func_003D4D00(&D_L01_001EAA20, 0, m, &d2, 1.0f);
+                    func_L01_004450F0(m, 1, -1);
+                    return;
+                } else {
+                    func_L01_003837B8((f32 *)&m->pos);
+                    func_L01_0040E790(w, w, &h->normal);
+                }
+            }
+        }
+        qcopy_00382CF8(&m->pos, &c);
+        break;
+    }
+    case 1:
+        if (w->kind == 500 || w->kind == 0x1872) {
+            func_0038CF68(&a, w, -0.20000002f);
+            func_L01_00451E78(m, func_00382468(3), 0.0f);
+            func_L01_00451FE0(m, 0x25, &a, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+            func_0038CF68(&a, w, 0.20000002f);
+            func_L01_00451FE0(m, 0x25, &a, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+            func_003A52A0(0, 0, m);
+        } else if (w->kind == 0x1FF) {
+            func_0038CF68(&a, w, -0.20000002f);
+            func_L01_00443FB0(m, &list);
+            n = func_L01_00443FB0(m, &list);
+            for (i = 0; i < n; i++) {
+                func_L01_0030F288(&m->pos, list, -1, 0);
+            }
+            func_L01_00451FE0(m, 0x25, &a, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+            func_0038CF68(&a, w, 0.20000002f);
+            func_L01_00451FE0(m, 0x25, &a, 3.0f, 6.0f, 3.0f, 6.0f, 0xFF, -1.0f, -1.0f, 0xB4, 0, 0, 0x23, 1.0f, 1.0f, 0, 3);
+            func_003A52A0(0, 0, m);
+        } else {
+            if (row_00382CF8()->level >= 2) {
+                func_L01_003303B8(&m->pos, 0, 10, 10, 10, 10, 10, 1, 0.7f, 0.0f, 0.0f, 0.0f, 1, 1, 0, 0, 0, 1, 0x1010000, 0, 0x388EF7, 0x63F7, 0x407FFF, 0x20FF, 0x8FFF, 0x3064FF, 0x7F60A0FF, 0x280000FF, 0x3064FF, 0);
+            } else if (func_00382468(2)) {
+                func_L01_0044AF78(m, w, 0, 0.0f, 0.0f, 4, 0, 0, 2.0f, 1.0f, 9.0f, 1.0f, 0.0f, -1, 0, 0, -1, 1, 0x1010001);
+                for (i = 0; i < 20; i++) {
+                    qcopy_00382CF8(&a, &m->pos);
+                    func_003C4C18(&a, 0.25f);
+                    a.z += 0.25f;
+                    ang = func_00382538();
+                    r = func_003824E0(1.0f, 8.0f);
+                    h = func_003824E0(2.0f, 6.0f);
+                    func_0038CE20(&b, w, func_003824E0(0.0f, 0.0f) * 0.020000001f);
+                    b.x += func_0038D098(ang) * (r * 0.020000001f);
+                    b.y += func_0038D0B0(ang) * (r * 0.020000001f);
+                    b.z += h * 0.020000001f;
+                    qcopy_00382CF8(&c, &b);
+                    c.z -= 0.2f;
+                    for (j = 9; j >= 0; j--) {
+                        rnd = func_003824E0(0.5f, 1.5f);
+                        b.w = rnd * 0.125f;
+                        c.w = rnd * 0.065f;
+                        func_003C4C18(&a, 0.125f);
+                        func_003C4C18(&c, 0.010000001f);
+                        c1 = func_0038DBD8(0x8000EEEE, 0x8000FF90, func_003824E0(0.0f, 1.0f));
+                        c2 = func_0038DBD8(0xFFEE, 0xFFEE, func_003824E0(0.0f, 1.0f));
+                        q = func_003824E0(5.0f, 25.0f) * 5.0f + 2.0f;
+                        func_L01_00463378(&a, &b, &c, c1, c2, 8, 0x19, (s32)(q / 6.0f), -1);
+                    }
+                }
+            } else {
+                func_L01_003303B8(&m->pos, 0, 10, 10, 10, 10, 10, 1, 0.7f, 0.0f, 0.0f, 0.0f, 1, 1, 0, 0, 0, 1, 0x1010000, 0, 0x388EF7, 0xFF6340, 0xFF7F40, 0xFF2040, 0xFF8F40, 0x7F6440, 0x7FFFA060, 0x28FF0000, 0xFF6430, 0);
+            }
+        }
+        func_L01_004C8668(w->shadow);
+        func_003C2880(m);
+        break;
+    }
+}
+/* localdecomp:end func_L01_00382CF8 */
 
 /* localdecomp:start func_L01_003837A8 */
 void func_L01_003837A8(u8 *a) {

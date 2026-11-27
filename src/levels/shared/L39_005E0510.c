@@ -1,42 +1,6 @@
-/*
- * func_L39_005E0510 -- k4 Sonnet first pass, 2500 B (625 instructions), shared at 15 places (39:005E0510, 40:004B2BB8 ... 53:004B8D40).
- * Result: NEAR. With `--flags=@ps2as` (the file's own flags lack @ps2as, see below): 12 differing rows of 628 after aligning
- * (tools/check.py reports 572 because of a 1-word shift at the start; the plain-flags profile is 127+ aligned diffs, all of them
- * the float constants, which need Ps2EeAs).
- * Equal: the whole prologue/epilogue, every call and argument in order (about 140 calls), all float constants (lui/ori/mtc1),
- * the $f20-$f26 allocation, both loops (do/while with beql, `0x30004..0x3000B`), the 0x241120 >= 3 branch, the $gp loads.
- * Still differs, three spots:
- *  1. Start: retail is `addiu a1,1 ; addu v0,v0,v1 ; addiu a0,1 ; jal func_006108F8 ; sb a1,(v0)` (store in the delay slot, the stored 1
- *     sharing the a1 register of the second argument). Mine: a0=1, addu, a1=1, sb, jal, a0=1. Tried: assignment as call argument
- *     (D[..] = 1 as arg 2 or arg 1), an `s32 one` local (goes to s0), swapped order, (s32,u8) prototype. Not solved; looks like a
- *     CSE/arg-order wording for `D_L39_00243970[func_L01_00517688()] = 1; func_L01_004D2110(1, 1);`.
- *  2. A `nop` after the `lwc1 $f13, -0x4670($gp)` that precedes the first loop (before its `.p2align 3` label). Retail has none.
- *  3. Last loop (`func_003E8630(0x30000, i)`, 6 instructions with its delay slots): retail is 6 long and unpadded; the check pads it
- *     with a nop before the beqz (asm_filter.insn_count does not recognise the `li $4,196608` / jal delay shape under ps2as, so the
- *     filter does not write it raw). Probably a tool limitation, not a C difference.
- * FLAG NEED: the function needs `@ps2as` (float immediates built with lui/ori/mtc1). src/levels/shared/L39_005E04A0.c has the flags
- * `-O2 -G8 -fopt-stack -mno-check-zero-division` (no @ps2as, because its other function func_L39_005E04A0 matches without), so the file
- * has to be cut at this function with a `@ps2as` line (like L39_005E0ED8.c); not done here as instructed.
- * Prototypes inferred from register use (confidence: high for arg order/types, the callees are the shared UI calls of func_L39_005E0FC8
- * in src/levels/shared/L40_004B3670.c): func_L01_00516470/00517538/00516728(id, f32, f32), func_L01_00516AA0/00516C78(id, s32, s32),
- * func_L01_005170B8/00517190(id, s32), func_L01_00516FD8(id, void*), func_003E7F20(id, s32) (=func_L39_006119E8), func_003E8630(a, b),
- * func_003B5060/003E5090/003E51F8/003E5360(id), func_003E8348(s32, s32), func_003E6FF0(s32, s32), func_L01_004D2110 (called as (1,1) and (0)).
- * D_L39_00243970 (u8[8], $gp-0x4650), D_L39_00243950 (f32, $gp-0x4670) need `__asm__(".extern X, N")` so they are $gp-relative.
- * Next steps: (1) put the file under @ps2as (or cut), re-run check; (2) chase the three spots above, in order; spot 3 may need an
- * asm_filter fix by the maintainer.
- * Profile: -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as.
- * k6 (2026-11-26): the index in a local before the stored 1 (`idx = f(); v = 1; D[idx] = v; func(1, v)`) removes
- * spot 2 and the 1-word shift: now 8 aligned differences, spot 1 is only a0/a1 swapped (retail sets a1=1 first and
- * stores a1; here a0=1 first and the store uses a0). 12 wordings tried (v/w locals, u8/s8 v, (v,1), (v,v), assignment
- * as the argument, pointer to the slot): all store through a0. A (s32,s32) prototype is impossible: the second call
- * passes only a0 (`func_L01_004D2110(0)`). Spot 3 (loop padding nop) unchanged.
- * k6 permuter: the store and call inside `do { } while (0)` (a macro's shape) stores through a1 as retail: 4 aligned
- * differences left, `addiu $v1, $gp, -0x4650` and `addiu $a1, $zero, 1` swapped, and spot 3.
- * Spot 3 was tools/asm_filter.py (an `li` of 0x30000 now counts as one lui, so the loop is padded to 6 as
- * retail): with that fix 2 differences are left, the two-word swap only (still needs its file cut to @ps2as).
- */
 #include "common.h"
 
+/* localdecomp:start func_L39_005E0510 */
 extern u8 D_L39_00243970[8];
 __asm__(".extern D_L39_00243970, 8");
 extern f32 D_L39_00243950;
@@ -57,7 +21,7 @@ extern void func_L01_00516470(s32, f32, f32);
 extern void func_L01_005170B8(s32, s32);
 extern void func_L01_00517538(s32, f32, f32);
 extern void func_L01_00516AA0(s32, s32, s32);
-extern void func_L01_00516C78(s32, s32, s32);
+extern void func_L01_00516C78_005E0510(s32, s32, s32);
 extern void func_L01_00517190(s32, s32);
 extern void func_L01_00516728(s32, f32, f32);
 extern void func_003E7F20(s32, s32);
@@ -68,7 +32,7 @@ extern void func_003E6FF0(s32, s32);
 
 void func_L39_005E0510(s32 arg0) {
     s32 i;
-    { s32 idx = func_L01_00517688(); s32 v = 1; do { D_L39_00243970[idx] = v; func_L01_004D2110(1, v); } while (0); }
+    do { s32 idx = func_L01_00517688(); s32 v = 1; D_L39_00243970[idx] = v; func_L01_004D2110(1, v); } while (0);
     func_003B5060(0x30000);
     func_003B5060(0x3000c);
     func_003E5090(0x30001);
@@ -116,7 +80,7 @@ void func_L39_005E0510(s32 arg0) {
     for (i = 0x30004; i <= 0x3000B; i++) {
         func_L01_00517538(i, 0.03f, D_L39_00243950 * 0.03f);
         func_L01_00516AA0(i, 1, 0);
-        func_L01_00516C78(i, 3, 3);
+        func_L01_00516C78_005E0510(i, 3, 3);
         func_L01_00517190(i, 0xED35);
     }
     func_L01_00516470(0x3000f, 0.925f, 0.095f);
@@ -160,13 +124,13 @@ void func_L39_005E0510(s32 arg0) {
     func_L01_00516728(0x30014, 0.003f, 0.003f);
     func_003E7F20(0x30014, 2);
     func_L01_00516FD8(0x30014, D_L39_0024C5A0);
-    func_L01_00516C78(0x30014, 3, 3);
+    func_L01_00516C78_005E0510(0x30014, 3, 3);
     func_L01_00516728(0x30014, 0.003f, 0.003f);
     func_003E7F20(0x30014, 2);
     func_L01_00516FD8(0x30015, D_L39_0024C5A8);
-    func_L01_00516C78(0x30014, 3, 3);
-    func_L01_00516C78(0x30011, 2, 3);
-    func_L01_00516C78(0x30010, 2, 3);
+    func_L01_00516C78_005E0510(0x30014, 3, 3);
+    func_L01_00516C78_005E0510(0x30011, 2, 3);
+    func_L01_00516C78_005E0510(0x30010, 2, 3);
     func_003E8630(0x30000, 0x30002);
     func_003E8630(0x30000, 0x30001);
     func_003E8630(0x30000, 0x30003);
@@ -189,3 +153,4 @@ void func_L39_005E0510(s32 arg0) {
     func_003E6FF0(arg0, 1);
     func_L01_004D2110(0);
 }
+/* localdecomp:end func_L39_005E0510 */

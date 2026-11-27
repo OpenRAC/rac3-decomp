@@ -611,7 +611,140 @@ void func_L01_0036F9F8(Obj3899C0 *obj) {
 }
 /* localdecomp:end func_L01_0036F9F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0036FA50);
+/* localdecomp:start func_L01_0036FA50 */
+#include "vu0.h"
+typedef int u128_4C4A18 __attribute__((mode(TI)));
+typedef struct {
+    u128_4C4A18 pos;
+    f32 x10;
+    f32 x14;
+    f32 x18;
+    u8 *x1C;
+} E_4C4A18;
+typedef struct {
+    u8 pad0[872];
+    s16 x368;
+    u8 pad36A[8790];
+    u8 *x25C0;
+} S_4C4A18;
+typedef struct {
+    f32 x, y, z, w;
+} __attribute__((aligned(16))) Vec4_004C4AD8;
+typedef struct {
+    u8 p0[0x10];
+    Vec4_004C4AD8 x10;
+} O_004C4AD8;
+typedef struct {
+    u8 p0[0xE0];
+    Vec4_004C4AD8 xE0;
+} P_004C4AD8;
+typedef struct {
+    Vec4_004C4AD8 x0;
+    f32 x10;
+    f32 x14;
+    f32 x18;
+    O_004C4AD8 *x1C;
+} T_004C4AD8;
+typedef struct { u8 pad[0x368]; s16 state; u8 gap[0x25C0-0x36A]; u8 *camera; s32 mode; u8 gap2[0x25ED-0x25C8]; u8 disabled; } Hero_004C7438;
+extern S_4C4A18 D_001A4BE0_0036FA50;
+extern s32 D_L01_001D6740;
+extern s32 D_L01_001D673C;
+extern u8 *D_001D52FC;
+extern Vec4_004C4AD8 D_L01_001E29E0_0036FA50;
+void func_L01_0036FA50(Vec4_004C4AD8 *out, Vec4_004C4AD8 *pos, u8 *moby, u8 *camera,
+                     f32 minimum, f32 maximum, f32 speed, f32 acceleration) {
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003C5180(u128_4C4A18 *, E_4C4A18 *, s32);
+    extern void func_L01_005003D0(s32, s32);
+    extern s32 func_003A3BB8(s32, s32);
+    extern void func_0038CF68(Vec4_004C4AD8 *, Vec4_004C4AD8 *, f32);
+    extern f32 func_0038CE68(Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern void func_0038CE90(Vec4_004C4AD8 *, Vec4_004C4AD8 *, T_004C4AD8 *);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D098(f32);
+    extern void func_0038D810(Vec4_004C4AD8 *, Vec4_004C4AD8 *);
+    extern void func_0038D5F0(Vec4_004C4AD8 *, Vec4_004C4AD8 *, Vec4_004C4AD8 *);
+    extern f32 func_0038CEA8(Vec4_004C4AD8 *);
+    extern f32 func_L01_004451A8(f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern f32 *func_00382348(u8 *);
+    Vec4_004C4AD8 v, temp, direction, target, delta, correction;
+    Vec4_004C4AD8 from, to, accel, result;
+    Vec4_004C4AD8 basis[4];
+    Vec4_004C4AD8 quat, axis, unit, rotated[3], matrix[3], point;
+    f32 distance, denominator, plane, angle, t, inv;
+    f32 *data;
+    if (camera) {
+        *(u128_4C4A18 *)&basis[0] = *(u128_4C4A18 *)(camera+0x10);
+        *(u128_4C4A18 *)&basis[1] = *(u128_4C4A18 *)(camera+0xC0);
+        *(u128_4C4A18 *)&basis[2] = *(u128_4C4A18 *)(camera+0xD0);
+        *(u128_4C4A18 *)&basis[3] = *(u128_4C4A18 *)(camera+0xE0);
+    } else {
+        *(u128_4C4A18 *)&basis[0] = *(u128_4C4A18 *)(D_001A4BE0_0036FA50.x25C0+0x10);
+        *(u128_4C4A18 *)&basis[1] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0036FA50+0x6C0);
+        *(u128_4C4A18 *)&basis[2] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0036FA50+0x6D0);
+        *(u128_4C4A18 *)&basis[3] = *(u128_4C4A18 *)((u8 *)&D_001A4BE0_0036FA50+0x6E0);
+    }
+    out->x=1; out->y=0; out->z=0; out->w=0;
+    if (D_001A4BE0_0036FA50.x368 && !D_L01_001D6740)
+        func_0038CE20(&direction,(Vec4_004C4AD8 *)(D_001A4BE0_0036FA50.x25C0+0xE0),-1.0f);
+    else func_003C5180((u128_4C4A18 *)&basis[0],(E_4C4A18 *)&direction,0);
+    distance=maximum;
+    if (!moby) {
+        if (((Hero_004C7438 *)&D_001A4BE0_0036FA50)->mode==1) func_L01_005003D0(29,1);
+        if ((*(s32 *)(D_001D52FC+0x1A0)&func_003A3BB8(4,0)) && !((Hero_004C7438 *)&D_001A4BE0_0036FA50)->disabled) {
+            func_0038CF68(&unit,&D_L01_001E29E0_0036FA50,1.0f);
+            angle=func_0038CE68(&unit,(T_004C4AD8 *)&direction);
+            func_0038CE20(&temp,&direction,angle);
+            vec_sub_ab(&v, &unit, &temp);
+            func_0038CF68(&v,&v,1.0f);
+            func_0038CE90(&axis,&unit,(T_004C4AD8 *)&v);
+            angle=func_0038CE68(&unit,(T_004C4AD8 *)&v)*0.5f;
+            func_0038CE20(&quat,&axis,func_0038D0B0(angle));
+            quat.w=func_0038D098(angle);
+            func_0038D810(&quat,matrix);
+            func_0038D5F0(rotated,matrix,&D_L01_001E29E0_0036FA50);
+            plane=-func_0038CE68(&basis[0],(T_004C4AD8 *)&direction);
+            func_0038CF68(&point,&D_L01_001E29E0_0036FA50,1.0f);
+            denominator=func_0038CE68(&direction,(T_004C4AD8 *)&point);
+            if (denominator>0.0f) {
+                func_0038CE20(&point,&point,(func_0038CE68(&direction,(T_004C4AD8 *)((u8 *)&D_L01_001E29E0_0036FA50-0x20))+plane)/denominator);
+                vec_sub_ba(&point, (u8 *)&D_L01_001E29E0_0036FA50 - 0x20, &point);
+                vec_sub_ba(&point, &point, (u8 *)&D_L01_001E29E0_0036FA50 - 0x20);
+                angle=func_0038CE68(&point,(T_004C4AD8 *)&direction);
+                func_0038CE20(&temp,&direction,angle);
+                vec_sub_ab(&v, &point, &temp);
+                distance=func_0038CEA8(&v);
+                if (maximum<distance) distance=maximum;
+                else if (distance<minimum) distance=minimum;
+            }
+            distance=maximum*func_L01_004451A8(distance/maximum);
+            func_0038D000(out,out,rotated);
+        } else func_0038D000(out,out,&basis[1]);
+        func_0038CF68(out,out,distance);
+        vec_add_ba(&target, out, &basis[0]);
+    } else {
+        *(u128_4C4A18 *)&target=*(u128_4C4A18 *)(moby+0x10);
+    }
+    vec_sub_ab(&delta, &target, pos);
+    angle=func_0038CE68(&delta,(T_004C4AD8 *)&direction);
+    func_0038CE20(&temp,&direction,angle);
+    vec_sub_ba(&v, &delta, &temp);
+    func_0038CF68(out,&v,speed);
+    t=func_0038CEA8(&v)/speed;
+    inv=1.0f/t;
+    angle=func_0038CE68(pos,(T_004C4AD8 *)&direction);
+    func_0038CE20(&from,&direction,angle);
+    angle=func_0038CE68(&target,(T_004C4AD8 *)&direction);
+    func_0038CE20(&to,&direction,angle);
+    func_0038CE20(&accel,&direction,acceleration*(t*t)*0.5f);
+    vec_sub_ba(&result, &from, &to);
+    vec_add_ba(&result, &result, &accel);
+    func_0038CE20(&result,&result,-1.0f);
+    func_0038CE20(&correction,&result,inv);
+    vec_add_ab(out, out, &correction);
+}
+/* localdecomp:end func_L01_0036FA50 */
 
 INCLUDE_ASM("asm/levels", func_L01_0036FF90);
 
@@ -712,7 +845,65 @@ void func_L01_00371C98(u8 *a) {
 }
 /* localdecomp:end func_L01_00371C98 */
 
-INCLUDE_ASM("asm/levels", func_L01_00371CA8);
+/* localdecomp:start func_L01_00371CA8 */
+#include "vu0.h"
+extern vu0_v4 D_L01_001E29C0;
+extern u8 D_L01_001D66B0[8];
+void func_L01_00371CA8(u8 *self, vu0_v4 *source)
+{
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_00382498(s32, s32);
+    extern void func_L01_00470668(void *, void *, s32, f32);
+    extern void func_00382580(void *, f32, f32);
+    extern void func_L01_00474078(void *, void *, s32, u32, u32, s32, s32, f32, f32, f32, f32);
+    extern u8 *func_L01_0046B458(void *, s32, f32, f32, s32, s32, s32, void *, f32, s32);
+    extern void func_L01_00470C78(void *, s32, f32, f32, s32, s32, s32, void *, s32, s32, s32, s32);
+    vu0_v4 velocity, toward;
+    s32 i, j;
+
+    if (*(s32 *)(*(u8 **)(self + 0x68) + 0x2D4) < 2) {
+        vec_sub_ba(&velocity, &D_L01_001E29C0, source);
+        func_0038CF68(&velocity, &velocity, func_003824E0(0.1f, 0.2f));
+        for (i = 0; i < 15; i++) {
+            velocity.x += func_003824E0(-0.05f, 0.05f);
+            velocity.y += func_003824E0(-0.05f, 0.05f);
+            velocity.z += func_003824E0(-0.05f, 0.05f);
+            func_L01_00470668(self + 0x10, &velocity, (func_00382498(25, 40) * 5 + 2) / 6, 0.00584f);
+        }
+    } else {
+        u32 color0, color1, color2, tint;
+        f32 f, zero, g;
+        color0 = 0x80804020;
+        tint = 0xFF0000;
+        color1 = 0xBF804020;
+        color2 = 0xBF604020;
+        if (*(s32 *)(*(u8 **)(self + 0x68) + 0x2D4) >= 4) {
+            color0 = 0x80204080;
+            tint = 0xFF;
+            color1 = 0xBF2040FF;
+            color2 = 0xBF2040FF;
+        }
+        for (j = 0; j < 10; j++) {
+            func_00382580(&velocity, 0.10000001f, 0.20000002f);
+            func_L01_00474078(self + 0x10, &velocity, (func_00382498(15, 25) * 5 + 2) / 6, color0, tint, 0, 0, 0.1f, 0.25f, 0.9f, 0.5f);
+        }
+        vec_sub_ba(&toward, &D_L01_001E29C0, self + 0x10);
+        func_0038CF68(&toward, &toward, 0.4f);
+        f = 0.1f;
+        zero = 0.0f;
+        vec_add_ba(&velocity, self + 0x10, &toward);
+        g = 0.7f;
+        func_L01_0046B458(&velocity, 14, 3.5f, f, color1, 2, 1, D_L01_001D66B0, zero, 1);
+        func_L01_0046B458(&velocity, 14, 2.5f, f, color2, 2, -1, D_L01_001D66B0, zero, 1);
+        func_L01_0046B458(&velocity, 14, 1.75f, f, 0xC0FFFFFF, 2, 1, D_L01_001D66B0, zero, 1);
+        func_L01_0046B458(&velocity, 14, 1.25f, f, 0xB0FFFFFF, 2, -1, D_L01_001D66B0, zero, 1);
+        func_L01_00470C78(&velocity, 17, 0.9f, g, 0x46787878, 2, 2, D_L01_001D66B0, 0, 2, 6, 1);
+        func_L01_00470C78(&velocity, 17, 1.7f, g, 0x46787878, 2, -1, D_L01_001D66B0, 1, 2, 6, 1);
+        func_L01_00470C78(&velocity, 17, 2.0f, 1.5f, 0x2D787878, 2, 1, D_L01_001D66B0, 1, 2, 6, 1);
+    }
+}
+/* localdecomp:end func_L01_00371CA8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00372120);
 
