@@ -1,6 +1,17 @@
-/* PAL near miss (Codex wave 8): near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details).
- * Worker's note: Ordinary context COMPILE ERROR: exact callee types S_35A8A0/S_0030CD20 declared later; move their existing typedefs earlier, no incompatible prototype used (02.log). Contract-only diagnostic: 363 diff/frame 0x100 vs 0x120 (03.contract.log); see ...
- */
+/* func_L01_00306A98 (Claude wave 14 r72, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
+/* PAL near miss (wave 14 r72, 2026-11-28): func_L01_00306A98 (1468 B, 34 places), the Lava Gun pools' draw
+ * (two flame billboards per pool through func_L01_00307058, then two textured quads per pool).
+ * 344 diff with the file's line (p10 check): the first version of the Codex wave 8 draft that compiles in its
+ * file's context. Changed against it: the callee prototypes are the file's own (func_0038CF68(f32 *, f32 *, f32)
+ * as its block-scope declarations, func_003D2DA0() unprototyped as func_L01_003088D8's block, since its only
+ * prototyped declaration takes S_35A8A0, a type a later block defines), no casts to later blocks' types, and the
+ * `.extern D_L01_001DC5C8, 4` hint repeated in the block ($gp load as retail; the file's top hint does not reach
+ * the check's context).
+ * Still differs, from the j loop on: retail strength-reduces dst/src and every vertex[k] address into separate
+ * pointers per call site (eight givs, twelve stack spills at 0x7C-0xAC, frame 0x120) and keeps
+ * color + 0x803010 / color + 0x103080 inside the loop; this C multiplies j * 0x90 each iteration and hoists the
+ * colour sums (frame 0x100); the row lookup D_L01_002C5600[...].level folds into mtlo/madd (base + 1) where
+ * retail has mult; addu; lbu 1(x). */
 #include "common.h"
 /* localdecomp:start func_L01_00306A98 */
 #include "vu0.h"
@@ -12,6 +23,7 @@ typedef struct {
     f32 uv[4][2];
     long tag, texture, mode, clamp;
 } Packet_00306A98;
+__asm__(".extern D_L01_001DC5C8, 4");
 extern Pool_003068B8 *D_L01_001DC5C8;
 extern State_00306A98 D_001425C0;
 extern Row_00306A98 D_L01_002C5600[];
@@ -21,10 +33,10 @@ void func_L01_00306A98(s32 arg)
     extern void func_L01_00307058(s32, f32 *, f32 *, s32, f32);
     extern long func_00389598(s32);
     extern void func_003C5180(void *, void *, s32);
-    extern void func_0038CF68(S_0030CD20 *, S_0030CD20 *, f32);
+    extern void func_0038CF68(f32 *, f32 *, f32);
     extern void func_0038CE90(void *, void *, void *);
     extern void func_0038CE20(f32 *, f32 *, f32);
-    extern void func_003D2DA0(S_35A8A0 *, f32 *, s32);
+    extern void func_003D2DA0();
     f32 matrix[4][4];
     vu0_v4 delta;
     vu0_v4 direction;
@@ -86,9 +98,9 @@ void func_L01_00306A98(s32 arg)
             }
             vec_sub_ba(&delta, &D_L01_001E29C0, pos);
             func_003C5180(pos, &direction, 1);
-            func_0038CF68((S_0030CD20 *)matrix[0], (S_0030CD20 *)&delta, 1.0f);
+            func_0038CF68(matrix[0], (f32 *)&delta, 1.0f);
             func_0038CE90(matrix[1], matrix[0], &direction);
-            func_0038CF68((S_0030CD20 *)matrix[1], (S_0030CD20 *)matrix[1], 1.0f);
+            func_0038CF68(matrix[1], matrix[1], 1.0f);
             func_0038CE90(matrix[2], matrix[1], matrix[0]);
             matrix[3][0] = pos[0];
             matrix[3][1] = pos[1];
@@ -105,7 +117,7 @@ void func_L01_00306A98(s32 arg)
                 func_0038CE20(dst->vertex[2], src->vertex[2], pool->strength);
                 func_0038CE20(dst->vertex[3], src->vertex[3], pool->strength);
             }
-            func_003D2DA0((S_35A8A0 *)dst, matrix[0], 0);
+            func_003D2DA0(dst, matrix[0], 0);
         }
     }
 }

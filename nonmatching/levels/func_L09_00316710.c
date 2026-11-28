@@ -1,42 +1,25 @@
-/* PAL level 09 draft (state machine of 3704 bytes; one source with a six-way jump table, which needs a real level-09 build if this lands).
- * tools/check.py --no-context --as ps2as --target level_09 with the file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division):
- * 636 raw differences; 181 aligned rows (difflib over the instruction columns; the 371/298-aligned drafts this extends measure 426
- * on the same count), 133 when the four saved registers that hold the hoisted high halves are not compared by name.
- * Fixed in round 27 (W23), from 426 aligned:
- * - D_L09_001F2EC0 as `extern s32 D_L09_001F2EC0[4]` (read as [0]): a 16-byte object is split into explicit high/lo_sum RTL, so gcse PRE
- *   hoists its `lui` into a saved register before the dispatch like the other three (retail pre-loads FOUR high halves; the scalar form
- *   was an assembler `lw sym` macro that PRE cannot see). 426 -> 395. D_L09_00236780 the same (`lui/lw` in retail): -7.
- * - One pointer temp per kind of use instead of five: case 1's `pt` and case 2's `q` and case 5's `P` and `q` are spelled with the
- *   variables below (q, q, q, P, q, pt, q in source order). The allocator then gives z $s1 and the vtable temp $s0 as in retail
- *   (it changes which pseudos exist and so how the global allocator orders them): 395 -> 290.
- * - The two `z->f10[i]` loops store through a typed struct (F18_316710, field f18): the store is MEM_IN_STRUCT_P, so loop.c can hoist
- *   the load of the global pointer D_L09_001E009C out of the loop as retail does (`lw $a1, 0x37ec($gp)` before it): 290 -> 270.
- * - The five bit-mask globals tested with `(x[0] & (1 << D_001D545C)) == 0` are `u32` arrays (retail uses sllv/and, an s32 array
- *   gives srav/andi 1), and their names were wrong: retail's `lui 0x1b` + negative lo is 0x1A8090/0x1A8420/0x1A8AE0/0x1A8D08,
- *   not 0x1B8xxx: 270 -> 212.
- * - The seven 16-byte vector arguments of func_003C6680 as `extern u8 X[8]` plus `.extern X, 16` (sized small object, assembler `la`
- *   pair that sched2 keeps together, as in retail): 212 -> 187.
- * - The `u8 f1C[4]` flag loop as a pointer walk (`fl = D_001426E0.f1C; for (i = 0; i < 4; i++) { if (*fl) z->f0++; fl++; }`) is retail's pointer-increment
- *   count-down loop (`bgez`); the indexed form `f1C[i]` was an up-counting `slti` loop: raw 678 -> 636. Reading `z->f8` into `i` before its two uses: 187 -> 181.
- * What still differs:
- * - Which saved register holds which high half: retail $fp 0x1c (D_001BBC40), $s5 0x14 (D_001426E0), $s6 0x1f (D_L09_001F2EC0), $s7 0x14
- *   (D_00142BA0); here $s6 0x1c, $s5 0x14, $s7 0x1f, $fp 0x14. The four pseudos are the last ones the global allocator assigns, in
- *   the order gcse created them, which is the order of the expressions in its hash table, i.e. a function of the symbol NAMES. Declaring
- *   the symbols in another order changes nothing (24 orders tried). An alias `D_001BBC48 - 8` for D_001BBC40 changes the order but
- *   adds 18 structural rows. About 50 aligned rows are this one allocation.
- * - The tail test (D_L09_001F2EC0 == 2 && ... && func_L01_004BA800() == 0): retail evaluates the && chain into $s0 (`addiu $s0, 1` in the
- *   delay slot of the first compare, `move $s0, $zero` at the failure label, `beqz $s0`), then tests it; every spelling that assigns it to
- *   a variable first (s0, i, a block local, `!= 0`, `? 1 : 0`) gets folded to direct branches (187, same code).
- * - case 2, join after `z->f74 = -1; z->f6C = -1; z->f70 = -1;`: retail has `bnel` with `sw $s0, 0x74` in its slot and then 0x6c, 0x70;
- *   the 12 source orders of the five stores give 185-188.
- * - case 5: retail reads `z->f2 ? f2C : f28` into a plain temp ($v1) instead of $s0 (ternary or `i`: 188 / 197; the row pointer in its own
- *   local `r`, which keeps it out of $s0's variable: 187 -> 184 with the compare as `z->f2 == 0`), and schedules the two
- *   `lq/sq` copies of the table row before `jal 0x444900`.
- * - case 1: the store `D_001D98E0 = ... + 0.4f` is in the `jal func_003C6680` delay slot in retail.
- * The jump table's `lui/addiu 0` rows are only the missing relocation of this standalone compile.
- */
+/* func_L09_00316710 (Claude wave 14 r51, 2026-11-28). Replaces the earlier draft of this function (Level 09 state machine (3704 bytes), round 27 W23 on top of the 371/298-difference drafts). */
+/* func_L09_00316710: 873 diff with the file's flags (wave 14 r51; the round 27 draft measured 876 under the same
+ * line). Only change against the draft: the seven 16-byte vector arguments of func_003C6680 are plain
+ * `extern u8 D_001D98x0[8];` without the `.extern X, 16` hints (size hints are only for $gp addressing; retail
+ * has them as lui/addiu `la` pairs outside delay slots, which is Ps2EeAs's treatment of small symbols).
+ * The function cannot match under its file's line `-O2 -G8 -fopt-stack -mno-check-zero-division` (GNU as):
+ * retail is Ps2EeAs output on two counts. (1) li.s: 10000.0f, 0.4f, 0.06f are lui/ori/mtc1 (0x461C4000,
+ * 0x3ECCCCCD, 0x3D75C290) where GNU as loads them from the $gp literal pool. (2) Small scalars are $gp-relative
+ * only in delay slots and lui/lw elsewhere: D_001D545C 16 gp / 9 lui, D_L09_001E009C 4 / 6, D_L09_001E0180 2 / 3,
+ * D_L09_001DF9D0 3 / 3, D_L09_001DFBC0 1 / 1, D_L09_001DFC14 0 / 2; GNU as makes all of them $gp-relative, so
+ * this output is 49 instructions short of retail's 926 from row 55 on and the positional count stays ~870.
+ * Needs the existing line `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (L09_003175C8.c, the next
+ * file, has it). Cut: 0x316710-0x317588, 8-aligned at both ends; or the whole file L09_00316710.c can take the
+ * line if func_L09_00317588 and func_L09_003175A0 (small C, no globals or floats) still match under it.
+ * Compiler-side differences that stay under @ps2as (see the round 27 draft header): the saved-register
+ * assignment of the four hoisted high halves (retail $fp 0x1c, $s5 0x14 D_001426E0, $s6 0x1f, $s7 0x14
+ * D_00142BA0; here $s6, $s5, $s7, $fp; true-size `[16]` vectors give $s5/$fp swapped only but split the la
+ * pairs), the && chain retail evaluates into $s0, store order at two joins, case 5's index temp, the case 1
+ * D_001D98E0 store in the jal delay slot. Switch: jtcheck needed if it lands. */
 #include "common.h"
 
+/* localdecomp:start func_L09_00316710 */
 typedef int u128_t __attribute__((mode(TI)));
 typedef struct VT_316710 {
     void (*f0)(void);
@@ -114,19 +97,12 @@ extern u32 D_001A8D08[];
 extern s32 D_L09_00236780[4];
 extern u8 D_L09_00239C40[];
 extern u8 D_001D9870[8];
-__asm__(".extern D_001D9870, 16");
 extern u8 D_001D9880[8];
-__asm__(".extern D_001D9880, 16");
 extern u8 D_001D9890[8];
-__asm__(".extern D_001D9890, 16");
 extern u8 D_001D98A0[8];
-__asm__(".extern D_001D98A0, 16");
 extern u8 D_001D98B0[8];
-__asm__(".extern D_001D98B0, 16");
 extern u8 D_001D98C0[8];
-__asm__(".extern D_001D98C0, 16");
 extern u8 D_001D98D0[8];
-__asm__(".extern D_001D98D0, 16");
 
 extern s32 func_00382380(void *, s32, s32);
 extern void func_L01_00445130(u8 *, s32, s32);
@@ -419,3 +395,4 @@ void func_L09_00316710(u8 *obj) {
         z->f38 = -1;
     }
 }
+/* localdecomp:end func_L09_00316710 */

@@ -1,21 +1,12 @@
-/* b39-w10 (2026-11-24): 7 raw differences (was 184) with --mode S --as ps2as: a dead third test at the end of chain 2,
- * `else if (self[0x20] == 0 && A && B) { return; } else { return; }` (three conjuncts, the state compare first, compared
- * with 0, both arms identical). It leaves the zero_extend of the second `== 2` test with two uses at combine time, so its
- * `andi` survives, and jump2 deletes the test afterwards (sonnet-b29-nm3's mechanism). Left: only the registers of the
- * first extension and the raw copy (ours $v1/$a0, retail $a0/$a1) and the slot/join andi that read them. */
-/* Correcting the return type of func_0039EC28 fixes the halfword read
- * register allocation. With --mode S --as ps2as, check.py still reports
- * 184/185 raw differences (03/05), but the aligned count with branch
- * displacements ignored is 11/21, down from 16/26 for the previous draft.
- * The state-2 join still loses its andi. Locals of six widths/signs,
- * alternate masks, signed byte accesses and equivalent compares did not help.
- */
-/* PAL port of the NTSC-U draft (Claude wave K, func_L03_003C3B00; the two versions' code differs): 22 aligned rows with the file's flags (-mvu0-use-vf0-vf2 @ps2as), the earlier NTSC-U-named draft was 285 words off on NTSC-U and about 160 rows on PAL after a name mapping.
- * What the port needed: callee names through config/us/map.tsv; PAL's 50 Hz values (25.0f for the fade, 417 for the 500-frame wait, the four rotation-smoothing constants pi/75, pi/225, pi/450 and pi/100, 0.02792527f); PAL-only `func_003C2880(self)` after the case-2 `func_L01_004AA7E8(self, 1)` (the early `D_00142796` return jumps to that shared tail); data at PAL addresses (D_001DEDB0_sda, D_L03_001DF2DC, D_L03_001DF6B8, D_L03_001E9228) with .extern size hints for the scalars retail reaches through `lui $at`/$gp; the hero base read as `D_001A4BE0 + off` through two pointers (one before the 3-pass loop, one after: retail rematerialises it from the shared `lui` in $s4 and reuses $s0 as the loop counter; a single pointer held across the loop was the 127-row cascade); t0/t1 as `u128_t tt[2]` (stack layout).
- * Round 14 (Sonnet b24-u1): 20 aligned rows (check.py's raw count is 184: everything after the first extra `andi` is shifted). The t quads written the other way round (`tt[0] = ...; tt[1] = tt[0];`) give retail's store order, z loads and add/sub order.
- * Left: (1) the `self[0x20]` compares: retail has `lbu $v0; andi $a0,$v0,0xff; bnez $a0; move $a1,$v0` and compares $a0 again for `== 1` (here $v1/$a0); in the second chain it compares the raw byte (`bne $v0,$v1`, `move $a1,$v0`) and then `andi $v1,$a1,0xff` before the `== 2` test (here the copy is compared without the `andi`: gcc knows it is zero-extended). The extra `andi` also moves the loop-padding nop and every later branch offset. A local `u8`/`s32` for the state loses the `andi` altogether (115 raw). (2) the D_001A7E18 halfword read's registers ($v0/$v1 swapped; `*(u16 *)((u8 *)D_001A7E18 + 0xC540)` and `!D_001A7E18[0x6270]` give the same or worse). */
-/* NM-R7 (2026-11-22): file-ready; compiles in L03_003C5460.c's context with the file's u128_t, D_001CCFD0 and func_003A52A0 declarations: 184 differences (tools/check.py) at level 03, 185 at level 05. */
-/* FAM-2 (2026-11-23, upstream bbf261a1): still 184 at level 03, 185 at level 05 (the file's flags); a u8 state local following retail's dataflow gives 115 with no andi at all. */
+/* func_L03_003C5968 (Claude wave 14 r74, 2026-11-28). Replaces the earlier draft of this function (PAL port of the NTSC-U draft of `func_L03_003C3B00` (Claude wave K)). */
+/* r74 wave 14 (2026-11-28): the b39-w10 draft made file-ready again: it declared func_L03_003C5460 and
+ * func_L03_003C5760 as void (void *), which conflicts with L03_003C5460.c's definitions (u8 * and O_003C5760 *);
+ * now it uses the file's prototypes (the call passes (O_003C5760 *)self). Under the file's own line it is 7 diff at
+ * level 03 (wave10/p10/check.py), all register choices: retail keeps the first zero-extension of self[0x20] in
+ * a0 and the raw copy in a1, here v1/a0. greg dump: x (zext, pseudo 124) gets v1 because it does not conflict with
+ * the join's zext x2 (pseudo 174, allocated first, v1); retail behaves as if x2 were already live in the
+ * `== 1` test block (PRE-inserted there), which makes x conflict with v1 and pushes x to a0 and the copy to a1.
+ * A 160 s permuter run (1450 candidates) found nothing below its base. */
 #include "common.h"
 
 /* localdecomp:start func_L03_003C5968 */
@@ -34,12 +25,10 @@ extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 extern f32 func_00382538(void);
 extern void func_L01_004450F0(void *, s32, s32);
 extern f32 func_0038CF00(void *, void *);
-extern void func_L03_003C5460(void *);
 extern f32 func_0038DAB8(f32, f32);
 extern void func_L03_003C5190(void *);
 extern void func_L01_0044EAE0(void *, void *, void *, f32, f32, f32);
 extern void func_003A1798(void);
-extern void func_L03_003C5760(void *);
 extern s32 func_00382468(s32);
 extern void func_003C3A10(void *, s32, s32, s32);
 extern void func_L01_0050FB40(s32, s32, f32);
@@ -111,7 +100,7 @@ void func_L03_003C5968(u8 *self) {
             D_L03_001DF6B8 = one;
             h1 = D_001A4BE0;
             *(s16 *)(h1 + 0x1DC) = 3;
-            func_L03_003C5760(self);
+            func_L03_003C5760((O_003C5760 *)self);
             *(u128_t *)(self + 0x10) = *(u128_t *)(h1 + 0x80);
             *(u128_t *)(self + 0xF0) = *(u128_t *)(h1 + 0x90);
             if (self[0x42] == one) {

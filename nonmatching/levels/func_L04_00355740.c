@@ -1,3 +1,8 @@
+/* func_L04_00355740 (Claude wave 14 r52, 2026-11-28). Replaces the earlier draft of this function (PAL draft (2026-11-21, retried 2026-11-22 and three times 2026-11-23), written from retail; PROVISIONAL VU0 j-constraint form for three sequences). */
+/* func_L04_00355740 (r52, wave 14): 2 diff at level 04 (p10/check.py, file flags), the existing draft measures 3 there.
+ * Change against the draft: the first call is func_L01_0040D198 (the catalogue name of L04 0x3556B8; the draft's
+ * func_L01_0034D840 resolves to another address, the third differing word). Still differs: the known pair in the first
+ * VU0 block (retail loads o + 0x10 for the vsub before it stores a; here the store comes first). The draft's history follows. */
 /* PAL draft (2026-11-21, Promises fleet rac3-w2; retried 2026-11-22 by NM-R10, rac3-w3): func_L04_00355740
  * (1204 B; levels 04 24 26 39-53), written from retail. check.py with its file's line
  * (-mvu0-use-vf0-vf2 ... @ps2as): 2 diff at every placement (04, 24, 26, 39-53; also NTSC-U and --no-context),
@@ -79,6 +84,8 @@
  * The C below keeps the plain per-instruction form, at 2 differences.
  */
 #include "common.h"
+
+/* localdecomp:start func_L04_00355740 */
 #include "vu0.h"
 
 typedef struct { f32 u, v; } UV_355740;
@@ -89,7 +96,7 @@ typedef struct {
     long x70, x78, x80, x88;
 } Q_355740;
 
-extern void func_L01_0034D840(void *);
+extern void func_L01_0040D198(u8 *);
 extern void func_003D93B0(void *, s32, s32, s32);
 extern void func_0038CF68(void *, void *, f32);
 extern void func_0038CE90(void *, void *, void *);
@@ -111,7 +118,7 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     s32 i;
 
     t = *(u8 **)(o + 0x68);
-    func_L01_0034D840(&q);
+    func_L01_0040D198((u8 *)&q);
     func_003D93B0(&q, 0x2F, 0, 0x80);
     q.col[1] = -1;
     q.col[3] = 0x40FFFFFF;
@@ -231,3 +238,4 @@ void func_L04_00355740(void *unused, u32 c0, u32 c1, u8 *o) {
     func_003D2DA0(&q, 0, 0);
     func_003D9508(o + 0x10, 0x13, 0x60804020, 1, 0.3f, 0.08f, func_00382538());
 }
+/* localdecomp:end func_L04_00355740 */

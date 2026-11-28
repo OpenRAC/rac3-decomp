@@ -1,64 +1,92 @@
-/* PAL near miss (Codex wave 8): near miss: 163 words differ with the file's flags.
- * Worker's note: 162 diff with divs=2 experiment; w394/func_L01_00386148.check2.log; complete ribbon reconstruction; VU/EE interleaving not reproducible with indivisible blocks at fixed flags, frame and allocation differ (0x190 vs 0x170). No matching metadata claim.
- */
+/* func_L01_00386148 (Claude wave 14 retry r85, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
 #include "common.h"
+/* PAL near miss (wave 14 retry r85): 41 diffs at level 01 with the file's flags and an injected divs row
+ * 'func_L01_00386148 2' (r67's draft: 42). Changed against r67: packet.col[3] = colour_start written right after the
+ * alpha shift, before the first VU copy (a decomp-permuter find), which moves one store into retail's slot.
+ * Still differs (r67's analysis, confirmed with -dg/-dS dumps): retail's 0x100 is a reload spill of a VU0 value
+ * where this draft has the memory temp at 0xF0 (the unused 16 bytes after it are a reload-time slot, vars=272 with no
+ * references), so sched1 moves the D load above the temp store and vf1/vf2 swap roles in the pre-loop and the loop.
+ * vu0_q value forms that make the temp a pseudo give the spill, but sched1 then hoists the p[i-1] copy above the vsub
+ * (equal priority, more dependents) and spills the wrong value, or loop.c hoists 1.0f (143-168 diffs). */
+
 /* localdecomp:start func_L01_00386148 */
-typedef struct { f32 x,y,z,w; } __attribute__((aligned(16))) V_00386148;
-extern V_00386148 D_L01_001E29C0;
-void func_L01_00386148(V_00386148 *points, s32 unused, s32 texture, s32 count, s32 unused2, u32 color, f32 unused3, f32 width, f32 v) {
+#include "vu0.h"
+typedef struct {
+    vu0_v4 pos[4];
+    u32 col[4];
+    f32 uv[4][2];
+    long a;
+    long tex;
+    long c;
+    long d;
+} S_00386148;
+extern vu0_v4 D_L01_001E29C0_00386148;
+
+void func_L01_00386148(void *points, s32 a1, s32 a2, s32 count, s32 colour_end, s32 colour_start, f32 f0, f32 f1, f32 scroll) {
     extern void func_003D93B0(void *, s32, s32, s32);
-    extern void func_0038CE90(void *, void *, void *);
-    extern void func_0038CF68(void *, void *, f32);
-    extern u32 func_0038DBD8(u32, u32, f32);
-    extern void func_003D2DA0(void *, s32, s32);
-    u8 packet[0x90];
-    V_00386148 cross, scaled, camera, tangent, delta, prev, spare, temp;
-    s32 i = 1;
-    s32 alpha = color >> 24;
-    f32 endv;
-    func_003D93B0(packet, texture, 1, 128);
-    *(s32 *)(packet+0x50)=0;
-    __asm__("lqc2 $vf1, %1\n\tsqc2 $vf1, %0" : "=m"(temp): "m"(*points): "vf1");
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0" : "=m"(delta): "m"(D_L01_001E29C0), "m"(temp): "vf1","vf2");
-    *(u32 *)(packet+0x4C)=color;
-    endv=v+1.0f;
-    *(f32 *)(packet+0x60)=endv;
-    v += *(f32 *)(packet+0x50);
-    *(f32 *)(packet+0x50)=v;
-    *(u32 *)(packet+0x48)=color;
-    *(u32 *)(packet+0x44)=color;
-    *(u32 *)(packet+0x40)=color;
-    *(s32 *)(packet+0x54)=0;
-    *(f32 *)(packet+0x5C)=1.0f;
-    *(s32 *)(packet+0x64)=0;
-    *(f32 *)(packet+0x6C)=1.0f;
-    *(f32 *)(packet+0x58)=v;
-    *(f32 *)(packet+0x68)=endv;
-    __asm__("lqc2 $vf2, %3\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tlqc2 $vf1, %4\n\tsqc2 $vf1, %0\n\tsqc2 $vf2, %1" : "=m"(camera), "=m"(tangent): "m"(points[0]), "m"(points[1]), "m"(delta): "vf1","vf2");
-    func_0038CE90(&cross,&tangent,&camera);
-    func_0038CF68(&scaled,&cross,points->w);
-    func_0038CE20((u128_384E68 *)&scaled,(u128_384E68 *)&scaled,width);
-    __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %3\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0\n\tlqc2 $vf2, %3\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %1" : "=m"(*(V_00386148 *)packet), "=m"(*(V_00386148 *)(packet+0x10)): "m"(scaled), "m"(*points): "vf1","vf2");
-    points++;
-    for (; i<count; i++,points++) {
-        f32 t;
-        s32 a;
-        u32 c;
-        __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %3\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0\n\tlqc2 $vf2, %4\n\tlqc2 $vf1, %2\n\tsqc2 $vf2, %1" : "=m"(temp), "=m"(prev): "m"(*points),"m"(D_L01_001E29C0),"m"(points[-1]):"vf1","vf2");
-        __asm__("lqc2 $vf2, %2\n\tsqc2 $vf2, %0\n\tlqc2 $vf1, %3\n\tlqc2 $vf2, %4\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %1" : "=m"(camera),"=m"(tangent):"m"(temp),"m"(*points),"m"(prev):"vf1","vf2");
-        func_0038CE90(&cross,&tangent,&camera);
-        func_0038CF68(&scaled,&cross,points->w);
-        func_0038CE20((u128_384E68 *)&scaled,(u128_384E68 *)&scaled,width);
-        t=1.0f-(f32)i/(f32)count;
-        a=(s32)((f32)alpha*t);
-        __asm__("lqc2 $vf2, %2\n\tlqc2 $vf1, %3\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0\n\tlqc2 $vf2, %3\n\tlqc2 $vf1, %2\n\tvsub.xyz $vf1, $vf2, $vf1\n\tsqc2 $vf1, %1" : "=m"(*(V_00386148 *)(packet+0x20)), "=m"(*(V_00386148 *)(packet+0x30)): "m"(scaled), "m"(*points): "vf1","vf2");
-        c=func_0038DBD8(0x2020FF,color&0x2F2FAF,t)|(a<<24);
-        *(u32 *)(packet+0x48)=c; *(u32 *)(packet+0x4C)=c;
-        func_003D2DA0(packet,0,0);
-        *(u128_384E68 *)packet=*(u128_384E68 *)(packet+0x20);
-        *(u128_384E68 *)(packet+0x10)=*(u128_384E68 *)(packet+0x30);
-        *(u32 *)(packet+0x40)=*(u32 *)(packet+0x48);
-        *(u32 *)(packet+0x44)=*(u32 *)(packet+0x4C);
+    S_00386148 packet;
+    vu0_v4 cross;
+    vu0_v4 scaled;
+    vu0_v4 camera;
+    vu0_v4 tangent;
+    vu0_v4 delta;
+    vu0_v4 prev;
+    vu0_v4 temp;
+    vu0_v4 *p = points;
+    s32 i;
+    s32 alpha;
+    f32 end;
+    f32 t;
+    s32 a;
+    s32 c;
+
+    func_003D93B0(&packet, a2, 1, 128);
+    alpha = (u32)colour_start >> 24;
+    packet.col[3] = colour_start;
+    packet.uv[0][0] = 0.0f;
+    vec_copy(&temp, p);
+    vec_sub_ba(&delta, &temp, &D_L01_001E29C0_00386148);
+    end = scroll + 1.0f;
+    packet.uv[2][0] = end;
+    scroll += packet.uv[0][0];
+    packet.uv[0][0] = scroll;
+    packet.col[2] = colour_start;
+    packet.col[1] = colour_start;
+    packet.col[0] = colour_start;
+    packet.uv[0][1] = 0.0f;
+    packet.uv[1][1] = 1.0f;
+    packet.uv[2][1] = 0.0f;
+    packet.uv[3][1] = 1.0f;
+    packet.uv[1][0] = scroll;
+    packet.uv[3][0] = end;
+    vec_sub_ab(&tangent, &p[1], &p[0]);
+    vec_copy(&camera, &delta);
+    func_0038CE90(&cross, &tangent, &camera);
+    func_0038CF68(&scaled, &cross, p->w);
+    func_0038CE20((u128_384E68 *)&scaled, (u128_384E68 *)&scaled, f1);
+    vec_add_ba(&packet.pos[0], p, &scaled);
+    vec_sub_ab(&packet.pos[1], p, &scaled);
+    for (i = 1; i < count; i++) {
+        vec_sub_ab(&temp, &p[i], &D_L01_001E29C0_00386148);
+        vec_copy(&prev, &p[i - 1]);
+        vec_copy(&camera, &temp);
+        vec_sub_ab(&tangent, &p[i], &prev);
+        func_0038CE90(&cross, &tangent, &camera);
+        func_0038CF68(&scaled, &cross, p[i].w);
+        func_0038CE20((u128_384E68 *)&scaled, (u128_384E68 *)&scaled, f1);
+        t = 1.0f - (f32)i / (f32)count;
+        a = (s32)((f32)alpha * t);
+        vec_add_ba(&packet.pos[2], &p[i], &scaled);
+        vec_sub_ab(&packet.pos[3], &p[i], &scaled);
+        c = colour_start & 0x2F2FAF;
+        c = func_0038DBD8(0x2020FF, c, t) | (a << 24);
+        packet.col[3] = c;
+        packet.col[2] = c;
+        func_003D2DA0(&packet, 0, 0);
+        *(u128_384E68 *)&packet.pos[0] = *(u128_384E68 *)&packet.pos[2];
+        *(u128_384E68 *)&packet.pos[1] = *(u128_384E68 *)&packet.pos[3];
+        packet.col[0] = packet.col[2];
+        packet.col[1] = packet.col[3];
     }
 }
 /* localdecomp:end func_L01_00386148 */

@@ -1,3 +1,17 @@
+/* func_L01_0031E3B8 (Claude wave 14 r71, 2026-11-28). Replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (r71, wave 14, 2026-11-28): 15 differences (tools/check.py, level 01, the file's flags), from the k6 Opus draft's 18.
+ * Change: loop 2 has its own counter `j`, declared with an initializer (`s32 j = 0;`). Why: with a fresh counter whose first
+ * reference is loop 2's own init, loop.c emits no exit value after loop 2, the function loses the empty block that insn
+ * leaves, and sched1 then forms interblock regions (loop 1's decrement hoists into its first block: 211 differences). The
+ * dead initializer keeps the exit-value insn (and its empty block), so every block is scheduled alone as in retail, and the
+ * loop-2 counter now takes $s0 as retail (the shared counter gave $s2).
+ * Left (register allocation only): the 0x1A4EC0 base and the smoke address swap $s5/$s6 (so the 0x221098 config base of
+ * loop 2 is $s5 for retail's $s6), the first func_L01_004669B0 call's `move $a0, $s3` comes after the $f12/$f13 moves, and
+ * loop 2's color / at-copy are $s4/$s2 where retail has $s2/$s4. A do { } while (0) around the func_L01_004708C8 call gives
+ * retail's $s5/$s6 (the smoke address is then referenced at loop depth 3, so global alloc takes it before the 0x1A4EC0 base)
+ * but adds a nop before loop 2's bgez and moves the stacked argument store (37). Tried without effect: count-down loops,
+ * the loop-1 counter reused as color, color declared first / as a ternary, `one` set inside loop 2 (all 15 or worse); the
+ * literal 1 for the last argument is not hoisted (130). The previous draft's notes follow. */
 /* PAL near miss (k6 Opus, 2026-11-26): 18 differences (tools/check.py, level 01, the file's flags), from 113: vec_sub_ab/vec_add_ba for the two VU0 blocks, the life range as one call with lo/hi set in the branches, a separate n and particle pointer in the second loop, a hoisted constant-1 local for the ninth argument of func_L01_004708C8. Left: register allocation only (loop 1 s5/s6 for smoke and the 0x1A4EC0 base, the first func_L01_004669B0 call's a0 move order, loop 2 color/at-copy/counter in s4/s0/s2 where retail has s2/s4/s0). A separate counter for loop 2 gives retail's loop-2 registers but moves loop 1's decrement (211). */
 #include "common.h"
 #include "vu0.h"
@@ -20,6 +34,7 @@ void func_L01_0031E3B8(u8 *position, s32 unused, s32 flag, u8 *owner) {
     extern u8 *func_L01_004708C8(void *,void *,s32,s32,f32,f32,s32,s32,s32,s32,s32);
     f32 velocity[4], at[4], smoke[4];
     s32 i;
+    s32 j = 0;
     s32 life;
     s32 n;
     s32 one;
@@ -50,7 +65,7 @@ void func_L01_0031E3B8(u8 *position, s32 unused, s32 flag, u8 *owner) {
     one=1;
     color=1;
     if(((E240_321CB8 *)D_L01_002C5600)[D_001425C0[0x7F]].x1>=4) color=3;
-    for(i=0;i<2;i++) {
+    for(j=0;j<2;j++) {
         angle=func_003824E0(-0.9599310755729675f,-1.3962634f);
         heading=func_00382538();
         func_00382760(velocity,func_003824E0(0.0f,0.5f)*0.020000001f,heading,angle);

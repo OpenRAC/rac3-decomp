@@ -1,8 +1,15 @@
-/* PAL near miss (Codex wave 8): near miss: 304 words differ with the file's flags.
- * Worker's note: 304/317 raw word differences; four saved FPRs and 0x70 frame versus retail five FPRs and 0x80, small-width constant coalesced with unit constant; residual allocation/scheduling; three formulations identical checker diff; best ...
- */
+/* func_L01_003AA120 (Claude wave 14 r53, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
 #include "common.h"
+
 /* localdecomp:start func_L01_003AA120 */
+/* wr53 (wave 14): the draft's own func_003D9508 prototype (u32 colour) conflicts with the file's
+ * (void *, s32, s32, s32, f32, f32, f32), so the draft gives no count under the file's line; this version
+ * uses the file's declaration and plain literals (the smallWidth local changes nothing: sched1 places
+ * the constant by priority). 304 diff, all from the frame: four saved FPRs and a 0x70 frame where retail
+ * has five (f20-f24) and 0x80. The 0.08 width constant is ranked last by sched1 (its first use is the
+ * fourth func_003D9508 call), lands after the last use of 1.0 and shares its register; retail's then
+ * branch loads it right after the first func_L01_0040A8C0 call into f22 (its else branch does share,
+ * f21). Everything else (calls, colours, CSE'd 4.0 in a callee-saved FPR) is in retail's order. */
 extern s32 D_001DE398_sda;
 extern s32 D_001DE39C_sda;
 extern u32 D_001DE3A0_sda;
@@ -16,7 +23,6 @@ void func_L01_003AA120(u8 *self) {
     extern f32 func_0038DAB8(f32, f32);
     extern f32 func_0038DB00(f32, f32);
     extern f32 func_00382538(void);
-    extern void func_003D9508(void *, s32, u32, s32, f32, f32, f32);
     u128_t a, b;
     u8 *p = *(u8 **)(self + 0x68);
     if (!p) return;
@@ -27,11 +33,9 @@ void func_L01_003AA120(u8 *self) {
         u8 *s;
         f32 size;
         f32 angle;
-        f32 smallWidth;
         a = *(u128_t *)(p + 0x20);
         b = *(u128_t *)(p + 0x10);
         func_L01_0040A8C0(&a, &b, D_001DE39C_sda, 1, D_001DE3A0_sda, D_001DE3A0_sda, D_001DE3A0_sda, D_001DE3A0_sda, *(f32 *)(p + 0x1C), 1.0f, *(f32 *)(self + 0x48));
-        smallWidth = 0.08f;
         a = *(u128_t *)(p + 0x20);
         b = *(u128_t *)(p + 0x10);
         func_L01_0040A8C0(&a, &b, D_001DE39C_sda, 1, D_001DE3A4_sda, D_001DE3A4_sda, D_001DE3A4_sda, D_001DE3A4_sda, *(f32 *)(p + 0x1C) * 0.5f, 1.0f, -*(f32 *)(self + 0x48));
@@ -46,25 +50,23 @@ void func_L01_003AA120(u8 *self) {
         size = *(f32 *)(p + 0x1C);
         size *= 1.5f;
         angle = func_00382538();
-        func_003D9508(s, 0x39, 0xFF3020FF, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x39, 0xFF3020FF, 1, size, 0.08f, angle);
         size = *(f32 *)(p + 0x1C);
         size *= 2.0f;
         angle = func_00382538();
-        func_003D9508(s, 0x39, 0x4F3020FF, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x39, 0x4F3020FF, 1, size, 0.08f, angle);
         size = *(f32 *)(p + 0x1C);
         size *= 2.5f;
         angle = func_00382538();
-        func_003D9508(s, 0x31, 0x606040FF, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x31, 0x606040FF, 1, size, 0.08f, angle);
     } else {
         u8 *r;
         u8 *s;
         f32 size;
         f32 angle;
-        f32 smallWidth;
         a = *(u128_t *)(p + 0x20);
         b = *(u128_t *)(p + 0x10);
         func_L01_0040A8C0(&a, &b, D_001DE39C_sda, 1, 0x5F20FF20, 0x5F20FF20, 0x5F20FF20, 0x5F20FF20, *(f32 *)(p + 0x1C), 1.0f, *(f32 *)(self + 0x48));
-        smallWidth = 0.08f;
         a = *(u128_t *)(p + 0x20);
         b = *(u128_t *)(p + 0x10);
         func_L01_0040A8C0(&a, &b, D_001DE39C_sda, 1, 0x5F20FFFF, 0x5F20FFFF, 0x5F20FFFF, 0x5F20FFFF, *(f32 *)(p + 0x1C) * 0.5f, 1.0f, -*(f32 *)(self + 0x48));
@@ -79,15 +81,15 @@ void func_L01_003AA120(u8 *self) {
         size = *(f32 *)(p + 0x1C);
         size *= 1.5f;
         angle = func_00382538();
-        func_003D9508(s, 0x39, 0xFF30FF20, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x39, 0xFF30FF20, 1, size, 0.08f, angle);
         size = *(f32 *)(p + 0x1C);
         size *= 2.0f;
         angle = func_00382538();
-        func_003D9508(s, 0x39, 0x4F30FF20, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x39, 0x4F30FF20, 1, size, 0.08f, angle);
         size = *(f32 *)(p + 0x1C);
         size *= 2.5f;
         angle = func_00382538();
-        func_003D9508(s, 0x31, 0x6060FF40, 1, size, smallWidth, angle);
+        func_003D9508(s, 0x31, 0x6060FF40, 1, size, 0.08f, angle);
     }
 }
 /* localdecomp:end func_L01_003AA120 */

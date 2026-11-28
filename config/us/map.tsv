@@ -18499,7 +18499,7 @@ func_00123840	boot_elf	func_00123840	00123840	620	near	near	94.19	8981e20a1ed4
 func_00125BE8	boot_elf	func_00125BE8	00125BE8	112	near	near	71.43	331ae403fa49
 func_0012A950	boot_elf	func_0012A950	0012A950	160	near	near	95.00	2063e8794ea8
 func_0012B300	boot_elf	func_0012B300	0012B300	744	near	near	2.15	2e21429489e7
-func_0012F0B8	boot_elf	func_0012F0B8	0012F0B8	484	near	near	88.43	9e4a0858a9bf
+func_0012F0B8	boot_elf	func_0012F0B8	0012F0B8	484	near	near	89.26	f1ab3df21613
 func_00135988	boot_elf	func_00135988	00135988	452	near	near	100.00	45bbda315ad8
 func_00135D50	boot_elf	func_00135D50	00135D50	120	near	near	100.00	4ce81f872544
 func_00135DC8	boot_elf	func_00135DC8	00135DC8	116	near	near	100.00	feea65df95cc

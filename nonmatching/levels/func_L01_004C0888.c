@@ -1,20 +1,25 @@
-/* PAL near miss (round 21, W5): func_L01_004C0888 (1608 bytes), the 2D menu page driver (state switch 0 / 1, page select via +0x50, four page draw arms).
- * 22 diffs raw / 13 aligned (402 of 402 words) when the block sits in its file (as an in-place edit, whole-file check); standalone check.py of this
- * draft shows 31 (the later `lw $v1,0xf80($v1)` loads come out in $v1: a file-context effect); the first 66 words and everything after the matrix block match.
- * NEEDS ` @ps2as` appended to the flag line of src/levels/shared/L01_004BEC88.c (retail builds 0.62f / 1.0f as lui+ori+mtc1; the file's other
- * blocks still MATCH with it) and `#include "vu0.h"` at the top of that file (qzero). `D_L01_002446C0` is declared by that file as S_00244740[].
- * Found: the `switch (s->f8)` with fall-through (a compare chain, no table: mark SWITCH), a SEPARATE pointer local per region (s / u / t / w) so that
- * the shared lui stays in $s1 and the pointer in $s0, `i = s->f8` read before the 0.62f store (the beqz delay slot), g and g2 for the two
- * D_L01_001E7580 uses, scalar s32 D_L01_001DF944 / D_L01_001DF948 / D_001D4BC0 (gp form in delay slots, lui form elsewhere, no hints), f20, f24, f2C
- * store order, `.extern D_L01_001DAC50, 4` (gp load of the float), the matrix block with p = D_L01_001E29C0 + 0x10, r = p + 1, q = p - 0x150.
- * Left: the matrix save/clear block (0x110..0x16c): retail keeps the FA0 base in $a1, q in $a0 (derived before the second row load) and the
- * p[0] value in $v1; ours f in $a0, q in $v1 (derived late), p[0] in $a1, plus the lui/mtc1 order. ~25 statement orders of the copies / zero
- * stores / float stores gave 13..17 aligned diffs. NTSC-U twin func_L01_004BCCE0 not checked.
+/* func_L01_004C0888 (Claude wave 14 r62, 2026-11-28). Replaces the earlier draft of this function (round 21 W5, written from the listing). */
+/* PAL near miss (wave 14 r62): func_L01_004C0888, alone in src/levels/shared/L01_004C0888.c. Under the
+ * file's line (-O2 -G8 -fopt-stack -mno-check-zero-division) every wording gives 380 differences: GNU as
+ * turns li.s 0.62f into one gp-relative lwc1 where retail has Ps2EeAs's lui/ori/mtc1, which shifts every
+ * later word by two. With @ps2as on the file's line (the file holds only this function, so the whole file
+ * can take the existing line "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"; no cut) this C gives
+ * 16 differences (the earlier draft: 31, 22 once its vu0.h include and D_L01_002446C0 moved inside the
+ * block and the thirteen func_L01_004BF4D0..004BF5F8 callees got their void(void) prototypes; implicit
+ * int declarations moved the D_L01_001E0F80 loads from v0 to v1).
+ * Changed against the draft: the block is self-contained (vu0.h, D_L01_002446C0, the callee prototypes),
+ * the FA0 base is a pointer local f assigned first, and the matrix copy runs p, f[0] = p[1], r = p + 1,
+ * f[2] = r[2], q = p - 0x150, f[1] = r[1], fE0 = p[0]: q now gets a0 as in retail.
+ * Left (16): in the matrix save/clear block retail allocates r = p + 1 to v1 and the FA0 base to a1, the
+ * r[2]/r[1] loads to a2/a3 and p[0] to v1; here the FA0 base is v1 and r a1 (local-alloc order), and the
+ * FA0 lui is scheduled first. About 80 statement orders of the block (fRABceg, three zero orders, two
+ * float-store orders) gave 16..22.
  */
 #include "common.h"
+
+/* localdecomp:start func_L01_004C0888 */
 #include "vu0.h"
 extern u8 D_L01_002446C0[0x780];
-/* localdecomp:start func_L01_004C0888 */
 typedef int u128_004C0888 __attribute__((mode(TI)));
 extern void func_00392350(s32);
 extern void func_00388AF8(s32);
@@ -50,6 +55,19 @@ extern void func_L01_004BEA70(void);
 extern s32 func_003825F8(s32, s32, s32, s32, s32, s32);
 extern unsigned long func_003C6F90(u8 *, u32, u32, u32, u32);
 extern void func_00389370(void);
+extern void func_L01_004BF518(void);
+extern void func_L01_004BF538(void);
+extern void func_L01_004BF5A0(void);
+extern void func_L01_004BF5B8(void);
+extern void func_L01_004BF4D0(void);
+extern void func_L01_004BF5B0(void);
+extern void func_L01_004BF5F8(void);
+extern void func_L01_004BF4F8(void);
+extern void func_L01_004BF578(void);
+extern void func_L01_004BF558(void);
+extern void func_L01_004BF5A8(void);
+extern void func_L01_004BF5D8(void);
+extern void func_L01_004BF4F0(void);
 extern void func_003C31B0(void);
 extern u8 D_L01_001E7580[];
 extern s32 D_L01_001DF944;
@@ -110,6 +128,7 @@ void func_L01_004C0888(void) {
     u128_004C0888 *r;
     u8 *g;
     u8 *g2;
+    u128_004C0888 *f;
     s32 h;
     s32 i;
     func_00392350(0);
@@ -141,13 +160,14 @@ void func_L01_004C0888(void) {
         D_L01_001E1070 = 0x60000;
         func_L01_00404F00(s->f10);
         if (s->f60 != 0) {
+            f = (u128_004C0888 *)D_L01_001E0FA0;
             p = (u128_004C0888 *)(D_L01_001E29C0 + 0x10);
-            q = (u8 *)p - 0x150;
-            *(u128_004C0888 *)(s->fE0) = p[0];
-            ((u128_004C0888 *)D_L01_001E0FA0)[0] = p[1];
+            f[0] = p[1];
             r = p + 1;
-            ((u128_004C0888 *)D_L01_001E0FA0)[1] = r[1];
-            ((u128_004C0888 *)D_L01_001E0FA0)[2] = r[2];
+            f[2] = r[2];
+            q = (u8 *)p - 0x150;
+            f[1] = r[1];
+            *(u128_004C0888 *)(s->fE0) = p[0];
             qzero(&p[1]);
             qzero(&p[2]);
             qzero(&p[3]);

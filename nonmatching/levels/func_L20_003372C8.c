@@ -1,18 +1,17 @@
-/* PAL near miss: 76 differing words with PROPOSED whole-file
- * -fno-sched-interblock added to the owning flags, not the centrally retained
- * owning configuration. A private flag-only full level-20 build prints MATCH;
- * this target remains INCLUDE_ASM and has not passed a full linked C build.
- * The earlier 188-word draft remains in git history; experimental logs and
- * exact snapshots are local evidence, not required public provenance.
- * Corrected the old false four-byte UV-table hint to its declared 32 bytes.
- * Under the proposed file flags that honest old body gives 131 differences;
- * a conjunctive range predicate improves it to 76, but folds retail's
- * redundant signed range test into sltiu. The UV base still uses lui/addiu
- * where retail has GP; do not restore a false size to hide that difference.
- * The proposed file-wide flag resolves the old corner-loop scheduling problem.
- * Early-return predicates gave 324 twice; a G32 diagnostic gave 139.
- * No promotion; the old current-flags history is not reset.
- */
+/* func_L20_003372C8 (Claude wave 14 r57, 2026-11-28). Replaces the earlier draft of this function (Reserved-50 retry (2026-11-23)). */
+/* PAL near miss (wave 14 r57, 2026-11-28): func_L20_003372C8, 190 words differ with its file's own line
+ * (the previous draft measures 191 there; its 76 was under a proposed -fno-sched-interblock). Change: the
+ * index test is two nested ifs (`if (index < 31) { if (index >= 0) return 1; } return 0;`); the UV table
+ * keeps its honest 32-byte hint (a 4-byte hint gives 188, the draft header asks not to restore it).
+ * Finding: both 4-corner k loops are 8-block sched1 regions here (RTL dump: "rgn 0/1 nr_blocks 8", luid
+ * span 70 counting notes), so haifa moves the merge block's mtc1/cvt to the loop top. A diagnostic that only
+ * adds notes inside the first k loop (20 scoped dead declarations) pushes that region past MAX_RGN_INSNS
+ * (100 luids, notes count in 2.95.3), the loop is scheduled block by block, and the count drops to 130: so
+ * retail's loops were not interblock regions, most likely because the original source carried more notes
+ * there (line notes of a -g build, or more inline layers). No plausible C found that adds ~31 notes per
+ * loop: an inline corner helper +4, an inline uv helper +2, do/while(0) wrappers +12 (194). Left: the two
+ * k loops' interblock motion (mtc1/cvt hoisted, mul.s copied into the arms' delay slots) and the
+ * UV-table addressing / signed range test the previous draft names. */
 #include "common.h"
 
 /* localdecomp:start func_L20_003372C8 */
@@ -63,7 +62,10 @@ static __inline__ void copy_3372C8(void *d, void *s) {
 }
 
 static __inline__ s32 valid_3372C8(s32 index) {
-    return index < 31 && index >= 0;
+    if (index < 31) {
+        if (index >= 0) return 1;
+    }
+    return 0;
 }
 
 void func_L20_003372C8(void *self) {

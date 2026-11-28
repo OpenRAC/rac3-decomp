@@ -1,7 +1,25 @@
-/* PAL near miss: 31 aligned rows with --as ps2as (the file's line lacks @ps2as; the default assembler counted 347 at first) plus a divs_nops row `func_L30_00357570 2` (retail has two nops before the one div.s; the draft before had 41 rows with neither: the row alone took it from 39 to 31 together with the changes below). Needs both for the count: `@ps2as` on the file's text_parts line, and the row. The file's other block func_L30_00357B88 (C) has to be re-checked with @ps2as when this lands. Contains a `switch` (jump table): the level build has to confirm it.
- * What moved it from 41: `.extern X, 4` hints for the three $gp names, func_L30_00357B88 called with m (its C takes an unused pointer), `u32 v` for the shifted score bytes, a scalar `f32 D_L30_001E1444` with `.extern D_L30_001E1444, 16` (retail's `lui $at; swc1 f0, 0x1444($at)`; the array form made `lui $v0; swc1 0x1444($v0)`), `D_00142660.value = 0` as the last of the nine zero stores (the scheduler moves the last store of a group to the front, so retail's order needs it last in the source) and the three byte stores of the score in the order 0x56, 0x55, 0x57.
- * Left (about 31 rows): (1) case 4's `D_001426E0[D_001D545C + 44]` maximum: retail loads D into $v0, computes the +0x2c sum into $v1 BEFORE the range test and reuses $v0 for D-30 (score in $a0, address in $a1); here D is in $a0 and the sum is made in place after the test (13 rows). Tried: `n = D + 44` before the test (the sum lands in the beqz delay slot, D in $v1), `n = D + 44; (u32)(n - 74) < 6` (same, 33), `n = D - 30` with `[n + 74]` (47), `u8 *p` locals, `&&`, `>= 30 && < 36`, a score local, operand order (31-48). (2) the two $gp loads of case 5 (retail `lw $v1, 0x1224($gp)` first, then `lw $v0, 0x1208($gp)`: the pair is swapped here; locals and a swapped source order only move the loads). (3) the quad copy: the two lui's and their registers ($v0 = source, $v1 = D_001A4BE0 in retail) and `lq $a1` ($a0 here). */
+/* func_L30_00357570 (Claude wave 14 retry r82, 2026-11-28). Replaces the earlier draft of this function (Codex wave 7 near miss). */
 #include "common.h"
+/* PAL near miss (wave 14 retry r82): 9 diffs with the file's line and the injected divs row 'func_L30_00357570 2'
+ * (r67's near measures 27 there). Changed against r67: (1) two callee return types follow their matched definitions,
+ * s32 func_L30_00359980(u8 *) (L30_00359980.c) and s32 func_L30_004CF4B0(s32, s32) (L30_004CF4B0.c), so those calls
+ * set $v0 (27 -> 23); (2) case 4 computes the record index into its own local before the range test,
+ * slot = D_001D545C + 44 (found with the permuter): sched1 then issues the add before D - 30, D dies at the sub and
+ * the registers are retail's ($v0 D, $v1 slot, $a1 the address; 23 -> 9). Still differs (case 5, quad copy at the
+ * join): retail materialises D_L30_001E2240 before D_001A4BE0 (s3) and loads the quad into $a1; here the D_001A4BE0
+ * lui wins the sched2 tie (one more forward dependence: E1440's lui reuses $v1) and the quad goes to $a0, which also
+ * changes the beqz delay-slot filler (lui $v1, 0x1a instead of lui $v0, 0x1e). Has a jump table: the level build
+ * must confirm it. */
+/* PAL near miss (wave 14, r67): 27 diffs with the file's line (now @ps2as) and an injected divs row 'func_L30_00357570 2'
+ * (the previous draft measures 32 there, 200 without the row). Fixed against it: four callees were the wrong catalogue
+ * twins of the empty 8-byte stubs / the 44-byte stub, whose level-30 places are not the ones retail calls:
+ * case 1 D==35 is func_L01_004D8BB0 (L30 0x00359870), case 0 mode!=6 is func_L01_003B0F18 (0x00359EF8), case 0 D==30
+ * is func_L01_004D8A68 (0x00359048), case 6 D==36 is func_L01_004E27A0 (0x00359A00); and D_001A4BE0.value is read into a
+ * local before the quad copy (case 5 registers now retail's:  for D_L30_001E2240,  for D_001A4BE0).
+ * Still differs: (1) case 4: retail computes D+44 into  before the range test with D in  (the sub reuses D's
+ * register); here D stays in  and the sum lands in the beqz delay slot (6 forms tried: n before the test, a local g,
+ * n-74 test, pointer local, n += 44 inside); (2) case 5's two  loads get / swapped (4 orders/locals tried);
+ * (3) the two lui's of the quad copy are in swapped order. */
 /* localdecomp:start func_L30_00357570 */
 typedef int Q_00357570 __attribute__((mode(TI)));
 typedef struct State_00357570 {
@@ -54,22 +72,23 @@ void func_L30_00357570(Moby_00357570 *m) {
     State_00357570 *d = m->data;
     u32 v;
     s32 n;
+    s32 slot;
     void func_L30_0035B758(Moby_00357570 *);
     void func_L30_00358258(Moby_00357570 *);
     void func_L30_00358210(Moby_00357570 *);
     void func_L01_003EA9B8(Moby_00357570 *);
     void func_L01_003EDD80(Moby_00357570 *);
     void func_L01_003EE640(Moby_00357570 *);
-    void func_L01_003F19B0(Moby_00357570 *);
+    void func_L01_004D8BB0(Moby_00357570 *);
     void func_L30_00359A08(Moby_00357570 *);
     void func_L30_00358380(Moby_00357570 *);
-    void func_L01_003609D0(Moby_00357570 *);
-    void func_L01_003DF8B8(Moby_00357570 *);
+    void func_L01_003B0F18(Moby_00357570 *);
+    void func_L01_004D8A68(Moby_00357570 *);
     void func_L30_003593A0(Moby_00357570 *);
     void func_L30_003595C0(Moby_00357570 *);
     void func_L30_003596E8(Moby_00357570 *);
     void func_L30_00359808(Moby_00357570 *);
-    void func_L30_00359980(Moby_00357570 *);
+    s32 func_L30_00359980(Moby_00357570 *);
     void func_L30_00359E20(Moby_00357570 *);
     void func_L30_003586A8(Moby_00357570 *);
     void func_L30_0035B780(Moby_00357570 *);
@@ -86,7 +105,7 @@ void func_L30_00357570(Moby_00357570 *m) {
     void func_L30_00359760(Moby_00357570 *);
     void func_L01_003EE648(Moby_00357570 *);
     void func_L30_00359878(Moby_00357570 *);
-    void func_L01_003F1F08(Moby_00357570 *);
+    void func_L01_004E27A0(Moby_00357570 *);
     void func_L30_00359D78(Moby_00357570 *);
     void func_L30_00358A18(Moby_00357570 *);
     void func_L30_00358DA8(Moby_00357570 *);
@@ -96,7 +115,7 @@ void func_L30_00357570(Moby_00357570 *m) {
     void func_0038A238(s32);
     s32 func_L30_00358360(Moby_00357570 *);
     extern void func_L30_00357B88(void *);
-    void func_L30_004CF4B0(s32,s32);
+    s32 func_L30_004CF4B0(s32,s32);
     void func_003A1C28(void);
     void func_003A1930(void *,s32,s32);
     void func_L01_00404A10(void (*)(Moby_00357570 *), Moby_00357570 *);
@@ -113,7 +132,7 @@ void func_L30_00357570(Moby_00357570 *m) {
         if (D_001D545C == 32) func_L01_003EA9B8(m);
         if (D_001D545C == 33) func_L01_003EDD80(m);
         if (D_001D545C == 34) func_L01_003EE640(m);
-        if (D_001D545C == 35) func_L01_003F19B0(m);
+        if (D_001D545C == 35) func_L01_004D8BB0(m);
         if (D_001D545C == 36) func_L30_00359A08(m);
         break;
     case 2:
@@ -122,8 +141,8 @@ void func_L30_00357570(Moby_00357570 *m) {
         break;
     case 0:
         func_L30_00358380(m);
-        if (m->mode != 6) func_L01_003609D0(m);
-        if (D_001D545C == 30) func_L01_003DF8B8(m);
+        if (m->mode != 6) func_L01_003B0F18(m);
+        if (D_001D545C == 30) func_L01_004D8A68(m);
         if (D_001D545C == 31) func_L30_003593A0(m);
         if (D_001D545C == 32) func_L30_003595C0(m);
         if (D_001D545C == 33) func_L30_003596E8(m);
@@ -134,9 +153,10 @@ void func_L30_00357570(Moby_00357570 *m) {
         else func_L01_004450F0(m,6,-1);
         break;
     case 4:
+        slot = D_001D545C + 44;
         if ((u32)(D_001D545C - 30) < 6) {
-            if (D_001426E0[D_001D545C + 44] < d->score)
-                D_001426E0[D_001D545C + 44] = d->score;
+            if (D_001426E0[slot] < d->score)
+                D_001426E0[slot] = d->score;
         }
         D_00142660.e = 0;
         D_00142660.f = 0;
@@ -160,8 +180,11 @@ void func_L30_00357570(Moby_00357570 *m) {
             func_003A1C28();
             func_003A1930(d->buffer,0,1024);
         }
-        *(Q_00357570 *)D_L30_001E1440 = *(Q_00357570 *)D_L30_001E2240;
-        D_L30_001E1444 = D_001A4BE0.value;
+        {
+            f32 v0 = D_001A4BE0.value;
+            *(Q_00357570 *)D_L30_001E1440 = *(Q_00357570 *)D_L30_001E2240;
+            D_L30_001E1444 = v0;
+        }
         func_0038CAD0(&d->timer2);
         func_0038CAD0(&d->timer);
         d->ratio = 1.0f - (f32)d->timer / (f32)D_001DDAB8_sda;
@@ -196,7 +219,7 @@ void func_L30_00357570(Moby_00357570 *m) {
         else if (D_001D545C == 33) { func_L01_003EBF38(m); func_L30_00359648(m); }
         else if (D_001D545C == 34) { func_L01_003EE638(m); func_L30_00359760(m); }
         else if (D_001D545C == 35) { func_L01_003EE648(m); func_L30_00359878(m); }
-        else if (D_001D545C == 36) { func_L01_003F1F08(m); func_L30_00359D78(m); }
+        else if (D_001D545C == 36) { func_L01_004E27A0(m); func_L30_00359D78(m); }
         D_00142660.value = func_L30_00358360(m);
         break;
     case 7:

@@ -1,17 +1,13 @@
-/* PAL near miss: shield_charger_fire. 2 words differ with the file's flags (round 14, 2026-11-24;
- * was 51 for haiku-w4's draft). Only the two addiu after the func_0038D308 call are swapped: retail
- * computes obj+0xE0 (into $s4) before obj+0xD0 (into $s5). Assigning z before y gives retail's order
- * but swaps the registers (5 words): z's longer live range drops its global-alloc priority below y's.
- * Moving the y/z declarations, renaming, or using z in the vector add or the D_L01_001E1900[0] copy
- * (1 word, but lq 0($s4) where retail has lq 0xE0($s2)) don't close it.
- * What closed the gap: the moby fields through a struct (Moby_003415F8) in the order vars, D298,
- * flags, alpha, state (a 120-order sweep: only this one, with struct fields, keeps retail's store
- * order and $a0 for 0xFF); D_L01_001E1900[0..3] as one sdata array (was three symbols);
- * D_L01_001E1940/1950/1990[i] with the arrays' real bases (the draft cleared from 0x1E194C + 0xC);
- * D_L01_001FE62C and D_L01_001FD180 without a known size (gcc splits the address, as retail does);
- * the three vars stores in the order 0xC, 0x10, 0x14; func_0038CF68/func_0038CE90 declared in the
- * block (they are declared only in later blocks of the file); the file's D_L01_ names for the $gp
- * globals.
+/* func_L01_003415F8 (Claude wave 14 r64, 2026-11-28). Replaces the earlier draft of this function (Codex wave 10 near miss). */
+/* PAL near miss: shield_charger_fire. 1 word differs with the file's flags (wave 14 r64, 2026-11-28; the
+ * round 14 draft had 2). This attempt assigns z (obj+0xE0) before y (obj+0xD0), retail's order of the two
+ * addiu after the func_0038D308 call, and copies D_L01_001E1900[0] through z: the extra use raises z's
+ * global-alloc priority above y's again, so z gets $s4 and y $s5 as in retail. What still differs: that
+ * copy loads lq 0($s4) where retail has lq 0xE0($s2) (retail's z has a single use). With z first and the
+ * copy through obj+0xE0 the priorities flip (lreg: z 2 refs over 30 insns, y 3 refs over 43) and the two
+ * $s registers swap (5 words). Tried without closing it: an explicit obj+0xC0 variable in any order,
+ * obj+0xD0/obj+0xE0 instead of y/z at single uses, z in the vector add, struct/array/symbol forms of the
+ * D_L01_001E1900 copies, vectors + 60 instead of sum.
  */
 #include "common.h"
 /* localdecomp:start func_L01_003415F8 */
@@ -77,15 +73,15 @@ u8 *func_L01_003415F8(s32 kind) {
         ((Moby_003415F8 *)obj)->alpha = 0xFF;
         ((Moby_003415F8 *)obj)->state = 1;
         func_0038D308(obj + 0xC0, obj + 0xF0);
-        y = obj + 0xD0;
         z = obj + 0xE0;
+        y = obj + 0xD0;
         for (i = 3; i >= 0; i--) D_L01_001E1940[i] = 0;
         vectors = &D_L01_00278F80[0][0];
         sum = vectors + 60;
         small = (s16 *)(p + 0x18);
         func_0038CF68(vectors, obj + 0xC0, D_L01_001DD260);
         counts = (s32 *)(p + 0x20);
-        *(vu0_q *)&D_L01_001E1900[0] = *(vu0_q *)(obj + 0xE0);
+        *(vu0_q *)&D_L01_001E1900[0] = *(vu0_q *)z;
         func_0038CF68(vectors + 20, y, D_L01_001DD260);
         *(vu0_q *)&D_L01_001E1900[1] = *(vu0_q *)(obj + 0xC0);
         func_0038CF68(vectors + 40, z, D_L01_001DD260);

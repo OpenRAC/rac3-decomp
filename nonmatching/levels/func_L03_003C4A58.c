@@ -1,15 +1,9 @@
-/* k6-a3 2026-11-26: func_L03_003C6888's draft (with 0DD8's dead third test) with this sibling's names, no
- * func_00382468(10) test and no first func_L03_003C4288 call in that block: 7 raw rows with --as ps2as
- * (was 178). Single-function file: put @ps2as on its line when it lands. Left: the $v1/$a0 vs $a0/$a1
- * register pair of the masked state and its raw copy, as 003C0DD8 and 003C6888. */
-/* PAL port of the NTSC-U draft (Sonnet worker b15-z4, 2026-11-18): PAL names, constants and gp slots done; needs @ps2as and -mvu0-use-vf0-vf2 on the file line. */
-/* NM-R7 (2026-11-22): 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as. Why the `== 2` andi is missing (combine's nonzero_bits on the gcse copy of o[0x20]): nonmatching/README.md. */
-/* FAM-2 (2026-11-23, upstream bbf261a1): still 213 / 68 (70 at level 14). A u8 state local following retail's dataflow gives 279, an s32 temporary shared with a call result 281, 15 more flags no better; nonmatching/README.md has the list. */
-/* FAM-4 (2026-11-23, upstream bbf261a1): func_0039EC28 declared s32: 63 differences with -mvu0-use-vf0-vf2 @ps2as (213 with the file's line). A struct-wrapped u8 join value gives retail's three andi but is coalesced into the load register (238); nonmatching/README.md. */
+/* func_L03_003C4A58 (Claude wave 14 r68, 2026-11-28). Replaces the earlier draft of this function (PAL C (Flavius's `nonmatching/functional/func_L03_003C4A58.c` with an `s32` `func_0039EC28`, FAM-3); before 2026-11-23 the NTSC-U draft of `func_L03_003C2C08` (in git at 115d087a)). */
+/* wave 14 r68 (2026-11-28): the k6-a3 draft unchanged (vu0.h include moved inside the block). With the file's line 207 differences; with @ps2as on the line (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as, a line text_parts.txt already has; single-function file, so the whole file takes it, no cut) 7 differences, all the register pair of the masked o[0x20] state and its raw copy (retail a0/a1, this v1/a0). RTL dumps (-dlg): global-alloc gives the masked state (pseudo 125) v1 because it does not conflict with the join's masked copy (pseudo 173, v1); retail's allocation (125 a0, copy a1, join v1) needs the join's zero_extend computed before chain 1's == 1 branch (as a gcse PRE insertion at the end of that block would), then dbr moves it into the bne delay slot as retail shows. */
 #include "common.h"
-#include "vu0.h"
 
 /* localdecomp:start func_L03_003C4A58 */
+#include "vu0.h"
 typedef struct {
     u8 pad0[0x80];
     vu0_v4 f80;
@@ -184,4 +178,3 @@ void func_L03_003C4A58(u8 *o) {
     }
 }
 /* localdecomp:end func_L03_003C4A58 */
-/* NM-R15 (2026-11-22, upstream 57962f73): still 213 differences (tools/check.py, level 03, the file's line), 68 with -mvu0-use-vf0-vf2 @ps2as; five more wordings of the state compares stay at 68 (nonmatching/README.md). */

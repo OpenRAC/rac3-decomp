@@ -1,10 +1,13 @@
-/* PAL near miss, round 27 W6. Level 01, 159 raw / 165 aligned
-   differences using the file flags, including @ps2as.
-   Split source-packet induction, initialize its base between the two draw calls, and put the first horizontal UV store ahead of the vertical store in the zero-flag arm.
-   Differences remain in saved registers for rec, i, pos and alpha, plus induction bases and spill slots around the second draw call.
-   The scratch whole-file check used the func_L01_0035AB50_0035B5A0 alias
-   in the later func_L01_0035B5A0 block to resolve a declaration conflict.
- */
+/* func_L01_0035B0A0 (Claude wave 14 r70, 2026-11-28). Replaces the earlier draft of this function (Round 27 W6, improved from W2). */
+/* PAL near miss, wave 14 r70: 108 diff (wave10/p10 check, level 01, the file's flags; the round 27 W6
+ * draft gives 159 there). Changed against the draft: the row lookup written index-first,
+ * (D_001425C0[0x7F] + D_L01_002C5600_0035B0A0)->b1 (retail's mult/addu operand order); the inner loop's
+ * increments in the order j++, m++, k++; both uv arms in plain index order uv[0]..uv[7] (each constant
+ * store then lands in the off[k] load delay, as retail, and uv[1] = 0.0f comes from the hoisted $f21);
+ * c[2] stored before c[0]; the target vector as vec_sub_ab (retail's vf1/vf2 roles). Left: alpha and the
+ * spilled colour word (retail computes them in $s0, the reload register, and keeps pos in $s1; here pos
+ * takes $s0 and alpha $a3), the order of the source/packet giv initialisations around the second draw
+ * call and the stack slots the spilled givs get (0x64..0xa4 permuted). */
 #include "common.h"
 /* localdecomp:start func_L01_0035B0A0 */
 #include "vu0.h"
@@ -55,7 +58,7 @@ void func_L01_0035B0A0(u8 *obj) {
     s32 a24;
     vu0_v4 *pos;
 
-    b1 = D_L01_002C5600_0035B0A0[D_001425C0[0x7F]].b1;
+    b1 = (D_001425C0[0x7F] + D_L01_002C5600_0035B0A0)->b1;
     col = 0x103080;
     if ((u32)(b1 - 2) < 2) {
         col = 0x803010;
@@ -77,37 +80,37 @@ void func_L01_0035B0A0(u8 *obj) {
         func_L01_0035B5A0((s32)obj, (f32 *)pos, (f32 *)rec, col + a24, 0.35f);
         src = &rec->pk[0];
         func_L01_0035B5A0((s32)obj, (f32 *)pos, (f32 *)rec, a24 | 0xFFFFFF, 0.075f);
-        for (k = 0, j = 4, m = 0; k < 2; k++, j++, m++) {
+        for (k = 0, j = 4, m = 0; k < 2; j++, m++, k++) {
             Pk_0035B0A0 *source = &src[m];
             pk = &rec->pk[j];
             pk->l78 = func_00389598(0x17);
             pk->l88 = ((long)(k % 2 + 1) << 2) | 0x8000000040L;
             pk->l80 = 0xFF9000000260L;
             pk->l70 = 0;
-            pk->c[0] = col + a24;
             pk->c[2] = col + a24;
+            pk->c[0] = col + a24;
             pk->c[3] = col;
             pk->c[1] = col;
             if (rec->r[m] != 0) {
-                pk->uv[1] = 0.0f;
                 pk->uv[0] = rec->off[k] + 0.0f;
-                pk->uv[3] = 0.0f;
+                pk->uv[1] = 0.0f;
                 pk->uv[2] = rec->off[k] + 1.0f;
-                pk->uv[5] = 1.0f;
+                pk->uv[3] = 0.0f;
                 pk->uv[4] = rec->off[k] + 0.0f;
-                pk->uv[7] = 1.0f;
+                pk->uv[5] = 1.0f;
                 pk->uv[6] = rec->off[k] + 1.0f;
+                pk->uv[7] = 1.0f;
             } else {
                 pk->uv[0] = rec->off[k] + 0.0f;
                 pk->uv[1] = 1.0f;
-                pk->uv[3] = 1.0f;
                 pk->uv[2] = rec->off[k] + 1.0f;
-                pk->uv[5] = 0.0f;
+                pk->uv[3] = 1.0f;
                 pk->uv[4] = rec->off[k] + 0.0f;
-                pk->uv[7] = 0.0f;
+                pk->uv[5] = 0.0f;
                 pk->uv[6] = rec->off[k] + 1.0f;
+                pk->uv[7] = 0.0f;
             }
-            vec_sub_ba(&v40, D_L01_001E29C0_0035B0A0, &pos[k]);
+            vec_sub_ab(&v40, D_L01_001E29C0_0035B0A0, &pos[k]);
             func_003C5180(&pos[k], &v50, 1);
             func_0038CF68(&v0, &v40, 1.0f);
             func_0038CE90(&v10, &v0, &v50);

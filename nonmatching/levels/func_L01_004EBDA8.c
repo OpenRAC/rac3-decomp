@@ -1,34 +1,8 @@
-/* NEAR MISS: func_L01_004EBDA8 (hero_place_item_mobys).
- * 2026-11-23 (r13), with the file's flags since the master merge (-mvu0-use-vf0-vf2 added):
- * check.py 386 words by position, 101 structurally, 26 ignoring register names
- * (scratch/match/r13_a/sd.py). The previous draft (a `mat = scratch` local) measures 141 / 128 / 53
- * with those flags: the higher loop-hoisting threshold of -mvu0-use-vf0-vf2 moved more out of the
- * inner loop. Same frame (0xC0), saved registers, control flow and spill slots 0x54/0x58/0x5C.
- * What changed: no `mat` local; both calls take `scratch` itself. The inner loop then hoists
- * the scratch address to its preheader, after the k+1 that gcse inserts there, as retail does
- * (0x58 is stored in the outer body, not once at the top). The inner loop head (slot reload in
- * $v1, the 1 in $a0) now matches. The three slot tests are called through casts of their real
- * names, ((s32 (*)(s32))func_L01_004E9270)(k), since the file defines them as f(void) and
- * retail passes k in $a0 (same bytes as the old alias names).
- * Still differs:
- *   - the outer preheader: same instructions in retail's RTL order (slot base, k+1, scratch),
- *     but every reload register is one step on in reload's round robin of $v0/$v1/$a0 (retail
- *     slot $v1, k+1 $a0, scratch $v0; here $a0, $v0, $v1), so retail has one reload fewer (or
- *     two more) somewhere before it. Every instruction before it agrees, registers included;
- *   - the body start: k*0x50 in $a3 and the slot address in $a1 in retail ($t0/$a3 here), and
- *     the order of the 0x25C0 load;
- *   - the loop tail: its branches take `addiu $a0,$zero,1` and `lw $v1,0x54($sp)` from their
- *     targets in retail, the same register story.
- * Without -mvu0-use-vf0-vf2 (the flags before the merge): the scratch address was hoisted out of
- * both loops unless its life in the inner loop reached 13 (threshold 28 there after 12 moves,
- * 352 insns); a block scope around the 0x22C0 store does that and gives these same bytes.
- * Same bytes or worse (don't repeat): `mat` set after `slot`, at the inner loop top, in the
- * pack block or before the outer loop; `mat[3]` for the 0x40 loads (adds instructions); the
- * inner loop test as the for condition; mslot as if/else, ternary or nested if (the ternary
- * and if/else are 99 and 108); chained p58/p5C stores (44); no `mode` local; moby_arg reused for
- * hero_moby; the continue test written with != and &&.
- * 2026-11-23: local declaration order: k/fp last or first, moby/mslot/slot moved later: same 26;
- * slot (or moby and slot) declared first: 36; all reversed: 62. */
+/* func_L01_004EBDA8 (Claude wave 14 r68, 2026-11-28). Replaces the earlier draft of this function (near miss (open-rac-engine names it hero_place_item_mobys)). */
+/* wave 14 r68 (2026-11-28): the r13 draft (header in nonmatching/levels/func_L01_004EBDA8.c) with func_L01_004EB978 declared as the file defines it (u8 *, void *, s32; the draft's void * first parameter was a conflicting-types error in the file's context) and markers added: 386 positional differences at level 01, the r13 state (26 ignoring register names: the outer preheader's reload registers, the body-start temporaries, the loop tail's delay slots). Still calls func_L01_004E9270 / 004E9298 / 004E92C0 through (s32 (*)(s32)) casts because retail passes k in a0 while the file defines them as f(void): landing needs those three definitions to take an (unused) s32 parameter. */
+#include "common.h"
+
+/* localdecomp:start func_L01_004EBDA8 */
 extern u8 D_001A4BE0[];
 extern u8 *D_001A71A0[];
 extern u8 D_001425C0[];
@@ -122,7 +96,7 @@ extern void *func_003C24B0(s32, s32);
 extern void func_L01_00448E10(void *);
 extern void func_L01_004E3268(void);
 extern void func_L01_004E5520(void *, void *, s32, s32, s32);
-extern void func_L01_004EB978(void *, void *, s32);
+extern void func_L01_004EB978(u8 *, void *, s32);
 
 /* hero_place_item_mobys: puts each item slot's moby on its attach matrix (his joints), and
    the slot's own position and angles from it; the back's Clank and pack are made here. */
@@ -181,7 +155,7 @@ void func_L01_004EBDA8(s32 moby_arg)
                     *(s128 *)((u8 *)moby + 0x10) = (*(H_4EBDA8_hero *)&D_001A4BE0).joint[mslot].row[3];
                     if (D_001DBD30_sda == 0 || ((H_4EBDA8_row *)&D_L01_002C5600[D_001425C0[(*(H_4EBDA8_hero *)&D_001A4BE0).slot[k].item]])->hold == 0) {
                         if (k == 0) {
-                            func_L01_004EB978(moby, &D_001A5810[mslot], 0);
+                            func_L01_004EB978((u8 *)moby, &D_001A5810[mslot], 0);
                         }
                         a = ((s32 (*)(s32))func_L01_004E9270)(k);
                         b = ((s32 (*)(s32))func_L01_004E9298)(k);
@@ -233,7 +207,7 @@ void func_L01_004EBDA8(s32 moby_arg)
                         if (D_001DBD30_sda == 0 || k != 0) {
                             func_003C48A8((Vec4 *)&D_001A5810[mslot], (Vec4 *)((u8 *)moby + 0xF0));
                         } else {
-                            func_L01_004EB978(moby, &D_001A5810[mslot], 1);
+                            func_L01_004EB978((u8 *)moby, &D_001A5810[mslot], 1);
                         }
                         func_003C7C38((u8 *)moby);
                         func_003C7DD8((u8 *)moby);
@@ -295,3 +269,4 @@ void func_L01_004EBDA8(s32 moby_arg)
         }
     }
 }
+/* localdecomp:end func_L01_004EBDA8 */

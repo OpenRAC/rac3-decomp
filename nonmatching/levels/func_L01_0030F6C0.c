@@ -1,3 +1,11 @@
+/* func_L01_0030F6C0 (Claude wave 14 r53, 2026-11-28). Replaces the earlier draft of this function (round 30 W7 near miss (TheBoso, #159)). */
+/* wr53 (wave 14): the collision test is now `if (func_L01_003FA5F0(..) != 0) k = 1; else k =
+ * func_L01_003FB640(..) != 0;` (retail materialises k: li v0,1 in the bnez slot, sltu after the second call),
+ * which restores retail's length (888 words) and drops the raw count from 672 to 138 under the file's line.
+ * Still differs: the position copy (retail `move s6,s0`: t in s0, pos a copy in s6; cse merges every t/pos
+ * wording tried here, so ours has one register and an extra loop-alignment nop before the la/lb loop), and
+ * the register numbers the earlier header lists (s0/s6/s7 roles, state-2 float constants, spawn-loop
+ * counters, the D_001EAA00 base in s7). The `k = A != 0 || B != 0` and ternary forms give 687 / 139. */
 /* First draft, written from scratch (round 30 W7): 104 aligned diffs against retail with the owner file's flags
  * (887 words; check.py shows ~670 raw rows because of shifts). The frame (0x130), the stack slots, the state
  * switch, the 3-iteration p+0x30/p+0x40 loops, the three burst loops (retail order: collision, same-owner
@@ -154,8 +162,9 @@ void func_L01_0030F6C0(u8 *self)
         if (func_L01_0040DFC0(pt) != 0) {
             goto kill;
         }
-        k = func_L01_003FA5F0(&v10, pos, 0, self, 0);
-        if (k == 0) {
+        if (func_L01_003FA5F0(&v10, pos, 0, self, 0) != 0) {
+            k = 1;
+        } else {
             k = func_L01_003FB640(pos, 0, self, 0.05f) != 0;
         }
         if (k != 0) {

@@ -1,3 +1,4 @@
+/* func_L39_00519910 (Claude wave 13 second pass r39, 2026-11-28). Replaces the earlier draft of this function (PAL draft (k6 a6, 2026-11-26), written from retail). */
 /* PAL near miss (k6 a6, 2026-11-26): func_L39_00519910 (328 B, level 39), written from retail;
  * 2 diff with its file's line (@ee29 @eeas -O2 -G8 -fno-strict-aliasing). The new node is
  * memset, filled, and pushed on the head of the D_L39_0046F550/D_L39_0046F554 list. What differs:
@@ -21,8 +22,8 @@ typedef struct N_00519910 {
 } N_00519910;
 extern N_00519910 *D_L39_0046F550 __attribute__((section(".data")));
 extern N_00519910 *D_L39_0046F554 __attribute__((section(".data")));
-extern N_00519910 *func_L39_00518FE0_00519910(s32);
-extern void func_11D534(void *, s32, s32);
+extern N_00519910 *func_L39_00518FE0(s32);
+extern void func_0011D534(void *, s32, s32);
 s32 func_L39_00519910(s32 arg0, s32 arg1) {
     P_00519600 *p;
     N_00519910 *n;
@@ -43,9 +44,9 @@ s32 func_L39_00519910(s32 arg0, s32 arg1) {
     default:
         return func_L39_005192A8(p, 0x6B);
     }
-    n = func_L39_00518FE0_00519910(0x70);
+    n = func_L39_00518FE0(0x70);
     if (n == 0) return func_L39_005192A8(p, 0xC);
-    func_11D534(n, 0, 0x70);
+    func_0011D534(n, 0, 0x70);
     n->f14 = arg1;
     n->f8 = r;
     n->f64 = -1;

@@ -1,11 +1,17 @@
-/* PAL near miss (k6 a6, 2026-11-26): func_L30_00343E10 (884 B, levels 30-36), written from retail.
- * 10 diff with --flags "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"
- * (its file's line needs -mvu0-use-vf0-vf2 for vec_add_ab; func_L30_00344188 still matches with it) and the
- * divs_nops row `func_L30_00343E10 2 2 2 2 2`. The first branch stores the colour without | 0x808080
- * (a cross-jumped tail). Reusing c for case 2's square root fixes the $f24/$f25 swap of k and c
- * (decomp-permuter found it); what differs: that sqrt.s now writes $f24 directly where retail has $f0, and
- * the hE/hC loads of the last lerp are scheduled in another order. */
+/* func_L30_00343E10 (Claude wave 14 retry r83, 2026-11-28). Replaces the earlier draft of this function (PAL draft (k6 a6, 2026-11-26), written from retail). */
+/* PAL near miss, wave 14 retry r83 (2026-11-28): func_L30_00343E10 (884 B, levels 30-36), from r63's 10-diff near.
+ * 8 diff (build/codex/wave10/p10/check.py, level 30, the file's own line, existing divs row 2 2 2 2 2).
+ * Changed: case 2 is rad = sqrt_asm(w * w + h * h) * (...) (no reuse of c: retail's sqrt.s writes $f0, not c's $f24),
+ * and the first colour branch is wrapped in do { } while (0). The RTL dumps show why: k (4 refs, live 81) outranks c
+ * (4 refs, live 90) in global allocation, so k takes $f24; the loop around branch 1 counts c's use there at loop
+ * depth 2 (flow weights refs by loop depth), c then outranks k and gets $f24, k $f25 as retail. Reusing c for the
+ * case-2 square root (r63) raised c's refs too but made the sqrt write $f24. Wrapping the else branch as well breaks
+ * the cross-jumped colour store (70).
+ * Still differs: the last lerp's argument schedule. Retail issues lh hE / mov.s $f14, andi hE, lh hC, sra hE, lwc1 D_EE0;
+ * here sched2 issues lh hC in cycle 2 (lh hE, mov.s, lh hC, andi, lwc1, ...): in retail neither lh hC nor the lwc1 is
+ * ready in cycle 2. Tried: hE converted first, ang/k copy for the third argument, the permuter (600 s, no better). */
 #include "common.h"
+
 /* localdecomp:start func_L30_00343E10 */
 #include "vu0.h"
 __asm__(".extern D_L30_001DCE90, 4");
@@ -52,7 +58,7 @@ typedef struct {
     f32 f10;
     f32 f14;
 } P_00343E10;
-extern void func_L30_00343AC8(u8 *, vu0_v4 *, f32 *, f32 *);
+extern void func_L30_00343AC8(u8 *, s32, f32 *, f32 *);
 extern f32 func_003824E0(f32, f32);
 extern f32 func_L03_0034B148(s32, s32, f32);
 extern f32 func_0038DB48(f32);
@@ -82,13 +88,12 @@ void func_L30_00343E10(M_00343E10 *m, P_00343E10 *p) {
     v = *(u8 **)(o + 0x68);
     if (o == 0) return;
     if (n == 0) return;
-    func_L30_00343AC8(o, &pos, &w, &h);
+    func_L30_00343AC8(o, (s32)&pos, &w, &h);
     if (o[0x20] == 1) {
         sq = sqrt_asm(w * w + h * h);
         rad = D_L30_001DCE90 * *(f32 *)(v + 0x160) * sq + sq;
     } else if (o[0x20] == 2) {
-        c = sqrt_asm(w * w + h * h);
-        rad = c * (D_L30_001DCE90 * (1.0f - *(f32 *)(v + 0x160)) + 1.0f);
+        rad = sqrt_asm(w * w + h * h) * (D_L30_001DCE90 * (1.0f - *(f32 *)(v + 0x160)) + 1.0f);
     } else {
         rad = 0.0f;
     }
@@ -104,12 +109,15 @@ void func_L30_00343E10(M_00343E10 *m, P_00343E10 *p) {
     d.x = func_0038D098(ang) * r;
     d.z = func_0038D0B0(ang) * r;
     d.y = 0.0f;
-    vec_add_ab(&m->pos, v + 0x130, &d);
+    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
+            : "=m"(m->pos) : "m"(*(vu0_v4 *)(v + 0x130)), "m"(d) : "vf1", "vf2");
     m->pos.y += D_L30_001DCEFC;
     if (p->f10 < p->f14) {
-        m->b3 = D_L30_001DCF01;
-        al = c * D_L30_001DCEEC;
-        al = al * func_003C4088(D_L30_001DCEF0, 1.0f, (p->f14 - p->f10) / p->f14);
+        do {
+            m->b3 = D_L30_001DCF01;
+            al = c * D_L30_001DCEEC;
+            al = al * func_003C4088(D_L30_001DCEF0, 1.0f, (p->f14 - p->f10) / p->f14);
+        } while (0);
         m->color = (s32)al << 24;
     } else {
         m->b3 = D_L30_001DCF00;

@@ -1,5 +1,12 @@
-/* Wave 13 (r30, 2026-11-28) replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
-/* PAL near miss (wave 13 r30, 2026-11-28): 36 differences (wave10/p10/check.py, level 39), from the k6 draft's 39: the colour written as r | (g << 8) | (b << 16), which gives r retail's a1. Tried without gain: s16 local / inline accessor for the final h2FC test, switch on idx, u8/u32 colour locals, declaration and table-read orders, branch polarities, temporaries for the colour. Left: retail tests the reloaded 0x2FC halfword with sll 16 (the PRE copy's upper bits unknown), here gcse inserts plain loads so combine drops the shift; g/b in v0/v1 (retail a2/a3), the object in a2 (retail t0), the tail's shift order. */
+/* func_L39_0066ACA8 (Claude wave 13 second pass r41, 2026-11-28). Replaces the earlier draft of this function (Claude wave 13 r30 near miss (2026-11-28); replaces the draft from k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (wave 13 opus r41, 2026-11-28): 31 differences (build/codex/wave10/p10/check.py, level 39), from
+ * the wr30 near's 36. Changed against it: r is a 64-bit unsigned long and arm 0's else assigns g before r (both
+ * found by a 600 s permuter run, rewritten here); with them global allocation gives the final-test halfword
+ * retail's $v1 and b retail's $a3. This is a study aid: a 64-bit red channel is not plausible original code
+ * (it also adds a dsll32/dsra32 pair before the pack). Left: r/g in a0/a1 (retail a1/a2), the object in a2
+ * (retail t0), retail's sll-16 test of the reloaded 0x2FC halfword (here bnez on the lhu value), the pack order
+ * (retail b << 16 first, in the bnez delay slot). s32 colour locals with (b << 16) | (g << 8) | r give 39, the g/r
+ * swap alone 37, a s16 idx parameter 62; cc1 -dg: allocation order idx, self, b, g, halfword, r. */
 #include "common.h"
 
 /* localdecomp:start func_L39_0066ACA8 */
@@ -13,12 +20,13 @@ typedef struct {
 extern RGB_0066ACA8 D_L39_002462A8[1];
 extern void func_L39_005AC528(void *);
 void func_L39_0066ACA8(S_0066ACA8 *self, s32 idx) {
-    s32 r, g, b;
+    unsigned long r;
+    s32 g, b;
     if (idx == 0) {
         if (self->h2FC == 0) {
             r = 10; g = 10; b = 250;
         } else {
-            r = 60; g = 60; b = 100;
+            g = 60; r = 60; b = 100;
         }
     } else if (idx == 1) {
         if (self->h2FC == idx) {

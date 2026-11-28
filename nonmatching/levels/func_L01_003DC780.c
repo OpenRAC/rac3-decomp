@@ -1,6 +1,14 @@
-/* PAL near miss (Codex wave 10): near miss: 93 words differ with the file's flags.
- * Worker's note: Best 50 diff with experimental --divs 0,1; log build/codex/w548/3DC780-06.log; s2/s3 allocation, VU0 temporary-copy ordering, final f0/f12 move remain; three formulations same residual; metadata not yet proved MATCH
- */
+/* func_L01_003DC780 (Claude wave 14 r74, 2026-11-28). Replaces the earlier draft of this function (Codex wave 10 near miss). */
+/* r74 wave 14 (2026-11-28), from the Codex wave 10 draft (which no longer compiled in L01_003D9510.c: its own
+ * func_L01_003DC690 prototype conflicted with the file's definition). Changes: the file's func_L01_003DC690(u8 *, u8 *,
+ * vu0_q *, f32) prototype; func_L01_00448690 with the sibling 003DC690's prototype (f32 (void *, s32, f32, f32));
+ * one function-scope `rate` used by both the early branch and the final call (retail keeps it in f0 and moves it to
+ * f12 with mov.s, because the same pseudo must not be f12 while -pi/2 is loaded there in the first branch).
+ * With the metadata row `func_L01_003DC780 0 1` (divs_nops; retail has one nop before the second div.s only) it is
+ * 33 diff (93 without it). Left: obj/hero in s2/s3 swapped (global allocation order; a hero pointer local, the
+ * prototypes and statement order do not change it), and the VU0 copy block's order: retail loads target into vf1
+ * before the temp1 copy and stores temp2 from vf2 (sub1 result in vf2), here the copies come first and sub1's result
+ * is in vf1 (vec_sub_ab/vec_sub_ba give the same schedule). */
 #include "common.h"
 /* localdecomp:start func_L01_003DC780 */
 #include "vu0.h"
@@ -17,20 +25,20 @@ __asm__(".extern D_001DF510_sda, 4");
 __asm__(".extern D_001DF50C_sda, 4");
 typedef struct { vu0_v4 dir; f32 life; s32 ticks; u8 *target; s32 state; f32 speed; } Vars_003DC780;
 void func_L01_003DC780(u8 *obj, Vars_003DC780 *vars) {
-    extern void func_L01_00448690(void *, f32, f32, s32);
+    extern f32 func_L01_00448690(void *, s32, f32, f32);
     extern void func_0038D308(void *, void *);
     extern void func_0038CE20(void *, void *, f32);
     extern f32 func_0038CF00(void *, void *);
     extern f32 func_0038CE68(void *, void *);
     extern u8 *func_00382348(void);
     extern s32 func_00382498(s32, s32);
-    extern void func_L01_003DC690(void *, void *, void *, f32);
     vu0_v4 gravity, delta, target, copy, half;
     vu0_v4 temp0, temp1, temp2, temp3;
     u8 *state;
+    f32 rate;
     if (vars->target == 0) {
-        f32 rate = D_001A71A0[0] ? D_001DF524_sda : D_001DF520_sda;
-        func_L01_00448690(obj + 0xF4, -1.5707964f, rate * 0.5f, 0);
+        rate = D_001A71A0[0] ? D_001DF524_sda : D_001DF520_sda;
+        func_L01_00448690(obj + 0xF4, 0, -1.5707964f, rate * 0.5f);
         func_0038D308(obj + 0xC0, obj + 0xF0);
         func_0038CE20(vars, obj + 0xC0, vars->speed);
         return;
@@ -50,7 +58,7 @@ void func_L01_003DC780(u8 *obj, Vars_003DC780 *vars) {
         vec_copy(&temp0,obj + 0x10);
         vec_copy(&temp3,&D_001A4BE0_003DC780.pos);
         vec_copy(&temp1,obj + 0x10);
-        vec_sub_ba(&temp2,&target,&temp0);
+        vec_sub_ab(&temp2,&target,&temp0);
         vec_sub_ab(&temp3,&temp3,&temp1);
         vec_copy(&delta,&temp2);
         vec_copy(&gravity,&temp3);
@@ -82,8 +90,7 @@ void func_L01_003DC780(u8 *obj, Vars_003DC780 *vars) {
         vars->target = 0;
     }
     *(vu0_q *)&copy=*(vu0_q *)&target;
-    { f32 rate;
-    if (vars->target == D_001A4BE0_003DC780.target) rate=D_001DF520_sda; else rate=D_001DF524_sda;
-    func_L01_003DC690(obj,vars,&copy,rate); }
+    if (vars->target == D_001A4BE0_003DC780.target) rate = D_001DF520_sda; else rate = D_001DF524_sda;
+    func_L01_003DC690(obj, (u8 *)vars, (vu0_q *)&copy, rate);
 }
 /* localdecomp:end func_L01_003DC780 */

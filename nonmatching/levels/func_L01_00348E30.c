@@ -1,8 +1,21 @@
-/* PAL near miss (Codex wave 8): near miss: 312 words differ with the file's flags.
- * Worker's note: 312 positional word differences: stack/loop register scheduling and atomic VU sequences differ; existing vu0 helpers fail without absent file-wide vf flag (w01.log). Best fixed-flags draft uses complete VU sequences with memory operands and vf1/vf2 clobbers; ...
- */
+/* func_L01_00348E30 (Claude wave 14 r73, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
+/* PAL near miss (wr73, wave 14): 169 words differ (wave10/p10/check.py, level 01, the file's flags), from the
+ * Codex wave 8 draft's 312, with the same instruction count as retail (358). Changes: the nine VU sequences use
+ * the vu0.h helpers (vec_add_ab/vec_sub_ab) instead of one asm block each (the file's line now has
+ * -mvu0-use-vf0-vf2), so both strip loops' VU code matches retail; the ring loop walks an explicit point pointer
+ * and a byte offset into rings (retail's s5 += 0x10 / s7 += 0x140 with out = fp + s7), with its counter and offset
+ * set before the func_0038CE90 call as retail has them. Still differs: retail's ring and row loops come from
+ * loop.c strength reduction of index forms (rings[j], trails[i].point[j]; the row loop's exit test is a signed
+ * slt on the j * 0x140 giv against sp+0x3C0 with j eliminated), but here gcse's PRE hoists `j + 1` into the
+ * loop body's first block (x.c.gcse: "PRE: redundant insn 268 (expression 42)"), loop.c then finds no biv and an
+ * index form costs mult/sll every pass (333 words); with the explicit induction variables PRE likewise hoists
+ * the pointer/offset increments to the top of the body (retail increments at the bottom). The ring pointer is
+ * CSE'd with the loop's &trails[i] here (retail recomputes it with madd), the row loop compares with sltu, and
+ * the rest is register numbering plus the i = 0 spill store slot (retail fills the first jal delay slot with lh). */
 #include "common.h"
+
 /* localdecomp:start func_L01_00348E30 */
+#include "vu0.h"
 typedef struct { f32 v[4]; } __attribute__((aligned(16))) Vec_00348E30;
 typedef struct { Vec_00348E30 point[3]; Vec_00348E30 a, b; s16 active, life; f32 uv, uv2, fade; } Trail_00348E30;
 typedef struct { Vec_00348E30 point[4]; s32 color[4]; f32 uv[4][2]; u8 rest[32]; } Packet_00348E30;
@@ -50,28 +63,37 @@ void func_L01_00348E30(Moby *moby) {
     do {
         next=i+1;
         if(trails[i].active) {
-            s32 j,k;
+            s32 j,k,r;
             s32 color;
             s32 faded;
             f32 fade;
             f32 u,v;
             Vec_00348E30 *row;
+            Vec_00348E30 *pt;
+            s32 off;
             a=trails[i].a;
+            r=0;
+            off=0;
             b=trails[i].b;
             func_0038CE90(&normal,&a,&b);
             fade=trails[i].life*trails[i].fade;
             color=D_L01_001DD360;
             faded=((s32)(fade*(f32)D_L01_001DD368)<<24)|color;
             packet.color[3]=faded;packet.color[2]=faded;packet.color[1]=faded;packet.color[0]=faded;
-            for(j=0;j<3;j++) {
-                Vec_00348E30 *out=rings[j];
-                Vec_00348E30 *circle=D_L01_002B2970;
-                center=trails[i].point[j];
-                for(k=19;k>=0;k--) {
-                    func_0038CE20(temp.v,circle->v,D_L01_001DD358);
-                    circle++;
-                    func_0038D028(out,&temp,&a);
-                    out++;
+            {
+                pt=trails[i].point;
+                for(;r<3;r++) {
+                    Vec_00348E30 *out=(Vec_00348E30 *)((u8 *)rings+off);
+                    Vec_00348E30 *circle=D_L01_002B2970;
+                    center=*pt;
+                    for(k=19;k>=0;k--) {
+                        func_0038CE20(temp.v,circle->v,D_L01_001DD358);
+                        circle++;
+                        func_0038D028(out,&temp,&a);
+                        out++;
+                    }
+                    pt++;
+                    off+=0x140;
                 }
             }
             color=D_L01_001DD364;
@@ -101,15 +123,15 @@ void func_L01_00348E30(Moby *moby) {
             packet.uv[1][0]=0;packet.uv[1][1]=1;
             packet.uv[2][0]=0.5f;packet.uv[2][1]=0;
             packet.uv[3][0]=0.5f;packet.uv[3][1]=1;
-            __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvsub.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&temp)) : "m"(*(&D_L01_001E29C0)), "m"(*(&trails[i].point[0])) : "vf1", "vf2");
+            vec_sub_ab(&temp, &D_L01_001E29C0, &trails[i].point[0]);
             color=D_L01_001DD378;
             func_0038CE90(&normal,&a,&temp);
             func_0038CF68(&width,&normal,D_L01_001DD374);
             for(j=1;j<3;j++) {
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvadd.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[0])) : "m"(*(&trails[i].point[j])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvsub.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[1])) : "m"(*(&trails[i].point[j])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf1, %1\n\tlqc2 vf2, %2\n\tvadd.xyz vf1, vf1, vf2\n\tsqc2 vf1, %0" : "=m"(*(&packet.point[2])) : "m"(*(&trails[i].point[j-1])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvsub.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[3])) : "m"(*(&trails[i].point[j-1])), "m"(*(&width)) : "vf1", "vf2");
+                vec_add_ab(&packet.point[0], &trails[i].point[j], &width);
+                vec_sub_ab(&packet.point[1], &trails[i].point[j], &width);
+                vec_add_ab(&packet.point[2], &trails[i].point[j-1], &width);
+                vec_sub_ab(&packet.point[3], &trails[i].point[j-1], &width);
                 packet.color[3]=color;packet.color[2]=color;
                 func_003D2DA0(&packet,0,0);
                 color=faded;
@@ -128,10 +150,10 @@ void func_L01_00348E30(Moby *moby) {
             color=D_L01_001DD388;
             func_0038CF68(&width,&normal,D_L01_001DD384);
             for(j=1;j<3;j++) {
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvadd.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[0])) : "m"(*(&trails[i].point[j])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvsub.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[1])) : "m"(*(&trails[i].point[j])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf1, %1\n\tlqc2 vf2, %2\n\tvadd.xyz vf1, vf1, vf2\n\tsqc2 vf1, %0" : "=m"(*(&packet.point[2])) : "m"(*(&trails[i].point[j-1])), "m"(*(&width)) : "vf1", "vf2");
-                __asm__("lqc2 vf2, %1\n\tlqc2 vf1, %2\n\tvsub.xyz vf2, vf2, vf1\n\tsqc2 vf2, %0" : "=m"(*(&packet.point[3])) : "m"(*(&trails[i].point[j-1])), "m"(*(&width)) : "vf1", "vf2");
+                vec_add_ab(&packet.point[0], &trails[i].point[j], &width);
+                vec_sub_ab(&packet.point[1], &trails[i].point[j], &width);
+                vec_add_ab(&packet.point[2], &trails[i].point[j-1], &width);
+                vec_sub_ab(&packet.point[3], &trails[i].point[j-1], &width);
                 packet.color[3]=color;packet.color[2]=color;
                 func_003D2DA0(&packet,0,0);
                 color=faded;

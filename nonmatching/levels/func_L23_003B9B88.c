@@ -1,5 +1,19 @@
-/* Wave 13 (r21, 2026-11-28) replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
-/* PAL near miss (wave 13 r21, 2026-11-28): 32 differences (build/codex/wave10/p10/check.py, level 23, the file's flags) with the divs_nops row `func_L23_003B9B88 0 2` injected (--divs 0,2, not committed; without it the div.s padding shifts everything). Changed against the k6 draft (54 under the same check): self is a moby struct of its own (Moby_003B9B88, every field this function touches) with the file's Vars_3BA3E8 for its vars and the file's struct Hero D_001A4BE0 for the hero position, so the stores are struct-field stores and gcc lets the global loads pass them (case 1's lhu before the D_L23_001DE134 store, the tail's D_L23_001D6764 load before the 0x98/0x34 stores); D_L23_001DE134 is set before the flag is cleared; the scale constant is retail's 0x3DF5C290 (0.120000005f, the draft's 0.12000001f gave 0x3DF5C291); one D_L23_001DEC40 name gives both the $gp form in the delay slot and the lui form. Left: register allocation in the two particle loops (retail &p0 s4 / divisor 6 s5 in case 2, &p0 s6 / 6 s5 in case 3; ours swaps them because the first func_0038D000 call takes sp+0x10 directly instead of the hoisted &p0), the (x*5+2) temporary in v1 where retail builds it in s0 (n = x*5+2; n /= 6 moves the div after the call, worse), case 3's head load order (retail's bltzl steals lw 0x24 from its target), the order of the two lqc2 in case 3's vec_copy/vec_sub, and two argument moves. */
+/* func_L23_003B9B88 (Claude wave 13 second pass r41, 2026-11-28). Replaces the earlier draft of this function (Claude wave 13 r21 near miss (2026-11-28); replaces the draft from k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (wave 13 opus r41, 2026-11-28): 4 differences (build/codex/wave10/p10/check.py, level 23, the
+ * file's flags) with the divs_nops row 'func_L23_003B9B88 0 2' injected (--divs 0,2, not committed); the wr21 near
+ * was 32 under the same check. Changed against it (the same changes in its twin func_L23_003BA670): (1) both particle
+ * calls fully inline as the matched sibling func_L23_003A8028 (L23_003A6688.c) writes them, so the (x * 5 + 2)
+ * temporaries build in s0 as retail; (2) case 2 passes the particle position through a pointer local set at the
+ * top of its loop (pp = &p0) to func_0038D000 and func_L01_00463378 (retail's hoisted &p0 in s4 shared by both
+ * calls, divisor 6 in s5); (3) case 3 passes it to func_L23_00453470 through a pointer local set before its loop
+ * (pq = &p0): retail's s6, which leaves func_L01_00463378's &p0 to an addiu a0, sp, 0x10 and gives retail's
+ * self->0x24-first loop head; (4) func_L23_00453470 with its real prototype (u8 *(void *, void *, s32, s32, float,
+ * float, s32, float), L23_00453470.c) and the random index as its 7th argument.
+ * Left (4 words, case 3): retail stores the copy (sqc2 vf1, 0x50(sp)) before the sum (sqc2 vf2, 0x10(sp)) and loads
+ * the copy back before the p0.z store; vu0.h's vec_add_ab/vec_copy memory operands are BLKmode (vu0_v4), and gcc
+ * 2.95 treats BLKmode stack accesses at different offsets as conflicting, so with either statement order one of
+ * retail's two reorderings crosses a dependence: a helper-form wall under the fixed vu0.h, not a C wording
+ * (copy before the add 7, p0.z before the copy 5 tried). */
 #include "common.h"
 /* localdecomp:start func_L23_003B9B88 */
 #include "vu0.h"
@@ -55,7 +69,7 @@ extern s32 func_00382468(s32);
 extern s32 func_L01_00463378(void *, void *, void *, s32, s32, s32, s32, s32, s32);
 extern void func_003A4F28(s32);
 extern s32 func_00382498(s32, s32);
-extern void func_L23_00453470(void *, void *, s32, u32, s32, f32, f32, f32);
+extern u8 *func_L23_00453470(void *, void *, s32, s32, float, float, s32, float);
 
 void func_L23_003B9B88(Moby_003B9B88 *self)
 {
@@ -64,14 +78,14 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
     vu0_v4 c;
     vu0_v4 d;
     vu0_v4 tmp;
+    vu0_v4 *pp;
+    vu0_v4 *pq;
     Vars_3BA3E8 *v = self->vars;
     u8 *t;
     s32 i2;
     s32 i3;
     f32 r2;
     f32 r3;
-    s32 col;
-    s32 n;
 
     if (v->id < 0) {
         return;
@@ -108,10 +122,11 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
         func_L01_0044F450(self, v->x20);
         r2 = self->scale * 3.5f / *(f32 *)(self->x24 + 0x24);
         for (i2 = 0; i2 < 8; i2++) {
+            pp = &p0;
             qzero(&p0);
             p0.x = func_003824E0(-r2, r2);
             p0.y = -p0.x;
-            func_0038D000(&p0, &p0, self->m);
+            func_0038D000(pp, pp, self->m);
             vec_add_ab(&p0, &p0, &self->pos);
             qzero(&vel);
             vel.x = func_L01_00443A18(0.0f, 0.020000001f);
@@ -120,11 +135,7 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
             vel.w = 1.5f;
             qzero(&c);
             c.w = func_003824E0(1.5f, 3.0f);
-            n = func_0013D3E0();
-            n *= func_0013D3E0();
-            col = func_0038DBD8(0x80202020, 0x80707070, (f32)n);
-            n = ((func_00382468(0x14) + 0x1E) * 5 + 2) / 6;
-            func_L01_00463378(&p0, &vel, &c, col, 0x40606060, 1, n, ((func_00382468(0xA) + 0x1E) * 5 + 2) / 6, -1);
+            func_L01_00463378(pp, &vel, &c, func_0038DBD8(0x80202020, 0x80707070, (f32)(func_0013D3E0() * func_0013D3E0())), 0x40606060, 1, ((func_00382468(0x14) + 0x1E) * 5 + 2) / 6, ((func_00382468(0xA) + 0x1E) * 5 + 2) / 6, -1);
         }
         if (((V4 *)&self->pos)->z <= v->x4) {
             func_L01_004450F0(self, 3, -1);
@@ -141,6 +152,7 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
             }
         }
         r3 = self->scale * 3.5f / *(f32 *)(self->x24 + 0x24);
+        pq = &p0;
         for (i3 = 0; i3 < 8; i3++) {
             qzero(&p0);
             p0.x = func_003824E0(-r3, r3);
@@ -159,11 +171,7 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
             qzero(&c);
             vel.w = 0.5f;
             c.w = func_003824E0(1.5f, 3.0f);
-            n = func_0013D3E0();
-            n *= func_0013D3E0();
-            col = func_0038DBD8(0x80202020, 0x80707070, (f32)n);
-            n = ((func_00382468(0xA) + 0x14) * 5 + 2) / 6;
-            func_L01_00463378(&p0, &vel, &c, col, 0x40606060, 0x11, n, ((func_00382468(0xA) + 0x1E) * 5 + 2) / 6, -1);
+            func_L01_00463378(&p0, &vel, &c, func_0038DBD8(0x80202020, 0x80707070, (f32)(func_0013D3E0() * func_0013D3E0())), 0x40606060, 0x11, ((func_00382468(0xA) + 0x14) * 5 + 2) / 6, ((func_00382468(0xA) + 0x1E) * 5 + 2) / 6, -1);
             if (self->x96 < 4) {
                 f32 z;
 
@@ -172,7 +180,7 @@ void func_L23_003B9B88(Moby_003B9B88 *self)
                 d.z = func_003824E0(0.020000001f, 0.080000006f) * 2.0f;
                 d.w = func_003824E0(1.5f, 3.0f) * 0.125f;
                 z = v->x4 - 1.0f;
-                func_L23_00453470(&p0, &d, 0, 0x80606060, func_00382498(1, 2), d.w, z, 0.004f);
+                func_L23_00453470(pq, &d, 0, 0x80606060, d.w, z, func_00382498(1, 2), 0.004f);
             }
         }
         if (self->x96 >= 0x22) {

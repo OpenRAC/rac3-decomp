@@ -1,3 +1,19 @@
+/* func_L01_00463A70 (Claude permuter pass p01, 2026-11-28). Replaces the earlier draft of this function (PAL draft (k8 a5, 2026-11-27), from the functional C); wave 14's r52 near had 26 and its retry r83 25 under the same check. */
+/* func_L01_00463A70 (p01 permuter pass, 2026-11-28): 20 diff (p10/check.py, level 01, file flags, divs row
+ * 'func_L01_00463A70 2 2 2' injected); wr52's near had 26 under the same check. Changes against it, both found by
+ * decomp-permuter (p10 context) and kept in plain form: (1) the red channel of the rgba pack is converted into an s32
+ * local, red = (s32)(r * 255.0f), before the three byte stores (26 -> 21: the pack's product order); (2) the config
+ * flags word cfg+0x70 is read in each test (& 2, & 4) instead of through a flags local, as the function's other
+ * cfg+0x70 tests already do (21 -> 20). Still differs as wr52 described: the unpack (65535.0f loaded before g's cvt,
+ * b's divide before g's) and the rest of the pack's 65535/255 product interleave. Tried: green/blue temps as well
+ * (26, 32), red set after the first byte store (26), declaration order (26). wr52's header follows. */
+/* func_L01_00463A70 (r52, wave 14): 26 diff (p10/check.py, level 01, file flags, divs row 'func_L01_00463A70 2 2 2' injected;
+ * the k8 draft measures 357 there). Changes against the k8 draft: localdecomp markers (the block includes vu0.h); the alpha
+ * step stores v+0x10 in each arm (retail reloads it after the join); the alpha and p+0xC clamps compare with the
+ * field first ('x > limit', retail loads the field first); one func_003CD250 call for the v+0x10 <= 0 test and the
+ * lifetime tests (retail has one call site); the three byte stores before the rgba store. Left: the colour unpack
+ * (65535.0f is loaded before g's cvt and b's divide comes before g's) and the 65535 products of the pack (b first in retail).
+ * The k8 header follows. */
 /* func_L01_00463A70 (k8 agent 5, 2026-11-27): near miss from the functional C, 56 aligned rows of 450 (difflib over the
  * tools/check.py columns, level 01, file flags of src/levels/shared/L01_00463538.c) with a divs_nops row
  * `func_L01_00463A70 2 2 2` (not committed; add it when this lands). Fixed against the functional C (74): the scale is
@@ -8,6 +24,10 @@
  * 65535 products for `sb` before the `b`, here one sb sits in the delay slot; (3) a few float registers in the alpha clamp.
  * Tried without gain: b1b as u8/s32/u32, the reads before/after the unpack, int temporaries for the three channels, b before g,
  * u8 casts and regrouped ORs in the pack. 49 places. */
+#include "common.h"
+
+/* localdecomp:start func_L01_00463A70 */
+#include "vu0.h"
 extern s32 func_003D3CB0(void *, void *, s32, u8 *, s32);
 extern void func_L01_00448F30(void *, void *, void *, f32);
 extern void func_0038CF68(void *, void *, f32);
@@ -26,9 +46,9 @@ void func_L01_00463A70(u8 *p) {
     f32 mat[16];
     u8 *v = p + 0x20;
     u8 *cfg = *(u8 **)(v + 0xC);
-    u32 flags;
     u32 rgba;
     f32 r, g, b, k, a;
+    s32 red;
 
     pos[0] = *(f32 *)(p + 0x10) + *(f32 *)(v + 0);
     pos[1] = *(f32 *)(p + 0x14) + *(f32 *)(v + 4);
@@ -48,8 +68,7 @@ void func_L01_00463A70(u8 *p) {
         *(vu0_q *)(p + 0x10) = *(vu0_q *)pos;
     }
 
-    flags = *(s32 *)(cfg + 0x70);
-    if (flags & 2) {
+    if (*(s32 *)(cfg + 0x70) & 2) {
         rgba = *(u32 *)(p + 4);
         r = (f32)(s32)(((rgba & 0xFF) << 8) | *(u8 *)(v + 0x18)) / 65535.0f;
         g = (f32)(s32)((rgba & 0xFF00) | *(u8 *)(v + 0x19)) / 65535.0f;
@@ -105,23 +124,23 @@ void func_L01_00463A70(u8 *p) {
                 *(u8 *)(v + 0x1B) = *(u8 *)(v + 0x1B) ^ 0x40;
             }
         }
-        *(u32 *)(p + 4) = ((s32)(r * 255.0f) & 0xFF) | (((s32)(g * 255.0f) & 0xFF) << 8) |
-                          (((s32)(b * 255.0f) & 0xFF) << 16) | ((s32)(*(f32 *)(v + 0x10) * 255.0f) << 24);
+        red = (s32)(r * 255.0f);
         *(u8 *)(v + 0x18) = (s32)(r * 65535.0f);
         *(u8 *)(v + 0x19) = (s32)(g * 65535.0f);
         *(u8 *)(v + 0x1A) = (s32)(b * 65535.0f);
-    } else if (flags & 4) {
+        *(u32 *)(p + 4) = (red & 0xFF) | (((s32)(g * 255.0f) & 0xFF) << 8) |
+                          (((s32)(b * 255.0f) & 0xFF) << 16) | ((s32)(*(f32 *)(v + 0x10) * 255.0f) << 24);
+    } else if (*(s32 *)(cfg + 0x70) & 4) {
         *(u32 *)(p + 4) = (*(u32 *)(p + 4) & 0xFFFFFF) | ((s32)(*(f32 *)(v + 0x10) * 255.0f) << 24);
     }
 
     if (*(s32 *)(cfg + 0x70) & 4) {
         if (*(u8 *)(v + 0x1B) & 0x80) {
-            a = *(f32 *)(v + 0x10) - *(f32 *)(cfg + 0x38) * 1.2f;
+            *(f32 *)(v + 0x10) = *(f32 *)(v + 0x10) - *(f32 *)(cfg + 0x38) * 1.2f;
         } else {
-            a = *(f32 *)(v + 0x10) + *(f32 *)(cfg + 0x38) * 1.2f;
+            *(f32 *)(v + 0x10) = *(f32 *)(v + 0x10) + *(f32 *)(cfg + 0x38) * 1.2f;
         }
-        *(f32 *)(v + 0x10) = a;
-        if (*(f32 *)(cfg + 0x48) < *(f32 *)(v + 0x10)) {
+        if (*(f32 *)(v + 0x10) > *(f32 *)(cfg + 0x48)) {
             *(f32 *)(v + 0x10) = *(f32 *)(cfg + 0x48);
             if (*(s32 *)(cfg + 0x70) & 0x800) {
                 *(u8 *)(v + 0x1B) = *(u8 *)(v + 0x1B) ^ 0x80;
@@ -159,17 +178,13 @@ void func_L01_00463A70(u8 *p) {
     if (k < *(f32 *)(cfg + 0x74)) {
         *(f32 *)(p + 0xC) = *(f32 *)(cfg + 0x74);
     }
-    if (*(f32 *)(cfg + 0x78) < *(f32 *)(p + 0xC)) {
+    if (*(f32 *)(p + 0xC) > *(f32 *)(cfg + 0x78)) {
         *(f32 *)(p + 0xC) = *(f32 *)(cfg + 0x78);
     }
 
     a = *(f32 *)(v + 0x14) + *(f32 *)(cfg + 0x34) * 1.2f;
     *(f32 *)(v + 0x14) = a;
-    if (*(f32 *)(v + 0x10) <= 0.0f) {
-        func_003CD250(p);
-        return;
-    }
-    if (func_0038CB00(p + 0xA) != 0 ||
+    if (*(f32 *)(v + 0x10) <= 0.0f || func_0038CB00(p + 0xA) != 0 ||
         *(f32 *)(p + 0x10) < *(f32 *)(cfg + 0x10) ||
         *(f32 *)(p + 0x14) < *(f32 *)(cfg + 0x14) ||
         *(f32 *)(p + 0x18) < *(f32 *)(cfg + 0x18) ||
@@ -179,3 +194,4 @@ void func_L01_00463A70(u8 *p) {
         func_003CD250(p);
     }
 }
+/* localdecomp:end func_L01_00463A70 */

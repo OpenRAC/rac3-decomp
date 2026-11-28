@@ -1,6 +1,16 @@
-/* PAL near miss (Codex wave 10): near miss: 310 words differ with the file's flags.
- * Worker's note: 313 word diffs: func_L01_00363690.v4.log; retained best fresh draft after 10 snippet compiles. Loop preheader/register allocation, reward branches and call scheduling remain; full retail algorithm transcribed, fixed flags unchanged.
- */
+/* func_L01_00363690 (Claude wave 14 r71, 2026-11-28). Replaces the earlier draft of this function (Codex wave 10 near miss). */
+/* PAL near miss (r71, wave 14, 2026-11-28): 339 positional / 85 aligned differences (wave10/p10/check.py, level 01, the
+ * file's flags; aligned = difflib over the two instruction columns, 345 retail words), from the Codex wave 10 draft (313
+ * positional / 113 aligned once it compiled). Changes: the draft no longer compiled in its file (its own
+ * `extern s32 func_003A52A0(s32, s32, void *);` conflicts with the file's `extern void func_003A52A0(s32, s32, s32);`): the
+ * file's declaration with (s32)self; &vars->position as a pointer set before the loop (retail keeps it in $fp and computes
+ * muzzle = vars + 0x10 again inside the loop in $s3; one shared expression put both in one register); &D_00142DE0 as a
+ * pointer (retail reaches total as 0x21C($s7)); the hero reads through an inline accessor returning D_001A4BE0 (retail
+ * builds the address and then adds 0x25C4 / 0x28C8; a constant address folds the offset into lui/lw); the weapon row read
+ * as this file's siblings do, ((Gun_00361AC0 *)(idx * sizeof(Gun_00361AC0) + (s32)D_L01_002C5600))->kind (no madd).
+ * Still differs: retail sets $fp and $s7 in the loop preheader after the count test, from vars reloaded from its 0($sp)
+ * spill, and spills next = i + 1 to 4($sp); here both pointers are set before the test (moving them into the loop or the
+ * if-block, or a do-while form, is worse: 107-118 aligned), then the reward arithmetic's register choice and order. */
 #include "common.h"
 /* localdecomp:start func_L01_00363690 */
 #include "vu0.h"
@@ -24,6 +34,10 @@ __asm__(".extern D_L01_001DAA34, 4");
 extern f32 D_L01_002F1600[];
 extern u8 D_00142647[];
 typedef struct { u8 pad[0x10]; S_38C110v position; } Vars_00363690;
+static __inline__ u8 *hero_00363690(void) {
+    return D_001A4BE0;
+}
+
 void func_L01_00363690(u8 *self)
 {
     extern void func_003C2F58(void *, s32, void *);
@@ -40,10 +54,12 @@ void func_L01_00363690(u8 *self)
     extern s32 func_003C4B50(Moby_3631C8 *);
     extern void func_L01_0033D0E8(void);
     extern void func_L01_00363468(u8 *);
-    extern s32 func_003A52A0(s32, s32, void *);
     extern void func_L01_00451FB8(s32, s32, s32, s32);
     u8 *vars = *(u8 **)(self + 0x68);
     s32 i;
+    Stats_00363690 *stats = &D_00142DE0;
+    S_38C110v *position;
+    position = &((Vars_00363690 *)vars)->position;
     for (i = 0; i < D_L01_001DD790;) {
         s32 next = i + 1;
         u8 **slot = (u8 **)&D_L01_0028F0C0[i];
@@ -51,8 +67,8 @@ void func_L01_00363690(u8 *self)
         if (*slot) {
             u8 **group;
             *(u16 *)(*slot + 0x34) |= 2;
-            func_003C2F58(self, 0, &((Vars_00363690 *)vars)->position);
-            func_L01_00448340(*slot + 0x10, &((Vars_00363690 *)vars)->position, &D_L01_0028F110[i],
+            func_003C2F58(self, 0, position);
+            func_L01_00448340(*slot + 0x10, position, &D_L01_0028F110[i],
                 0.014000000432133675f, 0.024000000208616257f, 0.8000000715255737f);
             *(f32 *)(*slot + 0x2C) *= 0.97f;
             muzzle = vars + 0x10;
@@ -80,7 +96,7 @@ void func_L01_00363690(u8 *self)
                 func_0038D308(((u8 *)D_L01_0028F0C0[i]) + 0xC0, ((u8 *)D_L01_0028F0C0[i]) + 0xF0);
                 func_003C7C38(((u8 *)D_L01_0028F0C0[i]));
                 if (((u8 *)D_L01_0028F0C0[i]) && (func_0038CF00(((u8 *)D_L01_0028F0C0[i]) + 0x10, muzzle) < 0.1f ||
-                    *(s32 *)(D_001A4BE0 + 0x25C4) == 0x35 || *(s32 *)(D_001A4BE0 + 0x25C4) == 0x36)) {
+                    *(s32 *)(hero_00363690() + 0x25C4) == 0x35 || *(s32 *)(hero_00363690() + 0x25C4) == 0x36)) {
                     u8 *record;
                     *(u16 *)(((u8 *)D_L01_0028F0C0[i]) + 0x34) &= 0xFFFD;
                     record = (u8 *)func_00382348((Moby_3631C8 *)((u8 *)D_L01_0028F0C0[i]));
@@ -88,7 +104,7 @@ void func_L01_00363690(u8 *self)
                         record[0x30] = 1;
                         record[0x2E] = 1;
                         if ((u32)D_L01_001D7BE0 < 41) {
-                            if (D_L01_001D7BE0 != 9) D_00142DE0.total += func_L01_00444350();
+                            if (D_L01_001D7BE0 != 9) stats->total += func_L01_00444350();
                         } else if (D_L01_001D7BE0 != 9) {
                             s32 bonus = (D_00142698 + 49) / 50;
                             s32 reward;
@@ -103,13 +119,13 @@ void func_L01_00363690(u8 *self)
                                 else table = D_L01_001D60D8;
                             }
                             reward = func_L01_004006C8(table, *(u16 *)(((u8 *)D_L01_0028F0C0[i]) + 0xB6), *(s16 *)(((u8 *)D_L01_0028F0C0[i]) + 0xB2));
-                            reward <<= D_001A4BE0[0x28C8];
+                            reward <<= hero_00363690()[0x28C8];
                             if (func_L01_0041A4F0()) {
                                 f32 value = reward;
                                 if (D_001D545C == 7 && D_0014275B[0]) reward = value * D_L01_001DAA34;
                                 else reward = value * D_L01_002F1600[D_001D545C];
                             }
-                            D_00142DE0.total += reward + bonus;
+                            stats->total += reward + bonus;
                         }
                     }
                     if (func_003C4B50((Moby_3631C8 *)((u8 *)D_L01_0028F0C0[i]))) {
@@ -127,8 +143,8 @@ void func_L01_00363690(u8 *self)
                         func_L01_0033D0E8();
                     }
                     func_L01_00363468(self);
-                    func_003A52A0(1, 0, self);
-                    if (D_L01_002C5600[D_00142647[0]].kind >= 4) func_L01_00451FB8(0x11F4, 1, -1, 0);
+                    func_003A52A0(1, 0, (s32)self);
+                    if (((Gun_00361AC0 *)(D_00142647[0] * sizeof(Gun_00361AC0) + (s32)D_L01_002C5600))->kind >= 4) func_L01_00451FB8(0x11F4, 1, -1, 0);
                     else func_L01_00451FB8(0x11F3, 1, -1, 0);
                     D_L01_0028F0C0[i] = 0;
                 }

@@ -1,7 +1,15 @@
-/* PAL near miss (Codex wave 8): near miss: 209 words differ with the file's flags.
- * Worker's note: Best 210 diff, 00348620-05.log and 00348620-wrapper.log; three loop wordings identical (05/06/07). Opaque VU blocks preserve operands/clobbers but differ in interleaving; alpha scheduling and saved-register allocation remain. Metadata trial divs 2 did not ...
- */
+/* func_L01_00348620 (Claude wave 14 r67, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
 #include "common.h"
+/* PAL near miss (wave 14, r67): 100 diffs at level 01 with the file's flags and an injected divs row 'func_L01_00348620 2'
+ * (the Codex wave 8 draft measures 210). Changed against it: the VU0 vector ops as the include/vu0.h j-form helpers
+ * (the fixed-register blocks could not interleave), points[i] indexing (strength-reduced to retail's pointer), the four
+ * colour alphas through one reused float temp (f = (s32)(c >> 24); f *= strength;), which keeps the four FPU chains
+ * serial as retail (strength in f1, alphas in f0/f2, saved-register numbering now retail's), and the uv offsets as two
+ * chained assignments per packet (uv[0][0] = uv[1][0] = uv[0][0] + D; uv[2][0] = uv[3][0] = uv[2][0] + D), retail's
+ * store order. Still differs: the integer half of the colour block (retail does the four 0xFFFFFF masks early and each
+ * srl right before its mtc1; here the srl's come first), so the pre-loop view/tangent VU ops sit a few slots off, and
+ * vf1/vf2 roles are swapped in three VU sequences (glow.vertices[0..1], both tangent subtractions). */
+
 /* localdecomp:start func_L01_00348620 */
 #include "vu0.h"
 typedef struct {
@@ -16,27 +24,7 @@ extern f32 D_L01_001DD340, D_L01_001DD33C;
 extern u32 D_L01_001DD32C, D_L01_001DD334, D_L01_001DD330, D_L01_001DD338;
 typedef struct { u8 pad0[0x16B0]; s32 mode; u8 pad16B4[0x25C4-0x16B4]; s32 state; } Hero_00348620;
 extern Hero_00348620 D_001A4BE0;
-extern vu0_v4 D_L01_001E29C0[];
-static __inline__ void sub_ab_00348620(void *d, void *a, void *b)
-{
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvsub.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-        : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
-static __inline__ void sub_ba_00348620(void *d, void *a, void *b)
-{
-    __asm__("lqc2 $vf1, %2\n\tlqc2 $vf2, %1\n\tvsub.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
-        : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
-static __inline__ void add_ab_00348620(void *d, void *a, void *b)
-{
-    __asm__("lqc2 $vf1, %1\n\tlqc2 $vf2, %2\n\tvadd.xyz $vf1, $vf1, $vf2\n\tsqc2 $vf1, %0"
-        : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
-static __inline__ void add_ba_00348620(void *d, void *a, void *b)
-{
-    __asm__("lqc2 $vf1, %2\n\tlqc2 $vf2, %1\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
-        : "=m"(*(vu0_v4 *)d) : "m"(*(vu0_v4 *)a), "m"(*(vu0_v4 *)b) : "vf1", "vf2");
-}
+extern vu0_v4 D_L01_001E29C0_00348620;
 __asm__(".extern D_L01_001DD348, 4");
 __asm__(".extern D_L01_001DD34C, 4");
 __asm__(".extern D_L01_001DD340, 4");
@@ -47,89 +35,96 @@ __asm__(".extern D_L01_001DD330, 4");
 __asm__(".extern D_L01_001DD338, 4");
 void func_L01_00348620(u8 *obj)
 {
-    extern char *func_L01_00457480(s32,s32);
-    extern void func_003D93B0(void *,s32,s32,s32);
-    extern void func_0038CE90(void *,void *,void *);
-    extern void func_0038CF68(void *,void *,f32);
-    extern void func_0038CE20(f32 *,f32 *,f32);
-    extern s32 func_0038DBD8(s32,s32,f32);
-    extern void func_003D2DA0(void *,void *,s32);
+    extern char *func_L01_00457480(s32, s32);
+    extern void func_003D93B0(void *, s32, s32, s32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern void func_003D2DA0(void *, s32, s32);
     Packet_00348620 core, glow;
     vu0_v4 normal, width, view, tangent;
     u32 end_core;
-    u8 *vars = *(u8 **)(obj+0x68);
+    u8 *vars = *(u8 **)(obj + 0x68);
     Point_00348620 *points;
     f32 strength, step, t;
     u32 begin_core, begin_glow, end_glow;
     s32 i;
-    if (*(s16 *)(vars+0x20)<2 || *(s16 *)(vars+0x22)==0) return;
-    points = *(Point_00348620 **)(func_L01_00457480(0xC04,*(s16 *)(vars+0x1A)) + *(s16 *)(vars+0x18)*4);
-    func_003D93B0(&core,D_L01_001DD348,1,0x80);
-    core.uv[0][0]=0.0f;
-    core.uv[0][1]=0.0f;
-    core.uv[1][0]=0.0f;
-    core.uv[1][1]=1.0f;
-    core.uv[2][0]=1.0f;
-    core.uv[2][1]=0.0f;
-    core.uv[3][0]=1.0f;
-    core.uv[3][1]=1.0f;
-    core.uv[0][0]+=D_L01_001DD340;
-    core.uv[1][0]+=D_L01_001DD340;
-    core.uv[2][0]+=D_L01_001DD340;
-    core.uv[3][0]+=D_L01_001DD340;
-    func_003D93B0(&glow,D_L01_001DD34C,1,0x80);
-    glow.uv[0][0]=0.0f;
-    glow.uv[0][1]=0.0f;
-    glow.uv[1][0]=0.0f;
-    glow.uv[1][1]=1.0f;
-    glow.uv[2][0]=1.0f;
-    glow.uv[2][1]=0.0f;
-    glow.uv[3][0]=1.0f;
-    glow.uv[3][1]=1.0f;
-    glow.uv[0][0]+=D_L01_001DD340;
-    glow.uv[1][0]+=D_L01_001DD340;
-    glow.uv[2][0]+=D_L01_001DD340;
-    glow.uv[3][0]+=D_L01_001DD340;
-    strength=*(s16 *)(vars+0x22)**(f32 *)(vars+0x24);
-    if (D_001A4BE0.state==0x1D || D_001A4BE0.mode!=0) strength*=0.5f;
-    begin_core = (D_L01_001DD32C&0xFFFFFF)|((s32)((s32)(D_L01_001DD32C>>24)*strength)<<24);
-    end_core = (D_L01_001DD334&0xFFFFFF)|((s32)((s32)(D_L01_001DD334>>24)*strength)<<24);
-    begin_glow = (D_L01_001DD330&0xFFFFFF)|((s32)((s32)(D_L01_001DD330>>24)*strength)<<24);
-    end_glow = (D_L01_001DD338&0xFFFFFF)|((s32)((s32)(D_L01_001DD338>>24)*strength)<<24);
-    core.colors[0]=core.colors[1]=begin_core;
-    glow.colors[0]=glow.colors[1]=begin_glow;
-    sub_ab_00348620(&view,points,D_L01_001E29C0);
-    sub_ba_00348620(&tangent,points+1,points);
-    func_0038CE90(&normal,&tangent,&view);
-    func_0038CF68(&width,&normal,points->pos.w);
-    add_ab_00348620(&core.vertices[0],points,&width);
-    sub_ab_00348620(&core.vertices[1],points,&width);
-    func_0038CE20((f32 *)&width,(f32 *)&width,D_L01_001DD33C);
-    add_ba_00348620(&glow.vertices[0],points,&width);
-    sub_ab_00348620(&glow.vertices[1],points,&width);
-    step=1.0f / *(s16 *)(vars+0x20);
-    points++;
-    for(i=1;i<*(s16 *)(vars+0x20);i++,points++) {
-        sub_ba_00348620(&view,points,D_L01_001E29C0);
-        sub_ba_00348620(&tangent,points,points-1);
-        func_0038CE90(&normal,&tangent,&view);
-        func_0038CF68(&width,&normal,points->pos.w);
-        add_ab_00348620(&core.vertices[2],points,&width);
-        sub_ab_00348620(&core.vertices[3],points,&width);
-        func_0038CE20((f32 *)&width,(f32 *)&width,D_L01_001DD33C);
-        add_ab_00348620(&glow.vertices[2],points,&width);
-        sub_ab_00348620(&glow.vertices[3],points,&width);
-        t=i*step;
-        core.colors[2]=core.colors[3]=func_0038DBD8(begin_core,end_core,t);
-        glow.colors[2]=glow.colors[3]=func_0038DBD8(begin_glow,end_glow,t);
-        func_003D2DA0(&core,0,0);
-        func_003D2DA0(&glow,0,0);
-        *(vu0_q *)&core.vertices[0]=*(vu0_q *)&core.vertices[2];
-        *(vu0_q *)&core.vertices[1]=*(vu0_q *)&core.vertices[3];
-        *(vu0_q *)&glow.vertices[0]=*(vu0_q *)&glow.vertices[2];
-        *(vu0_q *)&glow.vertices[1]=*(vu0_q *)&glow.vertices[3];
-        core.colors[0]=core.colors[1]=core.colors[2];
-        glow.colors[0]=glow.colors[1]=glow.colors[2];
+
+    if (*(s16 *)(vars + 0x20) < 2 || *(s16 *)(vars + 0x22) == 0) return;
+    points = *(Point_00348620 **)(func_L01_00457480(0xC04, *(s16 *)(vars + 0x1A)) + *(s16 *)(vars + 0x18) * 4);
+    func_003D93B0(&core, D_L01_001DD348, 1, 0x80);
+    core.uv[0][0] = 0.0f;
+    core.uv[0][1] = 0.0f;
+    core.uv[1][0] = 0.0f;
+    core.uv[1][1] = 1.0f;
+    core.uv[2][0] = 1.0f;
+    core.uv[2][1] = 0.0f;
+    core.uv[3][0] = 1.0f;
+    core.uv[3][1] = 1.0f;
+    core.uv[0][0] = core.uv[1][0] = core.uv[0][0] + D_L01_001DD340;
+    core.uv[2][0] = core.uv[3][0] = core.uv[2][0] + D_L01_001DD340;
+    func_003D93B0(&glow, D_L01_001DD34C, 1, 0x80);
+    glow.uv[0][0] = 0.0f;
+    glow.uv[0][1] = 0.0f;
+    glow.uv[1][0] = 0.0f;
+    glow.uv[1][1] = 1.0f;
+    glow.uv[2][0] = 1.0f;
+    glow.uv[2][1] = 0.0f;
+    glow.uv[3][0] = 1.0f;
+    glow.uv[3][1] = 1.0f;
+    glow.uv[0][0] = glow.uv[1][0] = glow.uv[0][0] + D_L01_001DD340;
+    glow.uv[2][0] = glow.uv[3][0] = glow.uv[2][0] + D_L01_001DD340;
+    strength = *(s16 *)(vars + 0x22) * *(f32 *)(vars + 0x24);
+    if (D_001A4BE0.state == 0x1D || D_001A4BE0.mode != 0) strength *= 0.5f;
+    {
+        f32 f;
+        f = (s32)(D_L01_001DD32C >> 24);
+        f *= strength;
+        begin_core = ((s32)f << 24) | (D_L01_001DD32C & 0xFFFFFF);
+        f = (s32)(D_L01_001DD334 >> 24);
+        f *= strength;
+        end_core = ((s32)f << 24) | (D_L01_001DD334 & 0xFFFFFF);
+        f = (s32)(D_L01_001DD330 >> 24);
+        f *= strength;
+        begin_glow = ((s32)f << 24) | (D_L01_001DD330 & 0xFFFFFF);
+        f = (s32)(D_L01_001DD338 >> 24);
+        f *= strength;
+        end_glow = ((s32)f << 24) | (D_L01_001DD338 & 0xFFFFFF);
+    }
+    core.colors[0] = core.colors[1] = begin_core;
+    glow.colors[0] = glow.colors[1] = begin_glow;
+    vec_sub_ba(&view, &points[0], &D_L01_001E29C0_00348620);
+    vec_sub_ba(&tangent, &points[1], &points[0]);
+    func_0038CE90(&normal, &tangent, &view);
+    func_0038CF68(&width, &normal, points[0].pos.w);
+    vec_add_ba(&core.vertices[0], &points[0], &width);
+    vec_sub_ba(&core.vertices[1], &points[0], &width);
+    func_0038CE20((f32 *)&width, (f32 *)&width, D_L01_001DD33C);
+    vec_add_ba(&glow.vertices[0], &points[0], &width);
+    vec_sub_ab(&glow.vertices[1], &points[0], &width);
+    step = 1.0f / *(s16 *)(vars + 0x20);
+    for (i = 1; i < *(s16 *)(vars + 0x20); i++) {
+        vec_sub_ab(&view, &points[i], &D_L01_001E29C0_00348620);
+        vec_sub_ba(&tangent, &points[i], &points[i - 1]);
+        func_0038CE90(&normal, &tangent, &view);
+        func_0038CF68(&width, &normal, points[i].pos.w);
+        vec_add_ba(&core.vertices[2], &points[i], &width);
+        vec_sub_ba(&core.vertices[3], &points[i], &width);
+        func_0038CE20((f32 *)&width, (f32 *)&width, D_L01_001DD33C);
+        vec_add_ba(&glow.vertices[2], &points[i], &width);
+        vec_sub_ba(&glow.vertices[3], &points[i], &width);
+        t = i * step;
+        core.colors[2] = core.colors[3] = func_0038DBD8(begin_core, end_core, t);
+        glow.colors[2] = glow.colors[3] = func_0038DBD8(begin_glow, end_glow, t);
+        func_003D2DA0(&core, 0, 0);
+        func_003D2DA0(&glow, 0, 0);
+        *(vu0_q *)&core.vertices[0] = *(vu0_q *)&core.vertices[2];
+        *(vu0_q *)&core.vertices[1] = *(vu0_q *)&core.vertices[3];
+        *(vu0_q *)&glow.vertices[0] = *(vu0_q *)&glow.vertices[2];
+        *(vu0_q *)&glow.vertices[1] = *(vu0_q *)&glow.vertices[3];
+        core.colors[0] = core.colors[1] = core.colors[2];
+        glow.colors[0] = glow.colors[1] = glow.colors[2];
     }
 }
 /* localdecomp:end func_L01_00348620 */

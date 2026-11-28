@@ -1,4 +1,15 @@
-/* func_L01_002F78B0: matches alone, but as C its jump table joins func_L01_002FC910's in the file's read-only data while retail keeps the tables of the assembly functions between them (func_L01_002FA1F8, func_L01_002FAAA0) in between, so no level links (level_symbols: two places for the file's .rodata) (reverted from src/levels/shared/L01_002F7800.c, 2026-11-27). */
+/* func_L01_002F78B0 (Claude wave 14 r72, 2026-11-28). Replaces the earlier draft of this function (reverted at the full build (k8 wind-down, 2026-11-27)). */
+/* func_L01_002F78B0 (wave 14 r72, 2026-11-28): the bolt pickup's update. Its C is exact: with the divs row
+ * `func_L01_002F78B0 0 2 2 0 2` (retail's nops before its five div.s; master has no row since the revert)
+ * wave10/p10/check.py --all-places --divs 0,2,2,0,2 prints ALL_PLACES_MATCH 34; TYPE_CONTRACT_PASS.
+ * Changed against the reverted draft: the file's own declarations (extern u8 *D_L01_001E0020 with a cast at the
+ * comparison, func_L01_002F88E0(u8 *), func_003A52A0(s32, s32, void *)), which the type contract needs, and the
+ * #define HIT_2F78B0 alias written out as the cast it stood for.
+ * Still not linkable (why master reverted it, 2026-11-27): audit_object.py says {"ok": false, "its .rodata at
+ * 0x002BE6F0: word +0x18 differs from the level's"}: the object's .rodata is the 5-entry jump table padded to
+ * 0x20, where retail has the table (0x14) and at +0x18 the data at D_L01_002BE708 (the bolt kind table this
+ * function reads), so the table only links if its object's .rodata is followed by that data as in retail: a cut
+ * or .rodata placement decision for the coordinator (WORKER-CUT-W13.md case 5). */
 #include "common.h"
 /* localdecomp:start func_L01_002F78B0 */
 typedef struct {
@@ -81,7 +92,7 @@ extern vu0_v4 D_001A4CC0;
 extern u8 D_L01_001EAA00[];
 extern Kind_2F78B0 D_L01_002BE708_002F78B0[];
 extern P_2F78B0 D_00142660_002F78B0;
-extern M_2F78B0 *D_L01_001E0020;
+extern u8 *D_L01_001E0020;
 __asm__(".extern D_L01_001E0020, 4");
 extern M_2F78B0 *D_L01_001E0020_002F78B0;
 extern s32 D_001D545C;
@@ -91,12 +102,10 @@ extern u8 D_L01_001DFE80[] __attribute__((section(".sdata")));
 extern Drop_2F78B0 D_L01_00236B90;
 extern Drop_2F78B0 D_L01_00237800;
 
-#define HIT_2F78B0 ((Hit_2F78B0 *)D_L01_001EAA00)
-
 /* The bolt's update: spawn, hop, rest, hop in place, pulled to the hero. The f31 check that ends
  * cases 1-3 is written out where each branch returns; gcc cross-jumps the copies into one. */
 void func_L01_002F78B0(M_2F78B0 *self) {
-    extern void func_L01_002F88E0(void *);
+    extern void func_L01_002F88E0(u8 *);
     extern void func_L01_002F8AA8(u8 *, vu0_q *, vu0_q *);
     extern s32 func_L01_002F8D40(u8 *, u8 *, s32, f32, f32);
     extern void func_L01_002F9310(void *, s32);
@@ -136,7 +145,7 @@ void func_L01_002F78B0(M_2F78B0 *self) {
     extern u8 *func_003C4D58(void *);
     extern void func_L01_0044CB18(void *, void *, void *, void *, void *, void *);
     extern void func_L01_0044E820(u8 *, s32);
-    extern s32 func_003A52A0(s32, s32, u8 *);
+    extern s32 func_003A52A0(s32, s32, void *);
     St_2F78B0 *st = self->vars;
     vu0_v4 a;           /* 0x00 */
     vu0_v4 b;           /* 0x10 */
@@ -168,22 +177,22 @@ void func_L01_002F78B0(M_2F78B0 *self) {
         hit = func_003D3CB0(&a, &b, 0x22, 0, 0);
         if (st->landed == 0 && hit != 0) {
             qzero(&c);
-            c.y = func_0038D160(HIT_2F78B0->normal.z, func_0038CED8(&HIT_2F78B0->normal));
+            c.y = func_0038D160(((Hit_2F78B0 *)D_L01_001EAA00)->normal.z, func_0038CED8(&((Hit_2F78B0 *)D_L01_001EAA00)->normal));
             c.y = func_0038DAB8(c.y, D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].pitch);
-            c.z = func_0038D160(HIT_2F78B0->normal.x, HIT_2F78B0->normal.y);
+            c.z = func_0038D160(((Hit_2F78B0 *)D_L01_001EAA00)->normal.x, ((Hit_2F78B0 *)D_L01_001EAA00)->normal.y);
             func_0038D750((f32 *)&q1, 1, c.y);
             func_0038D750((f32 *)&q2, 2, c.z);
             func_0038D688(&st->rot, &q1, &q2);
             func_0038D750((f32 *)&st->tilt, 0, 0.0f);
-            func_0038CF68(&st->up, &HIT_2F78B0->normal, 1.0f);
+            func_0038CF68(&st->up, &((Hit_2F78B0 *)D_L01_001EAA00)->normal, 1.0f);
             if (st->flags & 1) {
                 func_003C4840(&st->vel, &st->up, -D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].speed);
             } else {
                 func_003C4840(&st->vel, &st->up, D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].speed);
             }
-            *(vu0_q *)&st->home = *(vu0_q *)&HIT_2F78B0->pos;
-            if (HIT_2F78B0->obj != 0 && func_003C4D58(HIT_2F78B0->obj) != 0) {
-                st->hit = HIT_2F78B0->obj;
+            *(vu0_q *)&st->home = *(vu0_q *)&((Hit_2F78B0 *)D_L01_001EAA00)->pos;
+            if (((Hit_2F78B0 *)D_L01_001EAA00)->obj != 0 && func_003C4D58(((Hit_2F78B0 *)D_L01_001EAA00)->obj) != 0) {
+                st->hit = ((Hit_2F78B0 *)D_L01_001EAA00)->obj;
                 func_L01_0044CB18(self, st->hit, st, &c, st, &c);
             }
         } else {
@@ -217,20 +226,20 @@ void func_L01_002F78B0(M_2F78B0 *self) {
         if (self->pos.z < st->floor - 2.0f && self->pos.z < D_001A4BE0_002F78B0.pos.z - 2.0f) {
             func_L01_002F8D40((u8 *)self, D_001A4BE0_002F78B0.hero, 0, func_003824E0(-0.261799395f, 0.261799395f), 0.0f);
         } else if (func_L01_003FB640(&self->pos, 0x22, self, 0.25f) != 0) {
-            vec_sub_ab(&a, &self->pos, &HIT_2F78B0->pos);
+            vec_sub_ab(&a, &self->pos, &((Hit_2F78B0 *)D_L01_001EAA00)->pos);
             func_L01_0040E790(&st->vel, &st->vel, &a);
-            func_0038CF68(&st->up, &HIT_2F78B0->normal, 1.0f);
+            func_0038CF68(&st->up, &((Hit_2F78B0 *)D_L01_001EAA00)->normal, 1.0f);
             if (D_001A4BE0_002F78B0.f2850 != 0 && ((st->flags & 4)
                     || (func_L01_0040E570(&self->pos, &D_001A4BE0_002F78B0.pos) < D_001A4BE0_002F78B0.near_r * D_001A4BE0_002F78B0.near_r && fabs_asm(self->pos.z - D_001A4BE0_002F78B0.pos.z) < D_001A4BE0_002F78B0.near_h)
                     || func_003D5630() != -1)) {
                 func_0038CF68(&st->vel, &st->vel, 0.160000011f);
                 func_L01_002F8D40((u8 *)self, D_001A4BE0_002F78B0.hero, 0, 0.0f, 0.0f);
             } else if (func_0038D160(a.z, func_0038CED8(&a)) < 0.785398185f
-                       && func_0038D160(HIT_2F78B0->normal.z, func_0038CED8(&HIT_2F78B0->normal)) < 0.785398185f) {
+                       && func_0038D160(((Hit_2F78B0 *)D_L01_001EAA00)->normal.z, func_0038CED8(&((Hit_2F78B0 *)D_L01_001EAA00)->normal)) < 0.785398185f) {
                 qzero(&b);
-                b.y = func_0038D160(HIT_2F78B0->normal.z, func_0038CED8(&HIT_2F78B0->normal));
+                b.y = func_0038D160(((Hit_2F78B0 *)D_L01_001EAA00)->normal.z, func_0038CED8(&((Hit_2F78B0 *)D_L01_001EAA00)->normal));
                 b.y = func_0038DAB8(b.y, D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].pitch);
-                b.z = func_0038D160(HIT_2F78B0->normal.x, HIT_2F78B0->normal.y);
+                b.z = func_0038D160(((Hit_2F78B0 *)D_L01_001EAA00)->normal.x, ((Hit_2F78B0 *)D_L01_001EAA00)->normal.y);
                 func_0038D750((f32 *)&c, 1, b.y);
                 func_0038D750((f32 *)&q1, 2, b.z);
                 func_0038D688(&st->rot, &c, &q1);
@@ -240,11 +249,11 @@ void func_L01_002F78B0(M_2F78B0 *self) {
                 } else {
                     func_003C4840(&st->vel, &st->up, D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].speed);
                 }
-                *(vu0_q *)&st->home = *(vu0_q *)&HIT_2F78B0->pos;
+                *(vu0_q *)&st->home = *(vu0_q *)&((Hit_2F78B0 *)D_L01_001EAA00)->pos;
                 func_L01_004450F0((u8 *)self, 2, -1);
                 st->hop = st->hop_len = (func_003824E0(30.0f, 40.0f) * 5.0f + 2.0f) / 6.0f;
-                if (HIT_2F78B0->obj != 0 && func_003C4D58(HIT_2F78B0->obj) != 0) {
-                    st->hit = HIT_2F78B0->obj;
+                if (((Hit_2F78B0 *)D_L01_001EAA00)->obj != 0 && func_003C4D58(((Hit_2F78B0 *)D_L01_001EAA00)->obj) != 0) {
+                    st->hit = ((Hit_2F78B0 *)D_L01_001EAA00)->obj;
                     func_L01_0044CB18(self, st->hit, st, &b, st, &b);
                 }
                 func_003C48A8(&self->m0, &q2);
@@ -291,7 +300,7 @@ void func_L01_002F78B0(M_2F78B0 *self) {
         d = func_L01_0040E570(&self->pos, &D_001A4BE0_002F78B0.pos);
         if ((st->flags & 4) || (d < D_001A4BE0_002F78B0.near_r * D_001A4BE0_002F78B0.near_r && fabs_asm(self->pos.z - D_001A4BE0_002F78B0.pos.z) < D_001A4BE0_002F78B0.near_h)) {
             func_L01_002F8D40((u8 *)self, D_001A4BE0_002F78B0.hero, 0, 0.0f, 0.0f);
-        } else if (self > D_L01_001E0020 && d > 1024.0f && self->f31 == 0) {
+        } else if (self > (M_2F78B0 *)D_L01_001E0020 && d > 1024.0f && self->f31 == 0) {
             D_00142660_002F78B0.bolts += D_L01_002BE708_002F78B0[func_L01_002F94F8(self)].bolts;
             func_003C2880(self);
             return;
@@ -376,7 +385,7 @@ void func_L01_002F78B0(M_2F78B0 *self) {
                 break;
             }
         }
-        func_L01_002F88E0(self);
+        func_L01_002F88E0((u8 *)self);
         func_003A52A0(0, 0x20, (u8 *)self);
         if (self < D_L01_001E0020_002F78B0) {
             (&D_L01_00236B90)->arr[self->fB2] = self->fB0 + 2;

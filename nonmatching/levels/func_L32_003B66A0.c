@@ -1,9 +1,27 @@
-/* func_L32_003B66A0: 2 diff (was 216) with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` on its file (not committed; the vec_add_ab helper needs the flag) and `check.py --as ps2as --flags=-mvu0-use-vf0-vf2`. Round 11 fixes: (1) the record's second pointer loaded into a local before the null test (retail fills the beqz delay slot with it, no beql); (2) 0.74f (0x3f3d70a4), not 0.73f; (3) the base of D_L32_001E9980 through a pointer local (one lui/addiu, offsets 0x18 and 0x24); (4) the tail's zero and sum as their own locals (fz, fs) instead of reusing f20 and f21, which fixes the float saved-register numbering (priority = refs / live length, a merged variable lives too long); (5) vA[1] stored after vA[2]; (6) the z block as one ternary `vC[2] = (c) ? z - d : z + d` (the if/else gives `sub.s $f0`, retail has `$f2`). Left: in the first func_L03_0034B148 call of the tail, retail has lh a0, lh a1, jal, mov.s $f12,$f20 (delay slot); here lh a0, mov.s, jal, lh a1 (two words swapped). Tried: the prototype with the float first, the zero/sum/vC-copy statement order (5 orders), s32 locals for the two shorts (worse). */
-/* func_L32_003B66A0: 216 diff with --as ps2as (217 with the file's flags; the file needs @ps2as for lui/ori/mtc1 float constants, NEEDS-FLAGS --as ps2as). Structure and call order match; float locals f20-f24 get different registers (retail: f20 angle, f21 zero, f22 rnd, f23 DAB8 result, f24 one) and the early null tests compile to beql instead of beqz. Tried declaration order of locals (no effect). */
+/* func_L32_003B66A0 (Claude wave 14 r67, 2026-11-28). Replaces the earlier draft of this function (shared-2 worker draft (2026-11-16), round 11 update). */
+/* Wave 14 r67: unchanged C from wave 12 r02 (174 diff under the file's own line, which cannot give retail's Ps2EeAs
+ * li.s lui/ori/mtc1 constants nor the interleaved VU0 add). Line analysis: the nonmatching/ draft (j-form vec_add_ab)
+ * is 2 diff under the existing line '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as'
+ * (config/levels/text_parts.txt: L32_003B7190.c, L32_003B7BE8.c), build/codex/wr67/func_L32_003B66A0.cut0.log. The
+ * file's other C function func_L32_003B6618 MATCHes under that line too (wr67/func_L32_003B6618.cutline.log), so the
+ * whole file L32_003B6618.c could take it (func_L32_003B6A58 stays INCLUDE_ASM); a cut instead would be
+ * 0x003B66A0-0x003B6A58 (both 8-aligned). The 2 diff left there: first func_L03_0034B148 call of the tail, retail lh a1 then
+ * mov.s f12,f20 in the delay slot, here mov.s then lh a1 (sched: lh a1 depends on the vC copy-back sq, which gives it the
+ * higher priority; 13 tail variants tried: 6 statement orders of copy-back/fs/fz, result local, s16 locals, literal 0.0f,
+ * index forms: all 2). */
+/* Wave 12 retry r02: first plain-C version that compiles with the file's own line (-O2 -G8 -fopt-stack
+ * -mno-check-zero-division): 174 diff. The existing draft (2 diff with -mvu0-use-vf0-vf2 and @ps2as added) does not
+ * compile there: vu0.h's vec_add_ab needs the vu0 flag. Changed against it: the a0+0x10 += vA add is one VU0 asm block
+ * (lqc2/lqc2/vadd.xyz/sqc2, vf1/vf2 clobbered); callee prototypes inside the body; the TI typedef suffixed.
+ * What differs is the line, not the C: without @ps2as the non-trivial floats 3.1415927f, 6.2831855f and 0.74f are .lit4
+ * lwc1 off(gp) (retail lui at/ori at/mtc1, -2 words each) and the assembler puts a nop after each of the two
+ * cvt.w.s/mfc1 (+1 word each), which shift every later word; the one block also loads a0+0x10 after the vA stores
+ * (retail's helper form interleaves it, 4 words reordered). With both flags the draft's 2 diff remain (first
+ * func_L03_0034B148 call of the tail: lh a1 / mov.s f12 order). */
 #include "common.h"
 
-#include "vu0.h"
-typedef int u128_t __attribute__((mode(TI)));
+/* localdecomp:start func_L32_003B66A0 */
+typedef int Q_003B66A0 __attribute__((mode(TI)));
 extern f32 D_L32_001DEF44; __asm__(".extern D_L32_001DEF44, 4");
 extern f32 D_L32_001DEF4C; __asm__(".extern D_L32_001DEF4C, 4");
 extern f32 D_L32_001DEF48; __asm__(".extern D_L32_001DEF48, 4");
@@ -20,18 +38,18 @@ extern f32 D_L32_001DEF20; __asm__(".extern D_L32_001DEF20, 4");
 extern f32 D_L32_001DEF50; __asm__(".extern D_L32_001DEF50, 4");
 extern f32 D_L32_001DEF18; __asm__(".extern D_L32_001DEF18, 4");
 extern u8 D_L32_001E9980[];
-extern f32 func_003824E0(f32, f32);
-extern f32 func_0038DB48(f32);
-extern f32 func_0038DAB8(f32, f32);
-extern f32 func_0038D098(f32);
-extern f32 func_0038D0B0(f32);
-extern f32 func_003C4088(f32, f32, f32);
-extern void func_003C2F58(void *, s32, void *);
-extern f32 func_L03_0034B148(s32, s32, f32);
-extern s32 func_0038DBD8(f32, s32, s32);
-extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
 
 void func_L32_003B66A0(u8 *a0, u8 *a1) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_0038DB48(f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_003C4088(f32, f32, f32);
+    extern void func_003C2F58(void *, s32, void *);
+    extern f32 func_L03_0034B148(s32, s32, f32);
+    extern s32 func_0038DBD8(f32, s32, s32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
     u8 *p;
     u8 *q;
     f32 f20, f21, f22, f23, f24, f25, f26, f27;
@@ -58,7 +76,10 @@ void func_L32_003B66A0(u8 *a0, u8 *a1) {
                 vA[0] = func_0038D098(f20) * D_L32_001DEF58;
                 vA[2] = func_0038D0B0(f20) * D_L32_001DEF58;
                 vA[1] = f21;
-                vec_add_ab(a0 + 0x10, a0 + 0x10, vA);
+                __asm__("lqc2 $vf2, %1\n\tlqc2 $vf1, %2\n\tvadd.xyz $vf2, $vf2, $vf1\n\tsqc2 $vf2, %0"
+                        : "=m"(*(Q_003B66A0 *)(a0 + 0x10))
+                        : "m"(*(Q_003B66A0 *)(a0 + 0x10)), "m"(*(Q_003B66A0 *)vA)
+                        : "vf1", "vf2");
                 *(f32 *)(a0 + 0x14) += D_L32_001DEF68;
                 vB[0] = func_0038D098(f23) * f22;
                 vB[2] = func_0038D0B0(f23) * f22;
@@ -69,7 +90,7 @@ void func_L32_003B66A0(u8 *a0, u8 *a1) {
                 *(s32 *)(a1 + 0x1C) = func_0038DBD8(func_003824E0(f21, f24), D_L32_001DEF28, D_L32_001DEF24);
             }
             *(f32 *)(a1 + 0x14) += D_L32_001DEF20;
-            *(u128_t *)vC = *(u128_t *)(a0 + 0x10);
+            *(Q_003B66A0 *)vC = *(Q_003B66A0 *)(a0 + 0x10);
             vC[0] += *(f32 *)(a1 + 0x10);
             vC[2] += *(f32 *)(a1 + 0x14);
             if (func_003D3CB0(a0 + 0x10, vC, 1, p, 0) != 0) {
@@ -81,7 +102,7 @@ void func_L32_003B66A0(u8 *a0, u8 *a1) {
                     vC[2] = (*(f32 *)(a0 + 0x14) <= *(f32 *)(g + 0x24)) ? z - d : z + d;
                 }
             }
-            *(u128_t *)(a0 + 0x10) = *(u128_t *)vC;
+            *(Q_003B66A0 *)(a0 + 0x10) = *(Q_003B66A0 *)vC;
             fs = f25 + f26;
             fz = 0.0f;
             *(f32 *)(a0 + 0xC) = func_003C4088(D_L32_001DEF50, f27, func_L03_0034B148(*(s16 *)(a0 + 0xA), *(s16 *)(a1 + 8), fz));
@@ -91,3 +112,4 @@ void func_L32_003B66A0(u8 *a0, u8 *a1) {
         }
     }
 }
+/* localdecomp:end func_L32_003B66A0 */

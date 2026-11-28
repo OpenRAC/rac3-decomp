@@ -1,4 +1,16 @@
-/* PAL near miss (neon-w1): 167 words differ with the file's flags; tieid spills to stack (0xb10 frame instead of 0xb00) and D_L01_0021DE20 needs -msplit-addresses. */
+/* func_L01_0044ED88 (Claude wave 14 r59, 2026-11-28). Replaces the earlier draft of this function (Codex wave 8 near miss). */
+/* PAL near miss (wave 14 r59, 2026-11-28, from the neon-w1 / Codex wave 8 draft): 150 diff under the file's own line
+ * (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2), was 210. Changed: the scalar globals
+ * D_L01_001E001C, D_L01_001E0058, D_L01_001D6768, D_L01_001D676C, D_L01_001E0EDC, D_L01_001E0DD0 are declared as
+ * scalars (small by type, so cc1 emits one macro load per use and the assembler expands it to lui/lw into the
+ * destination register, as retail has inside the loops; the arrays made cc1 split and hoist the %hi part out of
+ * the moby loop into s7); no .extern hint on D_L01_0021DE20 / D_L01_001E0DD0; the shrub loop walks its list with an
+ * index (retail copies the loaded list pointer into the loop register: daddu s1, v1). The file already has split
+ * addresses (no -mno-split-addresses), so D_L01_0021DE20's split lui/addiu comes out as retail's.
+ * Still differs: tieid (t0) is spilled (frame 0xB10, stack slots 0xAA8.. one word later) where retail keeps it in s7
+ * and spills out/max/shrubid/njoints only: global alloc gives anim s7 and the tie loop's hoisted &inverse s5
+ * (retail: anim s5, &inverse s7 after tieid dies); the moby and tie loops' list copies (index form there: 213 / no
+ * change); the period store's 0xFF is li -1 here. */
 #include "common.h"
 /* localdecomp:start func_L01_0044ED88 */
 #include "vu0.h"
@@ -11,17 +23,15 @@ typedef struct {
     s16 id;
     u8 last, bone, flags, f4D, period, phase;
 } Entry_0044ED88;
-extern u8 *D_L01_001E001C[];
-extern s32 D_L01_001E0058[];
+extern u8 *D_L01_001E001C;
+extern s32 D_L01_001E0058;
 extern s16 *D_L01_0021DE20[];
-__asm__(".extern D_L01_0021DE20, 16");
-extern s32 D_L01_001D6768[];
+extern s32 D_L01_001D6768;
 extern s16 **D_001D6764_sda;
 extern s32 D_001D6770_sda;
-extern s16 **D_L01_001D676C[];
-extern u8 *D_L01_001E0EDC[];
+extern s16 **D_L01_001D676C;
+extern u8 *D_L01_001E0EDC;
 extern u8 *D_L01_001E0DD0;
-__asm__(".extern D_L01_001E0DD0, 16");
 void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 tieid, s32 shrubid, s32 tex, u8 *parent)
 {
     extern void func_003C2EC0(u8 *, int, Q_0044ED88 *);
@@ -58,10 +68,11 @@ void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 ti
     pos[0]=*(Q_0044ED88 *)(obj+0x10);
     {
     s16 *list;
-    if(mobyid!=-1 && mobyid<D_L01_001E0058[0] && (list=D_L01_0021DE20[mobyid])!=0) {
+    s32 j;
+    if(mobyid!=-1 && mobyid<D_L01_001E0058 && (list=D_L01_0021DE20[mobyid])!=0) {
         do {
             s32 id=*(u16 *)list&0x7FFF;
-            u8 *m0=D_L01_001E001C[0]+(id<<8);
+            u8 *m0=D_L01_001E001C+(id<<8);
             u8 *rotation0;
             if(count>=max) goto finish;
             out[count].id=id;
@@ -88,10 +99,10 @@ void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 ti
     if(tieid!=-1) {
         s32 anim=0;
         if(tex>0) anim=func_00382498(0,tex);
-        if(tieid<D_L01_001D6768[0] && (list=D_001D6764_sda[tieid])!=0) {
+        if(tieid<D_L01_001D6768 && (list=D_001D6764_sda[tieid])!=0) {
             do {
                 s32 id=*(u16 *)list&0x7FFF;
-                u8 *m1=D_L01_001E0EDC[0]+(id<<6);
+                u8 *m1=D_L01_001E0EDC+(id<<6);
                 if(count>=max) goto finish;
                 out[count].flags=1;
                 out[count].id=id;
@@ -119,9 +130,10 @@ void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 ti
             } while(*list++>=0);
         }
     }
-    if(shrubid!=-1 && shrubid<D_001D6770_sda && (list=D_L01_001D676C[0][shrubid])!=0) {
+    if(shrubid!=-1 && shrubid<D_001D6770_sda && (list=D_L01_001D676C[shrubid])!=0) {
+        j=0;
         do {
-            s32 id=*(u16 *)list&0x7FFF;
+            s32 id=((u16 *)list)[j]&0x7FFF;
             u8 *m2=D_L01_001E0DD0+(id<<6);
             if(count>=max) goto finish;
             out[count].id=id;
@@ -132,7 +144,7 @@ void func_L01_0044ED88(u8 *obj, Entry_0044ED88 *out, s32 max, s32 mobyid, s32 ti
             func_0038D000(&out[count].pos,&out[count].pos,inverse);
             func_0038D5F0(&out[count],inverse,m2);
             count++;
-        } while(*list++>=0);
+        } while(list[j++]>=0);
     }
     }
 finish:

@@ -1,24 +1,17 @@
-/* NEAR MISS: func_L01_00456C98 / enemy_find_target. Needs the sq route: retail saves $s0-$s7,
-   $fp and $ra with sq in ascending 16-byte slots (frame 0xF0), which this file's flags
-   (-fopt-stack) cannot give: it would need a file of its own without -fopt-stack and a
-   config/levels/sq_ra_funcs.txt row (not made; the maintainer decides the split).
-   2026-11-23 (round 13, r13_b/e3.c), measured after the master merge (baseline 339 words
-   positional, 200 structural, 158 ignoring registers):
-   - with the file's flags: 337 positional, 111 structural, 82 ignoring registers;
-   - with --flags=-fno-opt-stack (no sq_ra row, so the saves are not reordered): 330, 99, 78.
-   What closed the gap: declarations that agree with the file's current blocks (the matched
-   func_L01_00456910 takes `s32 *` for the kind, and check.py's context has no prototypes for
-   the file's own functions, so without these externs the calls were implicit, with doubles on
-   the stack); the hero as a struct reached through &D_001A4BE0 (lui/addiu once, then
-   0x25C0($4), as retail and 00456910); the moby lists and D_L01_001D673C under the names
-   func_L01_00456270/004566F8 declare (.sdata, $gp); `origin` as a one-element array, so its
-   stack slot comes first (retail: origin at 0, kind at 0x10, the spills from 0x14).
-   Still differs: the saves (sq route); $f21/$f22 hold height/scale the other way round (a
-   local copy of height for the 60.0 case: worse, 84); the hero base is recomputed at the
-   second compare of the mode != 0 path where retail keeps it in $a0; where the vars->+0x10
-   add is merged into the shared tail, retail falls into `b tail` and branches to the call
-   (writing that site's if/else the other way round gives the same bytes; all three: 96).
-   Older notes: sd/ld saves versus sq/lq, frame A0 versus F0; "plus a 309.0f reload". */
+/* func_L01_00456C98 (Claude wave 14 r51, 2026-11-28). Replaces the earlier draft of this function (near miss (open-rac-engine names it enemy_find_target)). */
+/* func_L01_00456C98 (enemy_find_target): 325 diff with the file's flags (wave 14 r51; the round-13 draft had
+ * 337). Change against it: the id != -1 path is written with nested ifs and the single `return out->valid`
+ * at the end instead of early returns, so the skip label of `same && kind` has one use and cse keeps the hero
+ * base of the first compare in $a0 for the second one, as retail (the mode != 0 path now matches up to the
+ * D_L01_001D673C test). Still differs: the saves (retail sq/lq in 16-byte slots, frame 0xF0: the function
+ * needs the existing line `-O2 -G8 -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (as
+ * src/levels/shared/L01_003F79D8.c) plus an sq_ra_funcs row; 0x456C98-0x4572B0 starts and ends 8-aligned);
+ * $f21/$f22 hold height/scale the other way round; and cross-jumping merges the three
+ * func_L01_00450E48 calls into one here where retail keeps the call of the mode == 0 site (shared with the
+ * mode site) and of the best-target site, the add tail being the shared one. */
+#include "common.h"
+
+/* localdecomp:start func_L01_00456C98 */
 typedef int Q_00456C98 __attribute__((mode(TI)));
 typedef struct { Q_00456C98 pos; u8 *target; s16 valid; u8 pad16[6]; s16 kind; } Target_00456C98;
 typedef struct {
@@ -58,33 +51,36 @@ s32 func_L01_00456C98(u8 *obj, s32 id, void *position, s32 force, s32 mode, s32 
     }
     if (id != -1) {
         item = (u8 *)func_L01_00456910((M_453408 *)obj, id, &kind, team, mode, option, ray, extra, scale);
-        if (!item) return out->valid;
-        if (mode) {
-            if (item == ((H_00456C98 *)&D_001A4BE0)->moby) return out->valid;
-            if (same && *(s16 *)(item + 0xAA) == *(s16 *)(obj + 0xAA)) return out->valid;
-            out->target = item;
-            out->valid = 1;
-            out->kind = *(u16 *)&kind;
-            if (item != ((H_00456C98 *)&D_001A4BE0)->moby) {
-                out->pos = *(Q_00456C98 *)(item + 0x10);
-                vars = func_00382348((M_453408 *)item);
-                if (vars) {
-                    if (D_L01_001D673C_004566F8) func_L01_00450E48(item, out, 0.0f, 0.0f, *(f32 *)((u8 *)vars + 0x10));
-                    else *(f32 *)((u8 *)out + 8) += *(f32 *)((u8 *)vars + 0x10);
+        if (item) {
+            if (mode) {
+                if (item != ((H_00456C98 *)&D_001A4BE0)->moby
+                    && !(same && *(s16 *)(item + 0xAA) == *(s16 *)(obj + 0xAA))) {
+                    out->target = item;
+                    out->valid = 1;
+                    out->kind = *(u16 *)&kind;
+                    if (item != ((H_00456C98 *)&D_001A4BE0)->moby) {
+                        out->pos = *(Q_00456C98 *)(item + 0x10);
+                        vars = func_00382348((M_453408 *)item);
+                        if (vars) {
+                            if (D_L01_001D673C_004566F8) func_L01_00450E48(item, out, 0.0f, 0.0f, *(f32 *)((u8 *)vars + 0x10));
+                            else *(f32 *)((u8 *)out + 8) += *(f32 *)((u8 *)vars + 0x10);
+                        }
+                    }
                 }
-            }
-        } else {
-            if (same && *(s16 *)(item + 0xAA) == *(s16 *)(obj + 0xAA)) return out->valid;
-            out->target = item;
-            out->valid = 1;
-            out->kind = *(u16 *)&kind;
-            out->kind = *(u16 *)&kind;
-            if (item != ((H_00456C98 *)&D_001A4BE0)->moby) {
-                out->pos = *(Q_00456C98 *)(item + 0x10);
-                vars = func_00382348((M_453408 *)item);
-                if (vars) {
-                    if (D_L01_001D673C_004566F8) func_L01_00450E48(item, out, 0.0f, 0.0f, *(f32 *)((u8 *)vars + 0x10));
-                    else *(f32 *)((u8 *)out + 8) += *(f32 *)((u8 *)vars + 0x10);
+            } else {
+                if (!(same && *(s16 *)(item + 0xAA) == *(s16 *)(obj + 0xAA))) {
+                    out->target = item;
+                    out->valid = 1;
+                    out->kind = *(u16 *)&kind;
+                    out->kind = *(u16 *)&kind;
+                    if (item != ((H_00456C98 *)&D_001A4BE0)->moby) {
+                        out->pos = *(Q_00456C98 *)(item + 0x10);
+                        vars = func_00382348((M_453408 *)item);
+                        if (vars) {
+                            if (D_L01_001D673C_004566F8) func_L01_00450E48(item, out, 0.0f, 0.0f, *(f32 *)((u8 *)vars + 0x10));
+                            else *(f32 *)((u8 *)out + 8) += *(f32 *)((u8 *)vars + 0x10);
+                        }
+                    }
                 }
             }
         }
@@ -150,3 +146,4 @@ s32 func_L01_00456C98(u8 *obj, s32 id, void *position, s32 force, s32 mode, s32 
     }
     return out->valid;
 }
+/* localdecomp:end func_L01_00456C98 */

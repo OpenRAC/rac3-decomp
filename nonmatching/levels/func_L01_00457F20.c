@@ -1,23 +1,13 @@
-/* Exploratory PAL draft, round 30 (W21), landable form: ordinary C only (no `one`/`one2` steering variables).
- * Level 01, the owning file's flags (-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2).
- * Measured with `check.py --no-context --as ps2as` + difflib: 21 aligned instruction edits with a divs_nops.txt row
- * `func_L01_00457F20 2` (not added while this is a draft), 29 without the `(arg2 != 0)` forms below, 31 for the
- * round-28 plain form (literal 1), 215 for the round-27 draft. 862 against 861 words, frame 0x150, registers match.
- * Base: W6/W14's round-28 draft (nm/b42-port-b) with the function-level `one`/`one2` removed. What is new:
- *  - `var_s0_2 = (arg2 != 0);` / `var_s0_4 = (arg2 != 0);` at the start of the arg2 arm (instead of `= one`): the cmove
- *    of the first probe test stays a movz (combine merges a literal 1 into it = sltu; a non-constant keeps the movz
- *    form) but the set itself is `sltu $s0,$zero,$s5` instead of retail's `addiu $s0,$zero,1` (1 word per half).
- *    Retail's `addiu` needs a 1 that combine/cse cannot see as a constant (W6's `one`, a steering variable): no
- *    ordinary form found (about 40 variants: position of the set, pre-branch set, if/else, temp for the probe result,
- *    u8/s8, ternary/if forms, `!!arg2`, `arg2 > 0`; a 0.1 s toy file reproduces it: any `ok = 1` in the same BB as a
- *    later `ok = probe() == 0 ? 0 : ok` gives `sltu` + `movz`, a 1 set in an earlier BB gives `li` + `movz`).
- * Still differs (21): the two sltu words; `addiu $s7,1` of the second half at the loop top (setting both halves late
- *    takes the allocator priority above arg3: s6/s7 swap, 35); the &sp20/&sp30 spill slots 0x98/0x9c swapped (gcse
- *    PRE copy numbering, 6 words; statement swaps and inlining the temp_f0_N do not move it); the last lq / div.s
- *    order (retail lq, nop, nop, div.s, sq, jal, move a1,a0; sched2 here issues f12 = 1.25 (memory unit), then the
- *    reloaded `lw $a0,slot`, then div + lq: retail has no lw $a0 in that block at sched2 time); the branch offsets that
- *    follow from the extra word.
- */
+/* func_L01_00457F20 (Claude wave 14 r63, 2026-11-28). Replaces the earlier draft of this function (PAL m2c-style draft (W18), reworked in round 27 (W32)). */
+/* PAL near miss, wave 14 r63 (2026-11-28): func_L01_00457F20 (3444 B, 21 places), from the round-30 W21 draft.
+ * 64 diff (build/codex/wave10/p10/check.py, level 01, the file's own line "-O2 -G8 -fopt-stack
+ * -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2") with the divs_nops row `func_L01_00457F20 2` injected
+ * (--divs 2; the draft measures 84 with it, 86 without). NEEDS divs row 'func_L01_00457F20 2'.
+ * Changed against the draft: the second half's `var_s7 = 1` sits right before its func_003D3CB0 call, as
+ * retail's `addiu $s7, $zero, 1` (this removes the one-word shift over the second half). Left: arg3 and var_s7
+ * take s7/s6 where retail has s6/s7 (allocator priority; setting var_s7 earlier fixes the registers but
+ * misplaces the addiu), the &sp20/&sp30 spill slots 0x98/0x9c swapped, `sltu $s0, $zero, $s5` for retail's
+ * `addiu $s0, $zero, 1` in both halves, and the last block's lq / div.s order. */
 #include "common.h"
 #include "vu0.h"
 
@@ -279,7 +269,6 @@ block_45:
                     }
                 }
             }
-            var_s7 = 1;
             temp_f21_2 = -(var_f29 * 0.017453292f);
             temp_f0_8 = func_0038D098(func_0038DAB8(temp_f21_2, temp_f22)) * var_f23;
             sp20.x = temp_f0_8;
@@ -297,6 +286,7 @@ block_45:
             if (sp20.z < 0.0f) {
                 sp20.z = 0.5f;
             }
+            var_s7 = 1;
             if (func_003D3CB0(&sp, &sp20, 0x10, arg0, 0) == 0) {
                 var_s7 = 0;
                 var_s0_4 = 0;
