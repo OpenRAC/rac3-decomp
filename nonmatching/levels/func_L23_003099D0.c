@@ -1,27 +1,48 @@
-/* Wave 13 (c44, 2026-11-28) replaces the earlier draft of this function (Regional matching study (2026-11-24)). */
-/* Wave 13c (worker c44): the line this function needs is the file's line + -mvu0-use-vf0-vf2 @ps2as
- * ("-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"): under it this draft is 322 words
- * (aligned 127 of 842 retail words differ); under the file's own line it does not compile (vu0.h's "j"
- * helpers) and r26's plain-C rewrite is 733. Cut: 0x003099D0-0x0030A6F8 (8-aligned start, last function of
- * L23_003098F8.c); the whole file cannot take the line (func_L23_003098F8 42 diff, func_L23_003099A8 10
- * diff with it). Still blocked as the study says: retail stores one vadd result twice (sqc2 0x90/0xA0 at
- * 0x24C/0x254 and 0x10($s4)/0xA0 at 0x7F0/0x80C, the second in a bc1t delay slot), which needs a vu0.h
- * helper that hands back the VU0 result (maintainer decision); the current helpers cost an extra lqc2.
- */
-/* Unlinked regional matching draft. PAL: 337 to 322 words with diagnostic vf2 and Ps2EeAs; VU add/store sequence and scheduling remain. */
+/* func_L23_003099D0, near miss (k8 split task, 2026-11-28): 104 words differ, 59 once the self/counter
+ * ($s4/$s5) and &vA0/&vB0 ($s7/$fp) swaps are discounted. Written as its own file, the cut it needs:
+ * src/levels/23_holostar_studios_clank/L23_003099D0.c (0x003099D0-0x0030A6F8, the last function of
+ * L23_003098F8.c) with the line "-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"
+ * (the whole file cannot take it: func_L23_003098F8 42 diff, func_L23_003099A8 10 diff under it).
+ * From wave 13c's 322: the vadd stored twice is vec_add_ab_q/vec_add_ba_q below (the sum handed back
+ * and stored again by the compiler); D_L23_001D6170..6178 are one small-data struct (globals.md "Small
+ * data at an offset": its +4/+8 fields stay out of delay slots, as retail's); func_L23_004450E0 takes
+ * ints (no second andi); the colour is (r << 16) | (0x7F000000 | (g << 8)) | lo through a local; the min
+ * is a ternary in the call; state 1 addresses self + 0x10 directly instead of through a pos local.
+ * Left: register allocation only, at close priorities (tools/regalloc.py): self (refs 27, live 472,
+ * 0.229) loses $s4 to the k loop's hoisted &vA0 (refs 7, live 60, 0.233), and slot (refs 7, live 198,
+ * 0.071) loses $s1 to state 1's self + 0x10 (refs 6, live 122, 0.098), which also moves r/g/n and the
+ * k counter in the x40 branch (0xA00-0xAA8) and the scheduling there. Tried without effect: a do-while
+ * or block-scoped k, &v->vel for v, other spellings of the vadd's pointers; sharing one counter between
+ * the loops is worse (142, 178). */
 #include "common.h"
 
-/* PAL near miss: 322 differing words (prior draft: 337), with diagnostic
- * -mvu0-use-vf0-vf2 and @ps2as. The owning file flags are unchanged.
- * Legal C only: the hero struct (structs/hero.h, D_001A4BE0) for the lui %hi(D_1A4BE0) + 0x25C0/0x25E4 reads, .extern size hints, and the include/vu0.h helpers; no hardcoded addresses or new inline asm.
- * Blocker: retail does one vadd and stores the result twice (sqc2 at 0x309C18/0x309C20 and 0x30A1BC/0x30A1D8, the second in a bc1t delay slot). No vu0.h helper or pair of helpers does that, so each site costs an extra lqc2 and the second store moves. An exact match needs a two-destination helper in include/vu0.h (a maintainer decision). With raw multi-statement vu0 asm in that spot (not allowed) the best was 717 of 842 aligned, so even that does not match yet.
- * Found on the way: the mixed $gp/lui access of D_001D6160 and D_001DEC40 needs no alias (ps2as gives a load/store in a branch delay slot the $gp form); constants 0.039473683f, 0.27999998f, 0.0024000001f, 0.020000001f, +-0.120000005f and 315000.0f (not 313000); slot = (owner == hero_moby) ? &D_L23_001DC5F4 : &D_L23_001DC5F8.
- * P05: a typed local position pointer is used for state 1's repeated accesses.
- * The two-destination VU0 residual remains.
- * Earlier register-allocation study: with the loop-1 colour locals inside loop 1, one counter per loop, and a `pos` local scoped to state 1's body only, the prologue matches retail (slot $17, v $19, self $20, frame 0x140).
- * Left besides the blocker: D_L23_001D6174/6178 accesses land in delay slots where retail has nop (0x434, 0x488; the declarations in L23_00309798.c look right); sparkle block andi order (0x5A8); min block $f0->$f12 move (0x660); vf1/vf2 order in state 1's vadd (0x7F4); x40 branch rand scheduling (0xA2C-0xA98). */
 #include "vu0.h"
 #include "structs/hero.h"
+/* vec_add_ab/vec_add_ba that also return the sum in its VU0 register, so that the caller stores it a
+ * second time with a plain vu0_q assignment, which the compiler emits as its own sqc2 (and may put in
+ * a delay slot, as retail's 0x30A1DC bc1t slot has it). The same helper is file-local in
+ * L24_0034ED28.c (vadd1_ab/ba_34ED28) and L24_0034E6F8.c (vaddto_q_34E6F8); it belongs in
+ * include/vu0.h once this function lands. */
+static __inline__ vu0_q vec_add_ab_q(void *d, void *a, void *b) {
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)b));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
+    return qr;
+}
+static __inline__ vu0_q vec_add_ba_q(void *d, void *a, void *b) {
+    vu0_q qa, qb, qr;
+    __asm__("lqc2 %0, %1" : "=j"(qb) : "m"(*(vu0_v4 *)b));
+    __asm__("lqc2 %0, %1" : "=j"(qa) : "m"(*(vu0_v4 *)a));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(qr) : "j"(qa), "j"(qb));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)d) : "j"(qr));
+    return qr;
+}
+typedef int u128_t __attribute__((mode(TI)));
+extern s32 D_L23_001DC5F4;
+extern s32 D_L23_001DC5F8;
+extern void func_003C2880(s32);
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V4_99D0;
 typedef struct {
     V4_99D0 vel;
@@ -43,9 +64,8 @@ extern struct Hero D_001A4BE0;
 extern s32 D_L23_001DC5F0;
 extern f32 D_L23_001DC5EC;
 extern u8 D_L23_001D6160;
-extern u8 D_L23_001D6170;
-extern s32 D_L23_001D6174;
-extern long D_L23_001D6178;
+typedef struct { u8 on; u8 pad1[3]; s32 color; long x8; } S6170_99D0;
+extern S6170_99D0 D_L23_001D6170 __attribute__((section(".sdata")));
 extern s32 D_L23_001DEC40;
 extern Fx_99D0 D_L23_001EFE00[];
 extern u8 D_L23_001EC800[];
@@ -57,8 +77,6 @@ __asm__(".extern D_L23_001DC5F4, 4");
 __asm__(".extern D_L23_001DC5F8, 4");
 __asm__(".extern D_L23_001D6160, 16");
 __asm__(".extern D_L23_001D6170, 16");
-__asm__(".extern D_L23_001D6174, 16");
-__asm__(".extern D_L23_001D6178, 16");
 __asm__(".extern D_L23_001DEC40, 16");
 extern f32 func_003824E0(f32, f32);
 extern s32 func_00382498(s32, s32);
@@ -83,7 +101,7 @@ extern void func_0038CE20(void *, void *, f32);
 extern void func_003C4C18(void *, f32);
 extern s32 func_00382468(s32);
 extern u8 *func_L01_00465738(void *, void *, s32, s32, s32, s32, s32, s32, s32, f32);
-extern void func_L23_004450E0(void *, u8, u8, u8, s32, f32, f32);
+extern void func_L23_004450E0(void *, s32, s32, s32, s32, f32, f32);
 
 void func_L23_003099D0(u8 *self) {
     Vars_99D0 *v = *(Vars_99D0 **)(self + 0x68);
@@ -99,8 +117,8 @@ void func_L23_003099D0(u8 *self) {
                 goto off;
             }
             if (v->x10 == 0 && slot == &D_L23_001DC5F8) {
-                D_L23_001D6170 = 1;
-                D_L23_001D6174 = 0xFFFF00;
+                D_L23_001D6170.on = 1;
+                D_L23_001D6170.color = 0xFFFF00;
             }
             {
             s32 n = v->x10 + 1;
@@ -136,9 +154,8 @@ void func_L23_003099D0(u8 *self) {
                     g = 0xFF;
                 }
                 func_0038CF68(&v90, &v90, func_003824E0(15.0f, 30.0f));
-                vec_add_ab(&v90, &v90, (V4_99D0 *)(self + 0x10));
-                *(u128_t *)&vA0 = *(u128_t *)&v90;
-                func_L23_00449BD8(((r << 16) | ((g << 8) | 0x7F000000)) | lo, &v90, self);
+                *(vu0_q *)&vA0 = vec_add_ab_q(&v90, &v90, (V4_99D0 *)(self + 0x10));
+                { u32 c = 0x7F000000 | (g << 8); func_L23_00449BD8((r << 16) | c | lo, &v90, self); }
             }
             *(u128_t *)&v90 = *(u128_t *)(self + 0x10);
             for (j = 3; j >= 0; j--) {
@@ -161,18 +178,18 @@ void func_L23_003099D0(u8 *self) {
             }
             if (v->x10 < 50) {
                 s32 n, r;
-                n = D_L23_001D6174;
+                n = D_L23_001D6170.color;
                 r = (u32)n >> 24;
-                if (D_L23_001D6178 == 0 && r == 0xFF) {
+                if (D_L23_001D6170.x8 == 0 && r == 0xFF) {
                     r = 0x25;
                 }
                 if (r++ >= 0x24) {
                     r = 0x25;
                 }
-                D_L23_001D6178 = 0x1F00000042L;
-                D_L23_001D6174 = (n & 0xFFFF00) | (r << 24);
+                D_L23_001D6170.x8 = 0x1F00000042L;
+                D_L23_001D6170.color = (n & 0xFFFF00) | (r << 24);
             } else {
-                D_L23_001D6174 = D_L23_001D6174 | 0xFF000000;
+                D_L23_001D6170.color = D_L23_001D6170.color | 0xFF000000;
             }
             if (v->x2C != -1) {
                 s32 n, r, g;
@@ -203,10 +220,7 @@ void func_L23_003099D0(u8 *self) {
                                                          D_L23_001EFE00[v->x2C].pos.w * 2 / 7.0f);
                 f22 = D_L23_001EFE00[v->x2C].x4 * 0.8f;
                 f20 = D_L23_001EFE00[v->x2C].x0;
-                if (f20 < f22) {
-                    f22 = f20;
-                }
-                D_L23_001EFE00[v->x2C].x4 = func_003824E0(f22, f20);
+                D_L23_001EFE00[v->x2C].x4 = func_003824E0(f20 < f22 ? f20 : f22, f20);
             } else if ((D_L23_001DEC40 & 3) == 0) {
                 v->x2C = func_L01_00424B88((V4_99D0 *)(self + 0x10), 0, 0.0f, 0.0f);
             }
@@ -214,7 +228,7 @@ void func_L23_003099D0(u8 *self) {
         }
     off:
         D_L23_001D6160 = 0;
-        D_L23_001D6170 = 0;
+        D_L23_001D6170.on = 0;
         v->x10 = 0;
         v->vel.x = func_0038D098(D_001A4BE0.rot.z) * 1.0000001f;
         v->vel.y = func_0038D0B0(D_001A4BE0.rot.z) * 1.0000001f;
@@ -227,7 +241,6 @@ void func_L23_003099D0(u8 *self) {
         f32 f21, f22, sz;
         s32 r, g, b, n;
         Fx_99D0 *e;
-        V4_99D0 *pos = (V4_99D0 *)(self + 0x10);
         f21 = v->x14 * 1.0000001f * 0.5f + 1.3f;
         v->x14 = v->x14 + 1;
         f22 = f21 + 3.5f;
@@ -240,10 +253,9 @@ void func_L23_003099D0(u8 *self) {
             }
         }
         if (v->x14 < 43 && D_001A4BE0.body_kind == 2) {
-            vec_add_ba(pos, pos, &v->vel);
-            vec_copy(&vA0, pos);
-            if (!(pos->x < 2.0f) && !(1021.0f < pos->x) && !(pos->y < 2.0f) && !(1021.0f < pos->y) &&
-                !(pos->z < 2.0f) && !(1021.0f < pos->z)) {
+            *(vu0_q *)&vA0 = vec_add_ba_q(((V4_99D0 *)(self + 0x10)), ((V4_99D0 *)(self + 0x10)), &v->vel);
+            if (!(((V4_99D0 *)(self + 0x10))->x < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->x) && !(((V4_99D0 *)(self + 0x10))->y < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->y) &&
+                !(((V4_99D0 *)(self + 0x10))->z < 2.0f) && !(1021.0f < ((V4_99D0 *)(self + 0x10))->z)) {
                 goto ok;
             }
         }
@@ -256,7 +268,7 @@ void func_L23_003099D0(u8 *self) {
         goto end;
     ok:
                 if (v->x40) {
-                    r = func_003D4D00(pos, 0x10, D_001A4BE0.hero_moby, 0, f21);
+                    r = func_003D4D00(((V4_99D0 *)(self + 0x10)), 0x10, D_001A4BE0.hero_moby, 0, f21);
                     *(u128_t *)&vA0 = *(u128_t *)(self + 0x10);
                     func_L01_00447718(self, &vA0, D_L23_001EC800, r, 0, 0x10B0000, 2, 1, -1, D_L23_001DC5EC, 1.0f, 1.0f);
                     if (r != 0 && (D_L23_001DEC40 & 1)) {
@@ -278,7 +290,7 @@ void func_L23_003099D0(u8 *self) {
                         func_003C4C18(&vA0, 0.3f);
                         vA0.z += 0.120000005f;
                         g = func_00382468(2) ? 0x7FFF7F40 : 0x7FFFDF80;
-                        e = (Fx_99D0 *)func_L01_00465738(pos, &vA0, g, 0xFF0000, func_00382498(8, 17), 0, -1, -1, 0, 315000.0f);
+                        e = (Fx_99D0 *)func_L01_00465738(((V4_99D0 *)(self + 0x10)), &vA0, g, 0xFF0000, func_00382498(8, 17), 0, -1, -1, 0, 315000.0f);
                         if (e) {
                             *(f32 *)((u8 *)e + 0x2C) = 0.0024000001f;
                             ((u8 *)e)[2] = *D_L23_0021ED58[53];
@@ -286,7 +298,7 @@ void func_L23_003099D0(u8 *self) {
                     }
                     goto clear;
                 }
-                r = func_003D4D00(pos, 0x10, *(void **)(self + 0xB8), 0, f21);
+                r = func_003D4D00(((V4_99D0 *)(self + 0x10)), 0x10, *(void **)(self + 0xB8), 0, f21);
                 *(u128_t *)&vA0 = *(u128_t *)(self + 0x10);
                 func_L01_00447718(self, &vA0, D_L23_001EC800, r, 0, 0x10B0007, 2, 1, -1, D_L23_001DC5EC, 1.0f, 1.0f);
                 if (r != 0 && (D_L23_001DEC40 & 1)) {
