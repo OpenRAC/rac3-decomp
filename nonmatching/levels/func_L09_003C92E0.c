@@ -1,3 +1,18 @@
+/* Wave 13 (r27, 2026-11-28) replaces the earlier draft of this function (Opus draft (2026-11-14): about 208 aligned rows left; retail keeps yaw in $fp). */
+#include "common.h"
+
+/* func_L09_003C92E0 (wave 13 r27): the Opus draft of 2026-11-14 made to compile in its file. Its own
+ * declarations conflicted with the file's (D_L09_001E009C is u8 *, D_L09_001DE8D0 vu0_v4[] .sdata,
+ * func_003C4138 returns f32, func_0038CE20/func_003C4B50/func_L01_00446A70 take void *, func_L09_003C8740
+ * is defined earlier with its own signature): those are now the file's exact declarations, with casts at
+ * the uses. NOT LANDABLE AS IS: retail tests func_0038CB00's return (beqz v0 at +0x32C) but the file
+ * declares it void (two earlier blocks); the call goes through a cast here only so the draft compiles. The
+ * correction is the file's declaration: s32 func_0038CB00(void *), then call it directly. Under the file's
+ * line: 1158 naive diff (1260 of retail's 1266 instructions), 254 aligned differing lines; the frame is
+ * 0x10 smaller (retail keeps one more stack word, sw zero 0xD8 at entry) and retail keeps the yaw in fp
+ * (draft row). */
+
+/* localdecomp:start func_L09_003C92E0 */
 #include "vu0.h"
 
 extern u8 D_001A4BE0[];
@@ -14,14 +29,11 @@ typedef struct Moby {
     u8 padA0[0x100 - 0xA0];
 } Moby;
 
-extern Moby *D_L09_001E009C;
 extern u8 *D_001D52FC;
 extern s32 D_001D545C;
 extern u8 *D_L09_001ED940[];
 extern vu0_v4 D_L09_001D9B60;
-__asm__(".extern D_L09_001DE8D0, 8");
 __asm__(".extern D_L09_001DE950, 8");
-extern f32 D_L09_001DE8D0[] __attribute__((section(".sdata")));
 extern f32 D_L09_001DE950[] __attribute__((section(".sdata")));
 
 extern void func_003C7C38();
@@ -30,23 +42,22 @@ extern float func_0038DB00(float, float);
 extern float func_0038DAB8(float, float);
 extern float func_0038DBA0(float, float);
 extern float func_0038D160(float, float);
-extern s32 func_0038CB00(u8 *);
 extern void func_L01_004482A0(u8 *, u8 *, float, float, float, float);
 extern float func_L01_004451A8(float);
 extern float func_003C4088(float, float, float);
-extern void func_003C4138(float *, float, float);
+extern f32 func_003C4138(f32 *, f32, f32);
 extern void func_L01_00448728(u8 *, float *, s32, float, float, float, float);
 extern void func_00382760(void *, float, float, float);
-extern void func_0038CE20(vu0_v4 *, vu0_v4 *, float);
+extern void func_0038CE20(void *, void *, f32);
 extern void func_L01_0040E6B8(u8 *, u8 *, float);
 extern void func_L01_0040E728(u8 *, u8 *, float);
 extern s32 func_003D4D00(u8 *, s32, u8 *, s32, float);
-extern s32 func_003C4B50(u8 *);
+extern s32 func_003C4B50(void *);
 extern float func_L01_0040E548(u8 *, u8 *);
 extern float func_0038D098(float);
 extern float func_0038D0B0(float);
-extern void func_L01_00446A70(u8 *, u8 *, s32, u8 *, float *, float);
-extern s32 func_L09_003C8740(u8 *, u8 *, u8 *, vu0_v4 *, s32 *, s32, vu0_v4 *, float, float, float);
+extern void func_L01_00446A70(void *, void *, s32, void *, void *, f32);
+extern s32 func_L09_003C8740(u8 *m, vu0_v4 *result, vu0_v4 *velocity, vu0_v4 *hit, s32 *unused, s32 side, vu0_v4 *origin, f32 speed, f32 unusedf, f32 radius);
 extern void func_L09_003C8158(u8 *);
 extern void func_0038CE90(vu0_v4 *, vu0_v4 *, vu0_v4 *);
 
@@ -113,12 +124,12 @@ void func_L09_003C92E0(u8 *moby) {
     turn = (float *)(p + 0x6F8);
     for (i = 0; i < 7; i++) {
         if (list[i] != -1) {
-            m = &D_L09_001E009C[list[i]];
+            m = &((Moby *)D_L09_001E009C)[list[i]];
             m->f98 = *(s32 *)(m->f24 + 0x10);
         }
     }
     if (*(s32 *)(p + 0x7B0) != -1) {
-        mp = (Moby *)D_L09_001E009C[*(s32 *)(p + 0x7B0)].f68;
+        mp = (Moby *)((Moby *)D_L09_001E009C)[*(s32 *)(p + 0x7B0)].f68;
         q = mp->f54;
         if (q != 0) {
             q->f98 = *(s32 *)(q->f24 + 0x10);
@@ -161,7 +172,7 @@ void func_L09_003C92E0(u8 *moby) {
             drift = *(float *)(prm + 0x34);
             if ((D_001D545C == 0x15CC || D_001D545C == 0xBC2 || D_001D545C == 0x18) &&
                 ((*(s32 *)(hero + 0x1A0) & 4) || (*(u16 *)(p + 0x710) & 2))) {
-                if (func_0038CB00(p + 0x71E) != 0) {
+                if ((*(s32 (*)(void *))func_0038CB00)(p + 0x71E) != 0) {
                     *(u16 *)(p + 0x710) &= ~2;
                 }
                 grip = *(float *)(prm + 0x10);
@@ -399,7 +410,7 @@ void func_L09_003C92E0(u8 *moby) {
         *(float *)(p + 0x6DC) = *(float *)(moby + 0x18);
     }
     for (i = 0; i < 4; i++) {
-        vec_sub_ba(&tmp, &D_L09_001DE8D0[i * 4], D_L09_001DE950);
+        vec_sub_ba(&tmp, &((f32 *)D_L09_001DE8D0)[i * 4], D_L09_001DE950);
         func_0038CE90(&delta, (vu0_v4 *)(p + 0x660) + i, &tmp);
         *(float *)(p + 0x650) = func_0038DAB8(*(float *)(p + 0x650), delta.x);
         *(float *)(p + 0x654) = func_0038DAB8(*(float *)(p + 0x654), delta.y);
@@ -457,7 +468,7 @@ void func_L09_003C92E0(u8 *moby) {
         *(float *)(gs + 0xD8) += 0.5f;
     }
     if (*(s32 *)(p + 0x7B0) != -1) {
-        q = ((Moby *)D_L09_001E009C[*(s32 *)(p + 0x7B0)].f68)->f54;
+        q = ((Moby *)((Moby *)D_L09_001E009C)[*(s32 *)(p + 0x7B0)].f68)->f54;
         if (q != 0) {
             q->f98 = 0;
         }
@@ -469,7 +480,8 @@ void func_L09_003C92E0(u8 *moby) {
     }
     for (i = 0; i < 7; i++) {
         if (list[i] != -1) {
-            D_L09_001E009C[list[i]].f98 = 0;
+            ((Moby *)D_L09_001E009C)[list[i]].f98 = 0;
         }
     }
 }
+/* localdecomp:end func_L09_003C92E0 */

@@ -1,3 +1,14 @@
+/* Wave 13 (r28, 2026-11-28) replaces the earlier draft of this function (k4 Sonnet first pass). */
+/* PAL near miss (wave 13 r28, 2026-11-28): 506 diff under the file's line (the k4 draft below was 597). Changed: the
+ * D_001A5810 test is a byte-offset access ((D_001A5810 + p->idx)[0xA4]: retail adds idx unscaled, the draft's 0xA5-byte
+ * struct gave a mult), and obj + 0x5C8 is written in both calls of the first if/else (retail computes it in the bnez
+ * delay slot instead of keeping it in a saved register). Still different: retail folds 0xA4 into the lbu, not into
+ * the symbol (3 wordings tried, all fold); register allocation (p in  with the loop-1 next value in , ours
+ * the reverse) and the spill slots (&D_L39_0024BD48[pl] 0x28, pl*4 0x70, &c0/&c1/&c2 0x54/0x58/0x60; ours
+ * 0x2C/0x34/0x5C..0x64); later retail keeps obj + 0x5C8 / 0x5F8 in / across calls. Contract: this block comes
+ * before func_L39_006068A0's, which declares func_L39_0061BF38 as returning P_006068A0 * and D_L39_0024BD48 as
+ * R_006068A0 **[]; the u8 * / R_00605EF8 forms here conflict with those, so an exact version needs those typedefs
+ * (or the declarations) above this function. */
 /*
  * func_L39_00605EF8 -- k4 Sonnet first pass, 2472 B (618 instructions), shared at 15 places (39:00605EF8 ... 53:004DE7F8).
  * Result: NEAR, far. `tools/check.py scratch/f.c func_L39_00605EF8` (file flags `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`):
@@ -30,15 +41,15 @@
  */
 #include "common.h"
 
+/* localdecomp:start func_L39_00605EF8 */
 typedef struct { s32 w0; u8 pad4[0x14]; s32 id; u8 pad1C[0]; } R_00605EF8;
 typedef struct { u8 pad[0x2544]; s32 idx; } P_00605EF8;
 typedef struct { u8 pad0[8]; u8 b8; u8 pad9[0x15]; s16 h1E; u8 pad20[1]; s8 b21; u8 pad22[0x5E]; } E_00605EF8;
 typedef union { u8 b[8]; u32 w[2]; u16 h[4]; } Buf_00605EF8;
-typedef struct { u8 pad[0xA4]; u8 bA4; } G_00605EF8;
 extern u8 *func_L39_0061BF38(s32);
 extern R_00605EF8 **D_L39_0024BD48[] __attribute__((section(".sdata")));
 extern E_00605EF8 D_L39_0049C890[];
-extern G_00605EF8 D_001A5810[];
+extern u8 D_001A5810[];
 extern u8 D_L39_0049C340[];
 extern u8 D_L39_00483A00[];
 extern u8 *D_L39_00242A50;
@@ -127,12 +138,11 @@ void func_L39_00605EF8(u8 *obj, s32 pl) {
 
     p = func_L39_0061BF38(pl);
     if (D_L39_0024BD48[pl] != 0 && p != 0) {
-        a = obj + 0x5C8;
-        if (D_001A5810[((P_00605EF8 *)p)->idx].bA4 == 0) {
-            func_003AAF00(a, 1);
+        if ((D_001A5810 + ((P_00605EF8 *)p)->idx)[0xA4] == 0) {
+            func_003AAF00(obj + 0x5C8, 1);
             func_003AAF00(obj + 0x5F8, 0);
         } else {
-            func_003AAF00(a, 0);
+            func_003AAF00(obj + 0x5C8, 0);
             func_003AAF00(obj + 0x5F8, 1);
         }
         for (i = 0; i < 8; i++) {
@@ -280,3 +290,4 @@ void func_L39_00605EF8(u8 *obj, s32 pl) {
         }
     }
 }
+/* localdecomp:end func_L39_00605EF8 */

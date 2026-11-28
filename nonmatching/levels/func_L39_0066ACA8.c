@@ -1,5 +1,7 @@
-/* PAL near miss (k6 Opus, 2026-11-26): 39 differences (tools/check.py, level 39), from 52: the colour table as a 3-byte RGB struct array declared with a small size, so each byte gets its own la as in retail. Left: register allocation (retail r/g/b in a1/a2/a3, the object in t0, the 0x2FC halfword loaded with lhu in each branch and tested with sll 16). */
+/* Wave 13 (r30, 2026-11-28) replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (wave 13 r30, 2026-11-28): 36 differences (wave10/p10/check.py, level 39), from the k6 draft's 39: the colour written as r | (g << 8) | (b << 16), which gives r retail's a1. Tried without gain: s16 local / inline accessor for the final h2FC test, switch on idx, u8/u32 colour locals, declaration and table-read orders, branch polarities, temporaries for the colour. Left: retail tests the reloaded 0x2FC halfword with sll 16 (the PRE copy's upper bits unknown), here gcse inserts plain loads so combine drops the shift; g/b in v0/v1 (retail a2/a3), the object in a2 (retail t0), the tail's shift order. */
 #include "common.h"
+
 /* localdecomp:start func_L39_0066ACA8 */
 typedef struct { u8 r, g, b; } RGB_0066ACA8;
 typedef struct {
@@ -31,8 +33,8 @@ void func_L39_0066ACA8(S_0066ACA8 *self, s32 idx) {
         g = D_L39_002462A8[idx].g;
         b = D_L39_002462A8[idx].b;
     }
-    if ((u16)self->h2FC == 0) {
-        *(s32 *)(self->w2D0 + 0x78) = (b << 16) | (g << 8) | r;
+    if (self->h2FC == 0) {
+        *(s32 *)(self->w2D0 + 0x78) = r | (g << 8) | (b << 16);
     } else {
         func_L39_005AC528(self->w2D0);
     }

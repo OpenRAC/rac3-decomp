@@ -1,17 +1,14 @@
-/* k8 agent 3 (2026-11-26): 2 aligned differences now (tools/check.py --as ps2as, level 40). A permuter run found
- * the lever for isTen: declared `short` (it was int), gcc keeps it as retail's `move $s5,$s6; movn $s5,$zero,$v0`
- * and the register swap goes away. Left: the argument order of func_L01_00447490(m, mask, 0): retail sets $a2 = 0
- * before the movn and puts `move $a0,$s2` in the jal's delay slot; ours sets $a0 first and puts `move $a2,$zero`
- * in the slot. Same 2 with: old = 0.0f before/inside/after the mask block, one = 1 first, the mask as a ternary or
- * if/else, the third argument as isTen = 0 or result, a local copy of m, mode as unsigned (u8: 3). */
-/* func_L40_0048C560 (1536 B, 14 places): PAL near miss, k6 agent 4 (2026-11-26), from the Codex wave 7 draft.
- * check.py --as ps2as at level 40: 18 aligned diffs, 383 of 384 words (the file holds only this function, so
- * its line can take @ps2as: SN's assembler builds the 0x45AFDF66 constant inline as retail, the default
- * assembler uses a .lit4 load). Levers: the integer abs as abs_asm, D_L40_0024112C a scalar (assembler-expanded
- * lui/lw, the tick load first), h read before extra, `c->damage *= a->fA8`, the isTen test as a ternary.
- * Left: retail sets `isTen = one` (move $s5,$s6) and clears it with `movn $s5,$zero,$v0`; written that way
- * gcc folds it to `sltiu` (the ternary gives movz with the registers of isTen and one swapped, one word
- * short), and the scheduling of the func_L01_00447490 argument moves follows. */
+/* Wave 13 (c44, 2026-11-28) replaces the earlier draft of this function (Codex wave 7 draft, k6 agent 4, k8 agent 3 (2026-11-26)). */
+/* PAL near miss (wave 13c, worker c44): func_L40_0048C560, the only function of src/levels/shared/L40_0048C560.c.
+ * Line: the file's line + @ps2as ("-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as", as L40_00489BC0.c /
+ * L40_0048FDE8.c): SN's Ps2EeAs builds 5627.9248f inline and adds no mtc1 hazard nop, as retail. 2 words differ at
+ * all 14 places (levels 40-53): retail sets $a2 = 0 before the movn of the mask and puts move $a0,$s2 in the
+ * func_L01_00447490 jal's delay slot; ours sets $a0 first (sched picks the a0 move: one more dependent, lower luid).
+ * Change from the k8 draft: the moby-array base is level data D_L40_0024845C ($gp+0x49C in levels 40/44/50,
+ * $gp+0x69C in 41-43/45-49/51-53), not D_001DCD4C_sda (which was a third diff in 11 levels).
+ * Tried without change: a zero local for the third argument (before/after the mask), a ternary argument,
+ * short/uchar/pointer/unprototyped third parameter, unsigned mask, one = 1 / old = 0.0f moved, mask if/else.
+ */
 #include "common.h"
 #include "vu0.h"
 /* localdecomp:start func_L40_0048C560 */
@@ -37,7 +34,7 @@ typedef struct C_0048C560 {
  char p29[3]; float damage; int flags;
 } C_0048C560;
 typedef unsigned int Q_0048C560 __attribute__((mode(TI)));
-extern M_0048C560 *D_001DCD4C_sda;
+extern M_0048C560 *D_L40_0024845C;
 extern int D_L40_0024112C;
 extern int D_001D5A1C_sda;
 int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int force)
@@ -84,7 +81,7 @@ int func_L40_0048C560(M_0048C560 *m, A_0048C560 *a, int special, int mode, int f
  if(damage==0.0f)return 0;
  func_L01_00459BE8(m,h->kind,damage);
  a->owner=-1;
- if(c && c->owner)a->owner=c->owner-D_001DCD4C_sda;
+ if(c && c->owner)a->owner=c->owner-D_L40_0024845C;
  {
  float t=h->threshold*a->f58;
  int n=300;

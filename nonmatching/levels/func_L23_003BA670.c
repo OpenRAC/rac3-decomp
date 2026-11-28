@@ -1,5 +1,17 @@
-/* PAL near miss (k6 Opus, 2026-11-26): 71 differences (47 aligned) (tools/check.py, level 23): func_L23_003B9B88's draft with case 0 calling func_L23_003BAEC8 (the two are the same code); match that one first and port it. */
+/* Wave 13 (r30, 2026-11-28) replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (wave 13 r30, 2026-11-28): 30 differences (wave10/p10/check.py, level 23, with the divs row
+ * 'func_L23_003BA670 0 2' injected: retail has no nop before the first div.s and two before the second), from the k6
+ * draft (71 without the row, 265 with it). Changes: case 2 adds the random value to the zeroed p0.y
+ * (p0.y += ..., x stays 0) and case 3 assigns it to p0.y (the draft set x and y = -x: two words too many per loop);
+ * 0.120000005f (retail 0x3DF5C290); case 1 reads the 0x34 flags before storing D_L23_001DE134 and writes them
+ * after; case 3's end reads the D_L23_001D6764 table pointer before its two stores.
+ * Left: saved-register roles inside the particle loops (retail: case 2 &p0 = s4, 6 = s5; case 3 &p0 = s6, 6 = s5,
+ * &vel = s4; here p0's address is one pseudo shared by both cases), the (x * 5 + 2) temporaries in v1 instead of
+ * s0, the order of self->0x24 / self->0x2C loads before case 3's loop, two sqc2 stores after case 3's vadd and
+ * copy, and two argument moves before func_L23_00453470. The draft's two names for D_L23_001DEC40 (one with a
+ * $gp size hint) are kept as the draft has them. */
 #include "common.h"
+
 /* localdecomp:start func_L23_003BA670 */
 #include "vu0.h"
 typedef struct { u8 pad0[0x28]; u8 *x28; } Fx_003BA670;
@@ -65,10 +77,13 @@ void func_L23_003BA670(u8 *self)
         if (t != 0) {
             if (D_L23_001DEC40_003BA670 >= D_L23_001DE134 && *(f32 *)(t + 0x2C) > 3.0f) {
                 func_003A4FF8(D_L23_001FB440[D_L23_001FDA3C[0]]->x28 + 0x20, 0x10, (s32)self, 0, 0x400);
-                *(u16 *)(self + 0x34) &= ~0x10;
-                D_L23_001DE134 = D_L23_001DEC40 + 0x19;
+                {
+                    u16 fl = *(u16 *)(self + 0x34);
+                    D_L23_001DE134 = D_L23_001DEC40 + 0x19;
+                    *(u16 *)(self + 0x34) = fl & ~0x10;
+                }
                 vec_sub_ba(v + 0x10, self + 0x10, D_001A4BE0_003BA670 + 0x80);
-                func_0038CF68(v + 0x10, v + 0x10, 0.12000001f);
+                func_0038CF68(v + 0x10, v + 0x10, 0.120000005f);
                 *(f32 *)(v + 0x18) = -0.080000006f;
                 func_L01_004450F0(self, 2, -1);
             }
@@ -89,8 +104,7 @@ void func_L23_003BA670(u8 *self)
         r2 = *(f32 *)(self + 0x2C) * 3.5f / *(f32 *)(*(u8 **)(self + 0x24) + 0x24);
         for (i2 = 0; i2 < 8; i2++) {
             qzero(&p0);
-            p0.x = func_003824E0(-r2, r2);
-            p0.y = -p0.x;
+            p0.y += func_003824E0(-r2, r2);
             func_0038D000(&p0, &p0, self + 0xC0);
             vec_add_ab(&p0, &p0, self + 0x10);
             qzero(&vel);
@@ -123,8 +137,7 @@ void func_L23_003BA670(u8 *self)
         r3 = *(f32 *)(self + 0x2C) * 3.5f / *(f32 *)(*(u8 **)(self + 0x24) + 0x24);
         for (i3 = 0; i3 < 8; i3++) {
             qzero(&p0);
-            p0.x = func_003824E0(-r3, r3);
-            p0.y = -p0.x;
+            p0.y = func_003824E0(-r3, r3);
             p0.x += func_L01_00443A18(0.0f, 2.0f);
             p0.y += func_L01_00443A18(0.0f, 2.0f);
             func_0038D000(&p0, &p0, self + 0xC0);
@@ -158,10 +171,11 @@ void func_L23_003BA670(u8 *self)
         if (*(u16 *)(self + 0x96) >= 0x22) {
             u16 *p;
             u8 *e;
+            u16 **list = D_L23_001D6764;
 
             *(s32 *)(self + 0x98) = 0;
             *(u16 *)(self + 0x34) |= 0x43;
-            p = D_L23_001D6764[*(s32 *)v];
+            p = list[*(s32 *)v];
             while (p != 0 && ((s16)p[-1] >= 0 || p == D_L23_001D6764[*(s32 *)v])) {
                 e = D_L23_001E0014 + ((*p & 0x7FFF) << 5);
                 if (e == 0)

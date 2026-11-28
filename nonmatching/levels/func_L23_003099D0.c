@@ -1,3 +1,13 @@
+/* Wave 13 (c44, 2026-11-28) replaces the earlier draft of this function (Regional matching study (2026-11-24)). */
+/* Wave 13c (worker c44): the line this function needs is the file's line + -mvu0-use-vf0-vf2 @ps2as
+ * ("-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"): under it this draft is 322 words
+ * (aligned 127 of 842 retail words differ); under the file's own line it does not compile (vu0.h's "j"
+ * helpers) and r26's plain-C rewrite is 733. Cut: 0x003099D0-0x0030A6F8 (8-aligned start, last function of
+ * L23_003098F8.c); the whole file cannot take the line (func_L23_003098F8 42 diff, func_L23_003099A8 10
+ * diff with it). Still blocked as the study says: retail stores one vadd result twice (sqc2 0x90/0xA0 at
+ * 0x24C/0x254 and 0x10($s4)/0xA0 at 0x7F0/0x80C, the second in a bc1t delay slot), which needs a vu0.h
+ * helper that hands back the VU0 result (maintainer decision); the current helpers cost an extra lqc2.
+ */
 /* Unlinked regional matching draft. PAL: 337 to 322 words with diagnostic vf2 and Ps2EeAs; VU add/store sequence and scheduling remain. */
 #include "common.h"
 

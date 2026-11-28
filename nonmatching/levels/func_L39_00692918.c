@@ -1,4 +1,5 @@
-/* PAL near miss (k6 Opus, 2026-11-26): 13 differences (tools/check.py, level 39, the file's flags). Written from its matched neighbour func_L39_00692C38 (same lobby list refresh with other offsets). Left: the prologue order (sd s1 / sd s0 and the constant 1 of the first test scheduled before lbu) and v0 for v1 in the second net->unk4EC copy; the state byte is read into i (retail keeps it in s1, which is also the loop counter). */
+/* Wave 13 (r21, 2026-11-28) replaces the earlier draft of this function (k6 Opus near miss (2026-11-26)). */
+/* PAL near miss (wave 13 r21, 2026-11-28): 11 differences (build/codex/wave10/p10/check.py, level 39, the file's flags), down from the k6 draft's 13. Changed against the draft: the state byte is tested directly (this->unk2AD = 1, as the matched sibling func_L39_00692C38 does; same code as the draft's i local), and one local id carries net->unk4EC through the second refresh block and the following compare/store (this->unk2A8 = id), which gives retail's v1 for that copy. Left: only the prologue schedule (retail: sd s2, sd s1, move s2, sd s3..ra, sd s0, lbu s1, li v0 1; ours: li 1 hoisted to the second slot, sd s0 second and sd s1 last). Block 0's insns, their order after sched1 and their dependencies are the same as in the sibling, whose retail schedules like ours; tried: state read into a local (also as the loop counter), state read before net, a flat && condition for the first block, a temporary for the first copy. */
 #include "common.h"
 /* localdecomp:start func_L39_00692918 */
 __asm__(".extern D_L39_0024D760, 16");
@@ -82,15 +83,15 @@ void func_L39_00692918(S_00692918 *this) {
     s32 i;
     s32 j;
     s32 old;
+    s32 id;
 
-    i = this->unk2AC;
-    if (i == 1) {
+    if (this->unk2AC == 1) {
         if (net->unk4E4 != 0) {
             return;
         }
         if (this->unk2AD == 0 && this->unk4F9 == 0 && this->unk745 == 0) {
             func_L39_006D2500(net, 0, 0);
-            this->unk2AD = i;
+            this->unk2AD = 1;
             this->unk2A8 = net->unk4EC;
             this->unk2AC = 0;
         }
@@ -111,17 +112,19 @@ void func_L39_00692918(S_00692918 *this) {
     this->unk2AD = 0;
     if (this->unk2AC == 1 && net->unk4E4 == 0) {
         func_L39_006D2500(net, 0, 0);
-        this->unk2A8 = net->unk4EC;
+        id = net->unk4EC;
+        this->unk2A8 = id;
         this->unk2AC = 0;
     }
     if (list == 0) {
         return;
     }
-    if (net->unk4EC == this->unk2A8) {
+    id = net->unk4EC;
+    if (id == this->unk2A8) {
         return;
     }
     cur = -1;
-    this->unk2A8 = net->unk4EC;
+    this->unk2A8 = id;
     count = list->count;
     this->unk2B0 = 0;
     sel = 0;

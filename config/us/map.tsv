@@ -18479,10 +18479,13 @@ func_L48_003E05D0	levels	func_L48_003E0368	48:003E0368	336	C	match	100.00	c2a19a
 func_0038D5F0	frontbin	func_00388EB8	00388EB8	80	near	near	90.00	602d9ab33d75
 func_0038D688	frontbin	func_00388F50	00388F50	64	near	near	87.50	433b0be2aca0
 func_0038DBA0	frontbin	func_00389468	00389468	56	near	near	28.57	ef49f5110136
+func_0038E7E8	frontbin	func_00389FB8	00389FB8	2192	near	near	17.88	2b3c2dadd34d
+func_0038F078	frontbin	func_0038A848	0038A848	2404	near	near	11.48	e6ed82a426df
 func_003914A0	frontbin	func_0038CC68	0038CC68	468	near	near	23.08	1252fef61818
 func_003935B0	frontbin	func_0038ED78	0038ED78	112	near	near	100.00	5441cab64f40
 func_00393690	frontbin	func_0038EE58	0038EE58	372	near	near	70.97	1fd5b4b7fb38
 func_00393B58	frontbin	func_0038F310	0038F310	140	near	near	45.71	a90b14672639
+func_00395478	frontbin	func_00390C18	00390C18	3528	near	near	12.47	baa794c9d218
 func_00396838	frontbin	-	-	300	near	none	0.00	6bbb22a673ac
 func_00397FE8	frontbin	-	-	1156	near	none	0.00	67ad7c4142cd
 func_003A4288	frontbin	-	-	3212	near	none	0.00	ac10d5decb72
@@ -18498,7 +18501,7 @@ func_00125A70	boot_elf	func_00125A70	00125A70	244	near	near	55.74	64c1bc98f659
 func_00125BE8	boot_elf	func_00125BE8	00125BE8	112	near	near	71.43	331ae403fa49
 func_0012A950	boot_elf	func_0012A950	0012A950	160	near	near	95.00	2063e8794ea8
 func_0012ADC8	boot_elf	func_0012ADC8	0012ADC8	84	near	near	100.00	6426bb313d03
-func_0012B300	boot_elf	func_0012B300	0012B300	744	near	near	2.69	4ddc7e9b5153
+func_0012B300	boot_elf	func_0012B300	0012B300	744	near	near	2.15	2e21429489e7
 func_0012F0B8	boot_elf	func_0012F0B8	0012F0B8	484	near	near	88.43	9e4a0858a9bf
 func_00135988	boot_elf	func_00135988	00135988	452	near	near	100.00	45bbda315ad8
 func_00135D50	boot_elf	func_00135D50	00135D50	120	near	near	100.00	4ce81f872544

@@ -1,18 +1,14 @@
-/* Unlinked regional matching draft. PAL: 125 to 123 words; the enabled-mask register and comparison now agree. */
-/* near miss (level 3, Starship Phoenix), Nov 24 retry: 123 differences with the file's
- * existing flags. Give the enabled-mask expression its own signed locals: the mask and
- * comparison now use retail's $v1 rather than borrowing $s0. The remaining differences
- * below are unchanged.
- * Previous wave 12 retry r02: 125 differences with the file's own line (@ps2as is on
- * L03_003B0810.c now); the draft it replaces: 140. Changed against it: (1) the else-branch g = 0 < (D & 2), the head's
- * own form (andi + sltu as retail; != 0 became sra/andi); (2) the first selection loop reads D_L03_002BE328[g][i]
- * directly instead of a row pointer computed before it, so loop.c builds the row giv with its own lui (retail's fresh
- * lui v0,0x2c at 0x1DC) instead of gcse sharing the %hi in s6. Still differs: the head's (f & 2) temp gets s0 (retail v1);
- * the lo/hi block (retail computes h*8 in v1 and copies it to s4; here the sll goes straight to s4) and lo/hi in s0/s1
- * swapped; in the mask loop mask/hi-lo/&tmp/giv get a2/a0/a3/a1 where retail has a0/a1/a2/t1 (one extra move a2,a3);
- * retail's shared return 0 sits right after the sel[3] test before the switch loop (if (sel[3] == -1) { fail: return 0; }
- * reproduces that placement but costs the alignment: 186, since the switch loop head is bnel/nop where retail has beql).
- * Earlier: ~25 variants (draft). */
+/* Wave 13 (r24, 2026-11-28) replaces the earlier draft of this function (Regional matching study (2026-11-24)). */
+/* func_L03_003B0810 near (wave 13 r24): 80 differences under the file's line (the draft: 123). Changed
+ * against the draft: (1) the sel[2] bounds load hi before A in both arms (retail's lw $s1/$s0 order);
+ * (2) the switch selector is (i & 1) ? s->f12C : s->f128 (retail's beql with the f128 load in its delay
+ * slot); (3) the shared return 0 sits in if (sel[3] == -1) { fail: return 0; } before the switch loop, as
+ * retail places it; (4) the mask loop bound is a local k = hi - lo, which frees $a2 for &tmp (no extra
+ * move before the call, so the switch loop needs no alignment nop). Still differs: the lo/hi block after
+ * sel[0] (retail computes h*8 in $v1 and copies it to $s4: indexing D_L03_001DE8A0/8A4/900/904 by [h][0]
+ * instead of the o offset reproduces that gcse copy but schedules the lui before the sll, 84); the sel[2]
+ * arms schedule the lui before the sll (retail's sll fills the beqz delay slot); sel[2] lands in $t1, k in
+ * $t0 and the tmp giv in $a1 (retail $a1, $a1, $t1); the mask-block bound addresses swap $a0/$a1. */
 #include "common.h"
 
 /* localdecomp:start func_L03_003B0810 */
@@ -102,18 +98,18 @@ s32 func_L03_003B0810(A_003B0810 *a) {
     }
     if (sel[0] == -1) goto fail;
     lo = D_L03_001DE860[h][0];
-    hi = D_L03_001DE864[h][0];
     o = h * 8;
+    hi = D_L03_001DE864[h][0];
     t = 0;
     if (h != 5 && func_003824E0(0.0f, 1.0f) < 0.25f) t = 1;
     sel[1] = func_L03_003B06F0(D_L03_002A2430[h], 30, lo, hi, t);
     if (sel[1] == -1) goto fail;
     if (fp) {
-        A = D_L03_001DE890[g][0];
         hi = D_L03_001DE894[g][0];
+        A = D_L03_001DE890[g][0];
     } else {
-        A = D_L03_001DE8D0[g][0];
         hi = D_L03_001DE8D4[g][0];
+        A = D_L03_001DE8D0[g][0];
     }
     sel[2] = func_L03_003B06F0(D_L03_002A2430[g], 30, A, hi, 0);
     if (sel[2] == -1) goto fail;
@@ -124,16 +120,20 @@ s32 func_L03_003B0810(A_003B0810 *a) {
         lo = *(s32 *)((char *)D_L03_001DE900 + o);
         hi = *(s32 *)((char *)D_L03_001DE904 + o);
         n = 0;
-        for (i = 0; i <= hi - lo; i++) {
+        k = hi - lo;
+        for (i = 0; i <= k; i++) {
             if (D_L03_002BA4F0[h][i] & mask) {
                 tmp[n++] = lo + i;
             }
         }
         sel[3] = func_L03_003B0670(D_L03_002A2430[h], 30, tmp, n, 0);
     }
-    if (sel[3] == -1) goto fail;
+    if (sel[3] == -1) {
+    fail:
+        return 0;
+    }
     for (i = 0; i < 4; i++) {
-        switch ((i & 1) == 0 ? s->f128 : s->f12C) {
+        switch ((i & 1) ? s->f12C : s->f128) {
         case 0: s->f190[i] = s->a220[sel[i]]; break;
         case 1: s->f190[i] = s->a2A0[sel[i]]; break;
         case 2: s->f190[i] = s->a1A0[sel[i]]; break;
@@ -143,7 +143,5 @@ s32 func_L03_003B0810(A_003B0810 *a) {
         }
     }
     return 1;
-fail:
-    return 0;
 }
 /* localdecomp:end func_L03_003B0810 */
