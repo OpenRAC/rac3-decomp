@@ -21,11 +21,18 @@ The toolchain folder must have the Windows layout (bin/ee-gcc2953.exe,
 bin/ee-as.exe, bin/ee-ld.exe, bin/ee-objcopy.exe, ee/bin/Ps2EeAs.exe).
 build_text.py derives the toolchain root from the compiler path, so this
 script writes small wrapper scripts into build/wrap/ that call wibo.
+
+Unchanged work is reused (since 2026-11-28, tools/objcache.py): the objects of steps 1 and 2 are
+kept in build/objcache/ under a key of everything that can change them, so a build after a
+one-file change compiles and assembles only what that change reaches; linking, flattening and the
+check always run. --no-cache (or UYA_NO_CACHE=1) builds everything again; the output is byte for
+byte the same either way (docs/build/incremental.md).
 """
 import argparse, os, re, stat, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
+import objcache  # noqa: E402
 import targets  # noqa: E402
 ASFLAGS = ["-I", "include", "-EL", "-mips3", "-mcpu=5900", "-mabi=eabi"]
 
@@ -35,6 +42,28 @@ def run(cmd, **kw):
     p = subprocess.run(cmd, cwd=ROOT, **kw)
     if p.returncode:
         sys.exit(f"failed: {' '.join(cmd)}")
+
+
+def assemble(cache, cmd, obj, src, tools):
+    """Assemble SRC into OBJ with CMD (ee-as.exe), or put back the object an earlier run made
+    from the same inputs (tools/objcache.py): the command, the .s file's bytes and every file its
+    `.include`s reach, the toolchain TOOLS (folders and programs) and the tools of this build."""
+    key = None
+    if cache.enabled:
+        key = objcache.Key("ee-as").common([os.path.abspath(__file__)])
+        for t in tools:
+            key.tree("tool", t)
+        key.text("command", cmd)
+        key.file("source", os.path.join(ROOT, src))
+        with open(os.path.join(ROOT, src), "rb") as f:
+            data = f.read()
+        if not objcache.add_asm_includes(key, data, os.path.dirname(os.path.join(ROOT, src))):
+            key = None
+    if key is not None and cache.fetch(key.hexdigest(), os.path.join(ROOT, obj)):
+        return
+    run(cmd)
+    if key is not None and not key.changed():
+        cache.store(key.hexdigest(), os.path.join(ROOT, obj))
 
 
 def main():
@@ -50,10 +79,15 @@ def main():
                     help="Sony's ee-as 2.10-ee-001003-1 program for @eeas ranges (tools/eeas.py)")
     ap.add_argument("-j", "--jobs", type=int, default=int(os.environ.get("UYA_JOBS", "1")),
                     help="source files compiled at a time (default: env UYA_JOBS, else 1)")
+    ap.add_argument("--no-cache", action="store_true",
+                    help="compile and assemble everything again, reusing nothing (tools/objcache.py); "
+                         "also env UYA_NO_CACHE=1")
     args = ap.parse_args()
     tc = os.path.abspath(os.path.expanduser(args.toolchain))
     runner = args.runner
     exe = lambda name: [runner, os.path.join(tc, "bin", name)]
+    cache = objcache.Cache(enabled=not args.no_cache)
+    as_tools = [tc, objcache.which(runner)]
 
     build = os.path.join(ROOT, t.build_dir)
     os.makedirs(os.path.join(build, "src"), exist_ok=True)
@@ -65,7 +99,7 @@ def main():
     for obj in dict.fromkeys(re.findall(r"(%s(?:asm/\S+?\.s)\.o)" % re.escape(prefix), script)):
         src = obj[len(prefix):-2]
         os.makedirs(os.path.join(ROOT, os.path.dirname(obj)), exist_ok=True)
-        run(exe("ee-as.exe") + ASFLAGS + ["-o", obj, src])
+        assemble(cache, exe("ee-as.exe") + ASFLAGS + ["-o", obj, src], obj, src, as_tools)
 
     # Wrappers live inside a fake toolchain tree (wrap/bin/...) with ee/ linked
     # to the real one, so build_text.py's "<root>/ee/bin/Ps2Ee" still resolves.
@@ -95,7 +129,8 @@ def main():
         # @ee296 ranges (tools/ee296.py) Sony's 2.96-ee from --ee296 / UYA_EE296, and @eeas ranges are
         # assembled by Sony's ee-as from --eeas / UYA_EEAS (tools/eeas.py)
         run([sys.executable, "tools/build_text.py", "--target", t.name, "--unit", u.name,
-             "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner]
+             "--cc", wrappers["cc"], "--ld", wrappers["ld"], "--cflags", cflags, "--runner", runner,
+             "--toolchain", tc] + (["--no-cache"] if not cache.enabled else [])
             + (["--ee29", args.ee29] if args.ee29 else []) + (["--ee296", args.ee296] if args.ee296 else [])
             + (["--eeas", args.eeas] if args.eeas else [])
             + ["-j", str(args.jobs), "-o", t.obj(u)])
@@ -110,7 +145,7 @@ def main():
         if os.path.exists(os.path.join(ROOT, derived)):
             pieces = re.findall(r"(%spieces/\S+?\.s)\.o" % re.escape(prefix), open(os.path.join(ROOT, derived)).read())
             for src in dict.fromkeys(pieces):
-                run(exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src])
+                assemble(cache, exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src], src + ".o", src, as_tools)
             ld = derived
 
     # a core C object's literal pools (read-only data): a linker script that puts them where retail
@@ -123,8 +158,10 @@ def main():
         if core_rodata.derive(t):
             pieces = re.findall(r"(%spieces/\S+?\.s)\.o" % re.escape(prefix), open(os.path.join(ROOT, derived)).read())
             for src in dict.fromkeys(pieces):
-                run(exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src])
+                assemble(cache, exe("ee-as.exe") + ASFLAGS + ["-o", src + ".o", src], src + ".o", src, as_tools)
             ld = derived
+
+    print("assembled from asm/: " + cache.summary(), flush=True)
 
     # 3. link, flatten, compare
     elf = os.path.join(t.build_dir, t.name + ".elf")

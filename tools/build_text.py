@@ -22,6 +22,13 @@ as <workdir>/<file>.o (objdiff compares these, one unit per file; slice
 objects are kept apart in <workdir>/slices/), and all of them are linked into
 one relocatable object (ld -r) for the linker script.
 
+Unchanged work is reused (since 2026-11-28, tools/objcache.py): each compile's assembly, each
+asm_filter.py pass, each assembled object and each slice join is kept in build/objcache/ under a
+key of everything that can change it (the C or assembly it reads with every header and `.include`
+it can reach, the exact command, the filter's tables, the toolchain's bytes, the tools of this
+build), so a run after a one-file change compiles only that file. --no-cache (or UYA_NO_CACHE=1)
+builds everything again; the output is the same either way.
+
 Usage (from the repo root, normally via the Makefile):
   python tools/build_text.py --cc CC --ld LD --cflags "..." -o build/src/text.c.o [--base]
 """
@@ -38,6 +45,7 @@ import dnas  # noqa: E402
 import ee29  # noqa: E402
 import ee296  # noqa: E402
 import eeas  # noqa: E402
+import objcache  # noqa: E402
 import srcfiles as sf  # noqa: E402
 import targets  # noqa: E402
 from srcfiles import strip_comments, declarations_only, EXTERN_HINT_RE  # noqa: E402,F401
@@ -155,13 +163,14 @@ def prelude_lines(prelude):
     return prelude.count('\n')
 
 
-def slice_source(rel, prelude, chunks, idxs):
-    """C text for one slice of a mixed-flag file."""
+def slice_source(rel, prelude, chunks, idxs, decls=None):
+    """C text for one slice of a mixed-flag file. DECLS: declarations_only() of each chunk, when
+    the caller has them already (a file's slices all need those of the chunks before them)."""
     path = rel.replace('\\', '/')
     out = ['#line 1 "%s"\n' % path, prelude]
     first = idxs[0]
-    for addr, line, body in chunks[:first]:
-        decl = declarations_only(body)
+    for n, (addr, line, body) in enumerate(chunks[:first]):
+        decl = declarations_only(body) if decls is None else decls[n]
         if decl:
             out.append('#line %d "%s"\n%s\n' % (line, path, decl))
     for i in idxs:
@@ -268,7 +277,123 @@ def compile_errors(rel, text, parts, gcc_cmd, cflags, tmpdir):
     return errors
 
 
-def compile_one(cc, flags, cflags, cpath, spath, opath, label):
+SCRIPT = os.path.abspath(__file__)
+# the reuse of unchanged work (tools/objcache.py); main() sets it (off: --no-cache)
+CACHE = objcache.Cache(enabled=False)
+# the toolchain folder the --cc / --ld wrappers run (--toolchain; default: the folder above --cc's)
+TOOLCHAIN = None
+
+
+def _sn_tools(key, cc, options):
+    """SN's toolchain into KEY: the --cc and --ld programs (or wrappers) and the folders they run
+    from, every -B folder, the runner."""
+    key.tree('cc', cc)
+    if LD:
+        key.tree('ld', LD)
+    key.tree('toolchain', TOOLCHAIN or os.path.dirname(os.path.dirname(os.path.abspath(cc))))
+    for o in options:
+        if o.startswith('-B'):
+            key.tree('-B', os.path.dirname(o[2:]) or '.')
+    if RUNNER:
+        key.tree('runner', objcache.which(RUNNER))
+
+
+def _system_dirs():
+    """The compilers' own folders, for the header scan (tools/includes.py)."""
+    return [TOOLCHAIN or os.path.dirname(os.path.dirname(os.path.abspath(CC))) if CC else None,
+            ee29.root(EE29), ee296.root(EE296)]
+
+
+def compile_key(cc, flags, pcflags, pflags, asflags, cpath, spath):
+    """The key of compiling CPATH to the assembly SPATH (tools/objcache.py, step 1), or None."""
+    if not CACHE.enabled or not objcache.standard_includes(list(flags) + list(pcflags)):
+        return None
+    key = objcache.Key('compile').common([SCRIPT])
+    if ee29.wanted(flags):
+        key.text('compiler', ('ee29', ee29.root(EE29), RUNNER))
+        key.tree('ee29', ee29.root(EE29))
+        if RUNNER or os.name != 'nt':
+            key.tree('runner', objcache.which(RUNNER or os.environ.get('UYA_RUNNER') or 'wibo'))
+        key.text('command', (list(flags), list(pcflags), cpath, spath))
+    elif ee296.wanted(flags):
+        key.text('compiler', ('ee296', ee296.root(EE296)))
+        key.tree('ee296', ee296.root(EE296))
+        key.text('command', (list(flags), list(pcflags), cpath, spath))
+    else:
+        cmd = [cc, '-S'] + pflags + pcflags + asflags + ['-o', spath, cpath]
+        key.text('compiler', 'sn')
+        _sn_tools(key, cc, cmd)
+        key.text('command', cmd)
+    key.file('source', cpath)
+    with open(cpath, 'rb') as f:
+        text = f.read().decode('latin-1')
+    objcache.add_headers(key, text, os.path.dirname(os.path.abspath(cpath)), _system_dirs())
+    return key
+
+
+def assemble_key(cc, flags, pcflags, pflags, asflags, spath, opath):
+    """The key of assembling SPATH (as tools/asm_filter.py left it) into OPATH (step 3), or None."""
+    if not CACHE.enabled or not objcache.standard_includes(list(pcflags)):
+        return None
+    key = objcache.Key('assemble').common([SCRIPT])
+    if eeas.wanted(flags):
+        try:
+            program = eeas.program(EEAS)
+        except FileNotFoundError:
+            return None              # _assemble() says what is missing
+        key.text('assembler', ('eeas', EEAS))
+        key.tree('eeas', program)
+        key.text('command', (list(flags), list(pcflags), spath, opath))
+    else:
+        cmd = [cc, '-c'] + pflags + pcflags + asflags + ['-o', opath, spath]
+        key.text('assembler', 'sn')
+        _sn_tools(key, cc, cmd)
+        key.text('command', cmd)
+    with open(spath, 'rb') as f:
+        data = f.read()
+    key.text('assembly', data)
+    if not objcache.add_asm_includes(key, data, os.path.dirname(os.path.abspath(spath))):
+        return None
+    return key
+
+
+def link_key(ld, opath, sobjs):
+    """The key of joining a file's slice objects SOBJS into OPATH with ld -r, or None."""
+    if not CACHE.enabled:
+        return None
+    key = objcache.Key('link').common([SCRIPT])
+    _sn_tools(key, CC or ld, [])
+    key.tree('ld', ld)
+    key.text('command', [ld, '-r', '-o', opath] + list(sobjs))
+    for p in sobjs:
+        key.file('object', p)
+    return key
+
+
+class NeedsBuild(Exception):
+    """A step of a file has nothing to reuse (raised in main()'s first pass, which only reuses)."""
+
+
+def _reused(key, dest, reuse_only):
+    """True when KEY's kept output was put at DEST. With REUSE_ONLY, NeedsBuild instead of
+    False (main()'s first pass leaves the file to the -j workers)."""
+    if key is not None and (not reuse_only or CACHE.has(key.hexdigest())) and CACHE.fetch(key.hexdigest(), dest):
+        return True
+    if reuse_only:
+        raise NeedsBuild()
+    return False
+
+
+def _keep(key, path):
+    """Keep PATH as KEY's output, unless an input changed while the step ran."""
+    if key is not None and not key.changed():
+        CACHE.store(key.hexdigest(), path)
+
+
+def compile_one(cc, flags, cflags, cpath, spath, opath, label, reuse_only=False):
+    """Compile CPATH to the object OPATH (through the assembly SPATH), each step reused when its
+    inputs are those of an earlier run (tools/objcache.py). REUSE_ONLY: NeedsBuild when a
+    compiler or assembler would have to run."""
     try:
         eeas.check_flags(flags)
     except ValueError as e:
@@ -280,6 +405,20 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
     if '@ps2as' in flags:
         # Ps2EeAs rejects the GNU as options (-mips3, -mcpu=5900, ...)
         pcflags = [f for f in cflags if not f.startswith('-Wa,')]
+    key = compile_key(cc, flags, pcflags, pflags, asflags, cpath, spath)
+    if not _reused(key, spath, reuse_only):
+        _compile(cc, flags, pflags, pcflags, asflags, cpath, spath, label)
+        _keep(key, spath)
+    stext = _filter(flags, spath)
+    key = assemble_key(cc, flags, pcflags, pflags, asflags, spath, opath)
+    if not _reused(key, opath, reuse_only):
+        _assemble(cc, flags, pflags, pcflags, asflags, spath, opath, label)
+        _keep(key, opath)
+    _protect(stext, opath, label)
+
+
+def _compile(cc, flags, pflags, pcflags, asflags, cpath, spath, label):
+    """C to assembly: SN's ee-gcc -S, or Sony's 2.9-ee / 2.96-ee."""
     if ee29.wanted(flags):
         # compile with Sony's 2.9-ee driver, assemble below as usual
         if ee29.to_asm(flags, pcflags, cpath, spath, path=EE29, runner=RUNNER).returncode != 0:
@@ -293,14 +432,43 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
         print(' '.join(cmd), flush=True)
         if subprocess.run(cmd).returncode != 0:
             raise SystemExit(f'build_text: {label} failed to compile')
+
+
+def filter_key(flags, spath):
+    """The key of tools/asm_filter.py's pass over the compiler's assembly SPATH (step 2): its
+    bytes, the kind of range, the tables the filter reads (the program's or level's and
+    config/levels/ divs_nops.txt and sq_ra_funcs.txt) and the tools; None when off."""
+    if not CACHE.enabled:
+        return None
+    key = objcache.Key('filter').common([SCRIPT])
+    key.text('ps2as', '@ps2as' in flags)
+    for path in (asm_filter._divs_file(), asm_filter.LEVEL_DIVS, asm_filter._sq_ra_file(), asm_filter.LEVEL_SQ_RA):
+        key.file('table', path)
+    with open(spath, 'rb') as f:
+        key.text('assembly', f.read())
+    return key
+
+
+def _filter(flags, spath):
+    """tools/asm_filter.py over the compiler's assembly, in place; returns the assembly as the
+    compiler wrote it."""
     with open(spath, newline='') as f:
         stext = f.read()
+    # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee and
+    # 2.96-ee library objects (@ee29, @ee296) and Sony's assembler (@eeas)
+    # don't have it (tools/ee29.py, tools/eeas.py)
+    library = ee29.wanted(flags) or ee296.wanted(flags) or eeas.wanted(flags)
+    key = None if library else filter_key(flags, spath)
+    if key is not None and CACHE.fetch(key.hexdigest(), spath):
+        return stext
     with open(spath, 'w', newline='') as f:
-        # retail's short-loop padding is SN's assembler's; Sony's 2.9-ee and
-        # 2.96-ee library objects (@ee29, @ee296) and Sony's assembler (@eeas)
-        # don't have it (tools/ee29.py, tools/eeas.py)
-        library = ee29.wanted(flags) or ee296.wanted(flags) or eeas.wanted(flags)
         f.write(stext if library else asm_filter.filter_asm(stext, '@ps2as' in flags))
+    _keep(key, spath)
+    return stext
+
+
+def _assemble(cc, flags, pflags, pcflags, asflags, spath, opath, label):
+    """Assembly to an object: the driver's -c, or Sony's ee-as."""
     if eeas.wanted(flags):
         # Sony's ee-as 2.10-ee instead of the driver's -c step (tools/eeas.py)
         try:
@@ -314,6 +482,11 @@ def compile_one(cc, flags, cflags, cpath, spath, opath, label):
         print(' '.join(cmd), flush=True)
         if subprocess.run(cmd).returncode != 0:
             raise SystemExit(f'build_text: {label} failed to assemble')
+
+
+def _protect(stext, opath, label):
+    """Level 39's DNAS blocks, protected on the object (tools/dnas.py); every time, also on a
+    reused object (the cache keeps it as the assembler wrote it)."""
     if dnas.has_blocks(stext):
         # level 39's protected DNAS blocks: the version's random words and the encryption, on
         # the object, before anything links it (tools/dnas.py)
@@ -332,10 +505,12 @@ EE29 = None
 RUNNER = None
 EE296 = None
 EEAS = None
+CC = None
+LD = None
 
 
 def main():
-    global EE29, RUNNER, EE296, EEAS
+    global EE29, RUNNER, EE296, EEAS, CC, LD, CACHE, TOOLCHAIN
     T = targets.from_argv()
     ap = argparse.ArgumentParser()
     ap.add_argument('--files', default=None, help="file list (default: the target's)")
@@ -359,9 +534,17 @@ def main():
                     help='runs the Windows 2.9-ee driver on Linux/macOS (default: env UYA_RUNNER, else wibo)')
     ap.add_argument('-j', '--jobs', type=int, default=int(os.environ.get('UYA_JOBS', '1')),
                     help='files compiled at a time (default: env UYA_JOBS, else 1)')
+    ap.add_argument('--toolchain', default=None,
+                    help="the toolchain folder --cc and --ld run, for the reuse key (default: the folder "
+                         "above --cc's)")
+    ap.add_argument('--no-cache', action='store_true',
+                    help='compile and assemble everything again, reusing nothing (tools/objcache.py); '
+                         'also env UYA_NO_CACHE=1')
     ap.add_argument('-o', '--output', required=True)
     a = ap.parse_args()
     EE29, RUNNER, EE296, EEAS = a.ee29 or None, a.runner or None, a.ee296 or None, a.eeas or None
+    CC, LD, TOOLCHAIN = a.cc, a.ld, a.toolchain
+    CACHE = objcache.Cache(enabled=not a.no_cache)
 
     parts = read_parts(a.parts or T.path('parts'))
     files = sf.read_file_list(a.files or T.path('files'))
@@ -389,7 +572,7 @@ def main():
     cflags = shlex.split(a.cflags, posix=False)
     if a.base:
         cflags.append('-DOBJDIFF_BASE')
-    def build_file(rel, start):
+    def build_file(rel, start, reuse_only=False):
         text = sf.read_source(rel)
         prelude, _, chunks = sf.split_file(text)
         stem = os.path.splitext(os.path.basename(rel))[0]
@@ -401,40 +584,57 @@ def main():
             # the file as it is, once
             spath = os.path.join(workdir, stem + '.s')
             opath = os.path.join(workdir, stem + '.o')
-            compile_one(a.cc, slices[0][0], cflags, rel, spath, opath, rel)
+            compile_one(a.cc, slices[0][0], cflags, rel, spath, opath, rel, reuse_only)
             return opath
         sobjs = []
         # slices go in their own folder, so workdir holds one .o per file
         sdir = os.path.join(workdir, 'slices')
         os.makedirs(sdir, exist_ok=True)
+        # the declarations of the chunks before the last slice, each taken once
+        decls = [declarations_only(body) for _, _, body in chunks[:slices[-1][1][0]]]
         for k, (fl, idxs) in enumerate(slices):
             cpath = os.path.join(sdir, '%s.%d.c' % (stem, k))
             spath = os.path.join(sdir, '%s.%d.s' % (stem, k))
             opath = os.path.join(sdir, '%s.%d.o' % (stem, k))
             with open(cpath, 'w', newline='\n') as f:
-                f.write(slice_source(rel, prelude, chunks, idxs))
-            compile_one(a.cc, fl, cflags, cpath, spath, opath, '%s (slice %d)' % (rel, k))
+                f.write(slice_source(rel, prelude, chunks, idxs, decls))
+            compile_one(a.cc, fl, cflags, cpath, spath, opath, '%s (slice %d)' % (rel, k), reuse_only)
             sobjs.append(opath)
         # one object per source file (objdiff compares file by file)
         opath = os.path.join(workdir, stem + '.o')
-        if subprocess.run([a.ld, '-r', '-o', opath] + sobjs).returncode != 0:
-            raise SystemExit(f'build_text: ld -r of {rel} failed')
+        key = link_key(a.ld, opath, sobjs)
+        if not _reused(key, opath, reuse_only):
+            if subprocess.run([a.ld, '-r', '-o', opath] + sobjs).returncode != 0:
+                raise SystemExit(f'build_text: ld -r of {rel} failed')
+            _keep(key, opath)
         return opath
 
-    # files compile independently: -j N runs N at a time; the link order stays the list's
+    # first, in this thread, every file whose steps can all be reused (the work is Python's,
+    # which threads would only slow down); the rest compile independently: -j N runs N at a
+    # time; the link order stays the list's
+    done, todo = {}, []
+    for n, (rel, start) in enumerate(files):
+        if not CACHE.enabled:
+            todo.append(n)
+            continue
+        try:
+            done[n] = build_file(rel, start, reuse_only=True)
+        except (NeedsBuild, SystemExit):
+            todo.append(n)
     from concurrent.futures import ThreadPoolExecutor
     with ThreadPoolExecutor(max_workers=max(1, a.jobs)) as pool:
-        futures = [pool.submit(build_file, rel, start) for rel, start in files]
+        futures = [(n, pool.submit(build_file, *files[n])) for n in todo]
         errors = []
-        objs = []
-        for fu in futures:
+        for n, fu in futures:
             try:
-                objs.append(fu.result())
+                done[n] = fu.result()
             except SystemExit as e:
                 errors.append(str(e))
         if errors:
             sys.exit('\n'.join(errors))
+    objs = [done[n] for n in range(len(files))]
     cmd = [a.ld, '-r', '-o', a.output] + objs
+    print(CACHE.summary(), flush=True)
     print('%s -r -o %s (%d objects)' % (a.ld, a.output, len(objs)), flush=True)
     if subprocess.run(cmd).returncode != 0:
         sys.exit('build_text: ld -r failed')

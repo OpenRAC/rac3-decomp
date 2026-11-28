@@ -10,6 +10,11 @@ tools/build.py --target level_NN, which prints MATCH when the built ELF is baser
 for byte. Then the built program is converted back to the disc's format and its SHA-1 checked
 against config/levels/levels.tsv's overlay_sha1: the disc's own bytes. -P levels run at once,
 each compiling -j files at a time. Each level's log is build/levels/<NN_name>/build.log.
+
+The builds reuse unchanged objects (tools/objcache.py; build/objcache/, shared by the levels built
+at once): after a change, a level compiles only the files it reaches. --no-cache builds every
+object again. After the builds, the cache's entries not used for --cache-days days (default 3)
+are removed.
 """
 import argparse
 import hashlib
@@ -21,6 +26,7 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import levels  # noqa: E402
+import objcache  # noqa: E402
 import targets  # noqa: E402
 
 
@@ -39,7 +45,8 @@ def one(n, a):
     steps.append([py, "tools/trailing_padding.py", "--apply", "--target", t.name])
     steps.append([py, "tools/build.py", "--target", t.name, "-j", str(a.jobs), "--toolchain", a.toolchain,
                   "--runner", a.runner] + (["--ee29", a.ee29] if a.ee29 else [])
-                 + (["--ee296", a.ee296] if a.ee296 else []) + (["--eeas", a.eeas] if a.eeas else []))
+                 + (["--ee296", a.ee296] if a.ee296 else []) + (["--eeas", a.eeas] if a.eeas else [])
+                 + (["--no-cache"] if a.no_cache else []))
     with open(log_path, "w") as log:
         for cmd in steps:
             log.write("+ %s\n" % " ".join(cmd))
@@ -69,6 +76,10 @@ def main():
     ap.add_argument("--ee29", default=os.environ.get("UYA_EE29"))
     ap.add_argument("--ee296", default=os.environ.get("UYA_EE296"))
     ap.add_argument("--eeas", default=os.environ.get("UYA_EEAS"))
+    ap.add_argument("--no-cache", action="store_true",
+                    help="compile and assemble every object again, reusing nothing (tools/objcache.py)")
+    ap.add_argument("--cache-days", type=float, default=3,
+                    help="after the builds, remove the cache entries not used for this many days (default 3)")
     a = ap.parse_args()
     numbers = a.levels or sorted(levels.NAMES)
     bad = 0
@@ -77,6 +88,9 @@ def main():
             print("%s: %s" % (levels.dirname(n), msg), flush=True)
             bad += not ok
     print("%d of %d levels match" % (len(numbers) - bad, len(numbers)))
+    gone = objcache.prune(a.cache_days)
+    if gone:
+        print("objcache: %d entries not used for %g days removed" % (gone, a.cache_days))
     sys.exit(1 if bad else 0)
 
 
