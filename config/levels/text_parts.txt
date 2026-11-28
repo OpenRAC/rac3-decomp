@@ -1239,7 +1239,7 @@ src/levels/04_marcadia/L04_004AB470.c	-O2 -G8 -fopt-stack -mno-check-zero-divisi
 src/levels/04_marcadia/L04_004AC5A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/04_marcadia/L04_004AD6A8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_004B3440.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/shared/L04_004BAA20.c	-O2 -G8 -fopt-stack -mno-check-zero-division
+src/levels/shared/L04_004BA9F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_004BAD40.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_004BB1A0.c	-O2 -G8 -fopt-stack -mno-check-zero-division
 src/levels/shared/L04_004BB4F8.c	-O2 -G8 -fopt-stack -mno-check-zero-division

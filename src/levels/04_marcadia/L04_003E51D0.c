@@ -283,7 +283,7 @@ extern s32 D_001DF270_sda;
 __asm__(".extern D_001DF270_sda, 4");
 extern s32 func_00382468(s32);
 extern s32 func_003A52A0(s32, s32, void *);
-extern s32 func_L01_004AB048(s32, s32);
+extern s32 func_L04_004BA9F8(s32, s32);
 
 void func_L04_003E5D88(void *a0) {
     u8 *s0;
@@ -308,7 +308,7 @@ void func_L04_003E5D88(void *a0) {
 
     r = func_003A52A0(0, 0, a0);
     if (r != -1) {
-        func_L01_004AB048(r, (s32)(f20 * v.f[idx]));
+        func_L04_004BA9F8(r, (s32)(f20 * v.f[idx]));
     }
 }
 /* localdecomp:end func_L04_003E5D88 */

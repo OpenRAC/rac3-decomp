@@ -135,7 +135,7 @@ extern u8 D_001A30B0[];
 
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_003A4F28(s32);
-extern void func_L01_004AB048(s32, s32);
+extern void func_L04_004BA9F8(s32, s32);
 extern void func_003A53E8(s32, s32);
 extern s32 func_0038CB00(s16 *);
 extern f32 func_0038CEA8(void *);
@@ -214,7 +214,7 @@ void func_L09_003CAE68(Self_003CAE68 *self) {
             {
                 s32 h = s->h77C;
                 if (h != -1 && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->pDC == self && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->bD0 != 0) {
-                    func_L01_004AB048(h, a);
+                    func_L04_004BA9F8(h, a);
                     func_003A53E8(s->h77C, b);
                 }
             }
@@ -314,7 +314,7 @@ void func_L09_003CAE68(Self_003CAE68 *self) {
             {
                 s32 h = s->h778;
                 if (h != -1 && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->pDC == self && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->bD0 != 0) {
-                    func_L01_004AB048(h, b);
+                    func_L04_004BA9F8(h, b);
                     func_003A53E8(s->h778, 400);
                 }
             }
@@ -340,7 +340,7 @@ void func_L09_003CAE68(Self_003CAE68 *self) {
         {
             s32 h = s->h77C;
             if (h != -1 && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->pDC == self && ((Slot_003CAE68 *)(D_001A30B0 + (h << 7)))->bD0 != 0) {
-                func_L01_004AB048(h, s->h7A0);
+                func_L04_004BA9F8(h, s->h7A0);
             }
         }
         func_00382760(v0, 1.0f, func_0038DAB8(self->fF8, s->f74C), 0.0f);
@@ -353,7 +353,7 @@ void func_L09_003CAE68(Self_003CAE68 *self) {
                     s32 n = func_003A52A0(8, 4, self);
                     s->h784 = n;
                     if (n != -1 && ((Slot_003CAE68 *)(D_001A30B0 + (n << 7)))->pDC == self && ((Slot_003CAE68 *)(D_001A30B0 + (n << 7)))->bD0 != 0) {
-                        func_L01_004AB048(n, -0x3F8);
+                        func_L04_004BA9F8(n, -0x3F8);
                     }
                 }
             }

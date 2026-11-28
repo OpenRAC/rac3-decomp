@@ -2,7 +2,17 @@
 
 LINKER_REMNANT("asm/levels", func_L01_004AB040);
 
-INCLUDE_ASM("asm/levels", func_L01_004AB048);
+/* localdecomp:start func_L01_004AB048 */
+extern u8 D_001A30B0[];
+
+s32 func_L01_004AB048(u32 i, s32 v) {
+    if (i < 0x34) {
+        u8 *p = D_001A30B0;
+        *(s32 *)(p + i * 128 + 0xd4) = v;
+    }
+    return 1;
+}
+/* localdecomp:end func_L01_004AB048 */
 
 /* localdecomp:start func_L01_004AB070 */
 typedef struct { s32 id; s32 val; } E_4A7680;

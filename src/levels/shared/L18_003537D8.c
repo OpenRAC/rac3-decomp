@@ -88,7 +88,7 @@ extern f32 D_001A6E44 __attribute__((section(".data")));
 extern void func_003A4F28(s32);
 extern s32 func_003A52A0(s32, s32, void *);
 extern void func_003A53E8(s32, s32);
-extern void func_L01_004AB048(s32, s32);
+extern void func_L04_004BA9F8(s32, s32);
 extern s32 func_L01_00448070(s32, s32, f32);
 extern f32 func_0038CEA8(void *);
 extern f32 func_0038DAB8(f32, f32);
@@ -270,7 +270,7 @@ void func_L18_00353870(Obj_3543C8 *self) {
                     v->f438 = func_0038DAB8(v->f438, 0.07853982f);
                     g = func_0038D0B0(v->f438);
                     vol = func_L01_00448070(-0x17D, 0x477, f);
-                    func_L01_004AB048(v->h430, vol + (s32)(g * 40.0f));
+                    func_L04_004BA9F8(v->h430, vol + (s32)(g * 40.0f));
                     func_003A53E8(v->h430, 0x300);
                 }
             }
@@ -295,7 +295,7 @@ void func_L18_00353870(Obj_3543C8 *self) {
                         s32 pitch;
                         func_003A53E8(h, vol);
                         pitch = func_L01_00448070(0, 0x2FA, s);
-                        func_L01_004AB048(v->h433, pitch);
+                        func_L04_004BA9F8(v->h433, pitch);
                     }
                 }
             }
@@ -328,7 +328,7 @@ void func_L18_00353870(Obj_3543C8 *self) {
                         s32 vol = func_L01_00448070(0, 0x200, s);
                         s32 pitch = func_L01_00448070(-0xFE, 0xFE, s);
                         func_003A53E8(v->h432, vol);
-                        func_L01_004AB048(v->h432, pitch);
+                        func_L04_004BA9F8(v->h432, pitch);
                     }
                 }
             }
