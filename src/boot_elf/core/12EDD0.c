@@ -626,4 +626,79 @@ s32 func_0012EFA0(s32 ch, s32 n) {
 }
 /* localdecomp:end func_0012EFA0 */
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0012F0B8);
+/* localdecomp:start func_0012F0B8 */
+typedef struct {
+    u8 pad0[0x58];
+    s32 x58;
+    u8 pad5C[4];
+    s32 x60;
+    u8 pad64[3];
+    u8 b67;
+    u8 pad68[8];
+    u8 b70;
+    u8 b71;
+    u8 pad72[0xE];
+} Cmd_12F0B8;
+typedef struct {
+    Cmd_12F0B8 *f0;             /* 0x00 the pad area (64-byte aligned, two Cmd_12F0B8) */
+    void *f4;                   /* 0x04 this slot's entry in D_15BC80 */
+    void *f8;                   /* 0x08 the IOP's buffer, from the RPC reply */
+    s32 fC;
+    s32 f10;                    /* 0x10 open */
+    u8 pad14[8];
+} Slot_12F0B8;
+typedef struct { Slot_12F0B8 s[4]; } Chan_12F0B8;
+extern Chan_12F0B8 D_15BB90[];
+extern u8 D_15BB40[];
+extern s32 D_15BC80[][4][8];
+extern s32 D_15BD80[];
+extern s32 D_0014155C;
+extern char D_00151BD0[];
+extern char D_00151C00[];
+/* libpad's port open, like ps2sdk's padPortOpen; the RPC reply's buffer is read as a pointer
+   (*(void **)&req[5]), and the slot's fields are pointers: their alias sets order the tail's stores. */
+s32 func_0012F0B8(s32 ch, s32 n, Cmd_12F0B8 *buf) {
+    s32 i;
+    Cmd_12F0B8 *c;
+    s32 *req;
+    s32 *q;
+    if ((u32)buf & 0x3F) {
+        if (D_0014155C != 0) {
+            func_00121760(D_00151BD0, buf);
+        }
+        return 0;
+    }
+    if (D_15BB90[ch].s[n].f10 == 1) {
+        if (D_0014155C != 0) {
+            func_00121760(D_00151C00, ch, n);
+        }
+        return 0;
+    }
+    c = buf;
+    for (i = 0; i < 2; i++) {
+        c->x58 = 0;
+        c->b70 = 5;
+        c->b71 = 2;
+        c->b67 = 0;
+        func_0011A264(c, 0xFF, 0x20);
+        c->x60 = 0;
+        c++;
+    }
+    req = D_15BD80;
+    req[0] = 1;
+    req[1] = ch;
+    req[2] = n;
+    req[4] = (s32)buf;
+    if (func_00122810(D_15BB40, 1, 0, req, 0x80, req, 0x80, 0, 0) < 0) {
+        return 0;
+    }
+    q = D_15BC80[ch][n];
+    D_15BB90[ch].s[n].f10 = 1;
+    D_15BB90[ch].s[n].f0 = buf;
+    D_15BB90[ch].s[n].f8 = *(void **)&req[5];
+    D_15BB90[ch].s[n].f4 = q;
+    *q = 0;
+    D_15BB90[ch].s[n].fC = 0;
+    return req[3];
+}
+/* localdecomp:end func_0012F0B8 */
