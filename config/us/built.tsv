@@ -8009,6 +8009,7 @@ levels	func_L06_00357DF8	2	-
 levels	func_L06_00357E48	2	-
 levels	func_L06_00357EE0	2	-
 levels	func_L06_003584D0	4	-
+levels	func_L06_00358A70	0	level_06: D_L06_001DD3A8 is 0x001DD3E8 here, 0x001DD3A8 for func_L06_00357930;level_14: D_L06_001DD3A8 is 0x001DD7E8 here, 0x001DD7A8 for func_L06_00357930;level_20: D_L06_001DD3A8 is 0x001DD5B0 here, 0x001DD570 for func_L06_00357930
 levels	func_L06_00359650	2	-
 levels	func_L06_003597A0	2	-
 levels	func_L06_00359A88	3	-

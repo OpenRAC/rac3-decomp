@@ -1002,7 +1002,108 @@ struct Moby *func_L06_00358938(struct Moby *a0, f32 *a1, f32 *a2, s32 a3, f32 f1
 }
 /* localdecomp:end func_L06_00358938 */
 
-INCLUDE_ASM("asm/levels", func_L06_00358A70);
+/* localdecomp:start func_L06_00358A70 */
+
+extern f32 D_L06_001DD378;
+__asm__(".extern D_L06_001DD378, 4");
+extern f32 D_L06_001DD37C;
+__asm__(".extern D_L06_001DD37C, 4");
+extern f32 D_L06_001DD380;
+__asm__(".extern D_L06_001DD380, 4");
+extern f32 D_L06_001DD388[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD388, 8");
+extern f32 D_L06_001DD38C[] __attribute__((section(".sdata")));
+extern f32 D_L06_001DD3A8[] __attribute__((section(".sdata")));
+__asm__(".extern D_L06_001DD3A8, 8");
+extern f32 D_L06_001DD3AC[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L06_001E1680;
+typedef struct { f32 x, y, z; } V3_00358A70;
+extern V3_00358A70 D_L06_001E0820[] __attribute__((section(".sdata")));
+extern u32 D_L06_001E0850[] __attribute__((section(".sdata")));
+extern f32 D_L06_001E0860[] __attribute__((section(".sdata")));
+extern f32 D_L06_001E0864[] __attribute__((section(".sdata")));
+typedef struct { f32 a, b, c; } T3_00358A70;
+extern T3_00358A70 D_L06_002B15C8[][4];
+
+void func_L06_00358A70(u8 *a0) {
+    extern void func_003A9440(s32, unsigned long);
+    extern unsigned long func_00389598(s32);
+    extern void func_0038C750(void);
+    extern f32 func_0038CF00(void *, void *);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_003D3A24(s32, void *, void *, void *, s32);
+    u8 *v = *(u8 **)(a0 + 0x68);
+    vu0_v4 acc;
+    vu0_v4 t;
+    f32 x;
+    f32 dist;
+    f32 k;
+    f32 s1;
+    f32 s2;
+    s32 i;
+    s32 j;
+    s32 n;
+
+    x = *(f32 *)(v + 0x10) + D_L06_001DD380;
+    *(f32 *)(v + 0x10) = x - (f32)(s32)x;
+    func_003A9440(8, 0);
+    func_003A9440(0x14, 0xFF9000000260UL);
+    func_003A9440(0x47, 0x513F1);
+    func_0038C750();
+    dist = func_0038CF00(a0 + 0x10, &D_L06_001E1680);
+    if (dist < D_L06_001DD378) {
+        k = D_L06_001DD37C + dist / D_L06_001DD378 * (1.0f - D_L06_001DD37C);
+    } else {
+        k = 1.0f;
+    }
+    s1 = *(f32 *)(v + 0x2C) * k;
+    s2 = s1 * *(f32 *)(v + 0x24);
+    for (i = 0; i < 4; i++) {
+        func_0038CE20(&acc, a0 + 0xC0, D_L06_001DD388[i * 2] * s2);
+        func_0038CE20(&t, a0 + 0xD0, D_L06_001DD38C[i * 2] * s1);
+        vec_add_ab(&acc, &t, &acc);
+        vec_add_ba(&acc, &acc, a0 + 0x10);
+        D_L06_001E0820[i].x = acc.x;
+        D_L06_001E0820[i].y = acc.y;
+        D_L06_001E0820[i].z = acc.z;
+        D_L06_001E0850[i] = 0xF0808080;
+        D_L06_001E0860[i * 2] = D_L06_001DD3A8[i * 2];
+        D_L06_001E0864[i * 2] = D_L06_001DD3AC[i * 2];
+    }
+    func_003A9440(6, func_00389598(*(s32 *)(v + 0x20) + 0x64));
+    func_003A9440(0x42, 0x800000006AUL);
+    func_003D3A24(4, D_L06_001E0820, D_L06_001E0850, D_L06_001E0860, 1);
+    for (i = 0; i < 4; i++) {
+        D_L06_001E0864[i * 2] += *(f32 *)(v + 0x10);
+    }
+    func_003A9440(0x42, 0x8000000058UL);
+    func_003D3A24(4, D_L06_001E0820, D_L06_001E0850, D_L06_001E0860, 1);
+    func_003A9440(6, func_00389598(*(s32 *)(v + 0x20) + 0x65));
+    for (j = 0; j < 5; j++) {
+        for (n = 0; n < 4; n++) {
+            func_0038CE20(&acc, a0 + 0xC0, D_L06_002B15C8[j][n].a * s2);
+            func_0038CE20(&t, a0 + 0xD0, D_L06_002B15C8[j][n].b * s1);
+            vec_add_ab(&acc, &t, &acc);
+            func_0038CE20(&t, a0 + 0xE0, D_L06_002B15C8[j][n].c * s1);
+            vec_add_ab(&acc, &t, &acc);
+            vec_add_ba(&acc, &acc, a0 + 0x10);
+            D_L06_001E0820[n].x = acc.x;
+            D_L06_001E0820[n].y = acc.y;
+            D_L06_001E0820[n].z = acc.z;
+            D_L06_001E0860[n * 2] = D_L06_001DD3A8[n * 2];
+            D_L06_001E0864[n * 2] = D_L06_001DD3AC[n * 2];
+        }
+        func_003A9440(0x42, 0x800000006AUL);
+        func_003D3A24(4, D_L06_001E0820, D_L06_001E0850, D_L06_001E0860, 1);
+        for (i = 0; i < 4; i++) {
+            D_L06_001E0864[i * 2] += *(f32 *)(v + 0x10);
+        }
+        func_003A9440(0x42, 0x8000000058UL);
+        func_003D3A24(4, D_L06_001E0820, D_L06_001E0850, D_L06_001E0860, 1);
+    }
+    func_003A9440(0x47, 0x5360B);
+}
+/* localdecomp:end func_L06_00358A70 */
 
 /* localdecomp:start func_L06_00358FF0 */
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_00358FF0;
