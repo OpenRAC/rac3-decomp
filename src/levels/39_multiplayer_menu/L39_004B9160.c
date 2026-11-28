@@ -238,7 +238,110 @@ s32 func_L39_004B96D0(char *name, u16 port) {
 }
 /* localdecomp:end func_L39_004B96D0 */
 
-INCLUDE_ASM("asm/levels", func_L39_004B9720);
+/* localdecomp:start func_L39_004B9720 */
+#include "dnas.h"
+
+/* the first library's driver: driver(block, k1, k2, k3) (include/dnas.h) */
+extern void func_L39_004BD350(s32, s32, s32, u32);
+extern s64 func_L01_00412E50(s32, void *, s32, s32);
+extern s32 *func_L01_003E4008(void);
+extern s32 func_L39_004B95C0(s32);
+extern void func_00120D28(void *, void *, s32);
+extern s32 func_L39_004D0C78(void);
+extern u8 D_001B3331[];
+
+s32 func_L39_004B9720(s32 fd) {
+    char buf[5];
+    char c;
+    char prev;
+    char *p;
+    s32 ret;
+    s32 i;
+
+    ret = 0;
+    p = &c;
+    DNAS_BEGIN(func_L39_004B9720, 0, func_L39_004BD350);
+    func_00120D28(buf, DNAS_STRING("HTTP/"), 5);
+    DNAS_END(func_L39_004B9720, 0, func_L39_004BD350);
+    for (i = 0; i < 5 && ret >= 0; i++) {
+        if (func_L01_00412E50(fd, p, 1, 0) < 0) {
+            ret = func_L39_004B95C0(*func_L01_003E4008());
+        } else if (c != buf[i]) {
+            ret = -0x25A;
+        }
+    }
+    if (ret >= 0) {
+        while (!(*(D_001B3331 + c) & 8) && ret >= 0) {
+            if (func_L01_00412E50(fd, p, 1, 0) < 0) {
+                ret = func_L39_004B95C0(*func_L01_003E4008());
+            }
+        }
+        for (i = 0; i < 3 && ret >= 0; i++) {
+            if (func_L01_00412E50(fd, p, 1, 0) < 0) {
+                ret = func_L39_004B95C0(*func_L01_003E4008());
+            } else if (*(D_001B3331 + c) & 4) {
+                ret = ret * 10 + c - '0';
+            } else {
+                ret = -0x25A;
+            }
+        }
+        if (ret >= 0) {
+            i = 0;
+            while (ret > 0) {
+                prev = c;
+                if (func_L01_00412E50(fd, p, 1, 0) < 0) {
+                    ret = func_L39_004B95C0(*func_L01_003E4008());
+                } else {
+                    if (c == 0) {
+                        ret = -0x25A;
+                    }
+                    if (c == '\n' && prev == '\r') {
+                        i++;
+                    } else if (c != '\r') {
+                        i = 0;
+                    }
+                    if (i == 2) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    {
+        u8 *q = (u8 *)&c;
+        u32 k;
+
+        for (k = 0; k < sizeof(c); k++) {
+            q[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u8 *q = (u8 *)&prev;
+        u32 k;
+
+        for (k = 0; k < sizeof(prev); k++) {
+            q[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u8 *q = (u8 *)buf;
+        u32 k;
+
+        for (k = 0; k < sizeof(buf); k++) {
+            q[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    {
+        u8 *q = (u8 *)&p;
+        u32 k;
+
+        for (k = 0; k < sizeof(p); k++) {
+            q[k] = (u32)((f32)func_L39_004D0C78() / 2147483520.0f * 256.0f);
+        }
+    }
+    return ret;
+}
+/* localdecomp:end func_L39_004B9720 */
 
 /* localdecomp:start func_L39_004B9C78 */
 extern s32 D_L39_00464788;

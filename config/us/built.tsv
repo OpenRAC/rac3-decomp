@@ -7985,6 +7985,7 @@ levels	func_L06_003558D0	2	-
 levels	func_L06_00355C20	2	-
 levels	func_L06_00355F80	2	-
 levels	func_L06_00356088	2	-
+levels	func_L06_003566B0	2	-
 levels	func_L06_003572B8	2	-
 levels	func_L06_00357398	5	-
 levels	func_L06_003573A0	2	-
@@ -9583,6 +9584,7 @@ levels	func_L20_003D6F30	1	-
 levels	func_L20_003D7220	1	-
 levels	func_L20_003D7558	1	-
 levels	func_L20_003D7950	1	-
+levels	func_L20_003D7CE0	1	-
 levels	func_L20_003D8248	1	-
 levels	func_L20_003E21B8	1	-
 levels	func_L20_003E3308	1	-
@@ -12404,6 +12406,7 @@ levels	func_L39_00510008	1	-
 levels	func_L39_00510220	1	-
 levels	func_L39_00510298	1	-
 levels	func_L39_005102E8	1	-
+levels	func_L39_005103A0	1	-
 levels	func_L39_005108A0	1	-
 levels	func_L39_00510A78	1	-
 levels	func_L39_00510B58	1	-
@@ -13219,6 +13222,7 @@ levels	func_L39_005DC290	17	-
 levels	func_L39_005DC338	17	-
 levels	func_L39_005DC4C0	17	-
 levels	func_L39_005DC508	17	-
+levels	func_L39_005DC648	17	-
 levels	func_L39_005DD258	17	-
 levels	func_L39_005DD290	17	-
 levels	func_L39_005DD350	17	-
@@ -13287,6 +13291,7 @@ levels	func_L39_005E5678	17	-
 levels	func_L39_005E6118	17	-
 levels	func_L39_005E6B08	17	-
 levels	func_L39_005E6C78	17	-
+levels	func_L39_005E6D80	17	-
 levels	func_L39_005E70E8	0	level_39: no object of the block alone checks MATCH;level_40: no object of the block alone checks MATCH;level_41: no object of the block alone checks MATCH;level_42: no object of the block alone checks MATCH;level_43: no object of the block alone checks MATCH;level_44: no object of the block alone checks MATCH;level_45: no object of the block alone checks MATCH;level_46: no object of the block alone checks MATCH;level_47: no object of the block alone checks MATCH;level_48: no object of the block alone checks MATCH;level_49: no object of the block alone checks MATCH;level_50: no object of the block alone checks MATCH;level_51: no object of the block alone checks MATCH;level_52: no object of the block alone checks MATCH;level_53: no object of the block alone checks MATCH;level_54: no object of the block alone checks MATCH;level_55: no object of the block alone checks MATCH
 levels	func_L39_005E7430	17	-
 levels	func_L39_005E74C8	17	-
