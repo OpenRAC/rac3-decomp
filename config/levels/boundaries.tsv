@@ -363,3 +363,5 @@ func_L01_00436868	cut	+0x0:0x4r,+0x8:0x4r,+0x10:0x4r,+0x18:0x4r,+0x20:0x4r,+0x58
 func_L01_0041A678	join	4	a switch: jr through jtbl 0x2BBE70, whose cases 2-5 (0x41A6B0, 0x41A6BC, 0x41A6C8, 0x41A6D4, each lui; jr $ra; addiu) the data pointers made functions of their own
 func_L40_00462288	start	+0x18	two addiu $sp,$sp,0x10; nop pairs and two alignment nops after the jr $ra of the function before; the function proper starts 0x18 bytes in (levels 40-53)
 func_L24_00359248	start	+0x60	linker remnants (addiu $sp,$sp,N; nop pairs and alignment nops) of stripped functions after the jr $ra of the function before; the function proper starts at 0x3592A8
+func_L01_002F7800	variant	39	level 39: wrterror() of the DNAS library's phkmalloc (jr $ra; nop at 0x4B5950), part of that library's object, which begins here: ee-gcc 2.96 marks the functions it has compiled TREE_NOTHROW, and func_L39_004B6108's calls have retail's delay slots only when wrterror and wrtwarning are compiled before it in its unit
+func_L01_002F8F10	variant	39	level 39: wrtwarning() of the same phkmalloc (jr $ra; nop at 0x4B5958), the second function of that object (see func_L01_002F7800's line)

@@ -3515,10 +3515,10 @@ i5bootn	func_00804E40	1	-
 i5bootn	func_00804F00	1	-
 i5bootn	func_00804F30	1	-
 i5bootn	func_00804F70	1	-
-levels	func_L01_002F7800	51	-
+levels	func_L01_002F7800	50	-
 levels	func_L01_002F7808	34	-
 levels	func_L01_002F8D80	34	-
-levels	func_L01_002F8F10	51	-
+levels	func_L01_002F8F10	50	-
 levels	func_L01_002F94F8	34	-
 levels	func_L01_002F95A0	51	-
 levels	func_L01_002F9760	51	-
@@ -11025,6 +11025,8 @@ levels	func_L39_004B5630	1	-
 levels	func_L39_004B5748	1	-
 levels	func_L39_004B5910	1	-
 levels	func_L39_004B5938	1	-
+levels	func_L39_004B5950	1	-
+levels	func_L39_004B5958	1	-
 levels	func_L39_004B5960	1	-
 levels	func_L39_004B59D8	1	-
 levels	func_L39_004B5F68	1	-

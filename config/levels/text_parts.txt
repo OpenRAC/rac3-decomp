@@ -2803,7 +2803,7 @@ src/levels/36_vidcomic_1_special_edition/L36_00471F18.c	-O2 -G8 -fopt-stack -mno
 src/levels/39_multiplayer_menu/L39_004B3100.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004B3230.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004B5910.c	-O2 -G8 -fopt-stack -mno-check-zero-division
-src/levels/39_multiplayer_menu/L39_004B5960.c	@ee296 @eeas -O2 -G0
+src/levels/39_multiplayer_menu/L39_004B5950.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004B87B0.c	-O2 -G0 -fno-strict-aliasing @ee296 @eeas
 src/levels/39_multiplayer_menu/L39_004B9160.c	@ee296 @eeas -O2 -G0
 src/levels/39_multiplayer_menu/L39_004B9C88.c	@ee296 @eeas -O2 -G0
