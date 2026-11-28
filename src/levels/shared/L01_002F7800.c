@@ -716,7 +716,152 @@ done:
 
 INCLUDE_ASM("asm/levels", func_L01_002FA1F8);
 
-INCLUDE_ASM("asm/levels", func_L01_002FAAA0);
+/* localdecomp:start func_L01_002FAAA0 */
+typedef int Q_002FAAA0 __attribute__((mode(TI)));
+typedef struct { u8 b[0x50]; } __attribute__((aligned(16))) P_002FAAA0;
+typedef struct {
+    vu0_v4 pos;
+    u8 pad10[0x10];
+    f32 radius;
+    u8 pad24[4];
+    s32 x28;
+    s32 x2C;
+} L_002FAAA0;
+extern P_002FAAA0 D_L01_002BE820;
+extern L_002FAAA0 D_L01_001E2A40;
+extern u8 *D_L01_00221098[];
+void func_L01_002FAAA0(u8 *self, vu0_v4 *dir, vu0_v4 *axis) {
+    extern f32 func_003824E0(f32, f32);
+    extern void func_003C2880(void *);
+    extern f32 func_003C3EC8(u8 *position, f32 *out);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_L01_00468678(u8 *position, f32 *velocity, f32 size, f32 f13, s32 colour);
+    extern f32 func_0038CEA8(void *);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038D098(f32);
+    extern f32 func_0038D0B0(f32);
+    extern s32 func_00382498(s32, s32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_L01_004AAC98(s32, s32, u8 *, s32);
+    extern f32 func_003C3D30(void *, s32, f32, s32);
+    extern f32 func_L01_004463D0(void *);
+    extern f32 func_00382538(void);
+    extern void func_L01_0046CC58(vu0_v4 *, vu0_v4 *, s32, f32, f32, s32, s32, s32, f32);
+    extern s32 func_L01_00447470(s32, s32, f32);
+    extern void func_L01_00465738(vu0_v4 *, vu0_v4 *, s32, s32, f32, s32, s32, s32, s32, s32);
+    extern void func_L01_003006C0(void *, u8 *, s32, s32);
+    extern u8 *func_L01_002FB660(Q_002FAAA0 *, Q_002FAAA0 *, s32, s32, s32, s32);
+    P_002FAAA0 params;
+    vu0_v4 v60;
+    vu0_v4 v70;
+    vu0_v4 v80;
+    vu0_v4 v90;
+    vu0_v4 vA0;
+    vu0_v4 vB0;
+    s32 *vars = *(s32 **)(self + 0x68);
+    f32 scale;
+    f32 dist;
+    f32 ground;
+    f32 r;
+    f32 floor;
+    f32 size;
+    f32 mag;
+    f32 ang;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 m;
+    s32 colA;
+    s32 colB;
+    L_002FAAA0 *light;
+    s32 r8;
+    s32 g8;
+    s32 b8;
+
+    params = D_L01_002BE820;
+    scale = 2.0f;
+    func_0038CE20((f32 *)dir, (f32 *)dir, scale);
+    vec_sub_ba(&v60, &D_L01_001E2A40, self + 0x10);
+    dist = func_0038CEA8(&v60);
+    for (i = 0; i < 10; i++) {
+        *(Q_002FAAA0 *)&v90 = 0;
+        v90.x = func_003824E0(-1.0f, 1.0f);
+        v90.y = func_003824E0(-1.0f, 1.0f);
+        v80 = v90;
+        func_0038CF68(&v70, axis, func_0038CE68(&v80, axis));
+        vec_sub_ab(&v80, &v80, &v70);
+        func_0038CF68(&v70, axis, func_003824E0(0.0f, 1.0f));
+        vec_add_ab(&v80, &v80, &v70);
+        func_0038CF68(&v80, &v80, scale * func_003824E0(3.5f, 6.5f) * 0.020000001f);
+        vec_add_ab(&v80, &v80, dir);
+        func_L01_002FB660((Q_002FAAA0 *)(self + 0x10), (Q_002FAAA0 *)&v80, func_00382498(50, 100), 0, 1, 0);
+    }
+    *(f32 *)(self + 0x18) += 1.0f;
+    ground = func_003C3EC8(self + 0x10, (f32 *)&v80);
+    *(f32 *)(self + 0x18) -= 1.0f;
+    for (j = 0; j < 150; j++) {
+        *(Q_002FAAA0 *)&vA0 = 0;
+        vA0.x = func_003824E0(-1.0f, 1.0f);
+        vA0.y = func_003824E0(-1.0f, 1.0f);
+        vA0.z = func_003824E0(-0.5f, 2.0f);
+        v90 = vA0;
+        func_0038CF68(&v90, &v90, scale * func_003824E0(0.080000006f, 0.16000001f));
+        func_L01_00468678(self + 0x10, (f32 *)&v90, func_003824E0(0.05f, 0.1f) * 210000.0f, ground, 0x88A0A0A0);
+    }
+    *vars = 0;
+    self[0xBC] = 0;
+    func_L01_004AAC98(0x16, 0, self, 0);
+    v90 = *(vu0_v4 *)(self + 0x10);
+    v90.z += 3.5f;
+    ground = func_003C3D30(&v90, 0, 0.5f, 0);
+    floor = func_L01_004463D0(&v90);
+    r8 = 0x60;
+    g8 = 0x60;
+    b8 = 0x7F;
+    if (ground != floor && ground - floor < 1.2f) {
+        for (k = 0; k < 100; k++) {
+            *(Q_002FAAA0 *)&vB0 = 0;
+            vB0.x = func_003824E0(-0.015000001f, 0.015000001f);
+            vB0.y = func_003824E0(-0.015000001f, 0.015000001f);
+            vB0.z = func_003824E0(0.080000006f, 0.28000003f);
+            vA0 = vB0;
+            mag = func_003824E0(0.0f, 0.35f);
+            ang = func_00382538();
+            vB0.x = func_0038D098(ang) * mag;
+            vB0.y = func_0038D0B0(ang) * mag;
+            vB0.z = 0.0f;
+            vec_add_ba(&vB0, &vB0, self + 0x10);
+            vB0.z = ground + 0.5f;
+            vA0.z -= mag * 0.020000001f * 8.0f;
+            func_L01_0046CC58(&vB0, &vA0, 0, func_003824E0(0.25f, 1.0f), ground, (0x16 << 24) | (b8 << 16) | (g8 << 8) | r8, (b8 << 16) | (g8 << 8) | r8, 1, 0.008f);
+        }
+        for (m = 0; m < 20; m++) {
+            colA = func_L01_00447470(0x7F000000, 0x7F000000 | (b8 << 16) | (g8 << 8) | r8, func_003824E0(0.25f, 1.0f));
+            colB = func_L01_00447470(0, ((b8 / 2) << 16) | ((g8 / 2) << 8) | (r8 / 2), func_003824E0(0.5f, 1.0f));
+            vB0.x = func_003824E0(-3.0f, 3.0f);
+            vB0.y = func_003824E0(-3.0f, 3.0f);
+            vB0.z = func_003824E0(0.080000006f, 0.28000003f);
+            func_0038CF68(&vB0, &vB0, func_003824E0(1.5f, 3.0f) * 0.020000001f);
+            r = func_003824E0(3.0f, 6.0f);
+            vA0 = *(vu0_v4 *)(self + 0x10);
+            vB0.z = r * 0.020000001f;
+            vA0.z = ground;
+            size = func_003824E0(31500.002f, 52500.0f);
+            func_L01_00465738(&vA0, &vB0, colA, colB, size, func_00382498(0x4B, 0x7D), 1, *D_L01_00221098[11], -1, 0);
+        }
+    }
+    light = &D_L01_001E2A40;
+    if (dist < 20.0f) {
+        light->radius = 0.4f - dist * 0.0175f;
+    } else {
+        light->radius = 0.050000012f;
+    }
+    D_L01_001E2A40.x28 = 0x15;
+    D_L01_001E2A40.x2C = 0;
+    func_L01_003006C0(&params, self + 0x10, 0, 0);
+    func_003C2880(self);
+}
+/* localdecomp:end func_L01_002FAAA0 */
 
 /* localdecomp:start func_L01_002FB208 */
 typedef int Q_002FB208 __attribute__((mode(TI)));
@@ -782,7 +927,7 @@ extern s32 func_00382468(s32);
 extern f32 func_003C3EC8(u8 *position, f32 *out);
 extern void func_0038CE20(f32 *, f32 *, f32);
 extern f32 func_003824E0(f32, f32);
-extern void func_L01_00468678(u8 *position, f32 *velocity, s32 colour, f32 size, f32 f13);
+extern void func_L01_00468678(u8 *position, f32 *velocity, f32 size, f32 f13, s32 colour);
 
 /* One frame in four on average, a bubble (particle_spawn_bubble, type 0x22) at the moby, moving
  * at a quarter of the vector its vars start with; func_003C3EC8's result (it also writes the
@@ -798,7 +943,7 @@ void func_L01_002FB5A8(u8 *moby)
     }
     got = func_003C3EC8(moby + 0x10, velocity);
     func_0038CE20(velocity, (f32 *)vars, 0.25f);
-    func_L01_00468678(moby + 0x10, velocity, 0x88A0A0A0, func_003824E0(0.05f, 0.1f) * 210000.0f, got);
+    func_L01_00468678(moby + 0x10, velocity, func_003824E0(0.05f, 0.1f) * 210000.0f, got, 0x88A0A0A0);
 }
 /* localdecomp:end func_L01_002FB5A8 */
 

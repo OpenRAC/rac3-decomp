@@ -498,7 +498,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_003D2A18` | levels | Codex wave 10 near miss | near miss: 13 words differ with the file's flags |
 | `func_L01_003D52A8` | levels | Codex wave 10 near miss | near miss: 261 words differ with the file's flags |
 | `func_L01_003D59C0` | levels | Codex wave 10 near miss | near miss: 80 words differ with the file's flags |
-| `func_L01_003DBC80` | levels | Codex wave 10 near miss | near miss: 144 words differ with the file's flags k6 a5 (2026-11-26): 143 with func_L01_003303B8's real prototype too; the residue is global-alloc order (self s2 / vars s3 in retail; here self = pseudo 119, refs 32, live 320, priority 0.5, ahead of a refs-7 local). |
 | `func_L01_003DC780` | levels | Codex wave 10 near miss | near miss: 93 words differ with the file's flags k6 a5 (2026-11-26): D_001A71A0 must be the file's s32[] (the draft's u8 *[] no longer compiles in the file); with a divs_nops.txt row `func_L01_003DC780 0 1` (retail has one nop before the second div.s only) it is 50: $s2/$s3 swapped (obj/hero), and the VU0 copy block's lqc2/sqc2 interleave (retail stores temp2 from vf2, the helpers give vf1). |
 | `func_L01_003E3938` | levels | Codex wave 10 near miss | near miss: 336 words differ with the file's flags |
 | `func_L01_00469210` | levels | Codex wave 10 near miss | near miss: 53 words differ with the file's flags |
@@ -511,8 +510,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_004F0B78` | levels | Codex wave 10 near miss | near miss: does not compile in its file's context yet (declaration conflicts; the worker's note at the top has the details) |
 | `func_L01_004F45F0` | levels | Codex wave 10 near miss | near miss: 2 words differ with the file's flags |
 | `func_L01_004F5AE8` | levels | Codex wave 10 near miss | near miss: 95 words differ with the file's flags |
-| `func_L01_00512E68` | levels | Codex wave 10 near miss | near miss: 337 words differ with the file's flags |
-| `func_L01_005133E8` | levels | Codex wave 10 near miss | near miss: 166 words differ with the file's flags |
 | `func_L07_003B7408` | levels | Codex wave 10 near miss | near miss: 9 words differ with the file's flags |
 | `func_001222E8` | boot_elf | NTSC-U draft of `func_001222E8` (Claude wave E) | study aid (inline asm for EE instructions (move)); near miss: 31 words differ on NTSC-U with the file's flags (NTSC-U twin `func_001222E8`) |
 | `func_00123840` | boot_elf | NTSC-U draft of `func_00123840` (Claude wave E) | near miss (k6-a3, 2026-11-26): 9 raw rows with the file's flags (was 16): semaphore id read once into a local; left: the flags & 0x8000 temporary vs async copy and the reload of the semaphore id (draft header). Earlier: near miss: 16 words differ on NTSC-U with the file's flags (NTSC-U twin `func_00123840`) |
@@ -525,7 +522,6 @@ function NTSC-U has and src/us/ has no C for.
 | `func_L01_0031D188` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_00323080` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_0032EF88` | levels | NTSC-U draft of `func_L01_0032EA90` (Claude wave S/us) | flags: byte-exact on NTSC-U only with `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as -mvu0-use-vf0-vf2` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division`) (NTSC-U twin `func_L01_0032EA90`, whose code is not the PAL one) |
-| `func_L01_0033C030` | levels | NTSC-U draft of `func_L01_0033B940` (Claude wave K) | near miss on NTSC-U, no count recorded (NTSC-U twin `func_L01_0033B940`, whose code is not the PAL one) |
 | `func_L01_00367590` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`) |
 | `func_L01_00382500` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2 @ps2as` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division`) |
 | `func_L01_00385188` | levels | Claude wave S2/pal near miss | flags: byte-exact only with `-mvu0-use-vf0-vf2` (its file's line: `-O2 -G8 -fopt-stack -mno-check-zero-division`) |
