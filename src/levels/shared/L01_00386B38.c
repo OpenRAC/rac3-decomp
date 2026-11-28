@@ -44,7 +44,666 @@ typedef struct {
     s32 aiming_fire_wait;      /* 0x28BC */
 } Hero_38B280_0038B280;
 
-INCLUDE_ASM("asm/levels", func_L01_00386B38);
+/* localdecomp:start func_L01_00386B38 */
+#include "vu0.h"
+
+typedef struct {
+    f32 timer;          /* 0x00 */
+    s16 h4;             /* 0x04 */
+    s16 h6;             /* 0x06 */
+    s16 h8;             /* 0x08 */
+    s16 hA;             /* 0x0A */
+    s32 charge;         /* 0x0C */
+    vu0_v4 muzzle;      /* 0x10 */
+    f32 f20;            /* 0x20 */
+    f32 f24;            /* 0x24 */
+    f32 f28;            /* 0x28 */
+    f32 f2C;            /* 0x2C */
+    vu0_v4 aim_dir;     /* 0x30 */
+    s32 w40;            /* 0x40 */
+    f32 f44;            /* 0x44 */
+    s32 w48;            /* 0x48 */
+    s32 rumble;         /* 0x4C */
+    u8 pad50[0x10];     /* 0x50 */
+    s32 charged;        /* 0x60 */
+    s32 sfx;            /* 0x64 */
+    f32 f68;            /* 0x68 */
+} Vars_00386B38;
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;         /* 0x10 */
+    u8 phase;           /* 0x20 */
+    u8 pad21[0x68 - 0x21];
+    Vars_00386B38 *vars;/* 0x68 */
+    u8 pad6C[0x98 - 0x6C];
+    s32 w98;            /* 0x98 */
+    u8 pad9C[0xAA - 0x9C];
+    u16 hAA;            /* 0xAA */
+    u8 padAC[0xC0 - 0xAC];
+    vu0_v4 mat;         /* 0xC0 */
+    vu0_v4 fwd;         /* 0xD0 */
+} Moby_00386B38;
+
+typedef struct {
+    u8 pad0[0x6C0];
+    vu0_v4 v6C0;        /* 0x6C0 */
+    vu0_v4 v6D0;        /* 0x6D0 */
+    u8 pad6E0[0x10];
+    vu0_v4 aim;         /* 0x6F0 */
+    u8 pad700[0xBD8 - 0x700];
+    u8 *pBD8;           /* 0xBD8 */
+    u8 padBDC[0x1210 - 0xBDC];
+    s32 fire_button;    /* 0x1210 */
+    u8 pad1214[0x1220 - 0x1214];
+    s32 i1220;          /* 0x1220 */
+    u8 pad1224[0x1430 - 0x1224];
+    u8 *lockon_target;  /* 0x1430 */
+    u8 pad1434[0x16B0 - 0x1434];
+    s32 mode;           /* 0x16B0 */
+    u8 pad16B4[0x16D4 - 0x16B4];
+    s32 w16D4;          /* 0x16D4 */
+    s32 w16D8;          /* 0x16D8 */
+    u8 pad16DC[0x25C0 - 0x16DC];
+    u8 *camera;         /* 0x25C0 */
+    s32 state;          /* 0x25C4 */
+    u8 pad25C8[4];
+    s32 w25CC;          /* 0x25CC */
+    u8 pad25D0[0x25E9 - 0x25D0];
+    u8 b25E9;           /* 0x25E9 */
+    u8 pad25EA[3];
+    u8 no_firing;       /* 0x25ED */
+    u8 pad25EE[0x2874 - 0x25EE];
+    s16 h2874;          /* 0x2874 */
+    u8 pad2876[0x28BC - 0x2876];
+    s32 aiming_fire_wait; /* 0x28BC */
+} Hero_00386B38;
+
+typedef struct {
+    u8 pad0[0x24];
+    s32 w24;
+    u8 pad28[0x6C - 0x28];
+    f32 damage;
+    u8 pad70[0xF0 - 0x70];
+} WRow_00386B38;
+
+typedef struct {
+    u8 pad0[0x80];
+} Sfx_00386B38;
+
+typedef struct {
+    vu0_v4 vec;
+    Moby_00386B38 *owner;
+    s32 flags;
+    u8 b18;
+    u8 b19;
+    u16 h1A;
+    f32 dmg;
+    s32 w20;
+} Shot_00386B38;
+
+typedef struct {
+    s32 w0;
+    s32 w4;
+    s32 w8;
+    u32 cC;
+    u32 c10;
+    f32 f14;
+} Eff_00386B38;
+
+typedef struct {
+    u8 pad0[0x184];
+    u8 *p184;
+    u8 pad188[0x1A0 - 0x188];
+    u8 *p1A0;
+} Tex_00386B38;
+
+typedef struct {
+    u8 pad0[0x20];
+    f32 f20;
+    u8 pad24[4];
+    s32 w28;
+    s32 w2C;
+    f32 f30;
+    u8 pad34[4];
+    s32 w38;
+} Cam_00386B38;
+
+typedef struct {
+    vu0_v4 v0;
+    vu0_v4 v1;
+} Pair_00386B38;
+
+extern u8 D_001425E7[];
+extern s32 D_0014288C[];
+extern u8 D_00142A60[];
+extern Sfx_00386B38 D_001A30B0[];
+extern Hero_00386B38 D_001A4BE0_00386B38;
+extern u8 *D_001D52FC;
+extern s32 D_001D545C;
+extern u8 D_L01_001D66B0[8];
+extern s32 D_L01_001D7BE0;
+__asm__(".extern D_L01_001D7BE0, 4");
+extern s32 D_L01_001DDDB0;
+__asm__(".extern D_L01_001DDDB0, 4");
+extern s32 D_L01_001DDDB4;
+__asm__(".extern D_L01_001DDDB4, 4");
+extern s32 D_L01_001DDDB8;
+__asm__(".extern D_L01_001DDDB8, 4");
+extern s32 D_L01_001DDDBC;
+__asm__(".extern D_L01_001DDDBC, 4");
+extern s32 D_L01_001DDDC0;
+__asm__(".extern D_L01_001DDDC0, 4");
+extern s32 D_L01_001DDDE4;
+__asm__(".extern D_L01_001DDDE4, 4");
+extern s32 D_L01_001DDDEC;
+__asm__(".extern D_L01_001DDDEC, 4");
+extern f32 D_L01_001DDE04;
+__asm__(".extern D_L01_001DDE04, 4");
+extern f32 D_L01_001DDE08;
+__asm__(".extern D_L01_001DDE08, 4");
+extern f32 D_L01_001DDE10;
+__asm__(".extern D_L01_001DDE10, 4");
+extern f32 D_L01_001DDE14;
+__asm__(".extern D_L01_001DDE14, 4");
+extern f32 D_L01_001DDE20[2];
+__asm__(".extern D_L01_001DDE20, 8");
+extern s32 D_L01_001DFB40;
+extern s32 D_L01_001E1EA0;
+extern s32 D_L01_001E1EA4;
+extern s32 D_L01_001E1EBC;
+extern u8 D_L01_001E1ED0[8];
+extern u8 D_L01_001E1EE0[8];
+extern s32 D_L01_001E1EF0[1];
+extern s32 D_L01_001E1EF4[1];
+extern s32 D_L01_001E1F00;
+extern Pair_00386B38 D_L01_001E29E0_00386B38;
+extern Cam_00386B38 D_L01_001E2A40_00386B38;
+extern Moby_00386B38 *D_L01_001EEA80[];
+extern Tex_00386B38 D_L01_00221098_00386B38;
+extern u8 *D_L01_00221208[];
+extern vu0_v4 D_L01_002906E0[];
+extern u8 D_L01_002B3B90[];
+extern Eff_00386B38 D_L01_002B3C10_00386B38;
+extern WRow_00386B38 D_L01_002C5600_00386B38[];
+
+extern void func_L01_0034C9F0(void *, s32, void *);
+extern Moby_00386B38 *func_L01_003882A0_00386B38(void *, void *, void *, void *, f32);
+extern void func_L01_003884D8(u8 *);
+extern void func_L01_003886E8(u8 *);
+extern void func_L01_00388AC8_00386B38(void *, void *);
+extern void func_L01_00388EE0_00386B38(void *);
+extern void func_L01_00389798_00386B38(void *);
+extern void func_L01_003897E8(void);
+extern s32 func_L01_003F2058(void *, void *);
+extern void func_L01_003F2278(s32, void *);
+extern void func_L01_003F6F20(s32, void *, s32, s32, s32, s32, s32, f32, f32, f32, f32, f32, f32, f32);
+extern s32 func_003D4D00(void *, s32, void *, void *, f32);
+extern void func_L01_00404AD8(void *, void *);
+extern s32 func_0038CAD0(void *);
+extern s32 func_0038CB00(void *);
+extern void func_L01_0040E050_00386B38(void *);
+extern void func_0038CDF8(void *, void *, void *, f32);
+extern void func_0038CE20(void *, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern void func_003C2F58(void *, s32, void *);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern f32 func_003824E0(f32, f32);
+extern f32 func_L01_00443A18(f32, f32);
+extern f32 func_00382538(void);
+extern void func_00382580(void *, f32, f32);
+extern void func_L01_00446978(void *, void *);
+extern void func_L01_00457588(void *, void *, void *, f32);
+extern void func_L01_004735F0(void *, void *, s32, f32);
+extern s32 func_L01_004AA710(void *, s32);
+extern void func_003A4F28(s32);
+extern s32 func_003A52A0(s32, s32, void *);
+extern s32 func_L01_004CB1F0(f32, f32);
+extern void func_L01_004EA7D8(s32);
+extern void func_L01_005003D0(s32, s32);
+extern s32 func_L01_005118D0(s32, s32);
+extern s32 func_L01_005119E0(s32);
+
+void func_L01_00386B38(Moby_00386B38 *m) {
+    extern void func_L01_00404A10(void *, void *);
+    extern void func_0038D890(void *, void *, void *, f32);
+    extern u8 *func_L01_0046A610(void *, void *, s32, s32, u32, s32, f32, f32, f32, f32, f32);
+    extern u8 *func_L01_004713C8(void *, void *, s32, u32, s32, s32, s32, s32, f32, f32, f32);
+    Vars_00386B38 *v = m->vars;
+    union {
+        struct {
+            vu0_v4 v0;
+            vu0_v4 v10;
+            Shot_00386B38 shot1;
+        } a;
+        struct {
+            Shot_00386B38 shot0;
+            vu0_v4 v30;
+            vu0_v4 v40;
+        } b;
+    } u;
+    vu0_v4 v50;
+    vu0_v4 v60;
+    vu0_v4 v70;
+    Moby_00386B38 *hit_mobys[24];
+    s32 saved_w98[24];
+    vu0_v4 v140;
+    vu0_v4 v150;
+    s32 can_fire;
+    s32 fire_trig;
+
+    if (m->phase == 0) {
+        m->phase = 1;
+        v->h8 = 0;
+        v->hA = 0;
+        v->rumble = -1;
+        v->sfx = -1;
+        D_L01_001E1EA4 = 0;
+        D_00142A60[0x27] |= 0x22;
+    }
+    if (m->phase == 6) {
+        if (func_0038CB00(&v->h4) != 0) {
+            func_003A52A0(2, 0, m);
+            m->phase = 1;
+        }
+    }
+    func_0038D000(&v->muzzle, D_L01_001DDE20, &m->mat);
+    vec_add_ab(&v->muzzle, &v->muzzle, &m->pos);
+    if (D_001A4BE0_00386B38.state == 1) {
+        func_L01_005003D0(0x1D, 1);
+    }
+    func_L01_0040E050_00386B38(v);
+    if (D_001A4BE0_00386B38.state == 0x1D || D_001A4BE0_00386B38.mode != 0) {
+        s32 id = func_L01_004CB1F0(0.95f, 150.0f);
+        func_L01_003F6F20(0, m, id, 0, 0x5B, -1, 4, 1.0f, 1.5707963705062866f, 90.0f, 0.5f, 0.5f, 30.0f, 55.0f);
+    } else {
+        D_001A4BE0_00386B38.w16D4 = 0;
+        D_001A4BE0_00386B38.w16D8 = 0;
+    }
+    if (D_001A4BE0_00386B38.lockon_target != 0) {
+        D_001A4BE0_00386B38.pBD8 = D_001A4BE0_00386B38.lockon_target;
+    }
+    can_fire = 1;
+    if (D_001A4BE0_00386B38.state == 0x1D) {
+        if (func_0038CAD0(&D_001A4BE0_00386B38.aiming_fire_wait) == 0) {
+            can_fire = 0;
+        }
+    } else {
+        D_001A4BE0_00386B38.aiming_fire_wait = 0x21;
+    }
+
+    if ((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_00386B38.fire_button) && func_L01_005119E0(-1) != 0 && D_001A4BE0_00386B38.no_firing == 0) {
+        if (v->charge == 0) {
+            fire_trig = 1;
+        } else {
+            fire_trig = 0;
+        }
+        v->charge++;
+        if (func_L01_004AA710(m, v->sfx) == 0) {
+            v->sfx = func_003A52A0(3, 4, m);
+        }
+        if (v->charge >= 0x42) {
+            s32 i;
+            v->charged = 1;
+            for (i = 0; i < 2; i++) {
+                s32 life = (func_00382498(10, 20) * 5 + 2) / 6;
+                u8 *p = func_L01_004713C8(&v->muzzle, D_L01_001D66B0, life, 0x965050, func_00382498(-1, -3), 0x40, 0, 0,
+                                          84000.0f, 220499.984375f, -0.0004000000189989805f);
+                if (p != 0) {
+                    p[2] = D_L01_00221098_00386B38.p1A0[func_00382498(0, 3)];
+                }
+            }
+            u.b.shot0.vec = v->muzzle;
+            for (i = 0; i < 2; i++) {
+                s32 life;
+                u8 *p;
+                u.b.shot0.vec.x += func_003824E0(-0.2f, 0.2f);
+                u.b.shot0.vec.y += func_003824E0(-0.2f, 0.2f);
+                u.b.shot0.vec.z += func_003824E0(-0.2f, 0.2f);
+                life = (func_00382498(10, 20) * 5 + 2) / 6;
+                p = func_L01_004713C8(&u.b.shot0.vec, D_L01_001D66B0, life, 0x505096, func_00382498(-1, -3), 0x40, 0, 0,
+                                      84000.0f, 220499.984375f, -0.0004000000189989805f);
+                if (p != 0) {
+                    p[2] = D_L01_00221098_00386B38.p184[func_00382498(5, 7)];
+                }
+            }
+            func_00382580(&u.b.shot0.vec, 0.025f, 0.15f);
+            vec_add_ab(&u.b.shot0.vec, &u.b.shot0.vec, &v->muzzle);
+            vec_sub_ab(&u.a.v10, &v->muzzle, &u.b.shot0.vec);
+            func_0038CF68(&u.a.v10, &u.a.v10, 0.015000000596046448f);
+            func_L01_004735F0(&u.b.shot0.vec, &u.a.v10, 12, 1.0f);
+            if (func_00382468(2) != 0) {
+                s32 r = (s32)func_L01_00443A18(1.0f, -1.0f);
+                u8 *p = func_L01_0046A610(&v->muzzle, D_L01_001D66B0, 12, 6, 0x904020, r, 10.0f, 500.0f, 1.0f, 0.0f, 0.0f);
+                if (p != 0) {
+                    p[2] = D_L01_00221208[0][1];
+                }
+            }
+        } else {
+            s32 i;
+            for (i = 0; i < 2; i++) {
+                s32 life = (func_00382498(10, 20) * 5 + 2) / 6;
+                u32 col = ((0xFF - v->charge) << 16) | ((v->charge + 0x80) << 8) | 0x20;
+                u8 *p = func_L01_004713C8(&v->muzzle, D_L01_001D66B0, life, col, func_00382498(-1, -3), v->charge / 3, 0, 0,
+                                          21000.0f, 115500.0f, -0.0004000000189989805f);
+                if (p != 0) {
+                    p[2] = D_L01_00221098_00386B38.p1A0[func_00382498(0, 3)];
+                }
+            }
+        }
+    } else {
+        if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_00386B38.fire_button) && func_L01_005119E0(-1) == 0) {
+            func_003A52A0(1, 0, m);
+        }
+        fire_trig = (v->charge >= 0x42);
+        v->charge = 0;
+        if (v->sfx != -1) {
+            u8 *sx = (u8 *)&D_001A30B0[v->sfx];
+            if (*(void **)(sx + 0xDC) == m && sx[0xD0] != 0) {
+                func_003A4F28(v->sfx);
+            }
+        }
+        v->sfx = -1;
+    }
+
+    if (fire_trig != 0 && m->phase == 1 && v->timer == 0.0f && D_001A4BE0_00386B38.i1220 >= 0x13 && can_fire != 0) {
+        if (func_L01_005119E0(-1) != 0) {
+            if (D_001A4BE0_00386B38.camera[0x43] == (D_L01_002C5600_00386B38 + D_001425E7[0])->w24 || D_001A4BE0_00386B38.w25CC != 0 || D_001A4BE0_00386B38.h2874 != 0) {
+                v->w48 = 1;
+                v->h6 = (D_L01_001DDDB0 * 5 + 2) / 6;
+                v->h8 = (D_L01_001DDDB8 * 5 + 2) / 6;
+                v->hA = (D_L01_001DDDC0 * 5 + 2) / 6;
+            } else {
+                v->h6 = 2;
+                v->w48 = 0;
+                v->h8 = (D_L01_001DDDB4 * 5 + 2) / 6;
+                v->hA = (D_L01_001DDDBC * 5 + 2) / 6;
+            }
+            if (v->charged != 0) {
+                s32 i;
+                for (i = 0; i < 10; i++) {
+                    func_L01_005118D0(-1, 1);
+                }
+            } else {
+                func_L01_005118D0(-1, 1);
+            }
+            D_L01_001E1F00 = 1;
+            if (v->charged != 0) {
+                D_L01_001E1EF0[0] = 1;
+                D_L01_001E1EF4[0] = D_L01_001DFB40;
+                D_L01_002B3C10_00386B38.cC = 0x7F804020;
+                D_L01_002B3C10_00386B38.c10 = 0x7FFF4020;
+                D_L01_002B3C10_00386B38.w0 = 10;
+                D_L01_002B3C10_00386B38.w4 = 10;
+                D_L01_002B3C10_00386B38.f14 = 1.0f;
+            }
+            func_L01_004EA7D8(-1);
+            v->rumble = func_L01_003F2058(D_L01_002B3B90, 0);
+            m->phase = 2;
+            v->f68 = func_00382538();
+            if (v->charged != 0) {
+                D_L01_001E1EA4 = 0x19;
+                D_L01_001E1EBC = 0;
+                D_L01_001DDE04 = 1.0f;
+                D_L01_001DDE08 = 1.0f;
+                D_L01_001E1EA0 = (D_L01_001DDDEC * 5 + 2) / 6;
+            } else {
+                D_L01_001DDE10 = 1.0f;
+                D_L01_001E1EBC = 0x11;
+                D_L01_001DDE14 = 1.0f;
+                D_L01_001E1EA0 = 5;
+                D_L01_001E1EA4 = 0;
+            }
+            v->f20 = 1.0f / (f32)v->h8;
+            v->f24 = 1.0f / (f32)v->hA;
+            v->f28 = func_00382538();
+            v->f2C = func_00382538();
+            v->w40 = (D_L01_001DDDE4 * 5 + 2) / 6;
+            v->f44 = 1.0f / (f32)v->w40;
+        } else {
+            if (v->charged != 0 && D_0014288C[0] < 10) {
+                v->charged = 0;
+            }
+            if ((*(s32 *)(D_001D52FC + 0x1A4) & D_001A4BE0_00386B38.fire_button) || D_L01_001E1F00 == 1) {
+                func_003A52A0(3, 0, m);
+                D_L01_001E1F00 = 0;
+            }
+        }
+        if (!(((*(s32 *)(D_001D52FC + 0x1A0) & D_001A4BE0_00386B38.fire_button) || ((*(s32 *)(D_001D52FC + 0x1A0) & 8) && D_001A4BE0_00386B38.state == 0x1D)) &&
+              func_L01_005119E0(-1) != 0 && D_001A4BE0_00386B38.b25E9 != 0) &&
+            v->rumble >= 0) {
+            func_L01_003F2278(v->rumble, 0);
+            v->rumble = -1;
+        }
+    }
+
+    if (D_L01_001E1EA4 > 0) {
+        s32 i;
+        func_00382580(&u.a.shot1.vec, 0.3f, 0.40000003576278687f);
+        u.b.shot0.vec.w = 5627.925f;
+        u.a.shot1.flags = 0x210000;
+        u.a.shot1.w20 = 1;
+        u.a.shot1.b18 = 3;
+        u.a.shot1.b19 = 2;
+        u.a.shot1.h1A = m->hAA;
+        u.a.shot1.dmg = (D_L01_002C5600_00386B38 + D_001425E7[0])->damage * 10.0f;
+        u.a.shot1.owner = m;
+        func_0038CE20(&u.a.v10, &m->fwd, -1.35f);
+        vec_add_ab(&u.a.v10, &u.a.v10, &m->pos);
+        func_0038CE20(&v50, &m->mat, 0.275f);
+        vec_add_ab(&u.a.v10, &u.a.v10, &v50);
+        for (i = 0; i < 20; i++) {
+            v60 = v->muzzle;
+            func_0038CE20(&v70, &D_001A4BE0_00386B38.aim, (f32)(i + 1) * 2.0f);
+            vec_add_ab(&D_L01_002906E0[i], &v70, &v60);
+            func_003D4D00(&D_L01_002906E0[i], 1, D_001A4BE0_00386B38.camera, &u.a.shot1, 1.5f);
+        }
+    }
+    if (D_L01_001E1EA4 > 0 && D_L01_001E1EA4 < 0x19) {
+        func_L01_00404A10(func_L01_003897E8, m);
+    }
+    if (D_L01_001E1EA4 == 8) {
+        D_L01_001E1EF0[0] = 2;
+        D_L01_001E1EF4[0] = D_L01_001DFB40;
+    }
+    if (D_L01_001E1EA4 != 0) {
+        s32 i, j;
+        func_003C2F58(m, 0, &u.a.v10);
+        *(vu0_q *)D_L01_001E1ED0 = *(vu0_q *)&u.a.v10;
+        if (D_001A4BE0_00386B38.h2874 != 0) {
+            func_0038CE20(&u.b.shot0.vec, &m->fwd, -10.0f);
+        } else if (D_001A4BE0_00386B38.mode == 1) {
+            func_0038CE20(&u.b.shot0.vec, &D_L01_001E29E0_00386B38.v0, 40.0f);
+        } else {
+            func_0038CE20(&u.b.shot0.vec, &D_001A4BE0_00386B38.aim, 40.0f);
+        }
+        vec_add_ab((vu0_v4 *)D_L01_001E1EE0, &u.a.v10, &u.b.shot0.vec);
+        for (j = 0; j < 5; j++) {
+            s32 life;
+            u8 *p;
+            func_0038CDF8(&u.a.shot1.vec, D_L01_001E1ED0, (vu0_v4 *)D_L01_001E1EE0, func_003824E0(0.0f, 1.0f));
+            life = (func_00382498(10, 18) * 5 + 2) / 6;
+            p = func_L01_004713C8(&u.a.shot1.vec, D_L01_001D66B0, life, 0x804020, func_00382498(-1, -3), 0x50, 0, 0,
+                                  168000.0f, 315000.0f, -0.0004000000189989805f);
+            if (p != 0) {
+                p[2] = D_L01_00221098_00386B38.p1A0[func_00382498(0, 3)];
+            }
+        }
+        for (i = 0; i < 1; i++) {
+            s32 life = (func_00382498(10, 18) * 5 + 2) / 6;
+            u8 *p = func_L01_004713C8(D_L01_001E1ED0, D_L01_001D66B0, life, 0x804020, func_00382498(-1, -3), 0x50, 0, 0,
+                                      63000.00390625f, 210000.0f, -0.0004000000189989805f);
+            if (p != 0) {
+                p[2] = D_L01_00221098_00386B38.p1A0[func_00382498(0, 3)];
+            }
+        }
+    }
+    if (v->h6 == 0) {
+        func_0038CB00(&v->hA);
+        func_0038CB00(&v->h8);
+        func_0038CAD0(&v->w40);
+        if (v->h8 != 0 || v->hA != 0) {
+            func_L01_00404A10(func_L01_00388EE0_00386B38, m);
+        }
+    }
+    if (func_0038CAD0(&D_L01_001E1EA0) == 0) {
+        func_L01_00404AD8(func_L01_00389798_00386B38, m);
+    }
+    if (func_0038CAD0(&D_L01_001E1EA4) == 0) {
+        if (D_L01_001E1EA4 >= 0xD) {
+            D_L01_001DDE04 += 0.1f;
+            D_L01_001DDE08 += 0.1f;
+        } else {
+            D_L01_001DDE04 -= 0.125f;
+            D_L01_001DDE08 -= 0.075f;
+        }
+        if (D_L01_001E1EA4 < 0x1A) {
+            func_L01_00404A10(func_L01_003897E8, m);
+        }
+        func_L01_00404A10(func_L01_003886E8, m);
+    }
+    if (func_0038CAD0(&D_L01_001E1EBC) == 0) {
+        if (D_L01_001E1EBC >= 0xD) {
+            D_L01_001DDE10 += 0.5f;
+            D_L01_001DDE14 += 0.3f;
+        } else {
+            D_L01_001DDE10 -= 0.3f;
+            D_L01_001DDE14 -= 0.2f;
+        }
+        func_L01_00404A10(func_L01_003884D8, m);
+    }
+
+    if (m->phase == 2 || m->phase == 3) {
+        if (func_0038CB00(&v->h6) != 0) {
+            if (D_001A4BE0_00386B38.pBD8 != 0) {
+                func_L01_00457588(D_001A4BE0_00386B38.pBD8, &v->muzzle, &D_001A4BE0_00386B38.aim, 1.0f);
+                D_001A4BE0_00386B38.v6C0 = D_001A4BE0_00386B38.aim;
+            }
+            if (m->phase == 2) {
+                m->phase = 3;
+                func_L01_00388AC8_00386B38(m, &v->muzzle);
+                v->aim_dir = D_001A4BE0_00386B38.aim;
+                func_L01_00404A10(func_L01_00388EE0_00386B38, m);
+                if (v->charged != 0) {
+                    func_003A52A0(0, 0, m);
+                } else {
+                    func_003A52A0(4, 0, m);
+                }
+                if (v->w48 != 0) {
+                    D_L01_001E2A40_00386B38.w2C = 0;
+                    D_L01_001E2A40_00386B38.f20 = 0.12f;
+                    D_L01_001E2A40_00386B38.w28 = 0x19;
+                    D_L01_001E2A40_00386B38.w38 = 0x19;
+                    D_L01_001E2A40_00386B38.f30 = 0.12f;
+                } else {
+                    D_L01_001E2A40_00386B38.w2C = 0;
+                    D_L01_001E2A40_00386B38.f20 = 0.06f;
+                    D_L01_001E2A40_00386B38.w28 = 0x19;
+                    D_L01_001E2A40_00386B38.w38 = 0x19;
+                    D_L01_001E2A40_00386B38.f30 = 0.06f;
+                }
+            } else {
+                m->phase = 6;
+                v->h4 = 0x11;
+                if (v->charged == 0) {
+                    s32 i, count;
+                    u.b.shot0.flags = 0x410000;
+                    u.b.shot0.w20 = 1;
+                    u.b.shot0.b18 = 3;
+                    u.b.shot0.b19 = 2;
+                    u.b.shot0.h1A = m->hAA;
+                    u.b.shot0.dmg = (D_L01_002C5600_00386B38 + D_001425E7[0])->damage;
+                    u.b.shot0.owner = m;
+                    for (i = 0; i < 4 && (!((D_L01_001D7BE0 >= 0 && D_L01_001D7BE0 < 9) || D_001D545C == 0x1C || D_001D545C == 0x16) || i < 1); i++) {
+                        s32 n, j;
+                        func_0038CE20(&u.b.v30, &m->fwd, (f32)(i + 1) * -1.35f);
+                        vec_add_ab(&u.b.v30, &u.b.v30, &m->pos);
+                        func_0038CE20(&u.b.v40, &m->mat, (f32)(i + 1) * -0.175f);
+                        vec_add_ab(&u.b.v30, &u.b.v30, &u.b.v40);
+                        n = func_003D4D00(&u.b.v30, 1, D_001A4BE0_00386B38.camera, 0, (f32)i * 0.25f + 1.5f);
+                        for (j = 0; j < n; j++) {
+                            if (D_L01_001EEA80[j] != (Moby_00386B38 *)D_001A4BE0_00386B38.camera) {
+                                func_0038CE20(&u.b.shot0.vec, &m->fwd, -1.75f);
+                                u.b.shot0.vec.w = 5627.925f;
+                                func_L01_00446978(D_L01_001EEA80[j], &u.b.shot0);
+                                func_L01_0034C9F0(D_L01_001EEA80[j], 39, m);
+                            }
+                        }
+                    }
+                    if (v->charged == 0) {
+                        s32 k, r, q, p_i;
+                        v50 = v->muzzle;
+                        if (D_001A4BE0_00386B38.h2874 == 1) {
+                            func_0038CE20(&u.b.v30, &m->fwd, -1.0f);
+                            func_0038CE20(&u.b.v40, &m->mat, -1.0f);
+                        } else if (D_001A4BE0_00386B38.mode == 1) {
+                            u.b.v30 = D_L01_001E29E0_00386B38.v0;
+                            u.b.v40 = D_L01_001E29E0_00386B38.v1;
+                        } else {
+                            u.b.v30 = D_001A4BE0_00386B38.v6C0;
+                            u.b.v40 = D_001A4BE0_00386B38.v6D0;
+                        }
+                        v->aim_dir = u.b.v30;
+                        count = 0;
+                        for (k = 0; k < 23; k++) {
+                            hit_mobys[k] = 0;
+                            saved_w98[k] = 0;
+                        }
+                        for (r = 0; r < 23; r++) {
+                            f32 ang;
+                            Moby_00386B38 *hit;
+                            func_0038CF68(&v70, &u.b.v40, 1.0f);
+                            func_0038CF68(&v60, &v->aim_dir, 1.0f);
+                            ang = func_003824E0(0.0f, -17.0f) * 0.01745329238474369f;
+                            func_0038D890(&v140, &v60, &v70, ang);
+                            func_0038D890(&v140, &v140, &v60, func_003824E0(-170.0f, 170.0f) * 0.01745329238474369f);
+                            func_0038CE20(&v140, &v140, 32.0f);
+                            vec_add_ab(&v150, &v50, &v140);
+                            hit = func_L01_003882A0_00386B38(m, &v50, &v150, &u.b.shot0, ang);
+                            if (hit != 0) {
+                                saved_w98[count] = hit->w98;
+                                hit_mobys[count] = hit;
+                                hit->w98 = 0;
+                                count++;
+                            }
+                        }
+                        for (q = 0; q < 3; q++) {
+                            Moby_00386B38 *hit;
+                            func_0038CF68(&v150, &u.b.v40, 1.0f);
+                            func_0038CF68(&v140, &v->aim_dir, 1.0f);
+                            func_0038D890(&v60, &v140, &v150, -0.2617993950843811f);
+                            func_0038D890(&v60, &v60, &v140, (f32)q * 0.3490658402442932f + -0.3490658402442932f);
+                            func_0038CE20(&v60, &v60, 32.0f);
+                            vec_add_ab(&v70, &v50, &v60);
+                            hit = func_L01_003882A0_00386B38(m, &v50, &v70, &u.b.shot0, -0.2617993950843811f);
+                            if (hit != 0) {
+                                saved_w98[count] = hit->w98;
+                                hit_mobys[count] = hit;
+                                hit->w98 = 0;
+                                count++;
+                            }
+                        }
+                        for (p_i = 0; p_i < count; p_i++) {
+                            hit_mobys[p_i]->w98 = saved_w98[p_i];
+                        }
+                    }
+                }
+                v->timer = 0.0f;
+                v->charged = 0;
+                if (v->sfx != -1) {
+                    u8 *sx = (u8 *)&D_001A30B0[v->sfx];
+                    if (*(void **)(sx + 0xDC) == m && sx[0xD0] != 0) {
+                        func_003A4F28(v->sfx);
+                    }
+                }
+                v->sfx = -1;
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00386B38 */
 
 /* localdecomp:start func_L01_003882A0 */
 #include "vu0.h"

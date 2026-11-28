@@ -57,5 +57,3 @@ M_450010 *func_L01_00450010(Vec4_450010 *pos, s32 enemies_only, f32 ref_yaw, f32
     return best;
 }
 /* localdecomp:end func_L01_00450010 */
-
-INCLUDE_ASM("asm/levels", func_L01_004501E8);
