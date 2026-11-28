@@ -175,6 +175,8 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
     only where retail has the instruction. Since 2026-11-19 also `CpuGetGp()`, `CpuGp()` and
     `CpuSwapGp()` for reading and switching `$gp` the three ways retail does (the maintainer).
+    Since 2026-11-28 also `CpuGetCount()`, the `mfc0` of COP0 Count (the cycle counter) that
+    the multiplayer levels' `func_L39_0057CEB0` reads twice to time its work (the maintainer).
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.

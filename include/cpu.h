@@ -27,4 +27,16 @@ static __inline__ void *CpuSwapGp(void *p) {
     return old;
 }
 
+/* COP0 Count ($9), the EE's cycle counter, as `mfc0 rd, Count` (the maintainer, 2026-11-28). The
+ * compiler cannot read a COP0 register; retail reads Count in compiled code to time a piece of
+ * work: func_L39_0057CEB0 (multiplayer levels 39-53) reads it on entry, keeps the value in a stack
+ * slot across its calls, reads it again at the end and stores the difference, each read scheduled
+ * between ordinary compiled code. `volatile`: every read is a new value, so two reads must stay two
+ * and keep their place. */
+static __inline__ unsigned int CpuGetCount(void) {
+    unsigned int count;
+    __asm__ __volatile__("mfc0 %0, $9" : "=r"(count));
+    return count;
+}
+
 #endif /* CPU_H */
