@@ -7705,7 +7705,6 @@
 #define func_L39_00518470 func_L39_00518670
 #define func_L39_00518728 func_L39_00518928
 #define func_L39_00518838 func_L39_00518A38
-#define func_L39_00518860 func_L01_003EC898
 #define func_L39_00518878 func_L39_00518A78
 #define func_L39_00518A30 func_L39_00518C30
 #define func_L39_00518C38 func_L39_00518E38

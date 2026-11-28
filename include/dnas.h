@@ -103,7 +103,7 @@
  *   exactly this sequence, on PAL and on NTSC-U (the same sites; the texts differ only in
  *   `eu`/`us` in the server names); level 39 has it nowhere outside a block. The two DER
  *   certificate blocks (func_L39_004B8208, func_L39_004BAA78) put 12 binary tables in the same
- *   envelope; they are not text and not covered (one of them has no NUL at all);
+ *   envelope; they are not text (one of them has no NUL at all) and are DNAS_BYTES's (below);
  * - the address load is asm, not the compiler's: ee-gcc 2.96 writes its own as `%hi`/`%lo` and
  *   splits and schedules them (lifting the `lui` into the prologue, filling a following `jal`'s
  *   delay slot with the `addiu`), while retail's text loads are never split, and 21 of the 22
@@ -132,8 +132,8 @@
  * decrypted block (tools/dnas_blocks.py --show) has this sequence, with exactly one string
  * literal that is the text retail stores there: no concatenated literals (the assembler would
  * store each part with its own NUL), no macro name (it is stringized, not expanded), no `%` (a
- * format character in an asm with operands; no retail text has one). Text only: never for
- * binary data; the two DER certificate blocks stay out. */
+ * format character in an asm with operands; no retail text has one). Text only: binary data is
+ * DNAS_BYTES's. */
 #define DNAS_STRING(text) \
     ({ \
         char *dnas_s; \
@@ -150,5 +150,53 @@
             "\t.set\tpop" : "=r" (dnas_s)); \
         dnas_s; \
     })
+
+/* A binary table inside a block: DNAS_STRING's envelope around bytes instead of text, its address
+ * loaded into `var`. The two certificate blocks (func_L39_004B8208, func_L39_004BAA78) keep the 12
+ * DER tables their code hands to OpenSSL's decoders where they are used, so that they are encrypted
+ * with the code: a `b` over the table with a `nop` in its delay slot, two zero words, the table's
+ * bytes, zero bytes up to the next 8-byte boundary, a `nop` (the `b`'s target), then an adjacent
+ * `lui`/`addiu` of the table's address.
+ *
+ *     DNAS_BYTES(t, 0x30, 0x4C, 0x31, 0x0B, ...);
+ *     D_L39_004646F8[1].name = t;
+ *
+ * The evidence (2026-11-28; both discs' level 39, both blocks decrypted with tools/dnas_blocks.py
+ * --show; the maintainer allowed the form on 2026-11-28):
+ * - the 12 sites are the 77 - 65 of the survey in docs/build/dnas.md ("Text inside a block") that
+ *   are not text: a `b` inside a decrypted block over words whose address the adjacent
+ *   `lui`/`addiu` after them loads. Each
+ *   holds one DER object of the length its own header gives (X.509 names of 78 to 172 bytes in
+ *   func_L39_004B8208, RSA public keys of 94 to 294 bytes in func_L39_004BAA78), then zeros up to
+ *   the boundary only: no terminator belongs to a table, and the 172-byte one ends on the boundary
+ *   with no zero byte after it, which `.asciz` cannot give. NTSC-U stores the same 12 tables;
+ * - the envelope is DNAS_STRING's word for word, so its parts are asm for the same reasons: no C
+ *   data is stored inline behind a branch (a C array is the file's data, outside the block, which
+ *   would then be shorter than retail's), and the address load is an adjacent `lui`/`addiu`;
+ * - the address goes into a variable, not into a value of the macro's own: each table is stored
+ *   right after it is loaded, and retail loads all six of a function into one register ($v1 in
+ *   func_L39_004B8208, $v0 in func_L39_004BAA78). A value per site (DNAS_STRING's form) is a new
+ *   short-lived register each time, and the allocator gives one born right after another dies a
+ *   different register (local-alloc keeps them apart for the second scheduling pass): tables 0, 2
+ *   and 4 of func_L39_004B8208 came out in $a0 (9 diff). One variable written six times is one
+ *   register for all six, as retail has it; the function's own code around it is unchanged;
+ * - func_L39_004B8208 and func_L39_004BAA78 written with it check MATCH on both discs and build to
+ *   MATCH in level 39.
+ * The arguments are the bytes, as integer constants from 0 to 0xFF, nothing else (each one a `.byte`
+ * value). Use it only between a block's DNAS_BEGIN and its DNAS_END/DNAS_END_ONCE, only where the
+ * decrypted block has this sequence around binary data, with exactly the bytes retail stores there
+ * (the DER object, not its padding). Text is DNAS_STRING's, never DNAS_BYTES's. */
+#define DNAS_BYTES(var, ...) \
+    __asm__ volatile ( \
+        ".set\tpush\n" \
+        "\t.set\tnoreorder\n" \
+        "\tb\t9f\n" \
+        "\tnop\n" \
+        "\t.word\t0,0\n" \
+        "8:\t.byte\t" #__VA_ARGS__ "\n" \
+        "\t.align\t3\n" \
+        "9:\tnop\n" \
+        "\tla\t%0,8b\n" \
+        "\t.set\tpop" : "=r" (var))
 
 #endif

@@ -163,8 +163,12 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     of the text's address (all 65 text sites of the 30 blocks with text, on both discs; never
     outside a block). Only between a block's `DNAS_BEGIN` and its `DNAS_END`/`DNAS_END_ONCE`,
     only where the decrypted block has that sequence, with exactly one string literal holding
-    retail's text (no concatenated literals, no `%`). Text only: never for binary data (the two
-    DER certificate blocks are not covered) and never outside level 39's protected blocks.
+    retail's text (no concatenated literals, no `%`). Text only, and never outside level 39's
+    protected blocks. `DNAS_BYTES(var, bytes...)`, in the same header (the maintainer,
+    2026-11-28), is the same envelope around a binary table, its address loaded into `var`: the
+    12 DER tables of the two certificate blocks (`func_L39_004B8208`, `func_L39_004BAA78`). The
+    same limits, with byte constants (0 to 0xFF) for retail's DER object instead of the literal
+    (docs/build/dnas.md, "Binary tables inside a block").
   - **the CPU helpers in `include/cpu.h`** (since 2026-11-15): `CpuSync()`, `CpuSyncP()`,
     `CpuDisableInt()` and `CpuEnableInt()`, for the `sync`, `sync.p`, `di` and `ei` that Sony's
     library code has in compiled functions and the compiler cannot emit (rac1-decomp and

@@ -537,6 +537,74 @@ class SourceTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8", errors="replace")
                 self.assertEqual(self.string_problems(path, text), [])
 
+    BYTES = re.compile(r"\bDNAS_BYTES\b")
+    BYTES_CALL = re.compile(r"DNAS_BYTES\(\s*([A-Za-z_]\w*)\s*,([^()]*)\)")
+    BYTE = re.compile(r"(?:0[xX][0-9A-Fa-f]{1,2}|[0-9]{1,3})")
+
+    def bytes_problems(self, path, text):
+        """What is wrong with the DNAS_BYTES uses of one source file (AGENTS.md, include/dnas.h): the
+        same places as DNAS_STRING (a level 39 source, inside a localdecomp block, between that
+        function's DNAS_BEGIN and DNAS_END/DNAS_END_ONCE), a variable first, then only byte constants
+        (0 to 0xFF), at least one."""
+        out = []
+        uses = [m.start() for m in self.BYTES.finditer(text)]
+        if not uses:
+            return out
+        p = Path(path)
+        if p.parent != self.LEVEL39 and not (p.parent == self.US_LEVELS and p.name.startswith("func_L39_")):
+            out.append("%s: DNAS_BYTES outside level 39's sources" % path)
+        bodies = [(m.group(1), m.start(2), m.group(2)) for m in self.C_BLOCK.finditer(text)]
+        for at in uses:
+            where = [(name, start, body) for name, start, body in bodies if start <= at < start + len(body)]
+            if not where:
+                out.append("%s: DNAS_BYTES outside a localdecomp block" % path)
+                continue
+            name, start, body = where[0]
+            rel = at - start
+            spans = []
+            for b in self.BEGIN.finditer(body):
+                for e in self.END.finditer(body, b.end()):
+                    if (e.group(2), e.group(3)) == (b.group(1), b.group(2)):
+                        spans.append((b.end(), e.start()))
+                        break
+            if not any(a <= rel < z for a, z in spans):
+                out.append("%s: DNAS_BYTES outside a protected block of %s" % (path, name))
+            m = self.BYTES_CALL.match(text, at)
+            values = [v.strip() for v in m.group(2).split(",")] if m else []
+            if not m or not values or not all(self.BYTE.fullmatch(v) and int(v, 0) <= 0xFF for v in values):
+                out.append("%s: DNAS_BYTES in %s does not take a variable and byte constants" % (path, name))
+        return out
+
+    def test_bytes_only_inside_a_block(self):
+        seen = 0
+        for top in ("src", "include"):
+            for path in sorted((ROOT / top).rglob("*.[ch]")):
+                if path.name == "dnas.h":
+                    continue
+                text = path.read_text(encoding="utf-8", errors="replace")
+                seen += len(self.BYTES.findall(text))
+                self.assertEqual(self.bytes_problems(path, text), [])
+        self.assertIn(seen, (0, 12))
+
+    def test_the_bytes_check_catches_misuse(self):
+        f = self.LEVEL39 / "L39_00400000.c"
+        good = ("/* localdecomp:start func_L39_00400000 */\nvoid func_L39_00400000(void) {\n"
+                "    DNAS_BEGIN(func_L39_00400000, 0, func_L39_004BD350);\n    %s;\n"
+                "    DNAS_END_ONCE(func_L39_00400000, 0);\n    %s;\n}\n"
+                "/* localdecomp:end func_L39_00400000 */\n")
+        self.assertEqual(self.bytes_problems(f, good % ("DNAS_BYTES(t, 0x30, 0x4C,\n 0xFF, 7)", "0")), [])
+        for inner, outer, why in (("DNAS_BYTES(t, 0x100)", "0", "byte constants"),
+                                  ("DNAS_BYTES(t, 1 + 2)", "0", "byte constants"),
+                                  ("DNAS_BYTES(t, \"ab\")", "0", "byte constants"),
+                                  ("DNAS_BYTES(0x30, 0x4C)", "0", "byte constants"),
+                                  ("0", "DNAS_BYTES(t, 0x30)", "outside a protected block")):
+            (problem,) = self.bytes_problems(f, good % (inner, outer))
+            self.assertIn(why, problem)
+        (problem,) = self.bytes_problems(ROOT / "src" / "levels" / "shared" / "x.c", good % ("DNAS_BYTES(t, 1)", "0"))
+        self.assertIn("outside level 39's sources", problem)
+        (problem,) = self.bytes_problems(f, "DNAS_BYTES(t, 1);\n")
+        self.assertIn("outside a localdecomp block", problem)
+
     def test_the_text_check_catches_misuse(self):
         f = self.LEVEL39 / "L39_00400000.c"
         good = ("/* localdecomp:start func_L39_00400000 */\nvoid func_L39_00400000(void) {\n"
@@ -567,11 +635,12 @@ class SourceTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8", errors="replace")
                 if path.name == "dnas.h":
                     self.assertEqual(re.findall(r"#define (DNAS_\w+)\(", text),
-                                     ["DNAS_BEGIN", "DNAS_END_ONCE", "DNAS_END", "DNAS_STRING"])
+                                     ["DNAS_BEGIN", "DNAS_END_ONCE", "DNAS_END", "DNAS_STRING", "DNAS_BYTES"])
                     continue
                 self.assertNotRegex(text, r"#\s*define\s+DNAS_", str(path))
                 self.assertNotIn("dnas_blk_", text, str(path))
                 self.assertNotRegex(text, r"\.asciz", str(path))
+                self.assertNotRegex(text, r"\.byte\b", str(path))
 
 
 if __name__ == "__main__":

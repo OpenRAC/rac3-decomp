@@ -199,6 +199,9 @@ blocks only.
      give it a local first (`name = DNAS_STRING(" in _sce_dnas_free():"); D_L39_003E43EC =
      name;`). Read the text from the words (little-endian, up to the first zero byte). One
      string literal, text only: "Text inside a block" below has its limits.
+   - Binary data stored the same way (the two certificate blocks' DER tables) is
+     `DNAS_BYTES(var, bytes...)`, which loads the table's address into a variable: "Binary
+     tables inside a block" below.
    - A branch out of a block (an early exit to after the second record) is a `goto` to a label
      after `DNAS_END`/`DNAS_END_ONCE`; the allocator's functions end with their unlock as
      `do { func_00126280(D_L39_003E4398); } while (0);`, which keeps it a call (2.96 makes a
@@ -291,13 +294,54 @@ block, and the object has no data section of its own ([levels.md](levels.md)'s l
   C escapes such as `\r\n` are fine;
 - text only: never binary data. The two DER blocks' tables have the same envelope but are not
   text, and one (the 172 bytes at PAL `0x4B839C`) has no NUL at all, which `.asciz` cannot give.
+  They are `DNAS_BYTES`'s (below).
+
+## Binary tables inside a block
+
+Two blocks hold binary tables in `DNAS_STRING`'s envelope: the certificate setup
+`func_L39_004B8208` and the certificate check `func_L39_004BAA78` (the callback the first installs),
+six tables each. They are the DER objects the code hands to OpenSSL's decoders: X.509 names (78 to
+172 bytes: Sony's DNAS CA, a test root, three VeriSign classes, RSA's secure server CA) in the
+first, the matching RSA public keys (94 to 294 bytes) in the second. Each function stores the six
+addresses into the same six-entry table (`D_L39_004646F8`, 0x14 bytes an entry: name, its
+length, key, its length, the decoded object). The envelope is the text one word for word: a `b`
+over the data with a `nop` in its slot, two zero words, the DER object, zero bytes up to the next
+8-byte boundary, a `nop`, then an adjacent `lui`/`addiu` of the data's address. The bytes are no
+text: the object's own header gives its length, nothing after it is part of it, and the 172-byte
+name ends on the boundary with no zero after it. NTSC-U stores the same twelve tables.
+
+`DNAS_BYTES(var, bytes...)` in `include/dnas.h` (allowed by the maintainer on 2026-11-28) is that
+sequence as one asm statement that loads the table's address into `var`:
+
+    DNAS_BEGIN(func_L39_004B8208, 0, func_L39_004BD350);
+    DNAS_BYTES(t,
+        0x30, 0x81, 0xA9, 0x31, 0x0B, 0x30, 0x09, 0x06, 0x03, 0x55, 0x04, 0x06, 0x13, 0x02, 0x4A, 0x50,
+        ...
+        0x69, 0x2E, 0x73, 0x6F, 0x6E, 0x79, 0x2E, 0x63, 0x6F, 0x2E, 0x6A, 0x70
+    );
+    D_L39_004646F8[0].name = t;
+
+- **Why not C data.** For the same reasons as the text: no C form puts data inline in `.text`
+  behind a branch, inside the block, where it is encrypted with the code. A C array is the
+  file's data, outside the block, and the block is then shorter than retail's (`check.py` notes
+  the length). The address load is the same adjacent `lui`/`addiu` as at every text site.
+- **Why a variable, not a value.** Each of the six tables is stored right after its address is
+  loaded, and retail loads all six into one register (`$v1` in `func_L39_004B8208`, `$v0` in
+  `func_L39_004BAA78`). A macro with a value of its own, as `DNAS_STRING` has, makes a new
+  short-lived register at each site, and the allocator gives a register born in the instruction
+  after another one dies a different one (`local-alloc.c` keeps them apart for the second
+  scheduling pass): in `func_L39_004B8208` tables 0, 2 and 4 then come out in `$a0` (9 diff). One
+  variable written six times is one register for the six, as retail has it.
+- **Its limits** (`tests/test_dnas.py` checks them): only in level 39's sources, only between a
+  block's `DNAS_BEGIN` and its `DNAS_END`/`DNAS_END_ONCE`, only where the decrypted block has
+  this sequence around binary data; the first argument a variable, the others integer constants
+  from 0 to 0xFF, exactly the DER object retail stores there (not its padding). Read the bytes
+  from `--show`'s words (little-endian) up to the length the DER header gives.
+
+Both functions written with it check `MATCH` on both discs and build to `MATCH` in level 39.
 
 ## What is not covered yet
 
-- Binary tables inside a block (2 blocks: DER certificate data in `func_L39_004B8208` and
-  `func_L39_004BAA78`, 12 tables). They sit in `DNAS_STRING`'s envelope (`b`, two zero words,
-  the data, padding, `nop`, `la`) but are binary, and one has no NUL, so `DNAS_STRING` does not
-  give them and must not be stretched to them; they need a decision of their own.
 - The one first stub with a compiler instruction between its `jal` and its `b`
   (`func_L39_004B6108`'s second block at 0x4B61E8).
 - The block of length 0 (`func_L39_004D9508`): the macros compile to it, no function with it
