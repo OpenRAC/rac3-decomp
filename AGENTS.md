@@ -94,7 +94,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | Command | What it does |
 | --- | --- |
 | `python3 tools/setup_asm.py --target all` | generates `asm/` from your programs in `baserom/` |
-| `python3 tools/build.py --target all -j 8 --toolchain DIR --runner WIBO --ee29 DIR` | the full build, one `MATCH` per program |
+| `python3 tools/build.py --target all -j 8 --toolchain DIR --runner WIBO --ee29 DIR` | the full build, one `MATCH` per program; reuses every object whose inputs did not change (`build/objcache/`, docs/build/incremental.md), `--no-cache` to build all again |
 | `python3 tools/check.py FILE.c [func_XXXXXXXX]` | compiles a snippet with its file's flags and diffs it against retail |
 | `python3 tools/check.py FILE.c func_LNN_XXXXXXXX [--target level_MM]` | the same for a level function, at its place in level NN (or MM) |
 | `python3 tools/todo.py [--target NAME]` | the functions still to match, sorted by what they need |
@@ -104,7 +104,7 @@ in `nonmatching/README.md` saying what still differs, and keep the `INCLUDE_ASM`
 | `python3 -m unittest discover -s tests` | the tools' unit tests (CI) |
 | `python3 tools/progress.py [--write\|--check]` | the counts and the report |
 | `python3 tools/levels.py dump` | the 49 level programs from your disc into `baserom/levels/` |
-| `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level |
+| `python3 tools/build_levels.py --setup -P 8 -j 4 ...` | every level's build, one `MATCH` per level (reusing unchanged objects across runs and levels; `--no-cache` to build all again) |
 | `python3 tools/dnas_blocks.py --show func_L39_XXXXXXXX` | a function of level 39's DNAS library with its encrypted blocks decrypted (docs/build/dnas.md) |
 
 ## Compiler flags: one set per source file

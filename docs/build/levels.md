@@ -58,6 +58,12 @@ catalogue), the `ASM_FUNC` / `LINKER_REMNANT` entries, the functions whose trail
 `levels.tsv`, `gp.tsv`, frontbin's symbol files, Python, splat, or `setup_asm.py` and the tools it
 runs and imports change. `setup_asm.py --force` and `build_levels.py --force-setup` run it in full.
 
+A level's build, like the core programs', reuses every object whose inputs did not change
+(since 2026-11-28, `tools/objcache.py`, [incremental.md](incremental.md)): after a change to one
+file only that file's objects are compiled and assembled again in each level that has it: a level that took
+6 to 7 minutes to build takes about 25 s when nothing or one file changed. `--no-cache` builds
+every object again; the bytes are the same either way.
+
 ## C in level code
 
 A level function is matched once, in its `src/levels/` file, under its catalogue name, and built

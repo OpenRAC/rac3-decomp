@@ -8,7 +8,9 @@ What "matched" means here and the rules that keep the build honest. They are rac
 A function is matched when its C in `src/` builds, through `tools/build.py` (or the Makefile),
 into the bytes retail has at its address, and the whole program still links byte for byte: the
 build prints `MATCH` with the program's SHA-1. `tools/port_verify.py` and `tools/check.py`
-compare single functions; neither replaces the full build.
+compare single functions; neither replaces the full build. The full build reuses the objects of
+an earlier run whose inputs it has not changed ([incremental.md](incremental.md)); its output is
+byte for byte that of a build with `--no-cache`.
 
 ## The rules
 

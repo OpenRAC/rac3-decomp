@@ -300,6 +300,10 @@ Both do the same four steps:
 3. Link.
 4. Compare with `check_match.py`.
 
+Steps 1 and 2 reuse what an earlier run made from the same inputs (`build/objcache/`,
+`tools/objcache.py`; [docs/build/incremental.md](../build/incremental.md)): a build after a change to
+one file compiles only that file. `--no-cache` builds everything again.
+
 ### build_text.py
 
 Called by the build; you don't run it yourself. It compiles each file in `config/frontbin/src_files.txt` with its flags from `config/frontbin/text_parts.txt`: as it is when all its functions share flags, otherwise in slices (each with the file's own declarations, nothing from other files). Every file becomes one object in `build/src/frontbin/` (slice objects are kept apart in `build/src/frontbin/slices/`, so that folder holds exactly one `.o` per source file); they are linked into one `text.c.o`.
