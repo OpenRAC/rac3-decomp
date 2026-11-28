@@ -77,10 +77,23 @@ def as_options(flags, cflags=()):
     return out
 
 
+# The locale ee-as runs in. Under the C (or POSIX) locale, or with none set, ee-as 2.10-ee
+# assembles some macros wrongly: in func_L39_004D7770 the jump table load `lw $3,$L25($2)`
+# becomes `lw $v1,0($v1)` where retail has the expansion's `lui $v1,%hi(...)` (the object
+# carries the R_MIPS_HI16 either way). Under a UTF-8 locale it gives retail's lui. The build
+# boxes are told to run with LC_ALL=C (WORKFLOW.md, for other toolchains), so it is set here.
+LOCALE = "C.UTF-8"
+
+
+def environment():
+    """The environment for ee-as: the caller's, with LC_ALL set to LOCALE."""
+    return dict(os.environ, LC_ALL=LOCALE)
+
+
 def assemble(flags, cflags, spath, opath, cwd=None, path=None, capture=False):
     """Assemble spath into opath with Sony's ee-as. Returns the CompletedProcess."""
     cmd = [program(path)] + as_options(flags, cflags) + ["-o", opath, spath]
     if capture:
-        return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+        return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, env=environment())
     print(" ".join(cmd), flush=True)
-    return subprocess.run(cmd, cwd=cwd)
+    return subprocess.run(cmd, cwd=cwd, env=environment())
