@@ -1141,7 +1141,81 @@ void func_L01_0031FC60(u8 *m) {
 }
 /* localdecomp:end func_L01_0031FC60 */
 
-INCLUDE_ASM("asm/levels", func_L01_0031FD50);
+/* localdecomp:start func_L01_0031FD50 */
+/* The position and the unit z vector live in VU0 registers (p, z); with only vf1/vf2 in the "j"
+ * class, reload spills them to 0xC0/0xD0(sp) as retail does. */
+typedef int Q_0031FD50 __attribute__((mode(TI)));
+typedef union { Q_0031FD50 q; f32 f[4]; } V_0031FD50 __attribute__((aligned(16)));
+void func_L01_0031FD50(u8 *obj) {
+    extern s32 func_L01_003FB640(void *, f32, s32, void *);
+    extern s32 func_L01_004AAC98(s32, s32, void *, s32);
+    extern void func_L01_0040E790(void *, void *, void *);
+    extern f32 func_0038CEA8(void *);
+    V_0031FD50 old, drag, correction;
+    vu0_q p, z, a, r;
+    u8 *vars = *(u8 **)(obj + 0x68);
+    u8 *collision;
+    u8 *hit;
+    V_0031FD50 *prev;
+
+    if (vars == 0) {
+        return;
+    }
+    prev = &old;
+    old.q = *(Q_0031FD50 *)(obj + 0x10);
+    __asm__("lqc2 %0, %1" : "=j"(p) : "m"(*(vu0_v4 *)(obj + 0x10)));
+    __asm__("vmr32.xyzw %0, vf0" : "=j"(z));
+    __asm__("lqc2 %0, %1" : "=j"(a) : "m"(*(vu0_v4 *)vars));
+    __asm__("vadd.xyz %0, %1, %2" : "=j"(r) : "j"(a), "j"(p));
+    __asm__("sqc2 %1, %0" : "=m"(*(vu0_v4 *)(obj + 0x10)) : "j"(r));
+    __asm__("sqc2 %1, %0" : "=m"(drag) : "j"(z));
+    func_0038CE20(&drag, &drag, 0.0044f);
+    vec_sub_ab(vars, vars, &drag);
+    if (func_L01_003FB640(obj + 0x10, 0.1f, 0, obj)) {
+        func_L01_004AAC98(2, 0, obj, *(s16 *)(obj + 0xAA));
+        collision = (u8 *)D_L01_001EAA00;
+        hit = *(u8 **)(collision + 0x18);
+        if (hit != 0) {
+            goto hit_test;
+        }
+        goto reflect;
+    } else if (func_003D3CB0(prev, obj + 0x10, 0x10, obj, 0)) {
+        func_L01_004AAC98(2, 0, obj, *(s16 *)(obj + 0xAA));
+        collision = (u8 *)D_L01_001EAA00;
+        hit = *(u8 **)(collision + 0x18);
+        if (hit != 0) {
+        hit_test:
+            if ((u32)(*(u16 *)(hit + 0xAA) - 0x109E) < 2) {
+                goto finish;
+            }
+            if (hit == *(u8 **)(obj + 0xB8)) {
+                goto finish;
+            }
+        reflect:
+            *(Q_0031FD50 *)(obj + 0x10) = *(Q_0031FD50 *)(collision + 0x30);
+            func_L01_0040E790(vars, vars, collision + 0x40);
+            *(f32 *)(vars + 8) += *(f32 *)(vars + 8);
+            func_0038CE20(vars, vars, 0.25000003f);
+        } else {
+            *(Q_0031FD50 *)(obj + 0x10) = *(Q_0031FD50 *)(collision + 0x20);
+            func_0038CF68(correction.f, (s32)(collision + 0x40), 0.1f);
+            vec_add_ab(obj + 0x10, obj + 0x10, &correction);
+            func_L01_0040E790(vars, vars, collision + 0x40);
+            *(f32 *)(vars + 8) += *(f32 *)(vars + 8);
+            func_0038CE20(vars, vars, 0.25000003f);
+        }
+    }
+finish:
+    if (func_0038CAD0((s32)(vars + 0x18)) || func_0038CEA8(vars) < 0.010000001f) {
+        func_L01_004AAC98(1, 0, obj, *(s16 *)(obj + 0xAA));
+        func_L01_003303B8(1.5f, obj + 0x10, 1, 10, 10, 10, 10, 30, 0,
+                          0, 1, 0, 0, 0, 0, 0x10001, 0, 0x804020, 0x806040, 0x407FFF, 0x20FF,
+                          0x8FFF, 0x3064FF, 0x7F804020, 0x28802020, 0xFF6020, 0,
+                          0.0f, *(f32 *)(vars + 0x20), 2.0f);
+        func_003C2880((Moby_0031BEF0 *)obj);
+    }
+}
+/* localdecomp:end func_L01_0031FD50 */
 
 INCLUDE_ASM("asm/levels", func_L01_00320088);
 

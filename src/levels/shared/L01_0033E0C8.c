@@ -166,7 +166,160 @@ void func_L01_0033E2D0(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
 
 LINKER_REMNANT("asm/levels", func_L01_0033E758);
 
-INCLUDE_ASM("asm/levels", func_L01_0033E760);
+/* localdecomp:start func_L01_0033E760 */
+typedef struct {
+    u8 pad0[4];
+    s16 timer4;
+    s16 timer6;
+    s16 timer8;
+    s16 timera;
+    f32 anglex;
+    f32 angley;
+    s32 timer14;
+    u8 pad18[8];
+    vu0_v4 initial;
+    vu0_v4 velocity;
+} P_0033E760;
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;
+    u8 state;
+    u8 pad21[0x34 - 0x21];
+    u16 flags;
+    u8 pad36[0x68 - 0x36];
+    P_0033E760 *p;
+    u8 pad6C[0xAA - 0x6C];
+    s16 kind;
+    u8 padAC[0xF0 - 0xAC];
+    f32 anglex;
+    f32 angley;
+} M_0033E760;
+typedef struct {
+    u8 pad0[0x1200];
+    M_0033E760 *obj;
+    u8 pad1204[0x25C0 - 0x1204];
+    void *target;
+    u8 pad25C4[0x25E4 - 0x25C4];
+    u8 b25E4;
+    u8 b25E5;
+    u8 pad25E6[0x25F0 - 0x25E6];
+    u8 b25F0;
+} H_0033E760;
+extern H_0033E760 D_001A4BE0_0033E760;
+extern vu0_v4 D_001A4EC0_0033E760;
+extern u8 D_L01_001D66B0_0033E760[8];
+extern vu0_v4 D_L01_001EAA30[];
+extern f32 D_L01_001DD024;
+extern s32 D_L01_001DD02C;
+extern s32 D_L01_001DD03C;
+extern s32 D_L01_001DD040;
+extern f32 D_L01_001DD044;
+extern f32 D_L01_001DD048;
+extern M_0033E760 *D_L01_001DD04C;
+__asm__(".extern D_L01_001DD024, 4");
+__asm__(".extern D_L01_001DD02C, 4");
+__asm__(".extern D_L01_001DD03C, 4");
+__asm__(".extern D_L01_001DD040, 4");
+__asm__(".extern D_L01_001DD044, 4");
+__asm__(".extern D_L01_001DD048, 4");
+__asm__(".extern D_L01_001DD04C, 4");
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+
+void func_L01_0033E760(M_0033E760 *m) {
+    extern void func_003C5278(void *, void *, void *, f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern void func_L01_0033ED30();
+    extern s32 func_0038CB00(void *);
+    extern void func_L01_00340248(void *);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern void func_L01_003402E8(void *);
+    extern void func_L01_00404A10(void *, void *);
+    extern void func_L01_0033F530(void *);
+    extern void func_003C2880(void *);
+    extern void func_L01_0033F1F0(void *);
+    extern void func_L01_0033F388(void *);
+    extern void func_L01_0033EF90(u8 *);
+    extern void func_0038CAD0(void *);
+    extern void func_L01_0033EE50(u8 *);
+    extern void func_L01_0044AF78(void *, void *, void *, f32, f32, f32, f32, f32, f32, f32,
+                                  s32, s32, s32, s32, s32, s32, s32, s32, s32);
+    vu0_v4 oldpos;
+    P_0033E760 *p = m->p;
+
+    if ((D_001A4BE0_0033E760.obj == 0 || D_001A4BE0_0033E760.obj->kind != 0xC0) && m->state == 0) goto destroy;
+    if (D_001A4BE0_0033E760.b25E4 && m->state == 0) { func_003C2880(m); return; }
+    if ((D_001A4BE0_0033E760.b25E5 || D_001A4BE0_0033E760.b25F0) && m->state == 0) m->flags |= 0x41;
+    else m->flags &= 0xFFBE;
+    switch (m->state) {
+    case 1:
+        oldpos = m->pos;
+        vec_add_ab(&m->pos, &m->pos, &p->velocity);
+        func_003C5278(&m->pos, &p->velocity, &p->velocity, D_L01_001DD024 * 0.00040000002f);
+        m->anglex = func_0038DAB8(m->anglex, p->anglex);
+        m->angley = func_0038DAB8(m->angley, p->angley);
+        func_L01_0033ED30(m);
+        if (func_0038CB00(&p->timer4)) goto destroy;
+        if (m->pos.x < 2.0f || m->pos.x > 1021.0f || m->pos.y < 2.0f || m->pos.y > 1021.0f
+            || m->pos.z < 2.0f || m->pos.z > 1021.0f) goto destroy;
+        if (func_0038CE68(&D_001A4EC0_0033E760, &p->velocity) > 0.0f && func_0038CB00(&p->timer6)) {
+            m->state = 2;
+            p->timer8 = (D_L01_001DD02C * 5 + 2) / 6;
+            p->timera = (D_L01_001DD03C * 5 + 2) / 6;
+            p->initial = p->velocity;
+            func_L01_00340248(m);
+        }
+        break;
+    case 2:
+        func_0038CDF8(&p->velocity, D_L01_001D66B0_0033E760, &p->initial,
+                      (f32)p->timera / (f32)((D_L01_001DD03C * 5 + 2) / 6));
+        vec_add_ba(&m->pos, &m->pos, &p->velocity);
+        m->anglex = func_0038DAB8(m->anglex, p->anglex);
+        m->angley = func_0038DAB8(m->angley, p->angley);
+        func_L01_003402E8(m);
+        func_L01_00404A10(func_L01_0033F530, m);
+        if (func_L01_003FB640(&m->pos, 0, D_001A4BE0_0033E760.target, 0.25f)) m->pos = D_L01_001EAA30[0];
+        if (m->pos.x < 2.0f || m->pos.x > 1021.0f || m->pos.y < 2.0f || m->pos.y > 1021.0f
+            || m->pos.z < 2.0f || m->pos.z > 1021.0f) {
+destroy:
+            func_003C2880(m);
+            return;
+        }
+        if (func_0038CB00(&p->timera) && D_L01_001DD04C == 0) {
+            m->state = 3;
+            p->timer14 = (D_L01_001DD040 * 5 + 2) / 6;
+            D_L01_001DD04C = m;
+            func_L01_0033F1F0(m);
+        }
+        break;
+    case 3:
+        m->anglex = func_0038DAB8(m->anglex, p->anglex);
+        m->angley = func_0038DAB8(m->angley, p->angley);
+        func_L01_003402E8(m);
+        func_L01_0033F388(m);
+        if (p->timer8 >= 50) func_L01_0033EF90((u8 *)m);
+        func_L01_00404A10(func_L01_0033F530, m);
+        func_0038CAD0(&p->timer14);
+        if (p->timer14) {
+            f32 radius = D_L01_001DD048 + (D_L01_001DD044 - D_L01_001DD048)
+                * ((f32)p->timer14 / (f32)((D_L01_001DD040 * 5 + 2) / 6));
+            if (func_L01_003FB640(&m->pos, 2, D_001A4BE0_0033E760.target, radius)) m->pos = D_L01_001EAA30[0];
+        }
+        func_L01_0033EE50((u8 *)m);
+        if (func_0038CB00(&p->timer8)) {
+            qzero(&oldpos);
+            func_L01_0044AF78(m, &oldpos, &m->pos, 0.0f, 0.0f, 4.0f, 2.0f, 9.0f, 1.0f, 15.0f,
+                              5, 2, 4, -1, 1, 5, -1, 0, 0x1010001);
+            D_L01_001DD04C = 0;
+            m->state = 90;
+        }
+        break;
+    case 90:
+        func_003C2880(m);
+        break;
+    }
+}
+/* localdecomp:end func_L01_0033E760 */
 
 LINKER_REMNANT("asm/levels", func_L01_0033ED28);
 

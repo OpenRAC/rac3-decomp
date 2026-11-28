@@ -426,7 +426,178 @@ void func_L01_003973F8(Vec4 *start_,Vec4 *points_,f32 phase,u32 color,s32 count,
 }
 /* localdecomp:end func_L01_003973F8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00397A28);
+/* localdecomp:start func_L01_00397A28 */
+typedef struct {
+    f32 aim[3];         /* 0x00 */
+    void *owner;        /* 0x0C */
+    void *target;       /* 0x10 */
+    u8 pad14[4];
+    f32 speed;          /* 0x18 */
+    u8 pad1C[4];
+    f32 f20;            /* 0x20 */
+    s16 timer;          /* 0x24 */
+    u8 armed;           /* 0x26 */
+    u8 frames;          /* 0x27 */
+    f32 f28;            /* 0x28 */
+    s32 trail;          /* 0x2C */
+    vu0_v4 dir;         /* 0x30 */
+    u8 pad40[0x10];
+    s32 sound;          /* 0x50 */
+} Vars_00397A28;
+
+typedef struct {
+    u8 pad0[0x10];
+    vu0_v4 pos;         /* 0x10 */
+    u8 state;           /* 0x20 */
+    u8 pad21[0xB];
+    f32 scale;          /* 0x2C */
+    u8 b30;             /* 0x30 */
+    u8 b31;             /* 0x31 */
+    s16 h32;            /* 0x32 */
+    u16 flags;          /* 0x34 */
+    u8 pad36[0x32];
+    Vars_00397A28 *vars; /* 0x68 */
+    u8 pad6C[0x50];
+    u8 bBC;             /* 0xBC */
+    u8 padBD[3];
+    vu0_v4 mat[3];      /* 0xC0 */
+} Moby_00397A28;
+
+typedef struct {
+    u8 pad0[0x16B0];
+    s32 f16B0;          /* 0x16B0 */
+    u8 pad16B4[0x25C0 - 0x16B4];
+    Moby_00397A28 *moby; /* 0x25C0 */
+    u8 pad25C4[0x2874 - 0x25C4];
+    s16 f2874;          /* 0x2874 */
+} Hero_00397A28;
+
+typedef struct {
+    u8 b0;
+    u8 level;           /* 0x01 */
+    u8 pad2[0x4A];
+    f32 f4C;            /* 0x4C */
+    u8 pad50[0xA0];
+} Row_00397A28;
+
+extern s32 D_L01_001DE0D0;
+__asm__(".extern D_L01_001DE0D0, 4");
+extern u8 D_001425C0_00397A28[];
+extern Row_00397A28 D_L01_002C5600_00397A28[];
+extern Hero_00397A28 D_001A4BE0_00397A28;
+extern u8 D_001A52D0[];
+extern s32 D_L01_001D673C;
+extern vu0_q D_L01_001EAA20;
+extern u8 D_L01_002A19F0[];
+extern u8 D_L01_001E0140[8];
+extern void func_0038CF68_00396B78(void *, void *, f32);
+
+Moby_00397A28 *func_L01_00397A28(Moby_00397A28 *owner, vu0_v4 *position, Moby_00397A28 *target, s32 unused, vu0_v4 *end) {
+    extern Moby_00397A28 *func_003C24B0(s32, s32);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038CE90(void *, void *, void *);
+    extern void func_L01_004CAC78(void *, void *, f32, f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern f32 func_00382538(void);
+    extern void func_003C5180(void *, void *, s32);
+    extern f32 func_0038CE68(void *, void *);
+    extern u8 *func_00382348(void *);
+    extern s32 func_003D3CB0(Vec4 *, s32 *, s32, s32, s32);
+    extern void func_L01_00399D78(u8 *, u8 *);
+    extern void func_003C7C38(void *);
+    extern void func_L01_0044BE50(void *, void *, s32);
+    extern s32 func_L01_004C85C8(void *, s32, f32, f32, f32);
+    vu0_v4 destination;
+    vu0_v4 normal;
+    vu0_v4 projection;
+    Moby_00397A28 *obj = func_003C24B0(0x1894, 0x80);
+    Vars_00397A28 *s;
+    vu0_v4 *right;
+    vu0_v4 *forward;
+    vu0_v4 *velocity;
+    f32 speed;
+
+    if (obj != 0) {
+        obj->b30 = 0xFF;
+        obj->b31 = 1;
+        obj->state = 0;
+        obj->h32 = 0xFF;
+        obj->flags |= 0x100;
+        s = obj->vars;
+        if ((u32)D_L01_001DE0D0 >= 9) {
+            D_L01_001DE0D0 = 0;
+        }
+        s->trail = D_L01_001DE0D0;
+        D_L01_001DE0D0 = (D_L01_001DE0D0 + 1) % 8;
+        speed = (D_L01_002C5600_00397A28 + D_001425C0_00397A28[0x3F])->f4C * 0.020000001f;
+        *(vu0_q *)&obj->pos = *(vu0_q *)position;
+        *(vu0_q *)&destination = *(vu0_q *)end;
+        if (D_001A4BE0_00397A28.f2874 != 0 && D_001A4BE0_00397A28.f16B0 != 2) {
+            func_0038CF68_00396B78(&obj->mat[0], &owner->mat[1], -1.0f);
+            func_0038CE20((f32 *)&obj->mat[1], (f32 *)&owner->mat[0], -1.0f);
+            *(vu0_q *)&obj->mat[2] = *(vu0_q *)&owner->mat[2];
+        } else if (target != 0) {
+            vec_sub_ab(&obj->mat[0], &destination, &obj->pos);
+            func_0038CF68_00396B78(&obj->mat[0], &obj->mat[0], 1.0f);
+            func_0038CE90(&obj->mat[1], &obj->mat[0], &D_001A4BE0_00397A28.moby->mat[2]);
+            func_0038CF68_00396B78(&obj->mat[1], &obj->mat[1], 1.0f);
+            func_0038CE90(&obj->mat[2], &obj->mat[1], &obj->mat[0]);
+        } else {
+            u8 *camera = D_001A52D0;
+            *(vu0_q *)&obj->mat[0] = *(vu0_q *)camera;
+            if (*(s32 *)(camera + 0xFC0) != 0) {
+                func_L01_004CAC78(&obj->mat[0], position, 1.0f, 75.0f, 1.3962634f);
+            }
+            func_0038CE90(&obj->mat[1], &obj->mat[0], camera - 0x10);
+            func_0038CF68_00396B78(&obj->mat[1], &obj->mat[1], 1.0f);
+            func_0038CE90(&obj->mat[2], &obj->mat[1], &obj->mat[0]);
+        }
+        obj->mat[0].w = obj->mat[1].w = obj->mat[2].w = 0.0f;
+        velocity = &s->dir;
+        s->owner = owner;
+        s->f20 = func_L01_00443A18(6.0f, 10.0f);
+        s->speed = speed;
+        s->f28 = func_00382538();
+        s->armed = 0;
+        s->frames = 1;
+        s->target = target;
+        *(vu0_q *)velocity = *(vu0_q *)&obj->mat[0];
+        if (D_L01_001D673C != 0) {
+            f32 d;
+            func_003C5180(&obj->pos, &normal, 1);
+            d = func_0038CE68(&normal, velocity);
+            func_0038CE20((f32 *)&projection, (f32 *)&normal, d);
+            vec_sub_ab(velocity, velocity, &projection);
+        }
+        if (target != 0) {
+            u8 *damage = func_00382348(target);
+            if (damage != 0) {
+                *(u16 *)(damage + 0x1E) |= 0x80;
+                if (damage[0xB] != 0) {
+                    s->armed = 0;
+                }
+            }
+        }
+        s->timer = (s32)(75.0f / speed);
+        *(vu0_q *)&normal = *(vu0_q *)&owner->pos;
+        normal.z = position->z;
+        if (func_003D3CB0((Vec4 *)&normal, (s32 *)position, 0, (s32)D_001A4BE0_00397A28.moby, 0)) {
+            obj->bBC = 1;
+            *(vu0_q *)&obj->pos = D_L01_001EAA20;
+        }
+        func_L01_00399D78((u8 *)obj, D_L01_002A19F0 + (s->trail << 6));
+        func_003C7C38(obj);
+        func_L01_0044BE50(obj, D_L01_001E0140, 31);
+        if ((D_L01_002C5600_00397A28 + D_001425C0_00397A28[0x3F])->level >= 4) {
+            obj->scale *= 4.0f;
+        } else {
+            obj->scale *= 2.5f;
+        }
+        s->sound = func_L01_004C85C8(obj, 0, 1.0f, 1.0f, 1.0f);
+    }
+    return obj;
+}
+/* localdecomp:end func_L01_00397A28 */
 
 /* localdecomp:start func_L01_00397E98 */
 typedef struct {

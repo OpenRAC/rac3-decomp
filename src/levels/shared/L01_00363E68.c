@@ -188,7 +188,348 @@ void func_L01_003649E8(Moby_003649E8 *moby, vu0_v4 *pos) {
 }
 /* localdecomp:end func_L01_003649E8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00364C20);
+/* localdecomp:start func_L01_00364C20 */
+typedef struct {
+    s16 ring;
+    s16 seg;
+    f32 dist;
+    u8 pad8[4];
+    s32 fast;
+    f32 t;
+    f32 rate;
+    f32 speed;
+    u8 *part;
+} Bolt_00364C20;
+extern Bolt_00364C20 D_L01_0028CAA0_00364C20[];
+extern vu0_v4 D_L01_0028E440[][20];
+extern vu0_v4 D_L01_002B3730[];
+extern f32 D_L01_001E1AE8[] __attribute__((section(".sdata")));
+extern vu0_v4 D_L01_001EAA20;
+typedef struct {
+    u8 pad0;
+    u8 level;
+    u8 pad2[0xEE];
+} Row_00364C20;
+extern Row_00364C20 D_L01_002C5600_00364C20[];
+extern u8 *D_L01_00221098_00364C20[];
+extern u8 D_001425C0[];
+void func_L01_00364180(void);
+__asm__(".extern D_L01_001DD788, 4");
+__asm__(".extern D_L01_001DD78C, 4");
+
+/* The Suck Cannon's vortex: bends the ten ring centres toward the aim, rebuilds the rings and moves
+ * the 200 bolt particles along them. */
+void func_L01_00364C20(Moby_003649E8 *moby, vu0_v4 *pos) {
+    extern void func_0038CE20(vu0_q *, vu0_q *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern void func_0038D000(void *, void *, void *);
+    extern void func_0038CDF8(void *, void *, void *, f32);
+    extern void func_0038D890(void *, void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern f32 func_0038CEA8(void *);
+    extern f32 func_0038CF38(void *, void *);
+    extern f32 func_0038D0B0(f32);
+    extern f32 func_0038D0C8(f32);
+    extern f32 func_0038DAB8(f32, f32);
+    extern f32 func_0038DB00(f32, f32);
+    extern f32 func_00382C58(f32 *, f32, f32, f32, f32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382468(s32);
+    extern s32 func_00382498(s32, s32);
+    extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+    extern void func_L01_00404A10(void *, void *);
+    extern u8 *func_L01_004669B0(void *, f32, f32, f32, s32, f32, void *, u32, s32);
+    extern void func_003CD250(void *);
+    extern void func_003C4098(void *, void *, void *, f32);
+    vu0_v4 step;
+    vu0_v4 fwd;
+    M3_003649E8 m;
+    vu0_v4 tip;
+    vu0_v4 from;
+    vu0_v4 to;
+    vu0_v4 up;
+    vu0_v4 d;
+    vu0_v4 e;
+    vu0_v4 base[3];
+    vu0_v4 axis;
+    vu0_v4 bend;
+    vu0_v4 v100;
+    vu0_v4 v110;
+    vu0_v4 frame[3];
+    vu0_v4 v150;
+    vu0_v4 v160;
+    vu0_v4 v170;
+    f32 t;
+    f32 w;
+    f32 dt;
+    f32 ang;
+    f32 rot;
+    f32 turn;
+    f32 len;
+    f32 blen;
+    f32 sc;
+    f32 size;
+    s32 n;
+    s32 a;
+    s32 b;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 r;
+    s32 seg;
+
+    func_L01_003649E8(moby, pos);
+    if ((D_001A4BE0_003649E8.state == 0x1D || D_001A4BE0_003649E8.state == 1) && (D_001A4BE0_003649E8.p25C0->x34 & 1)) {
+        m = D_L01_001E29E0_003649E8;
+    } else if (D_001A4BE0_003649E8.x2874 == 1) {
+        func_0038CE20((vu0_q *)&m.r[0], (vu0_q *)&moby->xD0, -1.0f);
+        m.r[1] = moby->xC0;
+        m.r[2] = moby->xE0;
+    } else {
+        m = D_001A4BE0_003649E8.m6C0;
+    }
+    func_0038CF68(&step, &m.r[0], D_L01_001E1AE4);
+    func_0038CF68(&fwd, &m.r[2], 1.0f);
+    D_L01_0028E3A0_003649E8[0] = *pos;
+    func_0038CF68(&tip, &m.r[0], D_L01_001E1AE4 * 10.0f);
+    vec_add_ab(&tip, &tip, pos);
+    if (func_003D3CB0(pos, &tip, 0x14, D_001A4BE0_003649E8.p25C0, 0)) {
+        n = func_0038CF38(&D_L01_001EAA20, pos) / D_L01_001E1AE4;
+        for (a = n; a < 10; a++) {
+            if (D_L01_001E1B10_003649E8[a] > 0x20) {
+                D_L01_001E1B10_003649E8[a] = 0x20;
+            }
+            D_L01_001E1B10_003649E8[a] -= 4;
+            if (D_L01_001E1B10_003649E8[a] < 0) {
+                D_L01_001E1B10_003649E8[a] = 0;
+            }
+        }
+        for (b = n - 1; b >= 0; b--) {
+            D_L01_001E1B10_003649E8[b] = D_L01_001E1B10_003649E8[b + 1] + 0x20;
+        }
+    } else {
+        D_L01_001E1B10_003649E8[0] += 4;
+        for (b = 1; b < 10; b++) {
+            D_L01_001E1B10_003649E8[b] = D_L01_001E1B10_003649E8[b - 1] - 0x20;
+        }
+    }
+    func_0038D000(&from, &D_L01_001E1AC0_003649E8, &m);
+    vec_add_ba(&from, &from, &step);
+    func_0038D000(&to, &D_L01_001E1AD0_003649E8, &m);
+    vec_add_ab(&to, &to, &step);
+    w = (f32)D_L01_001DD788 / 50.0f;
+    D_L01_001DD788++;
+    step.x = from.x + (to.x - from.x) * w;
+    step.y = from.y + (to.y - from.y) * w;
+    step.z = from.z + (to.z - from.z) * w;
+    if (D_L01_001DD788 >= 50) {
+        D_L01_001E1AC0_003649E8 = D_L01_001E1AD0_003649E8;
+        func_0038CF68(&up, &m.r[0], D_L01_001E1AE4);
+        *(vu0_q *)&d = 0;
+        *(vu0_q *)&e = 0;
+        d.z = 0.1f;
+        d.w = 1.0f;
+        e.x = 1.0f;
+        e.w = 1.0f;
+        rot = func_0038DAB8(D_L01_001E1AE0, func_003824E0(45.0f, 315.0f) * 0.01745329238474369f);
+        func_0038D890(&D_L01_001E1AD0_003649E8, &d, &e, rot);
+        D_L01_001E1AE0 = rot;
+        D_L01_001DD788 = 0;
+    }
+    D_L01_001DD78C = func_0038DAB8(D_L01_001DD78C, 0.1f);
+    base[2] = up = m.r[2];
+    func_0038CE90(&base[1], &step, &base[2]);
+    func_0038CF68(&base[1], &base[1], 1.0f);
+    func_0038CE90(&base[0], &base[2], &base[1]);
+    for (j = 0; j < 20; j++) {
+        func_0038CE20((vu0_q *)&d, (vu0_q *)&D_L01_002B3730[j], 0.1f);
+        func_0038D000(&d, &d, base);
+        vec_add_ab(&D_L01_0028E440[0][j], &D_L01_0028E3A0_003649E8[0], &d);
+    }
+    for (i = 1; i < 10; i++) {
+        vec_sub_ab(&d, &D_L01_0028E3A0_003649E8[i], &D_L01_0028E3A0_003649E8[i - 1]);
+        e = step;
+        func_0038CE90(&axis, &e, &d);
+        len = func_0038CE68(&d, &e);
+        ang = 1.5707963705062866f - func_0038D0C8(len / (func_0038CEA8(&d) * D_L01_001E1AE4));
+        turn = func_00382C58(&D_L01_001E1AE8[i], 0.0f, ang, 0.05999999865889549f, 0.20000000298023224f, 0.0f);
+        dt = func_0038DB00(ang, turn);
+        if (fabs_asm(dt) > 0.3141592741012573f) {
+            turn = func_0038DAB8(turn, func_0038DB00(dt, 0.3141592741012573f));
+        }
+        func_0038D890(&bend, &d, &axis, turn);
+        func_0038CF68(&v100, &bend, D_L01_001E1AE4);
+        func_0038CDF8(&bend, &bend, &v100, 1.0f);
+        blen = func_0038CEA8(&bend);
+        if (blen > 2.0f) {
+            func_0038CE20((vu0_q *)&bend, (vu0_q *)&bend, 2.0f / blen);
+        }
+        if (i >= 6) {
+            func_0038CDF8(&bend, &bend, &d, (f32)i / 10.0f + 0.0f);
+        }
+        vec_add_ab(&D_L01_0028E3A0_003649E8[i], &D_L01_0028E3A0_003649E8[i - 1], &bend);
+        v110 = step;
+        if (fabs_asm(step.z) > D_L01_001E1AE4 * 0.75f) {
+            frame[2] = up;
+            func_0038CE90(&v150, &frame[2], &step);
+            vec_sub_ba(&v170, &D_L01_0028E3A0_003649E8[i - 2], &D_L01_0028E3A0_003649E8[i - 1]);
+            func_0038CE90(&v160, &frame[2], &v170);
+            if (func_0038CE68(&v150, &v160) > 0.0f) {
+                func_0038CE20((vu0_q *)&frame[2], (vu0_q *)&frame[2], -1.0f);
+            }
+        } else {
+            frame[2] = m.r[2];
+        }
+        func_0038CF68(&frame[0], &v110, 1.0f);
+        func_0038CE90(&frame[1], &frame[0], &frame[2]);
+        func_0038CF68(&frame[1], &frame[1], 1.0f);
+        func_0038CE90(&frame[2], &frame[1], &frame[0]);
+        up = frame[2];
+        for (j = 0; j < 20; j++) {
+            sc = (f32)i * 0.20000000298023224f + 0.10000000149011612f;
+            sc += func_0038D0B0(func_0038DAB8(D_L01_001DD78C + (f32)i * 0.699999988079071f, 0.0f)) * 0.10000000149011612f;
+            func_0038CE20((vu0_q *)&v150, (vu0_q *)&D_L01_002B3730[j], sc);
+            func_0038D000(&v150, &v150, frame);
+            vec_add_ab(&D_L01_0028E440[i][j], &D_L01_0028E3A0_003649E8[i], &v150);
+        }
+        func_0038CF68(&step, &bend, D_L01_001E1AE4);
+    }
+    func_L01_00404A10(func_L01_00364180, moby);
+    {
+        s32 lvl;
+        u32 color;
+        s32 spawned;
+        u32 tint;
+        u8 *p;
+        u8 *q;
+
+        lvl = (D_L01_002C5600_00364C20 + D_001425C0[0x87])->level;
+        color = 0x7F7F7F7F;
+        if (lvl >= 2) {
+            color = 0x7F406080;
+        }
+        spawned = 0;
+        for (k = 0; k < 200; k++) {
+            if (D_L01_0028CAA0_00364C20[k].part == 0 && spawned < 5) {
+                for (r = 9; r >= 0 && D_L01_001E1B10_003649E8[r] < 0x20; r--) {
+                }
+                if (r > 0) {
+                    if (r >= 2 && func_00382468(10) == 0) {
+                        d = D_L01_0028E3A0_003649E8[r];
+                        qzero(&e);
+                        tint = 0x2F7F7F7F;
+                        size = func_003824E0(0.09000000357627869f, 0.20999999344348907f) * 210000.0f;
+                        if (lvl >= 2) {
+                            size = func_003824E0(0.12999999523162842f, 0.25f) * 210000.0f;
+                            tint = 0x273538;
+                        }
+                        p = func_L01_004669B0(&d, 0.0f, 1.0f, 1.0f, func_00382498(1, 6), size, &e, tint, 0);
+                        D_L01_0028CAA0_00364C20[k].part = p;
+                        if (p != 0) {
+                            u8 *qa;
+                            if (lvl >= 2) {
+                                p[2] = D_L01_00221098_00364C20[0x61][func_00382468(3) + 10];
+                                p[3] = 0x44;
+                            } else {
+                                p[2] = D_L01_00221098_00364C20[0x61][3];
+                                p[3] = func_00382468(4) ? 0x48 : 0x44;
+                            }
+                            qa = p + 0x20;
+                            *(s16 *)(p + 0xA) = 200;
+                            qa[0xA] = 0x2F;
+                            *(s32 *)(qa + 4) = 2;
+                            qa[0xB] = 200;
+                            spawned++;
+                        }
+                        D_L01_0028CAA0_00364C20[k].fast = 1;
+                        D_L01_0028CAA0_00364C20[k].ring = r;
+                        D_L01_0028CAA0_00364C20[k].dist = 0.0f;
+                        D_L01_0028CAA0_00364C20[k].t = 0.0f;
+                        D_L01_0028CAA0_00364C20[k].seg = func_00382468(20);
+                        D_L01_0028CAA0_00364C20[k].rate = func_003824E0(0.20000000298023224f, 0.5f);
+                        D_L01_0028CAA0_00364C20[k].speed = func_003824E0(0.5f, 0.8999999761581421f);
+                    } else {
+                        d = D_L01_0028E3A0_003649E8[r];
+                        qzero(&e);
+                        p = func_L01_004669B0(&d, 0.0f, 1.0f, 1.0f, 6, func_003824E0(90000.0f, 270000.0f), &e, color, 0);
+                        D_L01_0028CAA0_00364C20[k].part = p;
+                        if (p != 0) {
+                            p[3] = func_00382468(4) ? 0x48 : 0x44;
+                            *(s16 *)(p + 0xA) = 200;
+                            q = p + 0x20;
+                            *(s32 *)(q + 4) = 2;
+                            q[0xA] = 0x1A;
+                            q[0xB] = 200;
+                            spawned++;
+                        }
+                        D_L01_0028CAA0_00364C20[k].ring = r;
+                        D_L01_0028CAA0_00364C20[k].dist = 0.0f;
+                        D_L01_0028CAA0_00364C20[k].t = 0.0f;
+                        D_L01_0028CAA0_00364C20[k].seg = func_00382468(20);
+                        D_L01_0028CAA0_00364C20[k].rate = func_003824E0(0.10000000149011612f, 0.30000001192092896f);
+                        D_L01_0028CAA0_00364C20[k].speed = func_003824E0(0.10000000149011612f, 0.4000000059604645f);
+                    }
+                }
+            }
+            if (D_L01_0028CAA0_00364C20[k].part != 0) {
+                vec_sub_ba(&d, &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring - 1], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring]);
+                len = func_0038CEA8(&d);
+                D_L01_0028CAA0_00364C20[k].dist += D_L01_0028CAA0_00364C20[k].speed;
+                *(s16 *)(D_L01_0028CAA0_00364C20[k].part + 0xA) = 200;
+                if (D_L01_0028CAA0_00364C20[k].dist > len) {
+                    if (--D_L01_0028CAA0_00364C20[k].ring <= 0) {
+                        func_003CD250(D_L01_0028CAA0_00364C20[k].part);
+                        D_L01_0028CAA0_00364C20[k].part = 0;
+                        D_L01_0028CAA0_00364C20[k].fast = 0;
+                    } else {
+                        D_L01_0028CAA0_00364C20[k].dist -= len;
+                        vec_sub_ba(&d, &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring - 1], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring]);
+                        len = func_0038CEA8(&d);
+                    }
+                }
+                if (D_L01_0028CAA0_00364C20[k].part != 0) {
+                    t = D_L01_0028CAA0_00364C20[k].dist / len;
+                    if (D_L01_0028CAA0_00364C20[k].ring == 2) {
+                        *(s16 *)(D_L01_0028CAA0_00364C20[k].part + 0xA) = 100;
+                    } else if (D_L01_0028CAA0_00364C20[k].ring < 2) {
+                        *(s16 *)(D_L01_0028CAA0_00364C20[k].part + 0xA) = (1.0f - t) * 100.0f;
+                        if (*(s16 *)(D_L01_0028CAA0_00364C20[k].part + 0xA) < 0x3D) {
+                            *(s16 *)(D_L01_0028CAA0_00364C20[k].part + 0xA) = 0x3C;
+                        }
+                    }
+                    if (D_L01_0028CAA0_00364C20[k].ring == 1) {
+                        vec_sub_ba(&e, pos, D_L01_0028CAA0_00364C20[k].part + 0x10);
+                        func_0038CF68(&e, &e, D_L01_0028CAA0_00364C20[k].speed);
+                        vec_add_ba(D_L01_0028CAA0_00364C20[k].part + 0x10, D_L01_0028CAA0_00364C20[k].part + 0x10, &e);
+                        *(f32 *)(D_L01_0028CAA0_00364C20[k].part + 0xC) *= 0.9399999976158142f;
+                    } else {
+                        func_0038CE20((vu0_q *)&d, (vu0_q *)&d, t);
+                        vec_add_ba(D_L01_0028CAA0_00364C20[k].part + 0x10, &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring], &d);
+                        seg = D_L01_0028CAA0_00364C20[k].seg;
+                        vec_sub_ba(&e, &D_L01_0028E440[D_L01_0028CAA0_00364C20[k].ring][seg], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring]);
+                        vec_sub_ba(&axis, &D_L01_0028E440[D_L01_0028CAA0_00364C20[k].ring - 1][seg], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring - 1]);
+                        func_003C4098(&bend, &e, &axis, t);
+                        seg = (seg + 19) % 20;
+                        vec_sub_ba(&v100, &D_L01_0028E440[D_L01_0028CAA0_00364C20[k].ring][seg], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring]);
+                        vec_sub_ba(&v110, &D_L01_0028E440[D_L01_0028CAA0_00364C20[k].ring - 1][seg], &D_L01_0028E3A0_003649E8[D_L01_0028CAA0_00364C20[k].ring - 1]);
+                        func_003C4098(&frame[0], &v100, &v110, t);
+                        func_003C4098(&bend, &bend, &frame[0], D_L01_0028CAA0_00364C20[k].t);
+                        D_L01_0028CAA0_00364C20[k].t += D_L01_0028CAA0_00364C20[k].rate;
+                        if (D_L01_0028CAA0_00364C20[k].t >= 1.0f) {
+                            D_L01_0028CAA0_00364C20[k].t -= 1.0f;
+                            D_L01_0028CAA0_00364C20[k].seg = seg;
+                        }
+                        if (D_L01_0028CAA0_00364C20[k].fast != 0) {
+                            func_0038CE20((vu0_q *)&bend, (vu0_q *)&bend, 2.0f);
+                        }
+                        vec_add_ba(D_L01_0028CAA0_00364C20[k].part + 0x10, D_L01_0028CAA0_00364C20[k].part + 0x10, &bend);
+                    }
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_00364C20 */
 
 /* localdecomp:start func_L01_00365E28 */
 typedef int s128_365E28 __attribute__((mode(TI)));

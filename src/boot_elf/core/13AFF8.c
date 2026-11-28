@@ -793,4 +793,76 @@ extern void func_00121FE8(s32);
 extern s32 func_00122630(void *, s32, s32);
 extern void func_0011AF48();
 extern s32 func_0013C348(s32, s32, void *);
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_0013B3F8);
+/* localdecomp:start func_0013B3F8 */
+/* Retail (Ps2EeAs) reaches the second slot of each pointer pair, D_001D4DF8,
+   D_1D4A00, the two RPC client records (0x28 bytes, bound flag at +0x24) and the
+   two status words with lui while gcc schedules them as small data: per-function
+   aliases with a size hint over 8 keep this file's assembler from making them
+   $gp-relative (the method of func_0013B818 in 13B808.c and func_0013CD28 in
+   13CC10.c). */
+__asm__(".extern D_001D4DC0_0013B3F8, 16");
+__asm__(".extern D_001D4DC8_0013B3F8, 16");
+__asm__(".extern D_001D4DD0_0013B3F8, 16");
+__asm__(".extern D_001D4DD8_0013B3F8, 16");
+__asm__(".extern D_001D4DF8_0013B3F8, 16");
+__asm__(".extern D_1D4A00_0013B3F8, 16");
+__asm__(".extern D_1D4900_0013B3F8, 40");
+__asm__(".extern D_1D49C0_0013B3F8, 40");
+extern s32 *D_001D4DC0_0013B3F8[2];
+extern s32 D_001D4DC8_0013B3F8[2];
+extern E_13C578 *D_001D4DD0_0013B3F8[2];
+extern u8 *D_001D4DD8_0013B3F8[2];
+extern long D_001D4DF8_0013B3F8;
+extern s32 D_1D4A00_0013B3F8;
+extern S_1D4900 D_1D4900_0013B3F8;
+extern S_1D4900 D_1D49C0_0013B3F8;
+/* sound-server status words, written by the IOP transfer (as func_0013CD28) */
+extern volatile s32 D_1D4980_0013B3F8;
+extern volatile s32 D_001D4990_0013B3F8;
+__asm__(".extern D_1D4980_0013B3F8, 16");
+__asm__(".extern D_001D4990_0013B3F8, 16");
+void func_0013B3F8(s32 flags) {
+    s32 i;
+    s32 sv;
+    s32 buf[2];
+
+    D_001D4DC0[0] = (s32 *)D_15C3C0;
+    D_001D4DC0_0013B3F8[1] = (s32 *)D_15D3C0;
+    D_001D4DD8[0] = D_1603C0;
+    D_001D4DD8_0013B3F8[1] = D_160800;
+    D_001D4DD0[0] = (E_13C578 *)D_15E3C0;
+    D_001D4DD0_0013B3F8[1] = (E_13C578 *)D_15F3C0;
+    if (flags & 2) D_001D4E18 = 1;
+    else D_001D4E18 = 0;
+    func_00121FE8(0);
+    do {
+        if (func_00122630(&D_1D4900_0013B3F8, 0x123456, 0) < 0) {
+            func_0011AF48(D_001D4E20, D_001D4E48, 0xB5);
+            for (;;) ;
+        }
+        sv = *(s32 *)((u8 *)&D_1D4900_0013B3F8 + 0x24);
+        do { for (i = 9999; i != -1; i--) ; } while (0);
+    } while (sv == 0);
+    D_001D4DE8 = 0;
+    D_001D4DF0 = 0;
+    D_001D4DF8_0013B3F8 = 0;
+    D_1D4A00_0013B3F8 = 0;
+    do {
+        if (func_00122630(&D_1D49C0_0013B3F8, 0x123457, 0) < 0) {
+            func_0011AF48(D_001D4E20, D_001D4E48, 0xCA);
+            for (;;) ;
+        }
+        sv = *(s32 *)((u8 *)&D_1D49C0_0013B3F8 + 0x24);
+        do { for (i = 9999; i != -1; i--) ; } while (0);
+    } while (sv == 0);
+    D_001D4DC8[0] = 0xFFC;
+    D_1D4980_0013B3F8 = 0;
+    *(s32 *)D_15C3C0 = 0;
+    *(s32 *)D_15D3C0 = 0;
+    D_001D4DC8_0013B3F8[1] = 0xFFC;
+    buf[1] = flags;
+    buf[0] = (s32)&D_1D4980_0013B3F8;
+    D_001D4990_0013B3F8 = 0;
+    func_0013C348(0, 8, buf);
+}
+/* localdecomp:end func_0013B3F8 */

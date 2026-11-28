@@ -472,6 +472,7 @@ boot_elf	func_0013AFF8	1	-
 boot_elf	func_0013B0C8	1	-
 boot_elf	func_0013B208	1	-
 boot_elf	func_0013B330	1	-
+boot_elf	func_0013B3F8	1	-
 boot_elf	func_0013B620	1	-
 boot_elf	func_0013B818	1	-
 boot_elf	func_0013B8B0	1	-
@@ -3331,6 +3332,7 @@ frontbin	func_003EF250	1	-
 frontbin	func_003EF280	1	-
 frontbin	func_003EF288	1	-
 frontbin	func_003EF2A0	1	-
+frontbin	func_003EF2E0	1	-
 frontbin	func_003EF5E0	1	-
 frontbin	func_003EF7F8	1	-
 frontbin	func_003EFBB0	1	-
@@ -4039,6 +4041,7 @@ levels	func_L01_00359E10	34	-
 levels	func_L01_0035A190	34	-
 levels	func_L01_0035A1B8	34	-
 levels	func_L01_0035A218	34	-
+levels	func_L01_0035A6B0	34	-
 levels	func_L01_0035AA10	1	-
 levels	func_L01_0035AB50	34	-
 levels	func_L01_0035ABB8	34	-
@@ -4291,6 +4294,7 @@ levels	func_L01_003A8048	5	-
 levels	func_L01_003A8850	10	-
 levels	func_L01_003A8C98	10	-
 levels	func_L01_003A8CF0	10	-
+levels	func_L01_003A8E50	7	-
 levels	func_L01_003A93A0	7	-
 levels	func_L01_003A9928	13	-
 levels	func_L01_003A9938	12	-
@@ -4858,6 +4862,7 @@ levels	func_L01_003F8620	51	-
 levels	func_L01_003F8820	51	-
 levels	func_L01_003F8A90	51	-
 levels	func_L01_003F8B30	51	-
+levels	func_L01_003F8BE0	51	-
 levels	func_L01_003F8F48	51	-
 levels	func_L01_003F8F98	51	-
 levels	func_L01_003F9080	51	-
@@ -6163,6 +6168,7 @@ levels	func_L01_004AB0E0	34	-
 levels	func_L01_004AB188	34	-
 levels	func_L01_004AB2C0	34	-
 levels	func_L01_004AB3E8	34	-
+levels	func_L01_004AC1C0	34	-
 levels	func_L01_004AC840	34	-
 levels	func_L01_004AC8A8	34	-
 levels	func_L01_004ACB38	34	-
@@ -10720,6 +10726,7 @@ levels	func_L32_003B6170	1	-
 levels	func_L32_003B6408	1	-
 levels	func_L32_003B6618	1	-
 levels	func_L32_003B6A10	18	-
+levels	func_L32_003B6A58	1	-
 levels	func_L32_003B6C88	1	-
 levels	func_L32_003B6DD0	1	-
 levels	func_L32_003B70F8	1	-

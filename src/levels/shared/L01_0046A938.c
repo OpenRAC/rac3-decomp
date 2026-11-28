@@ -2789,7 +2789,166 @@ T_0046F148 *func_L01_0046F148(u128_t *pos, u128_t *vec, u8 a2, s32 a3) {
 }
 /* localdecomp:end func_L01_0046F148 */
 
-INCLUDE_ASM("asm/levels", func_L01_0046F2B8);
+/* localdecomp:start func_L01_0046F2B8 */
+typedef struct {
+    f32 x, y, z, w;
+    f32 f10;
+    s16 h14;
+    s16 h16;
+    u8 b18;
+    s32 i1C;
+} Q_0046F2B8;
+
+typedef struct {
+    u8 b0, b1, b2, b3;
+    s32 c4;
+    u8 b8, b9;
+    s16 hA;
+    f32 fC;
+    vu0_v4 pos;
+    Q_0046F2B8 q;
+} T_0046F2B8;
+
+typedef struct {
+    u128_t v;
+    s32 w30;
+    s32 w34;
+    s32 w38;
+    f32 f3C;
+    s32 w40;
+} Ex_0046F2B8;
+
+extern u8 *D_L01_002211E0_0046F2B8[];
+
+void func_L01_0046F2B8(T_0046F2B8 *o) {
+    extern s32 func_0038CB00(s16 *);
+    extern void func_003CD250(Obj *);
+    extern f32 func_003824E0(f32, f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern s32 func_00382468(s32);
+    extern int func_003D3CB0(void *, void *, int, int, int);
+    extern T_0046F2B8 *func_L01_0046F148_0046F2B8(u128_t *, u128_t *, u8, s32);
+    Q_0046F2B8 *q = &o->q;
+    vu0_v4 a;
+    vu0_v4 b;
+    Ex_0046F2B8 ex;
+    T_0046F2B8 *ch;
+    u8 *d;
+    f32 spread;
+    f32 f;
+    f32 sign;
+    f32 phase;
+    s32 hit;
+    s32 n;
+    u8 flags;
+    s32 fl;
+
+    if (o->hA != 0 && func_0038CB00(&o->hA)) {
+        q->b18 |= 0x88;
+        spread = o->fC / 900000.0f;
+        o->fC *= 0.8f;
+        func_0038CE20(&a, q, func_003824E0(0.5f, 0.7f));
+        b.x = o->pos.x + func_003824E0(-spread, spread);
+        b.y = o->pos.y + func_003824E0(-spread, spread);
+        b.z = o->pos.z + func_003824E0(-spread, spread);
+        a.x += func_003824E0(-q->x * 0.2f, q->x * 0.2f);
+        a.y += func_003824E0(-q->y * 0.2f, q->y * 0.2f);
+        a.z += func_003824E0(-q->z * 0.2f, 0.0f);
+        ch = func_L01_0046F148_0046F2B8((u128_t *)&b, (u128_t *)&a, 0x88, q->i1C);
+        if (ch != 0) {
+            ch->hA = 2;
+            ch->fC = o->fC;
+        }
+        func_0038CE20(q, q, func_003824E0(0.5f, 0.7f));
+        q->x += func_003824E0(-q->x * 0.2f, q->x * 0.2f);
+        q->y += func_003824E0(-q->y * 0.2f, q->y * 0.2f);
+        q->z += func_003824E0(-q->z * 0.2f, 0.0f);
+        o->pos.x += func_003824E0(-spread, spread);
+        o->pos.y += func_003824E0(-spread, spread);
+        o->pos.z += func_003824E0(-spread, spread);
+    }
+    d = D_L01_002211E0_0046F2B8[0];
+    n = o->b2 - d[0];
+    o->b2 = d[(o->hA + q->h16 + n) & 7];
+    hit = 0;
+    vec_add_ab(&a, &o->pos, q);
+    if (q->h14 >= 3) {
+        vec_sub_ab(&b, &o->pos, q);
+    } else {
+        *(u128_t *)&b = *(u128_t *)&o->pos;
+    }
+    func_0038CE20(&ex, &ex, 0.01f);
+    flags = q->b18;
+    if (flags & 8) {
+        if ((o->c4 & 0xFF000000) == 0) {
+            func_003CD250((Obj *)o);
+            return;
+        }
+        q->b18 = flags | 8;
+        if (func_00382468(3) == 0) {
+            hit = func_003D3CB0(&b, &a, 0, q->i1C, 0) != 0;
+        }
+    } else {
+        ex.w30 = q->i1C;
+        ex.f3C = 1.0f;
+        ex.v = *(u128_t *)q;
+        ex.w34 = 1;
+        ex.w40 = 1;
+        if (func_00382468(3) == 0) {
+            hit = func_003D3CB0(&b, &a, 0, q->i1C, (int)&ex) != 0;
+        }
+    }
+    if (hit) {
+        q->b18 |= 8;
+    } else {
+        *(u128_t *)&o->pos = *(u128_t *)&a;
+    }
+    if (q->b18 & 8) {
+        q->h16++;
+        o->fC -= 26000.002f;
+        if (o->fC <= 0.0f) {
+            func_003CD250((Obj *)o);
+            return;
+        }
+    } else {
+        o->fC += 20800.002f;
+    }
+    f = (f32)q->h14 / 15.0f * 0.0064000003f + 0.08f;
+    if (f < 0.0f) {
+        f = 0.0f;
+    }
+    if (0.08f < f) {
+        f = 0.08f;
+    }
+    if (q->b18 & 8) {
+        f = f / ((f32)q->h16 / 7.0f + 1.0f);
+    }
+    o->c4 = (o->c4 & 0xFFFFFF) | ((s32)(f * 256.0f) << 24);
+    q->z += 0.000288f;
+    if (q->h14 >= 22 || (q->b18 & 8)) {
+        q->x *= 0.95f;
+        q->y *= 0.95f;
+    }
+    fl = q->b18;
+    sign = -1.0f;
+    if (fl & 1) {
+        sign = 1.0f;
+    }
+    if (fl & 8) {
+        q->z += 0.000288f;
+        q->f10 += sign * -0.012f / (f32)q->h16;
+    } else {
+        q->f10 += sign * -0.012f;
+    }
+    if (1.0f < q->f10) {
+        q->f10 -= 1.0f;
+    }
+    if (q->f10 < 0.0f) {
+        q->f10 += 1.0f;
+    }
+    o->b8 = (s32)(q->f10 * 256.0f);
+}
+/* localdecomp:end func_L01_0046F2B8 */
 
 LINKER_REMNANT("asm/levels", func_L01_0046F930);
 

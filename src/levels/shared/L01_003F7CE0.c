@@ -514,7 +514,59 @@ u32 func_L01_003F8B30(u8 *self, s32 a, void *b) {
 }
 /* localdecomp:end func_L01_003F8B30 */
 
-INCLUDE_ASM("asm/levels", func_L01_003F8BE0);
+/* localdecomp:start func_L01_003F8BE0 */
+typedef struct {
+    u8 gap0[0x30];
+    vu0_v4 *points;
+    u8 gap34[0x25];
+    u8 indices[3];
+    u8 count;
+} S_003F8BE0;
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_0038CE68(f32 *, f32 *);
+extern void func_0038CF68(void *a, void *b, f32 s);
+extern void func_0038CE90(void *out, void *m, void *v);
+
+void func_L01_003F8BE0(u8 *self, s32 idx, void *dir) {
+    vu0_v4 d;
+    vu0_v4 e[3];
+    vu0_v4 t;
+    vu0_v4 c[4];
+    S_003F8BE0 *m = *(S_003F8BE0 **)(self + 0x68);
+    s32 i;
+
+    func_0038D000(&d, &m->points[m->indices[idx]], self + 0xC0);
+    func_0038CF68(&t, dir, func_0038CE68((f32 *)dir, (f32 *)&d));
+    vec_sub_ab(&d, &d, &t);
+    for (i = 0; i < m->count; i++) {
+        if (m->indices[i] == idx) {
+            *(vu0_q *)&e[i] = *(vu0_q *)&d;
+        } else {
+            vec_sub_ab(&e[i], &m->points[m->indices[i]], &m->points[m->indices[idx]]);
+            func_0038D000(&e[i], &e[i], self + 0xC0);
+            func_0038CF68(&t, dir, func_0038CE68((f32 *)dir, (f32 *)&e[i]));
+            vec_sub_ab(&e[i], &e[i], &t);
+            if (func_0038CE68((f32 *)&e[i], (f32 *)&d) > 0.0f) {
+                m->indices[i] = m->indices[m->count - 1];
+                m->count--;
+            }
+        }
+    }
+    if (m->count == 3) {
+        func_0038CE90(&c[0], &e[0], &e[2]);
+        func_0038CE90(&c[1], &e[1], &e[2]);
+        func_0038CE90(&c[2], &e[0], &e[1]);
+        func_0038CE90(&c[3], &e[1], &e[0]);
+        if (func_0038CE68((f32 *)&c[0], (f32 *)&c[2]) < 0.0f) {
+            m->indices[1] = m->indices[2];
+            m->count--;
+        } else if (func_0038CE68((f32 *)&c[1], (f32 *)&c[3]) < 0.0f) {
+            m->indices[0] = m->indices[2];
+            m->count--;
+        }
+    }
+}
+/* localdecomp:end func_L01_003F8BE0 */
 
 /* localdecomp:start func_L01_003F8E78 */
 extern f32 func_0038CEA8(f32 *);

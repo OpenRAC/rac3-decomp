@@ -433,7 +433,143 @@ void func_L01_0034DBE8(s32 unused, s32 colour, f32 (*pts)[4], s32 count) {
 }
 /* localdecomp:end func_L01_0034DBE8 */
 
-INCLUDE_ASM("asm/levels", func_L01_0034E080);
+/* localdecomp:start func_L01_0034E080 */
+extern u8 D_L01_001E29C0[];
+extern struct Hero D_001A4BE0;
+extern vu0_v4 D_001A4C90;
+extern s32 D_L01_001D673C;
+extern f32 D_L01_001DD3F0;
+__asm__(".extern D_L01_001DD3F0, 4");
+extern f32 D_L01_001DD3F4;
+__asm__(".extern D_L01_001DD3F4, 4");
+extern f32 D_L01_001DD3DC;
+__asm__(".extern D_L01_001DD3DC, 4");
+extern f32 D_L01_001DD3E0;
+__asm__(".extern D_L01_001DD3E0, 4");
+extern f32 D_L01_001DD3E4;
+__asm__(".extern D_L01_001DD3E4, 4");
+extern f32 D_L01_001DD3E8;
+__asm__(".extern D_L01_001DD3E8, 4");
+extern f32 D_L01_001DD3EC;
+__asm__(".extern D_L01_001DD3EC, 4");
+
+void func_L01_0034E080(vu0_v4 *pos, s32 count, s32 kind) {
+    extern f32 func_003824E0(f32, f32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern s32 func_00382468(s32);
+    extern u32 func_0013D3E0(void);
+    extern void func_0038CF68(void *, void *, f32);
+    extern f32 func_0038CE68(void *, void *);
+    extern void func_0038CE20(f32 *, f32 *, f32);
+    extern void func_0038D890(void *, void *, void *, f32);
+    extern u8 *func_L01_0046B458(void *, s32, u32, f32, f32, f32, s32, s32, void *, s32);
+    vu0_v4 v;
+    vu0_v4 at;
+    vu0_v4 delta;
+    vu0_v4 axis;
+    vu0_v4 toward;
+    s32 i;
+    s32 spin;
+    u32 color;
+    f32 size;
+    f32 speed;
+    f32 angle;
+    u8 *p;
+
+    vec_sub_ab(&delta, D_L01_001E29C0, pos);
+    if (D_L01_001D673C == 0) {
+        delta.z = 0.0f;
+        axis.x = 0.0f;
+        axis.y = 0.0f;
+        axis.z = 1.0f;
+        axis.w = 1.0f;
+    } else {
+        vec_sub_ab(&toward, pos, &D_001A4C90);
+        func_0038CF68(&axis, &toward, 1.0f);
+        func_0038CE20((f32 *)&toward, (f32 *)&axis, func_0038CE68(&axis, &delta));
+        vec_sub_ab(&delta, &delta, &toward);
+    }
+    for (i = 0; i < count; i++) {
+        color = 0x7F800000;
+        size = func_003824E0(D_L01_001DD3F0, D_L01_001DD3F4);
+        spin = func_00382468(2);
+        if (spin == 0) {
+            spin--;
+        }
+        angle = func_003824E0(-1.0471976f, 1.0471976f);
+        func_0038D890(&v, &delta, &axis, angle);
+        speed = func_003824E0(D_L01_001DD3DC, D_L01_001DD3E0) * 0.020000001f;
+        func_0038CF68(&v, &v, speed);
+        v.z = func_003824E0(D_L01_001DD3E4, D_L01_001DD3E8) * 0.020000001f;
+        *(vu0_q *)&at = *(vu0_q *)pos;
+        at.x += func_L01_00443A18(0.0f, 0.15f);
+        at.y += func_L01_00443A18(0.0f, 0.15f);
+        at.z += func_L01_00443A18(0.0f, 0.15f);
+        if (*(s32 *)((u8 *)&D_001A4BE0 + 0x1228) == 47) {
+            color = 0x7F000080;
+        }
+        if (kind == 0) {
+            if ((func_0013D3E0() & 1) == 0) {
+                f32 scale = 3.5f;
+
+                func_0038CE20((f32 *)&v, (f32 *)&v, 1.5f);
+                p = func_L01_0046B458(&at, 50, color, size * 0.1f * scale, size, D_L01_001DD3EC * 1.44f, 0, spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+                p = func_L01_0046B458(&at, 50, 0x7F7F7F7F, size * 0.07f * scale, size * 0.7f, D_L01_001DD3EC * 1.44f, 1, -spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+            } else {
+                f32 scale;
+
+                vec_sub_ba(&toward, D_L01_001E29C0, &at);
+                scale = 20.5f;
+                func_0038CF68(&toward, &toward, speed);
+                vec_add_ab(&v, &v, &toward);
+                p = func_L01_0046B458(&at, 33, color, size * 0.1f * scale, size, D_L01_001DD3EC * 1.44f, 0, spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+                p = func_L01_0046B458(&at, 33, 0x7F7F7F7F, size * 0.07f * scale, size * 0.7f, D_L01_001DD3EC * 1.44f, 1, -spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+            }
+        } else {
+            if ((func_0013D3E0() & 1) == 0) {
+                f32 scale = 3.0f;
+
+                func_0038CE20((f32 *)&v, (f32 *)&v, 1.5f);
+                p = func_L01_0046B458(&at, 50, color, size * 0.1f * scale, size, D_L01_001DD3EC * 1.44f, 0, spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+                p = func_L01_0046B458(&at, 50, 0x7F7F7F7F, size * 0.07f * scale, size * 0.7f, D_L01_001DD3EC * 1.44f, 1, -spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+            } else {
+                f32 scale;
+
+                vec_sub_ba(&toward, D_L01_001E29C0, &at);
+                scale = 2.5f;
+                func_0038CF68(&toward, &toward, speed);
+                vec_add_ab(&v, &v, &toward);
+                p = func_L01_0046B458(&at, 33, color, size * 0.1f * scale, size, D_L01_001DD3EC * 1.44f, 0, spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+                p = func_L01_0046B458(&at, 33, 0x7F7F7F7F, size * 0.07f * scale, size * 0.7f, D_L01_001DD3EC * 1.44f, 1, -spin, &v, 0);
+                if (p != 0) {
+                    p[9] = 0x74;
+                }
+            }
+        }
+    }
+}
+/* localdecomp:end func_L01_0034E080 */
 
 /* localdecomp:start func_L01_0034E558 */
 #include "vu0.h"

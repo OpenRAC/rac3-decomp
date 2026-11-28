@@ -6,7 +6,68 @@ typedef struct {
     s32 pad[2];
 } Tab_00477BC0;
 
-INCLUDE_ASM("asm/levels", func_L01_00472C98);
+/* localdecomp:start func_L01_00472C98 */
+#include "vu0.h"
+void func_L01_00472C98(u8 *p) {
+    extern void func_L01_004CAB30(void *, void *);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern f32 func_L01_004451A0(f32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern void func_0038CF68(void *, void *, f32);
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    vu0_v4 movement, accel, velocity, impulse;
+    u8 *d = p + 0x20;
+    s32 extra = (s32)p + 0x30;
+    s32 rgb, alpha, mode, spin;
+    f32 scale0, scale1, base0, base1, size0, size1, speed, t, applied;
+    accel.w = 0.0f;
+    accel.x = *(f32 *)(p + 0x20);
+    accel.y = *(f32 *)(d + 4);
+    accel.z = *(f32 *)(d + 8);
+    velocity.x = *(f32 *)(extra + 0);
+    velocity.y = *(f32 *)(extra + 4);
+    velocity.z = *(f32 *)(extra + 8);
+    velocity.w = 0.0f;
+    base0 = (f32)d[0x1E] * 0.0078125f;
+    base1 = (f32)d[0x1F] * 0.0078125f;
+    scale0 = (f32)d[0x1C] * 0.0078125f;
+    scale1 = (f32)d[0x1D] * 0.0078125f;
+    rgb = d[0xC] & 15;
+    rgb = rgb | ((rgb << 16) | (rgb << 8));
+    alpha = (d[0xC] >> 4) | 0x70;
+    spin = d[0xD] >> 4;
+    mode = d[0xD] & 15;
+    speed = (f32)d[0xF] * 0.0078125f;
+    size0 = base0 * 210000.0f;
+    size1 = base1 * 210000.0f;
+
+    func_L01_004CAB30(p + 0x10, p + 0x10);
+    t = 1.0f - (f32)*(s16 *)(p + 0xA) / (f32)d[0xE];
+    if (mode == 0) {
+        *(s32 *)(p + 4) = func_0038DBD8(0x103080, rgb, t) | (alpha << 24);
+        *(f32 *)(p + 0xC) = size0 + (size1 - size0) * t;
+        applied = scale0 + (scale1 - scale0) * t;
+        func_0038CE20(&movement, &velocity, speed * func_L01_004451A0(t));
+    } else {
+        f32 fade = func_L01_004451A0(t);
+        applied = scale1;
+        *(s32 *)(p + 4) = rgb | ((s32)((f32)alpha - (f32)alpha * fade) << 24);
+        func_0038CE20(&movement, &velocity, speed);
+    }
+    func_0038CF68(&impulse, &accel, applied);
+    vec_add_ba(p + 0x10, p + 0x10, &impulse);
+    vec_add_ab(p + 0x10, &movement, p + 0x10);
+    p[8] += spin;
+    if (func_0038CB00(p + 0xA)) {
+        if (mode == 0) {
+            d[0xE] = 17;
+            d[0xD] |= 1;
+            *(s16 *)(p + 0xA) = 17;
+        } else func_003CD250(p);
+    }
+}
+/* localdecomp:end func_L01_00472C98 */
 
 /* localdecomp:start func_L01_00472F58 */
 typedef int Quad_472F58 __attribute__((mode(TI)));
@@ -392,7 +453,132 @@ void func_L01_004739D8(s128_00470258 *pos, s128_00470258 *v2, s32 a2, s32 a3, s1
 }
 /* localdecomp:end func_L01_004739D8 */
 
-INCLUDE_ASM("asm/levels", func_L01_00473AC8);
+/* localdecomp:start func_L01_00473AC8 */
+typedef int Q_00473AC8 __attribute__((mode(TI)));
+extern u8 *D_001A71A0[];
+extern Q_00473AC8 D_L01_001EAA20[];
+extern s32 D_L01_001D673C;
+extern vu0_v4 D_001A4EC0_00473AC8;
+void func_L01_00473AC8(Part_00470258 *particle) {
+    extern void func_L01_004CAB30(void *, void *);
+    extern s32 func_003D3CB0(void *, void *, s32, u8 *, s32);
+    extern s32 func_0038DBD8(s32, s32, f32);
+    extern f32 func_003824E0(f32, f32);
+    extern s32 func_00382468(s32);
+    extern f32 func_L01_00443A18(f32, f32);
+    extern void func_L01_0046A938(void *, f32, f32, s32, s32);
+    extern void func_0038CE20(void *, void *, f32);
+    extern u8 *func_L01_004669B0(void *, f32, f32, f32, f32, s32, void *, u32, s32);
+    extern void func_003C5180(void *, void *, s32);
+    extern s32 func_0038CB00(void *);
+    extern void func_003CD250(u8 *);
+    vu0_v4 next, at, velocity;
+    Sub_00470258 *s;
+    u8 *p = (u8 *)particle;
+    s32 hit;
+
+    if (particle == 0) return;
+    s = &particle->sub;
+    func_L01_004CAB30(&particle->f10, &particle->f10);
+    particle->fC += -120.00001f;
+    vec_add_ba(&next, &particle->f10, &s->v);
+    hit = func_003D3CB0(&particle->f10, &next, 2, D_001A71A0[0], 0) != 0;
+    particle->f4 = func_0038DBD8(s->f10, s->f14, 1.0f - (f32)particle->fA / (f32)s->f18);
+    if (((f32 *)&s->v)[0] != 0.0f || ((f32 *)&s->v)[1] != 0.0f || ((f32 *)&s->v)[2] != 0.0f) {
+        if (hit) {
+            u8 r, g, b;
+            u32 alpha;
+            u8 max;
+            f32 scale;
+            s32 color;
+            particle->f10 = D_L01_001EAA20[0];
+            qzero(&s->v);
+            color = particle->f4;
+            particle->fC += particle->fC;
+            g = color >> 8;
+            alpha = (u32)color >> 24;
+            b = color >> 16;
+            r = p[4];
+            if (g < r) {
+                max = b < r ? r : b;
+            } else {
+                max = b < g ? g : b;
+            }
+            scale = 255.0f / (f32)max;
+            s->f10 = (alpha << 24) | ((s32)((f32)(s32)b * scale) << 16) | ((s32)((f32)(s32)g * scale) << 8) |
+                     (s32)((f32)(s32)r * scale);
+            s->f18 = particle->fA;
+            switch (s->f1A) {
+            case 0: break;
+            case 1: {
+                vu0_v4 *pos = &at;
+                f32 size;
+                at.x = ((f32 *)&particle->f10)[0];
+                at.y = ((f32 *)&particle->f10)[1];
+                at.z = ((f32 *)&particle->f10)[2] + 0.01f;
+                size = func_003824E0(0.01f, 0.15f);
+                func_L01_0046A938(pos, size, 5250.0f, 0, ((func_00382468(6) + 20) << 24) | 0xFF8040);
+                break;
+            }
+            case 2: {
+                vu0_v4 *pos = &at;
+                vu0_v4 *vel = &velocity;
+                s32 i, spin;
+                u8 *created;
+                f32 speed, size;
+                at.x = ((f32 *)&particle->f10)[0];
+                at.y = ((f32 *)&particle->f10)[1];
+                at.z = ((f32 *)&particle->f10)[2] + 0.02f;
+                for (i = 0; i < 5; i++) {
+                    speed = func_003824E0(0.1f, 0.2f) * 0.020000001f;
+                    func_0038CE20(vel, &D_001A4EC0_00473AC8, -speed);
+                    spin = (s32)func_L01_00443A18(1.0f, 2.0f);
+                    size = func_003824E0(0.15f, 0.25f) * 210000.0f;
+                    created = func_L01_004669B0(pos, 0.0f, 1.0f, 1.01f, size, spin, vel, 0x7F202020, 0);
+                    if (created) {
+                        u8 *extra = created + 0x20;
+                        created[3] = 0x44;
+                        *(s16 *)(created + 10) = 75;
+                        created[9] = 0x44;
+                        *(f32 *)(extra + 0x1C) = 4.0f;
+                        *(s32 *)(extra + 4) = 3;
+                        extra[10] = 48;
+                        extra[11] = created[10];
+                    }
+                }
+                break;
+            }
+            }
+        } else {
+            particle->f10 = *(Q_00473AC8 *)&next;
+            if (D_L01_001D673C) {
+                f32 accel;
+                func_003C5180(&particle->f10, &at, 0);
+                accel = ((f32 *)&s->v)[3];
+                if (accel != 0.0f) {
+                    func_0038CE20(&at, &at, -accel);
+                    vec_add_ab(&s->v, &s->v, &at);
+                } else {
+                    func_0038CE20(&at, &at, 0.009072f);
+                    vec_add_ab(&s->v, &s->v, &at);
+                }
+            } else {
+                f32 accel = ((f32 *)&s->v)[3];
+                if (accel != 0.0f) {
+                    ((f32 *)&s->v)[2] += accel;
+                } else {
+                    ((f32 *)&s->v)[2] += -0.009072f;
+                }
+            }
+        }
+    }
+    if (func_0038CB00(&particle->fA) || particle->fC < 0.0f || next.x < 0.01f || next.y < 0.01f || next.z < 0.01f) {
+        func_003CD250(p);
+    } else {
+        particle->f8--;
+    }
+}
+/* localdecomp:end func_L01_00473AC8 */
 
 LINKER_REMNANT("asm/levels", func_L01_00474068);
 

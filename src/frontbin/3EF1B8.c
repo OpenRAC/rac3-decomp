@@ -3,14 +3,20 @@
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 extern void (*D_001D9A40[2])(s32);
 extern void (*D_001D9A40_00382B20[1])(s32);
+extern f32 func_0038DB48(f32);
 extern void (*D_00226800[])(s32);
 extern void (*D_00226C00[])(s32);
 extern void (*D_00226E00[])(s32);
 extern void (*D_00226A00[])(s32);
+extern s32 func_00396968();
+extern s32 func_00396968(s32, s32);
 void func_003EFE98(void *, s32);
+extern s32 func_003EDAF8();
 extern void func_003EF288();
 extern void func_003EF1B8();
 extern void func_003EF288(void *, s32, s32, s32, s32);
+extern s32 func_003EDAF8(void *, s32);
+extern s32 func_003EDAF8(void *p, s32 mask);
 /* --- end of declarations from other files --- */
 
 /* localdecomp:start func_003EF1B8 */
@@ -80,7 +86,47 @@ void func_003EF2A0(u8 *p, f32 *a) {
 }
 /* localdecomp:end func_003EF2A0 */
 
-INCLUDE_ASM("asm/nonmatchings/text", func_003EF2E0);
+/* localdecomp:start func_003EF2E0 */
+typedef struct { u32 c0, c1, c2, c3; } Col_3EF2E0;
+typedef struct {
+    u8 pad0[0x20];
+    f32 ox, oy;
+    u32 bg;
+    f32 depth;
+    u8 pad30[8];
+    u32 c0, c1, c2, c3;
+    u16 tex, frame;
+} Obj_3EF2E0;
+extern f32 D_001D9698;
+extern f32 D_001D969C;
+static __inline__ Col_3EF2E0 fill_3EF2E0(u32 c) {
+    return (Col_3EF2E0){ c, c, c, c };
+}
+static __inline__ void draw_3EF2E0(s32 tex, Col_3EF2E0 c, f32 x0, f32 y0, f32 x1, f32 y1, f32 depth) {
+    extern f32 func_0038DB48(f32);
+    extern void func_003972A0(s32, f32, f32, f32, f32, s32 *, f32);
+    f32 hx = (x1 - x0) * 0.5f;
+    f32 hy = (y1 - y0) * 0.5f;
+    func_003972A0(tex, (f32)(s32)((x0 + hx) * D_001D9698), (f32)(s32)((y0 + hy) * D_001D969C),
+                  (f32)(s32)(hx * D_001D9698), (f32)(s32)(hy * D_001D969C), (s32 *)&c, func_0038DB48(depth));
+}
+static __inline__ void drawp_3EF2E0(s32 tex, Col_3EF2E0 *c, f32 x0, f32 y0, f32 x1, f32 y1, f32 depth) {
+    draw_3EF2E0(tex, (Col_3EF2E0){ c->c0, c->c1, c->c2, c->c3 }, x0, y0, x1, y1, depth);
+}
+void func_003EF2E0(Obj_3EF2E0 *o, f32 *r) {
+    extern s32 func_00396968(s32, s32);
+    extern s32 func_003EDAF8(void *, s32);
+    s32 tex = func_00396968(o->tex, o->frame);
+    Col_3EF2E0 col = (Col_3EF2E0){ o->c0, o->c1, o->c2, o->c3 };
+    if (func_003EDAF8(o, 0x40)) {
+        Col_3EF2E0 b = fill_3EF2E0(o->bg);
+        {
+            drawp_3EF2E0(tex, &b, r[0] + o->ox, r[1] + o->oy, r[2] + o->ox, r[3] + o->oy, o->depth);
+        }
+    }
+    drawp_3EF2E0(tex, &col, r[0], r[1], r[2], r[3], o->depth);
+}
+/* localdecomp:end func_003EF2E0 */
 
 typedef struct { s32 f0; s32 *vt4; } OB_3EA078;
 typedef struct { u8 p0[8]; s32 f8; s32 fC; } PP_3EA078;

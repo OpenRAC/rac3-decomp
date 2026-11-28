@@ -43,9 +43,560 @@ typedef struct {
     s32 *list28;
 } Rec_00456500;
 
-INCLUDE_ASM("asm/levels", func_L01_00454728);
+/* localdecomp:start func_L01_00454728 */
+#include "vu0.h"
 
-INCLUDE_ASM("asm/levels", func_L01_00455550);
+typedef struct {
+    u8 pad0[0x11];
+    u8 startAnimation;
+    u8 pad12[2];
+    u8 idleTicks;
+    u8 endAnimation;
+    u8 pad16[4];
+    u8 mode;
+    u8 contactAge;
+    u8 pad1C[0x10];
+    f32 damping;
+    f32 probeRange;
+    f32 probeOffset;
+    u16 flags;
+    u8 pad3A[2];
+    f32 repel;
+    f32 minimumHeight;
+    u8 pad44[8];
+    f32 acceleration;
+    f32 fallAcceleration;
+    f32 stopFrame;
+    u8 pad58[8];
+    f32 endFrame;
+    f32 turnTarget;
+    f32 turnRate;
+    u8 pad6C[0xF];
+    u8 finishFrame;
+    s32 collisionId;
+    vu0_v4 velocity;
+    vu0_v4 rotation;
+    u8 padA0[0x10];
+    f32 groundSnap;
+} MoveState_00454728;
+
+typedef struct {
+    u8 pad0[0x18];
+    s32 obstacle;
+    s32 kind;
+    vu0_v4 hit;
+    vu0_v4 corrected;
+    vu0_v4 normal;
+} Contact_00454728;
+
+extern f32 func_0038CED8(void *);
+extern f32 func_003C4138(f32 *, f32, f32);
+extern void func_0038CFB8(void *, void *, f32);
+extern void func_0038D000(void *, void *, void *);
+extern f32 func_003C3D30(void *, s32, s32, f32);
+extern s32 func_003D5630(void);
+extern u8 *func_L01_003016B0(void *, s32, f32, f32);
+extern f32 func_003824E0(f32, f32);
+extern void func_L01_0046A938(void *, void *, s32, f32, f32);
+extern f32 func_00382538(void);
+extern f32 func_0038D098(f32);
+extern f32 func_0038D0B0(f32);
+extern s32 func_00382468(s32);
+extern s32 func_00382498(s32, s32);
+extern void func_L01_00468A68(void *, void *, s32, s32);
+extern f32 func_L01_004463D0(void *);
+extern void func_0038CE20(void *, void *, f32);
+extern f32 func_L01_004395E0(void *);
+extern void func_003C3A10(void *, s32, s32, s32);
+extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern f32 func_0038D160(f32, f32);
+extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern f32 func_0038CEA8(void *);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern s32 func_L01_00476F10(s32, f32, void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_L01_0044C1B8(void *, void *);
+extern s32 func_L01_0044E1B8(void *, f32);
+
+extern Contact_00454728 D_L01_001EAA00_00454728;
+
+s32 func_L01_00454728(u8 *moby, MoveState_00454728 *state) {
+    vu0_v4 candidate, origin, offset, end;
+    union {
+        vu0_v4 rotated[3];
+        struct { vu0_v4 direction, adjustment, rayStart; } physics;
+    } movement;
+    vu0_v4 rayEnd;
+    f32 speed, floor, root0, root1, finalSpeed;
+    f32 distance;
+    s32 result = 0;
+    s32 contact;
+    s32 snapped;
+    s32 useHit;
+    f32 response;
+
+    if (state->mode == 0) state->velocity.z -= state->acceleration;
+    else state->velocity.z -= state->fallAcceleration;
+    speed = func_0038CED8((&state->velocity));
+    {
+        f32 target = 0.0200000014f;
+        if (state->mode >= 2) target = 0.0f;
+        func_003C4138(&speed, target, state->damping);
+    }
+    func_0038CFB8((&state->velocity), (&state->velocity), speed);
+    contact = 0;
+
+    qzero(&offset);
+    offset.z = state->probeOffset;
+    func_0038D000(&offset, &offset, (moby + 0xC0));
+    vec_add_ab(&origin, &offset, ((vu0_v4 *)(moby + 0x10)));
+    floor = func_003C3D30(&origin, 0, 0, 0.5f);
+    if (!func_003D5630()) {
+        contact = 1;
+        if (state->contactAge == 0 && floor <= origin.z && origin.z + (&state->velocity)->z < floor) {
+            state->contactAge = 1;
+            if (*(s16 *)(moby + 0xAA) == 0x16AD || *(s16 *)(moby + 0xAA) == 0x160E) {
+                s32 i, j;
+                *(vu0_q *)&end = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+                end.z = floor;
+                func_L01_003016B0(&end, 3, 3.25f, 1.025f);
+                for (i = 0; i < 3; i++) {
+                    movement.physics.direction.x = ((vu0_v4 *)(moby + 0x10))->x + func_003824E0(-0.3f, 0.3f);
+                    movement.physics.direction.y = ((vu0_v4 *)(moby + 0x10))->y + func_003824E0(-0.3f, 0.3f);
+                    movement.physics.direction.z = floor;
+                    func_L01_0046A938(&movement.physics.direction, &floor, -1, func_003824E0(0.5f, 0.75f), 5250.0f);
+                }
+                for (j = 0; j < 16; j++) {
+                    f32 angle = func_00382538();
+                    f32 scale = func_003824E0(0.0f, 0.0600000024f);
+                    s32 type, life;
+                    movement.physics.direction.x = func_0038D098(angle) * scale;
+                    movement.physics.direction.y = func_0038D0B0(angle) * scale;
+                    movement.physics.direction.z = func_003824E0(0.0600000024f, 0.1600000113f);
+                    movement.physics.adjustment.x = ((vu0_v4 *)(moby + 0x10))->x + movement.physics.direction.x * 8.0f;
+                    movement.physics.adjustment.y = ((vu0_v4 *)(moby + 0x10))->y + movement.physics.direction.x * 8.0f;
+                    movement.physics.adjustment.z = floor - func_003824E0(0.0f, 0.2f);
+                    type = func_00382468(2);
+                    life = func_00382498(90, 120);
+                    func_L01_00468A68(&movement.physics.adjustment, &movement.physics.direction, type, life);
+                }
+            }
+        }
+        floor = func_L01_004463D0(((vu0_v4 *)(moby + 0x10)));
+    }
+
+    if (state->contactAge != 0) {
+        if (state->contactAge < 4) func_0038CE20((&state->velocity), (&state->velocity), 0.9f);
+        if (state->contactAge < 7) {
+            state->contactAge++;
+            state->fallAcceleration *= 0.95f;
+        }
+    }
+
+    if (((vu0_v4 *)(moby + 0x10))->x < 2.0f || ((vu0_v4 *)(moby + 0x10))->x > 1021.0f || ((vu0_v4 *)(moby + 0x10))->y < 2.0f ||
+        ((vu0_v4 *)(moby + 0x10))->y > 1021.0f || ((vu0_v4 *)(moby + 0x10))->z < 2.0f || ((vu0_v4 *)(moby + 0x10))->z > 1021.0f) {
+        result = 1;
+    }
+    if (state->mode != 0 && ((vu0_v4 *)(moby + 0x10))->z < state->minimumHeight) {
+        result |= 1;
+    } else if (moby[0x43] != state->endAnimation && state->endFrame > 0.0f && state->stopFrame > 0.0f) {
+        switch (state->mode) {
+        case 0:
+            distance = fabs_asm((&state->velocity)->z / state->acceleration);
+            if (distance > 2.0f) {
+                f32 rate = 2.0f * (state->stopFrame - func_L01_004395E0(moby)) / distance;
+                if (rate > 0.0f) func_003C4138((f32 *)(moby + 0x48), rate, 0.4200000167f);
+            }
+            break;
+        case 1:
+            if (state->endFrame <= func_L01_004395E0(moby)) {
+                *(f32 *)(moby + 0x48) = 0.0f;
+            } else if (state->endAnimation != 255 && (floor == 0.0f ||
+                       floor < state->minimumHeight || ((vu0_v4 *)(moby + 0x10))->z - floor > 10.0f)) {
+                if (moby[0x43] != state->endAnimation) {
+                    func_003C3A10(moby, state->endAnimation, 0, 4);
+                }
+                if (state->fallAcceleration > 0.006f) state->fallAcceleration = 0.006f;
+            } else {
+                f32 acceleration = state->fallAcceleration * -0.5f;
+                f32 time = 60.0f;
+                f32 rate;
+                if (func_L01_004461B8(acceleration, (&state->velocity)->z - acceleration, ((vu0_v4 *)(moby + 0x10))->z - floor,
+                                       &root0, &root1) > 0 && root0 > 0.0f && root0 < time) {
+                    time = root0;
+                }
+                if (time < 0.0001f) time = 0.0001f;
+                rate = 2.0f * (state->endFrame - func_L01_004395E0(moby)) / time;
+                if (rate > 2.0f) rate = 2.0f;
+                else if (rate < 0.0f) rate = 0.0f;
+                func_003C4138((f32 *)(moby + 0x48), rate, 0.4200000167f);
+            }
+            break;
+        case 2:
+            *(vu0_q *)&end = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+            *(vu0_q *)&movement.physics.direction = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+            *(f32 *)(moby + 0x48) = 1.0f;
+            movement.physics.direction.z -= 1.0f;
+            end.z += 0.2f;
+            if (!func_003D3CB0(&end, &movement.physics.direction, 2, moby, 0)) state->mode = 1;
+            break;
+        }
+    }
+    useHit = 0;
+    snapped = 0;
+    func_L01_00448890(((f32 *)(moby + 0xF8)), &state->turnRate, 0, state->turnTarget, 0.02010619454f, 0.005026548635f, 3.14f);
+    vec_add_ba(((vu0_v4 *)(moby + 0x10)), ((vu0_v4 *)(moby + 0x10)), (&state->velocity));
+    vec_add_ab(&candidate, &origin, (&state->velocity));
+    {
+        f32 ground = func_003C3D30(((vu0_v4 *)(moby + 0x10)), 0, 0, 0.5f);
+        if (!(state->flags & 3)) {
+            if (ground > 0.0f && (*(u16 *)(moby + 0x34) & 0x20)) {
+                u8 *data = *(u8 **)(*(u8 **)(moby + 0x68) + 0x1C);
+                if (data != 0 && *(f32 *)(data + 0x10) <
+                    func_0038D160(D_L01_001EAA00_00454728.normal.z, func_0038CED8(&D_L01_001EAA00_00454728.normal))) {
+                    ((vu0_v4 *)(moby + 0x10))->x = origin.x;
+                    ((vu0_v4 *)(moby + 0x10))->y = origin.y;
+                    if (((vu0_v4 *)(moby + 0x10))->z < floor) ((vu0_v4 *)(moby + 0x10))->z = floor;
+                    *(vu0_q *)&candidate = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+                    (&state->velocity)->x = 0.0f;
+                    (&state->velocity)->y = 0.0f;
+                    snapped = 1;
+                }
+            }
+            if (state->groundSnap > 0.0f && !contact && !snapped && state->groundSnap < floor - ground) {
+                ((vu0_v4 *)(moby + 0x10))->x = origin.x;
+                ((vu0_v4 *)(moby + 0x10))->y = origin.y;
+                if (((vu0_v4 *)(moby + 0x10))->z < floor) ((vu0_v4 *)(moby + 0x10))->z = floor;
+                *(vu0_q *)&candidate = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+                (&state->velocity)->x = 0.0f;
+                (&state->velocity)->y = 0.0f;
+            }
+        }
+    }
+    func_0038CE20(&end, (&state->velocity), 3.0f);
+    vec_add_ab(&end, &end, &candidate);
+    func_L01_00446780(moby, &end, 0x8000000, state->probeRange, 1.0f, 1.0f, 0, 1, 0);
+    if (state->probeRange < func_0038CEA8((&state->velocity)) && func_003D3CB0(&origin, &candidate, 0x24, moby, 0)) {
+        *(vu0_q *)&candidate = *(vu0_q *)&D_L01_001EAA00_00454728.hit;
+    }
+    if (!func_L01_003FB640(&candidate, 0x24, moby, state->probeRange)) {
+        s32 hit = func_003D3CB0(&candidate, ((vu0_v4 *)(moby + 0x10)), 0x24, moby, 0);
+        useHit = 1;
+        if (!hit) goto afterCollision;
+    }
+    result |= 4;
+    if (useHit) {
+        *(vu0_q *)((vu0_v4 *)(moby + 0x10)) = *(vu0_q *)&D_L01_001EAA00_00454728.hit;
+    } else {
+        vec_sub_ba(((vu0_v4 *)(moby + 0x10)), &D_L01_001EAA00_00454728.corrected, &offset);
+    }
+
+    response = 1.0f;
+    func_0038CF68(&movement.physics.direction, &D_L01_001EAA00_00454728.normal, response);
+    if (movement.physics.direction.z >= 0.707f) {
+        f32 dot = func_0038CE68((&state->velocity), &movement.physics.direction);
+        if (dot < 0.0f) {
+            if (D_L01_001EAA00_00454728.obstacle == 0 || D_L01_001EAA00_00454728.kind > 0) {
+                *(vu0_q *)&movement.physics.rayStart = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+                *(vu0_q *)&rayEnd = *(vu0_q *)((vu0_v4 *)(moby + 0x10));
+                movement.physics.rayStart.z += 0.2f;
+                rayEnd.z -= 2.0f;
+                if (func_003D3CB0(&movement.physics.rayStart, &rayEnd, 2, moby, 0)) state->mode = 2;
+            }
+            func_0038CF68(&movement.physics.adjustment, &movement.physics.direction, dot);
+            vec_sub_ab((&state->velocity), (&state->velocity), &movement.physics.adjustment);
+            if (state->mode == 2) {
+                if (D_L01_001EAA00_00454728.obstacle != 0 && D_L01_001EAA00_00454728.kind < 0) result |= state->flags & 1;
+                finalSpeed = func_0038CEA8((&state->velocity));
+                func_003C4138(&finalSpeed, 0.0f, state->fallAcceleration);
+                func_0038CF68((&state->velocity), (&state->velocity), finalSpeed);
+            }
+        }
+    } else {
+        f32 dot = func_0038CE68((&state->velocity), &movement.physics.direction);
+        if (dot < 0.0f) {
+            dot = dot * -(state->repel + response);
+            func_0038CF68(&movement.physics.adjustment, &movement.physics.direction, dot);
+            vec_add_ab((&state->velocity), (&state->velocity), &movement.physics.adjustment);
+        }
+    }
+
+afterCollision:
+    if (state->collisionId != -1) {
+        func_L01_00476F10(state->collisionId, state->probeRange, ((vu0_v4 *)(moby + 0x10)), ((vu0_v4 *)(moby + 0x10)));
+    }
+    if (state->mode == 0 && (&state->velocity)->z < 0.0f) {
+        state->mode = 1;
+    } else if (state->flags & 2) {
+        if ((result & 4) && (&state->velocity)->z <= 0.0f) result |= 1;
+        if (*(u16 *)(moby + 0x34) & 0x100) {
+            func_0038D308(movement.rotated, &state->rotation);
+            func_0038D5F0((moby + 0xC0), (moby + 0xC0), movement.rotated);
+        } else {
+            func_L01_0044C1B8(moby + 0xF0, &state->rotation);
+            func_0038D308((moby + 0xC0), moby + 0xF0);
+        }
+        qzero(&movement.physics.direction);
+        movement.physics.direction.z = state->probeOffset;
+        func_0038D000(&movement.physics.direction, &movement.physics.direction, (moby + 0xC0));
+        vec_sub_ba(&movement.physics.adjustment, &offset, &movement.physics.direction);
+        vec_add_ba(((vu0_v4 *)(moby + 0x10)), ((vu0_v4 *)(moby + 0x10)), &movement.physics.adjustment);
+    } else if ((!contact && state->finishFrame != 255 && moby[0x43] == state->startAnimation &&
+                func_L01_0044E1B8(moby, (f32)state->finishFrame))) {
+        result |= (state->flags & 1) ? 3 : 2;
+    } else if (((moby[0x60] & 2) && moby[0x43] != state->endAnimation)) {
+        result |= (state->flags & 1) ? 3 : 2;
+    } else if ((state->mode == 2 && moby[0x43] == state->endAnimation)) {
+        result |= (state->flags & 1) ? 3 : 2;
+    }
+    if (speed < 0.02200000174f && state->stopFrame != -1.0f) {
+        if (++state->idleTicks >= 50) {
+            state->idleTicks = 50;
+            result |= (state->flags & 1) ? 3 : 2;
+        }
+    } else {
+        state->idleTicks = 0;
+    }
+    
+    return result;
+}
+/* localdecomp:end func_L01_00454728 */
+
+/* localdecomp:start func_L01_00455550 */
+/* declared by func_L01_00454728's C before it went back to INCLUDE_ASM */
+extern f32 func_003C4138(f32 *, f32, f32);
+extern f32 func_L01_004395E0(void *);
+extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern f32 func_0038CEA8(void *);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+extern void func_0038CF68(void *, void *, f32);
+extern f32 func_0038CE68(void *, void *);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+
+typedef struct {
+    u8 pad0[0x1A];
+    u8 mode;
+    u8 pad1B[0x11];
+    f32 boundarySpeed;
+    f32 probeRange;
+    f32 probeOffset;
+    u16 flags;
+    u8 pad3A[2];
+    f32 slideSpeed;
+    f32 minimumHeight;
+    u8 pad44[8];
+    f32 speed;
+    f32 slopeSpeed;
+    f32 maxAnimation;
+    u8 pad58[8];
+    f32 animationThreshold;
+    f32 turnTarget;
+    f32 turnRate;
+    u8 pad6C[0x14];
+    vu0_v4 velocity;
+} MoveState_00455550;
+
+extern void func_003C5180(void *, void *, s32);
+extern void func_L01_004515D8(void *, void *, s32);
+extern f32 func_L01_004513A8(void *, s32, s32);
+extern f32 func_0038CE68(void *, void *);
+extern f32 func_0038CEA8(void *);
+extern void func_0038CF68(void *, void *, f32);
+extern void func_L01_00451388(void *, void *, void *, f32);
+extern f32 func_003C4138(f32 *, f32, f32);
+extern f32 func_L01_00451580(void *);
+extern f32 func_L01_004395E0(void *);
+extern s32 func_L01_004461B8(f32, f32, f32, f32 *, f32 *);
+extern void func_L01_0044E130(void *, s32 *);
+extern f32 func_L01_00451700(void *, void *, s32);
+extern f32 func_L01_00448890(void *, void *, s32, f32, f32, f32, f32);
+extern void func_0038D308(void *, void *);
+extern void func_0038D5F0(void *, void *, void *);
+extern void func_L01_00446780(void *, void *, s32, f32, f32, f32, s32, s32, s32);
+extern s32 func_003D3CB0(void *, void *, s32, void *, s32);
+extern s32 func_L01_003FB640(void *, s32, void *, f32);
+typedef struct {
+    u8 pad0[0x18];
+    s32 obstacle;
+    s32 kind;
+    vu0_v4 hit;
+    vu0_v4 corrected;
+    vu0_v4 normal;
+} Contact_00455550;
+extern Contact_00455550 D_L01_001EAA00;
+
+s32 func_L01_00455550(u8 *moby, MoveState_00455550 *state) {
+    vu0_v4 probeEnd, start, normal, tangent, direction, slide;
+    union {
+        vu0_v4 rotation[3];
+        struct { vu0_v4 turn, slopeAdjustment, rayStart; } vector;
+    } transform;
+    vu0_v4 rayEnd;
+    f32 speed, root0, root1, zero, finalSpeed;
+    f32 length, impact, projected;
+    s32 result = 0;
+    s32 useHit;
+
+    func_003C5180(((vu0_v4 *)(moby + 0x10)), &normal, 0);
+    func_L01_004515D8(moby + 0xC0, &normal, 0);
+    impact = func_L01_004513A8(((vu0_v4 *)(moby + 0x10)), 0, 0);
+    projected = -func_0038CE68((&state->velocity), &normal);
+
+    if (state->mode == 0) {
+        func_L01_00451388(moby, (&state->velocity), (&state->velocity), state->speed);
+        length = state->speed * func_0038CEA8(&normal);
+    } else {
+        func_L01_00451388(moby, (&state->velocity), (&state->velocity), state->slopeSpeed);
+        length = state->slopeSpeed * func_0038CEA8(&normal);
+    }
+
+    *(vu0_q *)&start = *(vu0_q *)(moby + 0x10);
+    func_L01_00451388(moby, &start, &start, -state->probeOffset);
+    func_0038CF68(&tangent, &normal, -projected);
+    vec_sub_ab((&state->velocity), (&state->velocity), &tangent);
+    speed = func_0038CEA8((&state->velocity));
+    {
+        f32 target = 0.04000000283f;
+        if (state->mode >= 2) target = 0.0f;
+        func_003C4138(&speed, target, state->boundarySpeed);
+    }
+    func_0038CF68((&state->velocity), (&state->velocity), speed);
+    vec_add_ab((&state->velocity), (&state->velocity), &tangent);
+
+    if (*(f32 *)(moby + 0x10) < 2.0f || *(f32 *)(moby + 0x10) > 1021.0f || *(f32 *)(moby + 0x14) < 2.0f || *(f32 *)(moby + 0x14) > 1021.0f ||
+        *(f32 *)(moby + 0x18) < 2.0f || *(f32 *)(moby + 0x18) > 1021.0f) {
+        result = 1;
+    }
+    if (state->mode != 0 && func_L01_00451580(((vu0_v4 *)(moby + 0x10))) < state->minimumHeight) {
+        result |= 1;
+    }
+
+    if (state->animationThreshold > 0.0f && state->maxAnimation > 0.0f) {
+        switch (state->mode) {
+        case 0:
+            {
+            f32 distance = fabs_asm(projected / length);
+            if (distance > 2.0f) {
+                f32 speed = 2.0f * (state->maxAnimation - func_L01_004395E0(moby)) / distance;
+                if (speed > 0.0f) func_003C4138((f32 *)(moby + 0x48), speed, 0.1200000048f);
+            }
+            }
+            break;
+        case 1:
+            if (state->animationThreshold <= func_L01_004395E0(moby)) {
+                *(f32 *)(moby + 0x48) = 0.0f;
+            } else {
+                f32 acceleration = length * -0.5f;
+                f32 speed;
+                length = 60.0f;
+                if (func_L01_004461B8(acceleration, projected - acceleration, impact, &root0, &root1) > 0 &&
+                    root0 > 0.0f && root0 < length) {
+                    length = root0;
+                }
+                if (length < 0.0001f) length = 0.0001f;
+                speed = 2.0f * (state->animationThreshold - func_L01_004395E0(moby)) / length;
+                if (speed > 2.0f) speed = 2.0f;
+                else if (speed < 0.0f) speed = 0.0f;
+                func_003C4138((f32 *)(moby + 0x48), speed, 0.1200000048f);
+            }
+            break;
+        case 2:
+            *(f32 *)(moby + 0x48) = 1.0f;
+            func_0038CF68(&direction, &normal, -0.2f);
+            vec_add_ba(&direction, &direction, ((vu0_v4 *)(moby + 0x10)));
+            func_0038CF68(&slide, &normal, 1.0f);
+            vec_add_ab(&slide, &slide, ((vu0_v4 *)(moby + 0x10)));
+            if (!func_003D3CB0(&direction, &slide, 2, moby, 0)) state->mode = 1;
+            break;
+        }
+    }
+
+    func_L01_0044E130(&direction, (s32 *)&state->turnTarget);
+    {
+        f32 yaw = func_L01_00451700(moby, &direction, 0);
+        zero = 0.0f;
+        func_L01_00448890(&zero, &state->turnRate, 0, yaw, 0.02010619454f, 0.005026548635f, 3.14159274f);
+    }
+    qzero(&slide);
+    slide.z = state->turnRate;
+    func_0038D308(transform.rotation, &slide);
+    func_0038D5F0(moby + 0xC0, moby + 0xC0, transform.rotation);
+
+    vec_add_ab(((vu0_v4 *)(moby + 0x10)), ((vu0_v4 *)(moby + 0x10)), (&state->velocity));
+    vec_add_ab(&probeEnd, &start, (&state->velocity));
+    vec_add_ab(&direction, &probeEnd, (&state->velocity));
+    func_L01_00446780(moby, &direction, 0x8000000, state->probeRange, 1.0f, 1.0f, 0, 1, 0);
+
+    if (state->probeRange < func_0038CEA8((&state->velocity)) && func_003D3CB0(&start, &probeEnd, 0x24, moby, 0)) {
+        *(vu0_q *)&probeEnd = *(vu0_q *)&D_L01_001EAA00.hit;
+    }
+
+    {
+        s32 missed = func_L01_003FB640(&probeEnd, 0x24, moby, state->probeRange);
+        useHit = 0;
+        if (!missed) {
+            if (!func_003D3CB0(&probeEnd, ((vu0_v4 *)(moby + 0x10)), 0x24, moby, 0)) goto finish;
+            useHit = 1;
+        }
+    }
+    result |= 4;
+    if (useHit) {
+        *(vu0_q *)(moby + 0x10) = *(vu0_q *)&D_L01_001EAA00.hit;
+    } else {
+        *(vu0_q *)(moby + 0x10) = *(vu0_q *)&D_L01_001EAA00.corrected;
+        func_0038CF68(&transform.vector.turn, &normal, state->probeOffset);
+        vec_add_ab(((vu0_v4 *)(moby + 0x10)), ((vu0_v4 *)(moby + 0x10)), &transform.vector.turn);
+    }
+
+    length = 1.0f;
+    func_0038CF68(&slide, &D_L01_001EAA00.normal, length);
+    if (func_0038CE68(&slide, &normal) <= -0.707f) {
+        f32 dot = func_0038CE68((&state->velocity), &slide);
+        if (dot < 0.0f) {
+            if (D_L01_001EAA00.obstacle == 0 || D_L01_001EAA00.kind > 0) {
+                func_0038CF68(&transform.vector.rayStart, moby + 0xE0, 0.2f);
+                func_0038CF68(&rayEnd, moby + 0xE0, -2.0f);
+                vec_add_ba(&transform.vector.rayStart, &transform.vector.rayStart, ((vu0_v4 *)(moby + 0x10)));
+                vec_add_ba(&rayEnd, &rayEnd, ((vu0_v4 *)(moby + 0x10)));
+                if (func_003D3CB0(&transform.vector.rayStart, &rayEnd, 2, moby, 0)) state->mode = 2;
+            }
+            func_0038CF68(&transform.vector.slopeAdjustment, &slide, dot);
+            vec_sub_ab((&state->velocity), (&state->velocity), &transform.vector.slopeAdjustment);
+            if (state->mode == 2) {
+                finalSpeed = func_0038CEA8((&state->velocity));
+                func_003C4138(&finalSpeed, 0.0f, state->slopeSpeed);
+                func_0038CF68((&state->velocity), (&state->velocity), finalSpeed);
+            }
+        }
+    } else {
+        f32 dot = func_0038CE68((&state->velocity), &slide);
+        if (dot < 0.0f) {
+            dot = dot * -(state->slideSpeed + length);
+            func_0038CF68(&transform.vector.slopeAdjustment, &slide, dot);
+            vec_add_ab((&state->velocity), (&state->velocity), &transform.vector.slopeAdjustment);
+        }
+    }
+
+finish:
+    if (state->mode == 0 && projected < 0.0f) {
+        state->mode = 1;
+    } else if (state->flags & 2) {
+        if ((result & 4) && projected <= 0.0f) result |= 1;
+    } else if (moby[0x60] & 2) {
+        result |= (state->flags & 1) ? 1 : 2;
+    }
+    return result;
+}
+/* localdecomp:end func_L01_00455550 */
 
 /* localdecomp:start func_L01_00455E18 */
 /* declared by func_L01_00454728's C before it went back to INCLUDE_ASM */
