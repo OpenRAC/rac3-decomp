@@ -4605,7 +4605,7 @@
 #define func_L04_00482710 func_L04_004862A8
 #define func_L04_0048F598 func_L04_00493138
 #define func_L04_004AF8A0 func_L04_004B3440
-#define func_L04_004B6CF0 func_003E0868
+#define func_L04_004B6CC8 func_L04_004BA9F8
 #define func_L04_004B7010 func_L04_004BAD40
 #define func_L04_004B7470 func_L04_004BB1A0
 #define func_L04_004B7538 func_L04_004BB268
