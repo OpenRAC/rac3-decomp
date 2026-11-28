@@ -2727,7 +2727,362 @@ void func_L01_00505380(void) {
 }
 /* localdecomp:end func_L01_00505380 */
 
-INCLUDE_ASM("asm/levels", func_L01_005055A0);
+/* localdecomp:start func_L01_005055A0 */
+/* Hero button checks for the aquatos levels (08, 27). D_001D4C40 is a two-word pair: [1] is read through the
+ * symbol+4 macro load (lui form). The D_001A4BE0_005055A0.234 test's empty-looking else (k = 0, dead) is what keeps cse's path from
+ * running past it into the switch, so the hero base is rebuilt before `old` as in retail. */
+extern char D_001A4BE0_005055A0[];
+extern u8 *D_001D52FC_005055A0;
+extern s32 D_001D4C40[2];
+extern s32 D_L01_001DBCFC;
+__asm__(".extern D_L01_001DBCFC, 4");
+extern u8 D_00142CBD[];
+extern u8 D_001439F4[];
+extern u8 D_L01_002F62D0_005055A0[];
+
+s32 func_003A3BB8(s32 a0, s32 a1);
+s32 func_L01_004EDFA8(u8 *object);
+void func_L01_004F5810(void);
+void func_L01_004F5AE8(void);
+s32 func_L01_004EC598(void);
+
+
+extern void func_L01_004EA7D8(s32);
+
+s32 func_L01_005055A0(void) {
+    s32 sp0;
+    s32 sp4;
+    s32 st;
+    s32 mask;
+    s32 old;
+    u8 *o;
+    u8 *e;
+    u8 *e2;
+    s32 n2;
+    s32 c2;
+    s32 n;
+    s32 b;
+    s32 c;
+    s32 z;
+    s32 z2;
+    s32 k;
+    f32 lim;
+
+    if ((((struct { u8 pad[0x25ED]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+        if ((((struct { u8 pad[0x1228]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 9) {
+            return 0;
+        }
+        if ((((struct { u8 pad[0x368]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 1) {
+            return 0;
+        }
+    }
+    if ((((struct { u8 pad[0x25E4]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+        return 0;
+    }
+    if ((((struct { u8 pad[0x1200]; u8 * v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+        return 0;
+    }
+    if ((((struct { u8 pad[0x121A]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+        return 0;
+    }
+    if ((((struct { u8 pad[0x1224]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 2) {
+        return 0;
+    }
+    st = (((struct { u8 pad[0x1228]; s32 v; } *)(D_001A4BE0_005055A0))->v);
+    mask = (((struct { u8 pad[0x1210]; s32 v; } *)(D_001A4BE0_005055A0))->v);
+    if (D_001439F4[0] != 0 && (mask & 0x20)) {
+        mask |= 8;
+    }
+    if ((((struct { u8 pad[0x234]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+        if (mask & 0x80) {
+            mask |= 0x20;
+        }
+    } else {
+        k = 0;
+    }
+    old = (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v);
+    switch (st) {
+    case 9:
+        if ((((struct { u8 pad[0x147C]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if ((((struct { u8 pad[0x1E0]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if ((u32)(((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 2 || ((((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 4 && (((struct { u8 pad[0x46C]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0)) {
+            if (func_L01_004606E8(mask, 8, (s32)&sp0, 0) == 0) {
+                break;
+            }
+            o = (((struct { u8 pad[0x1200]; u8 * v; } *)(D_001A4BE0_005055A0))->v);
+            if (o == 0) {
+                break;
+            }
+            if (func_L01_004EDFA8(o) == 0) {
+                break;
+            }
+            if (o[0x20] != 0) {
+                break;
+            }
+            if ((b = (((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v), (((struct { u8 pad[0x16B0]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0 ? b & func_003A3BB8(8, 0) : b & 0xA) == 0) {
+                if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 1 && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x1D) || (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 0x12) {
+                    func_L01_005003D0(0x13, 1);
+                    break;
+                }
+            }
+            if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 1 && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x1D) || (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 0x12) {
+                func_L01_005003D0(0x15, 1);
+                break;
+            }
+            func_L01_004F5810();
+            break;
+        }
+        if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 7 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 9 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xF || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xA
+             || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xD || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 8 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 6
+             || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xE && 32.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+             || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xB && (((((struct { u8 pad[0x4A4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 3 && 18.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+                                             || (*(s32 *)(D_001A4BE0_005055A0 + 0x4A4) == 3 && 20.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))))
+             || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x2C || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x11)
+            && (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 9) {
+            k = 0xC;
+            if ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xB || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xE) {
+                k = 0xF;
+            }
+            if (func_L01_004606E8(mask, k, 0, 0) == 0) {
+                break;
+            }
+            if (((((struct { u8 pad[0x46E]; u8 v; } *)(D_001A4BE0_005055A0))->v) == 0 ? 0.1f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v) : 0.57f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+                || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 8 && 0.57f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v))) {
+                if ((((struct { u8 pad[0x69C]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+                    func_L01_005003D0(0x14, 1);
+                }
+            } else {
+                func_L01_005003D0(0x13, 1);
+            }
+            break;
+        }
+        if ((((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 6) {
+            break;
+        }
+        e = D_L01_002F62D0_005055A0 + (((struct { u8 pad[0xBDC]; s16 v; } *)(D_001A4BE0_005055A0))->v) * 0x2C;
+        if ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x15 && (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 0x1A && (((struct { u8 pad[0x121A]; u8 v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+            if ((((struct { u8 pad[0xC0C]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                break;
+            }
+            if ((f32)(((struct { u8 pad[0x10]; s32 v; } *)(e))->v) <= (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v)
+                && (b = (((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v), (((struct { u8 pad[0x16B0]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0 ? b & func_003A3BB8(8, 0) : b & 0xA)
+                && func_L01_004606E8(mask, 0xC, 0, 0) != 0) {
+                func_L01_005003D0(0x15, 1);
+                break;
+            }
+        }
+        if ((((struct { u8 pad[0xC0C]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if ((z = (((struct { u8 pad[0x121A]; u8 v; } *)(D_001A4BE0_005055A0))->v)) != 0) {
+            break;
+        }
+        if (!((f32)(((struct { u8 pad[0x10]; s32 v; } *)(e))->v) <= (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))) {
+            break;
+        }
+        n = ((s32)(((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v) - (((struct { u8 pad[0xC]; s32 v; } *)(e))->v)) * 2;
+        c = 1;
+        if (n > z) {
+            c = n;
+        }
+        if (c > 12) {
+            c = 12;
+        }
+        if (func_L01_004606E8(mask, c, 0, 0) == 0) {
+            break;
+        }
+        func_L01_005003D0((b = (((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v), (((struct { u8 pad[0x16B0]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0 ? b & func_003A3BB8(8, 0) : b & 0xA) ? 0x15 : 0x13, 1);
+        break;
+    case 0x7F:
+        if ((((struct { u8 pad[0x147C]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if ((u32)(((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 2 || ((((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 4 && (((struct { u8 pad[0x46C]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0)) {
+            if (func_L01_004606E8(mask, 8, (s32)&sp4, 0) == 0) {
+                break;
+            }
+            o = (((struct { u8 pad[0x1200]; u8 * v; } *)(D_001A4BE0_005055A0))->v);
+            if (o == 0) {
+                break;
+            }
+            if (func_L01_004EDFA8(o) == 0) {
+                break;
+            }
+            if (o[0x20] != 0) {
+                break;
+            }
+            if (((((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0)) == 0) {
+                if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 1 && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x1D) || (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 0x12) {
+                    func_L01_005003D0(0x13, 1);
+                    break;
+                }
+            }
+            if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 1 && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x1D) || (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 0x12) {
+                func_L01_005003D0(0x15, 1);
+                break;
+            }
+            func_L01_004F5AE8();
+            break;
+        }
+        if (((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 7 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 9 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 8 || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 6
+             || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xE && 32.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+             || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xB && (((((struct { u8 pad[0x4A4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 3 && 18.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+                                             || (*(s32 *)(D_001A4BE0_005055A0 + 0x4A4) == 3 && 20.0f < (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))))
+             || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x2C || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x11)
+            && (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 9) {
+            k = 0xC;
+            if ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xB || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xE) {
+                k = 0xF;
+            }
+            if (func_L01_004606E8(mask, k, 0, 0) == 0) {
+                break;
+            }
+            if (((((struct { u8 pad[0x46E]; u8 v; } *)(D_001A4BE0_005055A0))->v) == 0 ? 0.1f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v) : 0.57f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v))
+                || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 8 && 0.57f < (((struct { u8 pad[0x33C]; f32 v; } *)(D_001A4BE0_005055A0))->v))) {
+                if ((((struct { u8 pad[0x69C]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+                    func_L01_005003D0(0x14, 1);
+                }
+            } else {
+                func_L01_005003D0(0x13, 1);
+            }
+            break;
+        }
+        if ((((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 6) {
+            break;
+        }
+        e2 = D_L01_002F62D0_005055A0 + (((struct { u8 pad[0xBDC]; s16 v; } *)(D_001A4BE0_005055A0))->v) * 0x2C;
+        if ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x15 && (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 0x1A && (((struct { u8 pad[0x121A]; u8 v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+            if ((((struct { u8 pad[0xC0C]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                break;
+            }
+            if ((f32)(((struct { u8 pad[0x10]; s32 v; } *)(e2))->v) <= (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v)
+                && ((((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0))
+                && func_L01_004606E8(mask, 0xC, 0, 0) != 0) {
+                func_L01_005003D0(0x15, 1);
+                break;
+            }
+        }
+        if ((((struct { u8 pad[0xC0C]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if ((z2 = (((struct { u8 pad[0x121A]; u8 v; } *)(D_001A4BE0_005055A0))->v)) != 0) {
+            break;
+        }
+        if (!((f32)(((struct { u8 pad[0x10]; s32 v; } *)(e2))->v) <= (((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v))) {
+            break;
+        }
+        n2 = ((s32)(((struct { u8 pad[0xC18]; f32 v; } *)(D_001A4BE0_005055A0))->v) - (((struct { u8 pad[0xC]; s32 v; } *)(e2))->v)) * 2;
+        c2 = 1;
+        if (n2 > z2) {
+            c2 = n2;
+        }
+        if (c2 > 12) {
+            c2 = 12;
+        }
+        if (func_L01_004606E8(mask, c2, 0, 0) == 0) {
+            break;
+        }
+        if ((((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0)) {
+            func_L01_005003D0(0x15, 1);
+        } else {
+            func_L01_005003D0(0x13, 1);
+        }
+        break;
+    case 0xB: {
+        s32 cc;
+        s32 btn;
+        if (mask != 0) {
+            btn = 0xE;
+        } else {
+            btn = 0xE;
+        }
+        if ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x27 && ((((struct { u8 pad[0xA5E]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 0 || (((struct { u8 pad[0xA28]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0)) {
+            if (func_L01_004606E8(mask, btn, 0, 0) != 0 || (((((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v) & mask) && (((struct { u8 pad[0x1220]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 0xD)) {
+                func_L01_005003D0(0x28, 1);
+                break;
+            }
+        }
+        cc = (((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v);
+        if ((u32)cc < 2 || cc == 0xC || cc == 4 || cc == 2 || cc == 0x1E || cc == 5
+            || ((((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x28 && (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) >= 5) || (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0x1D) {
+            if (func_L01_004606E8(mask, btn, 0, 0) == 0 && (((((struct { u8 pad[0x1A4]; s32 v; } *)(D_001D52FC_005055A0))->v) & mask) == 0 || (((struct { u8 pad[0x1220]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 0xD)) {
+                break;
+            }
+            if ((((struct { u8 pad[0xA5E]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                if ((((struct { u8 pad[0xA28]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                    if ((((struct { u8 pad[0xA58]; f32 v; } *)(D_001A4BE0_005055A0))->v) < (((struct { u8 pad[0xA44]; f32 v; } *)(D_001A4BE0_005055A0))->v)) {
+                        (((struct { u8 pad[0xA28]; s32 v; } *)(D_001A4BE0_005055A0))->v) = 0;
+                    } else {
+                        (((struct { u8 pad[0xA5E]; s16 v; } *)(D_001A4BE0_005055A0))->v) = 0;
+                    }
+                }
+                if ((((struct { u8 pad[0xA5E]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 0 && (((struct { u8 pad[0x206]; s16 v; } *)(D_001A4BE0_005055A0))->v) == 0 && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x2B) {
+                    func_L01_005003D0(0x2B, 1);
+                    break;
+                }
+            }
+            if ((((struct { u8 pad[0xA28]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0 && (((struct { u8 pad[0x206]; s16 v; } *)(D_001A4BE0_005055A0))->v) == 0) {
+                func_L01_005003D0(0x23, 1);
+                break;
+            }
+            if ((((struct { u8 pad[0xA94]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                func_L01_005003D0(0x8F, 1);
+                break;
+            }
+            if ((((struct { u8 pad[0xAC4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+                (((struct { u8 pad[0xACC]; s32 v; } *)(D_001A4BE0_005055A0))->v) = 1;
+                func_L01_004EA7D8(0x12);
+            }
+        }
+        break;
+    }
+    case 0x1E:
+        if ((((struct { u8 pad[0x25E4]; u8 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        if (func_L01_004EC598() == 0) {
+            break;
+        }
+        if (func_L01_004606E8(mask, 6, 0, 0) == 0) {
+            break;
+        }
+        if (D_001D4C40[0] != 0x1E) {
+            break;
+        }
+        if ((((struct { u8 pad[0xAA]; s16 v; } *)((((struct { u8 pad[0x1200]; u8 * v; } *)(D_001A4BE0_005055A0))->v)))->v) != 0x1D7E) {
+            break;
+        }
+        if ((((struct { u8 pad[0x288C]; s16 v; } *)(D_001A4BE0_005055A0))->v) != 0) {
+            break;
+        }
+        (((struct { u8 pad[0x2888]; s16 v; } *)(D_001A4BE0_005055A0))->v) = 1;
+        (((struct { u8 pad[0x288C]; s16 v; } *)(D_001A4BE0_005055A0))->v) = 0x12;
+        (((struct { u8 pad[0x288A]; s16 v; } *)(D_001A4BE0_005055A0))->v) = 1;
+        break;
+    }
+    if ((((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) == old && D_00142CBD[0] != 0 && D_001D4C40[1] == 0x1D
+        && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0x1D && (((struct { u8 pad[0x25C4]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 1
+        && ((((struct { u8 pad[0x210]; unsigned long v; } *)(D_001A4BE0_005055A0))->v) & 0xFFFFFFFF00000000UL) == 0) {
+        func_0038CAD0(&D_L01_001DBCFC);
+        if (D_L01_001DBCFC != 0) {
+            if ((u32)(((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) < 2 || (((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 0xC
+                || (((((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 2 || (((struct { u8 pad[0x25CC]; s32 v; } *)(D_001A4BE0_005055A0))->v) == 4) && (((struct { u8 pad[0x360]; s32 v; } *)(D_001A4BE0_005055A0))->v) != 0)) {
+                if (((((struct { u8 pad[0x1A0]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0)) && ((((struct { u8 pad[0x1A4]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0))) {
+                    func_L01_005003D0(0x80, 1);
+                }
+            }
+        }
+        if ((((struct { u8 pad[0x1A4]; s32 v; } *)(D_001D52FC_005055A0))->v) & func_003A3BB8(8, 0)) {
+            D_L01_001DBCFC = 0xC;
+        }
+    }
+    return (((struct { u8 pad[0x1B8]; s32 v; } *)(D_001A4BE0_005055A0))->v) < old;
+}
+/* localdecomp:end func_L01_005055A0 */
 
 /* localdecomp:start func_L01_00506298 */
 extern Veldin1A4BE0 D_001A4BE0;
