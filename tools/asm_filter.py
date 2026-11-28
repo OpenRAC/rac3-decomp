@@ -186,7 +186,33 @@ DELAY_SLOT_RE = re.compile(r"^(b\w*|j|jal|jr|jalr)$")
 
 
 
+_TABLES = {}
+
+
+def _file_state(path):
+    try:
+        st = os.stat(path)
+    except OSError:
+        return None
+    return (st.st_size, st.st_mtime_ns, st.st_ino)
+
+
+def _memo(name, paths, read):
+    """READ() (a table from the files PATHS), read again only when one of the files changed: the
+    build filters hundreds of files a run, against the same tables."""
+    k = (name,) + tuple((p, _file_state(p)) for p in paths)
+    if k not in _TABLES:
+        _TABLES[k] = read()
+    return _TABLES[k]
+
+
 def sq_ra_funcs():
+    """The functions of config/<program>/sq_ra_funcs.txt and config/levels/sq_ra_funcs.txt (a
+    frozenset; the same object while the files do not change)."""
+    return _memo("sq_ra", (_sq_ra_file(), LEVEL_SQ_RA), _read_sq_ra_funcs)
+
+
+def _read_sq_ra_funcs():
     out = set()
     for path in (_sq_ra_file(), LEVEL_SQ_RA):
         try:
@@ -194,7 +220,7 @@ def sq_ra_funcs():
                 out |= {l.split("#")[0].strip() for l in f if l.split("#")[0].strip()}
         except OSError:
             pass
-    return out
+    return frozenset(out)
 
 
 def in_delay_slot(lines, i):
@@ -284,6 +310,12 @@ LEVEL_DIVS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 
 
 def divs_table():
+    """{function: counts} of config/<program>/divs_nops.txt and config/levels/divs_nops.txt (the
+    same object while the files do not change: do not modify it)."""
+    return _memo("divs", (_divs_file(), LEVEL_DIVS), _read_divs_table)
+
+
+def _read_divs_table():
     rows = []
     for path in (_divs_file(), LEVEL_DIVS):
         try:

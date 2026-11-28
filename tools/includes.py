@@ -112,7 +112,7 @@ class Scanner:
 
     def __init__(self, root=ROOT, system=()):
         self.root, self.system = root, list(system)
-        self.texts, self.results, self.listings = {}, {}, {}
+        self.texts, self.results, self.listings, self.lowered = {}, {}, {}, {}
         # per result: every path it looked at (candidates, files found, folders listed), so that a
         # caller can tell later whether any of them changed (tools/c_objects.py's Watch)
         self.inputs = {}
@@ -131,6 +131,15 @@ class Scanner:
                 self.listings[folder] = []
         return self.listings[folder]
 
+    def _by_lower(self, folder):
+        """{name in lower case: [entries of FOLDER with that name], in listing order}."""
+        if folder not in self.lowered:
+            index = {}
+            for entry in self._listing(folder):
+                index.setdefault(entry.lower(), []).append(entry)
+            self.lowered[folder] = index
+        return self.lowered[folder]
+
     def matches(self, base, parts, listed=None):
         """Every existing file a compiler can open as BASE/PARTS (BASE a folder as it is, PARTS
         spellings()'s): each part matched in its folder's listing without regard to case, with or
@@ -148,11 +157,11 @@ class Scanner:
             for h in here:
                 if listed is not None:
                     listed.add(h)
-                for entry in self._listing(h):
-                    if entry.lower() in want:
-                        p = os.path.join(h, entry)
-                        if os.path.isfile(p) if last else os.path.isdir(p):
-                            found.append(p)
+                index = self._by_lower(h)
+                for entry in sorted(e for w in want for e in index.get(w, ())):
+                    p = os.path.join(h, entry)
+                    if os.path.isfile(p) if last else os.path.isdir(p):
+                        found.append(p)
             here = found
         return here
 
