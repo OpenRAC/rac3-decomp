@@ -1,4 +1,10 @@
-/* func_L01_00480170 (Claude wave 14 r67, 2026-11-28). First draft kept here. */
+/* c51 (wave 14c): r67's near unchanged, re-measured under the line "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as"
+ * (L01_00480800.c's, the next file): tools/check.py --flags=@ps2as --target level_01 184 diff, 97 aligned rows
+ * (wc51/func_L01_00480170/try-01.log, wc51/aln.py). Groups left: the init block's li.s constants (registers/order of the
+ * 0x1C-0x28 stores), the row loop's saved registers (retail s2 row, s3 i, s4 i*24, s5 &arr[i].arg giv set before the
+ * func_003BABB0 calls, s6 base, s7 0x11, fp; the else arm's arg address as s4 + D_L01_002EA238, not the giv), and the
+ * final 19-byte copy: retail counts down v1 = 18 with `bne v1, -1` and pointer givs; a pointer for-loop gives the bgez
+ * form (try-03.log, 91 aligned / 220 positional), while (n--) keeps a copy of the old count (try-02.log). */
 #include "common.h"
 /* PAL near miss (wave 14, r67), first C from the retail assembly (types and flow from nonmatching/functional/):
  * 280 diffs with the file's own line, 184 with @ps2as added (tools/check.py --flags @ps2as, wr67/func_L01_00480170.cutline.log).

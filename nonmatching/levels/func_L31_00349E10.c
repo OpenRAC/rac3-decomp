@@ -1,19 +1,19 @@
-/* PAL near miss (Sonnet round 20, b33 h8): 23 raw / 17 aligned differences of 185 words (H5b's start: 53 raw / 39 aligned). Checks with
- *   python tools/check.py nonmatching/levels/func_L31_00349E10.c func_L31_00349E10 --no-context --as ps2as --flags=-mvu0-use-vf0-vf2
- * and needs (not committed: only a match may cut): its own file L31_00349E10.c (flags `-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as`, cut at 0x00349E10 / 0x0034B270,
- * both 8-aligned, the old file keeps func_L31_00349DD0 only, `#include "vu0.h"` in the prelude) and the divs_nops row `func_L31_00349E10 2 2 2 0 0` (committed with this draft).
- * Particle update (M = particle record, P = emitter descriptor, O = owner moby). The lever of this round (39 -> 17 aligned in one edit): in the init arm after func_L31_00349D18
- * the two position deltas come FIRST (`dx = o->x - w1[0]; p->f10 = dx * D104; dz = o->z - w1[2]; p->f14 = dz * D104;`), then the factor chain (`t = D108 * rad; t = t / D0F8; one = one - t;
- * p->h8 = ..*one; m->hA = ..*one`), and `rad / D0F8` LAST as the sqrt argument: with `p->h8 = ...` stored before `dz = o->z - ...` the o->z load is alias-gated behind that store (no
- * strict aliasing: every pointer-based struct access conflicts), the chain through the arm raises D0F8's load priority to 44 (above o->x 28 / w1[0] 25) and retail's load order
- * D108, w1[0], o->x, D0F8, D104, h8, w1[2] with the `t / D0F8` div before `rad / D0F8` is lost. The whole arm and the prologue match now.
- * Left (17 aligned words, all in the join block after the arm): retail loads m->hA, D10C, m->w4 (in that order, into $a0 / $f20 / $v1, the 0xFFFFFF mask in $v0) before the first
- * `swc1 v10[0]` and puts the 128.0f and 1/256 constants after the p->f14 load; ours loads D10C first, the 128.0f constant (sched1 priority 56 against the w4 load's 44: the whole
- * hA*128/h8 -> sll -> or -> sw w4 -> lhu hE chain is alias-gated) early, and w4 after the store; then the registers (mask $v1, hA $v0, w4 $a0, h8 $v1) follow. The sched1 / sched2 tables
- * (-dS -dR -fsched-verbose-5) show retail needs prio(hA) >= prio(D10C) >= prio(w4) with the 128.0f constant below the p->f14 load, i.e. a shorter chain behind the w4 store than ours
- * (the lhu hE / lh h8 loads of the next statements are alias-dependent on the w4 store in ours). Tried without effect: all 12 orders of m->v10[0] / m->v10[2] / w4 / lo / hi statements,
- * a 36-compile first-improvement climb over a 7-statement tail (the w4 update split into mask / shift / store; its best, 16 aligned, has 32 raw), 6 spellings of the w4 update (all give the same RTL), -fstrict-aliasing
- * (diagnostic only: hoists the hE load, 34 aligned). */
+/* Fix pass (2026-11-28, Claude Opus): in the sched2 dump of the join block the p->f14 load (insn 257) depends on
+ * the m->v10[0] store (252: two incoming pointers, which may alias), so it waits from t=7 to t=9 and li.s 128.0f
+ * (276) takes the memory slot at t=8. Retail issues the load in the cycle right after the store, as if the two did
+ * not alias (only the $f0 anti-dependence). -fstrict-aliasing / -fargument-noalias do not give it (85 / 128 diff). */
+/* Wave 14c c52 (2026-11-28): 5 raw differences (was 23) under the existing line
+ * '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as' (L31_0034A740.c), at L31 and L36
+ * (tools/check.py --flags '-mvu0-use-vf0-vf2 @ps2as', wc52/func_L31_00349E10/p1-31.log, p1-36.log); cut
+ * 0x00349E10-0x0034A0F8 (L36 0x0034B270-0x0034B558), divs row func_L31_00349E10 2 2 2 0 0 (committed).
+ * Changed against the existing draft: the callee prototype. func_L03_0034B148 is f32 (s32, s32, f32) (its matched
+ * definition in L03_0034B128.c); retail passes m->hA in $a0 (the lh at +0x1B4 feeds both the alpha and the call)
+ * and p->h8 in $a1 (the lh at +0x220 feeds both `hi` and the call). With the one-argument prototype the join block's
+ * loads and registers were wrong (the 17 aligned words of the old note); with the real arguments the whole join's
+ * registers and load order match. Left: retail issues the p->f14 load before li.s 128.0f and the v10[2] add before
+ * the hA*128 mul (sched2 puts li.s 128.0 in the memory slot at the cycle after the v10[0] store; retail leaves that
+ * slot empty). Tried without effect: -fno-sched-interblock / -fno-gcse / split-address variants of the line, s16 and
+ * s32 locals for hA, a const view of p->f14, two 600 s permuter runs (21563 and 15849 candidates). */
 #include "common.h"
 #include "vu0.h"
 
@@ -75,7 +75,7 @@ extern f32 func_0038D098(f32);
 extern f32 func_0038D0B0(f32);
 extern f32 func_003C4088(f32, f32, f32);
 extern s32 func_0038DBD8(s32, s32, f32);
-extern f32 func_L03_0034B148(f32);
+extern f32 func_L03_0034B148(s32, s32, f32);
 extern void func_L31_00349D18(void *, f32 *, f32 *, f32);
 
 void func_L31_00349E10(M_00349E10 *m, P_00349E10 *p) {
@@ -135,7 +135,7 @@ void func_L31_00349E10(M_00349E10 *m, P_00349E10 *p) {
     m->w4 = (m->w4 & 0xFFFFFF) | ((s32)((f32)m->hA * 128.0f / (f32)p->h8) << 24);
     lo = (f32)(p->hE & 0xFF);
     hi = lo + D_L31_001DD10C * (f32)p->h8 * (f32)(p->hE >> 8) * 0.00390625f;
-    m->b8 = (s32)func_003C4088(lo, hi, func_L03_0034B148(0.0f));
+    m->b8 = (s32)func_003C4088(lo, hi, func_L03_0034B148(m->hA, p->h8, 0.0f));
     m->fC = func_003C4088(D_L31_001DD100, D_L31_001DD0FC, (f32)m->hA / (f32)p->h8);
 }
 /* localdecomp:end func_L31_00349E10 */

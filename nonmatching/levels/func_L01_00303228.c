@@ -1,3 +1,9 @@
+/* c51 (wave 14c): re-measured unchanged under the cut line "-O2 -G8 -fopt-stack -mno-check-zero-division @ps2as
+ * -mvu0-use-vf0-vf2" (L01_00302118.c's line, the file before; split addresses): wc51/chk.py --line ... --target level_01
+ * 8 diff (wc51/func_L01_00303228/try-01.log), the W20 rows below: reload's register for the spilled D_L01_001E29C0
+ * vector (vf1 here, vf2 in retail) and the order of the two spill slots (0x100/0x110). The cut is a boundary move:
+ * L01_00302118.c ends at 0x00303658 instead of 0x00303228 (0x00303658 8-aligned at all 34 places; func_L01_00303658
+ * needs -mno-split-addresses: 2 diff under the S line, wc51/func_L01_00303228/sib-00303658-S.log). */
 /* Round 27 W20: 8 raw differences (W13: 9; round 19: 12), measured at level 01 with tools/check.py --mode S --as ps2as
  * and the owning file's other flags. A match still needs the split-address file cut (see the J5D note below).
  * What W20 changed: the vector block is written as explicit VU0 asm statements (lqc2/vadd.xyz/sqc2 per operand) with the

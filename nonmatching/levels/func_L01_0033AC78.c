@@ -1,3 +1,10 @@
+/* Cut pass c51 (wave 14c, 2026-11-28), re-measured: under the existing line '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as'
+ * (L01_0033B530.c's, the next file) with the divs row 'func_L01_0033AC78 0 2 0' this draft is 366 diff by
+ * position at level 01 (r67's j-form copy wr67/func_L01_0033AC78.cut.c: 367, 12 aligned rows), so it stays.
+ * The whole file L01_0033AC58.c can take that line (func_L01_0033AC58 MATCHes under it); else the cut is
+ * 0x0033AC78-0x0033B530 (8-aligned at all 34 places). Left under the line: the jump table's relocation, jump2's
+ * cross-jump of case 1's two func_L01_0033C520 + func_L01_0033C030 tails (retail keeps both: 4 words short) and
+ * the 8-alignment nop of the while (other) loop label (retail 0x674). */
 /* func_L01_0033AC78 (Claude wave 14 r67, 2026-11-28). Replaces the earlier draft of this function (NTSC-U draft of `func_L01_0033A5C0` (Codex wave 3)). */
 /* Wave 14 r67: func_L01_0033AC78 (2232 B, PAL) rewritten from the PAL asm (the draft is NTSC-U C of
  * func_L01_0033A5C0 and has no count on PAL). This copy compiles with the file's own line (asm-block VU0 add):

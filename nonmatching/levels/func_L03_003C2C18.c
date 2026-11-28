@@ -1,4 +1,10 @@
-/* PAL near miss (2026-11-21): func_L03_003C6888's draft ported to this sibling (names, constants and the 0x12xx sound id from nonmatching/functional/func_L03_003C2C18.c). 214 differences (tools/check.py, level 03, the file's flags); 184 with -mvu0-use-vf0-vf2 @ps2as. Blocker: the masked o[0x20] compares (see nonmatching/README.md). Retry 2026-11-22 (upstream 70e001ab): unchanged at 214 / 184; combine drops the join's zero_extend because both copies into gcse's QImode register come from `lbu` pseudos with known high bits, and a `u8` local is promoted to SImode (280). */
+/* PAL near miss (c51, wave 14c): the existing draft plus the family's b39-w10 change from func_L03_003C0DD8 (a dead third
+ * test at the end of chain 2, `else if (o[0x20] == 0 && o[0x42] == 3 && o[0x43] < 5) return; else return;`) and
+ * func_0039EC28 returning s32, as r63's port to func_L03_003C1CF8. Under the line "-O2 -G8 -fopt-stack -mno-check-zero-division
+ * @ps2as" (Ps2EeAs li.s; the file holds only this function, so a whole-file change): tools/check.py --flags=@ps2as 7 diff at
+ * level 03 and 9 at level 17 (wc51/func_L03_003C2C18/try-01*.log), from 184 for the old draft; 213 under the file's line.
+ * Left: the family's register pair, the first zero_extend of o[0x20] and its raw copy in $v1/$a0 where retail has $a0/$a1
+ * (and the andi reading the copy), as in 003C0DD8 / 003C1CF8 / 003C6888. */
 #include "common.h"
 #include "vu0.h"
 
@@ -58,7 +64,7 @@ extern s32 func_003A52A0(s32, s32, void *);
 extern void func_L03_003C30C0(void *, s32);
 extern void func_L01_00451F60(s32, s32, s32);
 extern void func_0039EF28(void);
-extern void func_0039EC28(s32, s32);
+extern s32 func_0039EC28(s32, s32);
 extern void func_L01_0041A5B0(s32, s32);
 extern void func_L01_004AA7E8(void *, s32);
 extern void func_003C2880(void *);
@@ -156,6 +162,10 @@ void func_L03_003C2C18(u8 *o) {
                         func_003C2880(o);
                     }
                 }
+            } else if (o[0x20] == 0 && o[0x42] == 3 && o[0x43] < 5) {
+                return;
+            } else {
+                return;
             }
         } else if (o[0x20] == 0) {
             o[0x20] = 1;

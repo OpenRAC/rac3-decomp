@@ -1,4 +1,22 @@
-/* func_L30_003518F0 (Claude wave 14 r60, 2026-11-28). First draft kept here. */
+/* Fix pass (2026-11-28, Claude Opus): the sched2 dump (cc1 -dS -fsched-verbose-5) of the join block: the 0.0f
+ * mtc1 (insn 427, [memory flop]) issues at t=2 with cost 2, so the mov.s $f12,$f20 (433, alu) is ready at t=4 and
+ * issues beside lh $a0 (429); lh $a1 (431) depends on the o->pos sq (410, t=3, cost 2) and issues at t=5, so reorg
+ * puts it in the delay slot. With GCC's unit model (one memory unit, two issues per cycle) retail's order needs the
+ * mov.s not to be ready at t=4, i.e. an RTL difference before sched2 (another dependence of the $f12 copy), not a
+ * ranking tie. Diagnostic flags (-fno-schedule-insns2, -fno-regmove, -fno-force-mem, -fargument-noalias,
+ * -fstrict-aliasing, -fno-sched-interblock, -fno-sched-spec ...) do not give it either. */
+/* c53 cut pass (wave 14c, 2026-11-28), from r60's first draft. Needs the existing line of L30_00351D10.c,
+ * '-mvu0-use-vf0-vf2 -O2 -G8 -fopt-stack -mno-check-zero-division @ps2as' (the file's line plus
+ * -mvu0-use-vf0-vf2): the spawn offset is added with vu0.h's vec_add_ba(&o->pos, &m->pos, &d) (retail's
+ * lqc2/lqc2/vadd.xyz/sqc2 at 0x164). Under that line (tools/check.py --flags=-mvu0-use-vf0-vf2) this C is
+ * 2 diff (r60's scalar form: 161 under the file's line). The file's other function, func_L30_00351558,
+ * MATCHes under the same line, so the whole file L30_00351558.c can take it once this one matches.
+ * Left: before the first func_L03_0034B148 call retail issues lh a0, lh a1 and puts mov.s $f12,$f20 in
+ * the jal delay slot; here sched2 issues mov.s with lh a0 (cycle 4, mtc1 $zero,$f20 two cycles earlier)
+ * and lh a1 (which waits for the sq of o->pos) lands in the slot. Tried: c = fE + dur before/after the
+ * o->pos store or at its use, the call's result in a temporary first, a TImode copy for o->pos, a 0.0f
+ * variable (one call or all three), the d.y store order; permuter 420 s (only inline-helper forms, no
+ * real gain). */
 #include "common.h"
 
 /* func_L30_003518F0 (fresh entry, first draft). Under this file's line (no -mvu0-use-vf0-vf2) the
@@ -14,6 +32,7 @@
  * and the 0x1C color stored through a byte offset (it keeps the D_L30_001DD924 load after it). */
 
 /* localdecomp:start func_L30_003518F0 */
+#include "vu0.h"
 typedef struct { f32 x, y, z, w; } __attribute__((aligned(16))) V_003518F0;
 typedef struct {
     u8 p0[0x10];
@@ -118,10 +137,7 @@ void func_L30_003518F0(O_003518F0 *o, A_003518F0 *a) {
         d.x = func_0038D098(off) * D_L30_001DD944;
         d.z = func_0038D0B0(off) * D_L30_001DD944;
         d.y = 0.0f;
-        o->pos.x = m->pos.x + d.x;
-        o->pos.y = m->pos.y + d.y;
-        o->pos.z = m->pos.z + d.z;
-        o->pos.w = m->pos.w;
+        vec_add_ba(&o->pos, &m->pos, &d);
         o->pos.y += D_L30_001DD954;
         v.x = func_0038D098(ang) * spin;
         v.z = func_0038D0B0(ang) * spin;
