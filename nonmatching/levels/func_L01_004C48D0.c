@@ -1,4 +1,4 @@
-/* PAL near miss (opus-w4): 101 words differ with the file's flags (was 237); rewritten after the matched sibling func_L01_004C3EB8 (col = func_0038DBD8() passed to the second func_L01_00415A58 call, menu reads through the global, entries of 0x24 bytes). Left: retail saves $s0 with sq (a TImode value shares $s0 with pulse/col/the double temporary; a long long col gives the sq but on $s1), so its frame is 0x10 larger; the (f32)D_L01_001DAE44 operand is la + lwc1 0(reg) in retail (the float conversion's memory operand reloaded into a register) where every declaration tried gives lui $at + lwc1; the colors stores and two saved registers ($s3/$s4) differ with them. */
+/* PAL near miss: 49 words differ with the file's flags (was 101); holding D_L01_001DAE44 in a loop-invariant s32 *py reproduces retail's rematerialized lui+addiu+lwc1 0(reg) at both func_00396E50 calls, and splitting c1/c0 narrows the second colors block. Left: 28 diffs from retail saving/restoring $s0 with sq/lq (frame 0xA0 vs 0x90, shared with sibling func_L01_004BED50 despite no 128-bit ops in the body), plus 21 diffs ($s3/$s4 swap between y+2 and &entries[n], lw $v1 vs $v0 on offset, and colors/lui scheduling). */
 #include "common.h"
 /* localdecomp:start func_L01_004C48D0 */
 #include "vu0.h"
@@ -6,7 +6,7 @@ typedef struct { s32 f0; u8 p4[0x18]; u32 rgb; u8 p20[4]; } Entry_004C48D0;
 typedef struct { u8 p0[4]; s32 timer; u8 p8[0x64]; s32 offset; u8 p70[0x10]; s32 selected; u8 p84[0xBC]; Entry_004C48D0 entries[42]; u8 p7A8[0x740 - 0x140 - 42 * 0x24]; s32 count; } Menu_004C48D0;
 extern f32 D_L01_001E0FD0;
 extern s32 D_001D4BC0, D_001D4BC4;
-extern s32 D_L01_001DAE44;
+extern s32 D_L01_001DAE44[];
 void func_L01_004C48D0(void) {
     extern void func_003A9500(s32,s32,s32,s32);
     extern s32 func_0038DBD8(s32,s32,f32);
@@ -15,6 +15,7 @@ void func_L01_004C48D0(void) {
     extern void func_00396E50(s32,s32,s32,s32,s32,u32 *);
     Menu_004C48D0 *m;
     s32 pulse, col, i, y, text, a, b;
+    s32 *py;
     u32 rgb;
     u32 colors[4];
     f64 d;
@@ -30,6 +31,7 @@ void func_L01_004C48D0(void) {
     col=func_0038DBD8(0x331465B7,0,0.8f);
     func_L01_00415A58(229,(s32)(D_L01_001E0FD0*297.0f+0.5f)+(*(s32 *)D_00143950?4:0),285,(s32)(D_L01_001E0FD0*353.0f+0.5f)+(*(s32 *)D_00143950?4:0),D_001D4BC0,D_001D4BC4,(pulse*0x10202)|0x80000000);
     func_L01_00415A58(231,(s32)(D_L01_001E0FD0*299.0f+0.5f)+(*(s32 *)D_00143950?4:0),283,(s32)(D_L01_001E0FD0*351.0f+0.5f)+(*(s32 *)D_00143950?4:0),D_001D4BC0,D_001D4BC4,col);
+    py=D_L01_001DAE44;
     y=m->offset-45;
     for(i=-5;i<7;i++,y+=56) {
         s32 n=i+((Menu_004C48D0 *)&D_L01_002446C0)->selected;
@@ -50,18 +52,22 @@ void func_L01_004C48D0(void) {
                 s32 shadow;
                 rgb=((Menu_004C48D0 *)&D_L01_002446C0)->entries[n].rgb;
                 shadow=func_00396968(0xEA97,1);
-                colors[2]=a|rgb;
                 colors[0]=a|rgb;
-                colors[3]=b|rgb;
+                colors[2]=a|rgb;
                 colors[1]=b|rgb;
-                func_00396E50(shadow,y+2,(s32)((f32)D_L01_001DAE44*D_L01_001E0FD0+0.5f)+(*(s32 *)D_00143950?4:0),40,(s32)(D_L01_001E0FD0*40.0f+0.5f),colors);
+                colors[3]=b|rgb;
+                func_00396E50(shadow,y+2,(s32)((f32)(*py)*D_L01_001E0FD0+0.5f)+(*(s32 *)D_00143950?4:0),40,(s32)(D_L01_001E0FD0*40.0f+0.5f),colors);
                 rgb=0xF0F0B0;
             }
-            colors[2]=a|rgb;
-            colors[3]=b|rgb;
-            colors[0]=a|rgb;
-            colors[1]=b|rgb;
-            func_00396E50(text,y+2,(s32)((f32)D_L01_001DAE44*D_L01_001E0FD0+0.5f)+(*(s32 *)D_00143950?4:0),40,(s32)(D_L01_001E0FD0*40.0f+0.5f),colors);
+            {
+                u32 c1=b|rgb;
+                u32 c0=a|rgb;
+                colors[0]=c0;
+                colors[1]=c1;
+                colors[2]=c0;
+                colors[3]=c1;
+            }
+            func_00396E50(text,y+2,(s32)((f32)(*py)*D_L01_001E0FD0+0.5f)+(*(s32 *)D_00143950?4:0),40,(s32)(D_L01_001E0FD0*40.0f+0.5f),colors);
         }
     }
 }
