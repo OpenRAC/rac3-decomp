@@ -77,10 +77,20 @@ def as_options(flags, cflags=()):
     return out
 
 
+def environment():
+    """The environment ee-as runs in: the caller's, with LC_ALL=C. Under the C.UTF-8 locale
+    (LANG=C.UTF-8, the default on Ubuntu and WSL) ee-as 2.10 assembles some macros' %hi part as
+    the macro's own load instead of a `lui`: in level 39's L39_004CCE58.c,
+    `lbu $2,D_L39_00443890($5)` became lbu/addu/lbu (word 90420000 where retail has 3C020000), a
+    word the DNAS step then left unencrypted as a relocated one (func_L39_004D05D8 +0x198)."""
+    return dict(os.environ, LC_ALL="C")
+
+
 def assemble(flags, cflags, spath, opath, cwd=None, path=None, capture=False):
-    """Assemble spath into opath with Sony's ee-as. Returns the CompletedProcess."""
+    """Assemble spath into opath with Sony's ee-as (in environment()). Returns the
+    CompletedProcess."""
     cmd = [program(path)] + as_options(flags, cflags) + ["-o", opath, spath]
     if capture:
-        return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+        return subprocess.run(cmd, cwd=cwd, env=environment(), capture_output=True, text=True)
     print(" ".join(cmd), flush=True)
-    return subprocess.run(cmd, cwd=cwd)
+    return subprocess.run(cmd, cwd=cwd, env=environment())
