@@ -168,6 +168,17 @@ other in every level that has them, so a file whose C tables have an assembly fu
 table or other data between them in some level fails there (split the file, or match the
 function between).
 
+**Read-only data of a level file.** A file's object can hold `const` data of its own among its
+tables. In retail, func_L01_002F78B0's 5-entry table (0x2BE6F0 in Veldin) is followed, 8-aligned,
+by the bolt kinds' table D_L01_002BE708 (10 entries of 28 bytes) and the 0x50-byte block
+D_L01_002BE820, which only functions of src/levels/shared/L01_002F7800.c read, and then by that
+file's next table (func_L01_002FC910's), in all 34 levels and with the same bytes. No cut gives that
+layout (an object's `.rodata` ends 16-aligned, so the first table alone would cover the data's first
+8 bytes), so the two are defined `const` in the file right after func_L01_002F78B0 (the maintainer,
+2026-11-28; AGENTS.md, "Globals are `extern`"): the compiler emits them after the table, the file's
+`.rodata` is one piece from the table on, and `jump_table()` compares each of its words with the
+level's. The file's other declarations of them are `const` to agree.
+
 **Level 39's protected DNAS blocks.** 112 runs of Sony's DNAS library in the multiplayer menu are
 stored encrypted, each inside a function between two stubs. Such a function is C with
 `DNAS_BEGIN(function, n, driver)` and `DNAS_END(function, n, driver)` around the block

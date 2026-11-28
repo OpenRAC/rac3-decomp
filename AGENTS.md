@@ -193,7 +193,12 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
   code-generation barrier on game data or locals. Older notes that say a function "matched with
   volatile" as a barrier are history, not a method to copy.
 - **Globals are `extern`.** Never define a variable in `src/`: it creates data that breaks the
-  layout.
+  layout. One exception (the maintainer, 2026-11-28): read-only data that retail's object of a level
+  file holds between that file's own switch jump tables is defined `const` in the file, with retail's
+  values, where the compiler emits it in that order; the level build checks it word for word with the
+  tables (docs/build/levels.md, "Read-only data of a level file"). Only where the level's data shows
+  it: `D_L01_002BE708` and `D_L01_002BE820`, after `func_L01_002F78B0` in
+  src/levels/shared/L01_002F7800.c.
 - **`$gp` differs per program** (`config/gp.tsv`): the multiplayer levels have their own. A
   `$gp`-relative global in code they have is named by its slot, `D_XXXXXXXX_sda`
   (docs/build/globals.md).
