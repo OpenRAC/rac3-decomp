@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 typedef struct {
@@ -500,7 +501,26 @@ extern char D_00151B88[];
 extern s32 func_0012FCE8(void);
 extern s32 func_0012EE18(s32);
 
-ASM_FUNC("asm/boot_elf/handwritten", func_0012EDD0);
+/* localdecomp:start func_0012EDD0 */
+typedef struct Req_0012EDD0 {
+    u8 pad0[0xC];
+    s32 arg;
+} Req_0012EDD0;
+extern s32 D_00141560;
+extern void *D_15BE00;
+
+void func_0012EDD0(Req_0012EDD0 *req) {
+    void (*fn)(s32) = (void (*)(s32))D_00141560;
+
+    if (fn != 0) {
+        void *old = CpuLoadGp(&D_15BE00);
+        fn(req->arg);
+        CpuSetGp(old);
+    }
+    CpuSync();
+    CpuEnableInt();
+}
+/* localdecomp:end func_0012EDD0 */
 
 /* localdecomp:start func_0012EE18 */
 typedef struct { u8 pad[0x10]; s32 a, b, c; } Slot_0012EE18;
@@ -515,7 +535,7 @@ s32 func_0012EE18(s32 unused) {
     extern s32 func_00124920(void);
     extern s32 func_00124970(void);
     extern void func_00121B70();
-    extern void func_0012EDD0(void);
+    extern void func_0012EDD0();
     s32 i, state;
     for (i = 0; i < 4; i++) {
         D_0015BB90_0012EE18[0][i].a = 0;

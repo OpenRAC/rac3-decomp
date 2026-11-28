@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -350,7 +351,25 @@ void func_00123108(void) {
 }
 /* localdecomp:end func_00123108 */
 
-ASM_FUNC("asm/boot_elf/handwritten", func_00123118);
+/* localdecomp:start func_00123118 */
+typedef struct Cb_00123118 {
+    void (*fn)(void *);
+    void *arg;
+} Cb_00123118;
+extern void *D_1563C0;
+
+void func_00123118(void *data, Cb_00123118 *cb) {
+    void (*fn)(void *) = cb->fn;
+
+    if (fn != 0) {
+        void *old = CpuLoadGp(&D_1563C0);
+        fn(cb->arg);
+        CpuSetGp(old);
+    }
+    CpuSync();
+    CpuEnableInt();
+}
+/* localdecomp:end func_00123118 */
 
 /* localdecomp:start func_00123160 */
 typedef struct {

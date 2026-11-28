@@ -27,6 +27,25 @@ static __inline__ void *CpuSwapGp(void *p) {
     return old;
 }
 
+/* CpuStoreGp(p): $gp stored at p, `sw $gp, ...`, with the memory clobber retail shows (issue #67's
+ * "store it into a field", the maintainer, 2026-11-28). iSetTimerHandler (func_00125A70) stores $gp
+ * into the timer entry and then loads the entry's mode word again, although it has just stored it
+ * from a register: an asm that may write memory, as the switches above, and not the plain store of
+ * CpuGp() (func_0012AA78, func_0012FD50 keep their values across their store). */
+static __inline__ void CpuStoreGp(void **p) { __asm__ __volatile__("sw $28, %0" : "=m"(*p) : : "memory"); }
+
+/* CpuLoadGp(p) and CpuSetGp(p): the switch around a callback when the saved gp is in memory (issue
+ * #67, the maintainer, 2026-11-28). Retail loads it straight into $gp, `daddu rd, $gp, $0; lw $gp,
+ * ...`, and sets the old value back with the one move `daddu $gp, rs, $0`, where CpuSwapGp() has a
+ * register for the new gp and two moves: the libcdvd power-off handler (func_0012ADC8) and two SIF
+ * callbacks (func_00123118, func_0012EDD0). */
+static __inline__ void *CpuLoadGp(void **p) {
+    void *old;
+    __asm__ __volatile__("move %0, $28\n\tlw $28, %1" : "=&r"(old) : "m"(*p) : "memory");
+    return old;
+}
+static __inline__ void CpuSetGp(void *p) { __asm__ __volatile__("move $28, %0" : : "r"(p) : "memory"); }
+
 /* COP0 Count ($9), the EE's cycle counter, as `mfc0 rd, Count` (the maintainer, 2026-11-28). The
  * compiler cannot read a COP0 register; retail reads Count in compiled code to time a piece of
  * work: func_L39_0057CEB0 (multiplayer levels 39-53) reads it on entry, keeps the value in a stack

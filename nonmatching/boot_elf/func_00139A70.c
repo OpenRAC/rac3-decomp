@@ -1,14 +1,13 @@
-/* Unlinked regional matching draft. PAL: 187 to 130 words; reader and packet allocation and loop shape remain. */
-/* PAL near miss: 130 raw positional word differences with @ee29 -O2 -G0.
- * Replaces local GP-switch assembly with approved CpuSwapGp() calls at the
- * two callback sites and their restores. No ordinary EE asm remains here.
- * Initial helper conversion gave 235 differences; initializing the packet
- * pointer at declaration, starting i after refill, and ordering the bit-reader
- * zero stores reduced that to 187. Initializing bits before the ring bounds
- * and using the reader pointer from its declaration through refill and
- * parsing improves alignment further. The 0x150 frame remains correct.
- * Remaining: initialization/store scheduling, table addressing and loop/branch
- * shape; the historical 64 aligned-word score is not this positional metric.
+/* PAL near miss: 112 raw positional word differences with @ee29 -O2 -G0 (tools/check.py
+ * --target boot_elf; Claude Opus, 2026-11-28, from the 130-word regional study of 2026-11-24).
+ * The bit reader's setup and first refill are an inline function that ends with bits = 0
+ * (retail fills through its own pointer register, $a2, and sets the reader pointer $s1 only
+ * after it): the prologue and the refill loop now match word for word. The post-parse length
+ * test jumps to the accumulator reload before the start-code tests (retail's bnel steals that
+ * load), and the tail is one return. Remaining: ok/nbits and the packet-header pointer/loop
+ * index take each other's saved registers ($s5/$s6, $s2/$s3), and the table-search loop's exit
+ * reloads the accumulator once where retail loads it on each of its two paths; both shift the
+ * words after them. The $gp switches are CpuSwapGp() at both callback sites and match.
  * Not linked; no full-build match is claimed.
  */
 #include "common.h"
@@ -66,7 +65,15 @@ typedef struct B_139A70 {
 extern void func_00137620(R_139A70 *, B_139A70 *);
 extern void func_00137CC8(Ctx_139A70 *, R_139A70 *, H_139A70 *);
 
-static inline void fill_139A70(R_139A70 *rd) {
+static inline void init_139A70(R_139A70 *rd, u8 *buf, u8 *start, s32 size) {
+    rd->size = size;
+    rd->cur = buf;
+    rd->rp = buf;
+    rd->bits = 0;
+    rd->start = start;
+    rd->end = start + size;
+    rd->acc = 0;
+    rd->fill = 0;
     do {
         s32 fill = rd->fill;
         u8 *q = rd->rp;
@@ -78,6 +85,7 @@ static inline void fill_139A70(R_139A70 *rd) {
         }
         rd->fill = fill + 8;
     } while (rd->fill < 0x39);
+    rd->bits = 0;
 }
 
 s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
@@ -85,28 +93,29 @@ s32 func_00139A70(Obj_139A70 *obj, u8 *a1, s32 nbytes, u8 *a3, s32 a4) {
     R_139A70 rr;
     B_139A70 bb;
     P_139A70 p;
-    R_139A70 *r = &rr;
-    B_139A70 *b = &bb;
-    s32 arg = 0;
-    Ctx_139A70 *ctx = obj->ctx;
-    Ent_139A70 *tbl = ctx->tbl;
-    s32 ret = 0;
-    s32 gp2 = 0;
-    s32 (*fn)(void *, void *, s32) = 0;
-    s32 ok = 1;
-    s32 nbits = nbytes << 3;
+    R_139A70 *r;
+    B_139A70 *b;
+    s32 arg;
+    Ctx_139A70 *ctx;
+    Ent_139A70 *tbl;
+    s32 ret;
+    s32 gp2;
+    s32 (*fn)(void *, void *, s32);
+    s32 ok;
+    s32 nbits;
     u64 acc;
 
-    rr.size = a4;
-    rr.cur = a1;
-    rr.rp = a1;
-    rr.bits = 0;
-    rr.start = a3;
-    rr.end = a3 + a4;
-    rr.acc = 0;
-    rr.fill = 0;
-    fill_139A70(r);
-    r->bits = 0;
+    fn = 0;
+    ok = 1;
+    nbits = nbytes << 3;
+    b = &bb;
+    ctx = obj->ctx;
+    tbl = ctx->tbl;
+    arg = 0;
+    ret = 0;
+    gp2 = 0;
+    init_139A70(&rr, a1, a3, a4);
+    r = &rr;
     i = 0;
     if (ctx->count > 0) {
 L_T1:
@@ -149,8 +158,7 @@ L_F8:
     }
     func_00137CC8(ctx, r, &b->h);
     if (nbits < (s32)r->bits) {
-        acc = r->acc;
-        goto L_D4;
+        goto L_DD0;
     }
     i = 0;
     if (ctx->count > 0) {
@@ -210,6 +218,7 @@ L_T2End:
     if (ok != 0) {
         ret = (s32)(r->bits >> 3);
     }
+L_DD0:
     acc = r->acc;
 L_D4:
     if ((acc >> 40) != 1) {
@@ -222,10 +231,7 @@ L_D4:
         goto L_F8;
     }
 L_E04:
-    if (nbits < (s32)r->bits) {
-        return ret;
-    }
-    if ((s32)(acc >> 32) == 0x1BA) {
+    if (!(nbits < (s32)r->bits) && (s32)(acc >> 32) == 0x1BA) {
         goto L_C0;
     }
     return ret;

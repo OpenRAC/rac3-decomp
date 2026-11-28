@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -69,4 +70,19 @@ void func_0012AD28(void)
 }
 /* localdecomp:end func_0012AD28 */
 
-ASM_FUNC("asm/boot_elf/handwritten", func_0012ADC8);
+/* localdecomp:start func_0012ADC8 */
+extern void (*D_15A148)(s32);
+extern void *D_15A14C;
+extern s32 D_15A150;
+extern s32 D_0013F924;
+
+void func_0012ADC8(void) {
+    void (*fn)(s32) = D_15A148;
+
+    if (fn != 0 && D_0013F924 == 0) {
+        void *old = CpuLoadGp(&D_15A14C);
+        fn(D_15A150);
+        CpuSetGp(old);
+    }
+}
+/* localdecomp:end func_0012ADC8 */

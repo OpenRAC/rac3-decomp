@@ -174,9 +174,12 @@ Ps2EeAs cannot read the assembler macros its `.s` uses
     library code has in compiled functions and the compiler cannot emit (rac1-decomp and
     rac2-decomp use the same helpers). Functions call them and never write the asm themselves,
     only where retail has the instruction. Since 2026-11-19 also `CpuGetGp()`, `CpuGp()` and
-    `CpuSwapGp()` for reading and switching `$gp` the three ways retail does (the maintainer).
-    Since 2026-11-28 also `CpuGetCount()`, the `mfc0` of COP0 Count (the cycle counter) that
-    the multiplayer levels' `func_L39_0057CEB0` reads twice to time its work (the maintainer).
+    `CpuSwapGp()` for reading and switching `$gp` the three ways retail does, and since
+    2026-11-28 `CpuStoreGp()` (a store of `$gp` that may write memory, `func_00125A70`) and
+    `CpuLoadGp()`/`CpuSetGp()` (the switch to a gp saved in memory and back, `func_0012ADC8`)
+    (the maintainer; issue #67), in Sony's library code only. Since 2026-11-28 also
+    `CpuGetCount()`, the `mfc0` of COP0 Count (the cycle counter) that the multiplayer levels'
+    `func_L39_0057CEB0` reads twice to time its work (the maintainer).
 
   Never asm for an ordinary EE instruction, nor asm used to force register allocation, scheduling
   or a delay slot.

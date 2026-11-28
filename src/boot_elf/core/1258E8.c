@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu.h"
 
 /* --- declarations from other files (tools/split_text.py --refresh) --- */
 /* --- end of declarations from other files --- */
@@ -164,4 +165,49 @@ LINKER_REMNANT("asm/boot_elf/remnants", func_00125A40);
 
 LINKER_REMNANT("asm/boot_elf/remnants", func_00125A68);
 
-INCLUDE_ASM("asm/boot_elf/nonmatchings/core", func_00125A70);
+/* localdecomp:start func_00125A70 */
+typedef struct {
+    u8 pad0[8];
+    u32 id;
+    u32 flags;
+    u64 start;
+    u64 elapsed;
+    u64 time;
+    s32 handler;
+    void *gp;
+    s32 arg;
+} Alarm_125A70;
+extern void func_00125540(void *);
+extern void *func_001254B8();
+
+s32 func_00125A70(s32 id, u64 time, s32 handler, s32 arg) {
+    Alarm_125A70 *t;
+    Tm_125940 *st;
+
+    t = (Alarm_125A70 *)(((u32)id >> 10) << 6);
+    if (id < 0 || (id & 0x3FF) != t->id) {
+        return 0x80008002;
+    }
+    st = (Tm_125940 *)&D_0013F288;
+    if (st->active == id) {
+        return 0x80000010;
+    }
+    if (t->flags & 2) {
+        func_00125540(t);
+    }
+    t->handler = handler;
+    if (handler == 0) {
+        t->flags &= ~2;
+    } else {
+        t->time = time;
+        t->flags |= 2;
+        CpuStoreGp(&t->gp);
+        t->arg = arg;
+        if (t->flags & 1) {
+            func_001254B8(t);
+        }
+    }
+    func_00125328(func_00125820());
+    return 0;
+}
+/* localdecomp:end func_00125A70 */
