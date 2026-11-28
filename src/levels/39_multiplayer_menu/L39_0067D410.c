@@ -630,7 +630,15 @@ s32 func_L39_0067EB98(void) {
 /* localdecomp:end func_L39_0067EB98 */
 
 /* localdecomp:start func_L39_0067EBD0 */
-int func_L39_0067EBD0(void) { int r = func_L39_0067CEA0(); int g = D_001DB168_sda; return g < 0 ? 3000 : r - g; }
+extern s32 func_L39_0067CEA0(void);
+extern s32 D_001DB168_sda;
+__asm__(".extern D_001DB168_sda, 4");
+
+s32 func_L39_0067EBD0(void) {
+    s32 now = func_L39_0067CEA0();
+    s32 start = D_001DB168_sda;
+    return start < 0 ? 3000 : now - start;
+}
 /* localdecomp:end func_L39_0067EBD0 */
 
 /* localdecomp:start func_L39_0067EC00 */
